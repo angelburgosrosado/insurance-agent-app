@@ -13,7 +13,7 @@
 - PostgreSQL provider: Supabase
 - Application database access: server-side PostgreSQL client or Prisma through a protected server connection
 - Supabase Auth is the authentication authority
-- Production credentials and project reference are not configured in this repository
+- The local Supabase project URL and publishable key are supplied through ignored runtime configuration; credentials are not configured in this repository
 - The local Supabase CLI is not currently installed
 - No remote infrastructure changes are authorized by this architecture record
 
@@ -49,13 +49,12 @@ The GCP project was verified as active using the configured Google account. Supa
 
 ## Required next gates
 
-1. Create or identify the Supabase project and provide its non-secret project reference and URL through the approved secret/configuration channel
-2. Configure Supabase Auth Google provider and email provider settings
-3. Confirm the exact Google email, CRM, calendar, and Analytics services
-4. Approve the standard retention duration and privacy disclosures
-5. Complete the Prisma schema and migration review before production cutover
-6. Implement authentication and server-side staff role enforcement before exposing any admin route
-7. Deploy only after secrets, database migrations, backups, and rollback procedures are verified
+1. Record the approved production domain and add its Site URL and `/auth/callback` redirect URL to Supabase Auth
+2. Confirm the exact Google email, CRM, calendar, and Analytics services
+3. Approve the standard retention duration and privacy disclosures
+4. Complete the Prisma schema and migration review before production cutover
+5. Implement authentication and server-side staff role enforcement before exposing any admin route
+6. Deploy only after secrets, database migrations, backups, and rollback procedures are verified
 
 No production credentials are stored in this repository.
 

@@ -1,6 +1,18 @@
-# Phase 0.1 scope baseline
+# Phase 1.1 scope and implementation status
 
-This document records the current scope and the boundary for the approved private app plan. It is intentionally limited to marketing, intake, prospect management, content, and analytics. It does not authorize application-code changes in Phase 0.1.
+This document records the approved private app scope and Phase 1.1 implementation status. It is intentionally limited to marketing, intake, prospect management, content, and analytics.
+
+## Approved platform architecture
+
+- GCP deployment project: `abglobal-insurance-app`.
+- Supabase-hosted PostgreSQL with Prisma production entities.
+- Supabase Auth with Google OAuth and email-based auth is implemented for the local private-app sign-in boundary.
+- Staff roles: `superadmin`, `admin`, `user`.
+- Standard retention policy.
+- Google services are planned for email, CRM, and calendar; Google Analytics is planned for analytics and content measurement.
+- No policy, underwriting, or claims entities are in scope.
+
+Phase 1.1 adds the Prisma schema, local server database abstraction, domain tests, and a non-personal idempotent seed. Existing SQLite routes remain unchanged. No GCP/Supabase infrastructure or remote database objects are mutated.
 
 ## In scope
 
@@ -55,16 +67,22 @@ This document records the current scope and the boundary for the approved privat
 - Admin links for `/admin/tasks`, `/admin/campaigns`, `/admin/content`, and `/admin/analytics` are present in the dashboard markup, but those route files are not present.
 - The current UI does not expose the notes or follow-up-date capabilities that exist in the database and admin API.
 - Lead intake has basic required-field, email-pattern, and consent validation only. There is no documented rate limiting, spam protection, or CSRF strategy.
-- There is no production deployment configuration in the inspected source.
-- The current test coverage is limited to the SQLite data layer tests in `tests/db.test.mjs`.
+- No production deployment configuration is present in the inspected source.
+- Supabase project credentials/reference are not configured, and the Supabase CLI is not installed locally. Prisma schema validation and client generation require `DATABASE_URL`; use a non-secret placeholder such as `postgresql://placeholder:placeholder@localhost:5432/placeholder` for offline checks. The checked-in migration is reproducible but is not applied by Phase 1.1; seed execution and migration application require an explicitly configured real database and remain outside this deliverable.
+- The test suite includes in-memory SQLite data-layer tests and domain tests for lead status, consent, attribution normalization, and Prisma-client lifecycle behavior.
 
-## Phase 0.1 deliverable
+## Phase 1.1 deliverable
 
-The Phase 0.1 deliverable is baseline documentation only:
+The Phase 1.1 deliverable includes:
 
 - `docs/architecture.md` — current structure, routes, persistence, configuration, and limitations.
 - `docs/local-development.md` — prerequisites, commands, local configuration, verification, and data-reset guidance.
-- `docs/scope.md` — current scope, boundaries, explicit security/database warnings, and known gaps.
+- `docs/scope.md` — approved scope, boundaries, implementation status, explicit security/database warnings, and known gaps.
+- `prisma/schema.prisma` — PostgreSQL production entity model.
+- `prisma/migrations/` — checked-in initial PostgreSQL migration generated from the current schema; it is not applied to any database in this phase.
+- `prisma/seed.ts` — idempotent seed containing no real personal data.
+- `src/lib/server/db.ts` — lazy Prisma server abstraction and lead-domain normalization helpers.
+- `tests/domain/lead-model.test.ts` — lead status, consent, and attribution tests.
 
-No application code, tests, configuration, lockfiles, or existing working-tree changes are modified by this documentation phase, and no commit or push is part of the deliverable.
+- No remote infrastructure change, commit, or push is part of this deliverable. Staff role enforcement remains incomplete until a server-backed role source is configured.
 

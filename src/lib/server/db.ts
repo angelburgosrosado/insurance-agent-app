@@ -1,4 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+import { createRequire } from "node:module";
+import type { PrismaClient as PrismaClientType } from "@prisma/client";
 
 export const productionLeadStatuses = [
   "new",
@@ -58,27 +59,30 @@ export function normalizeLeadAttribution(input: LeadAttributionInput) {
   ) as Partial<Record<keyof LeadAttributionInput, string>>;
 }
 
-type GlobalWithPrisma = typeof globalThis & { __insurancePrisma?: PrismaClient };
+type GlobalWithPrisma = typeof globalThis & { __insurancePrisma?: PrismaClientType };
+const require = createRequire(import.meta.url);
 
-export function createServerDatabase(): PrismaClient {
+export function createServerDatabase(): PrismaClientType {
+  const { PrismaClient } = require("@prisma/client") as { PrismaClient: new () => PrismaClientType };
   return new PrismaClient();
 }
 
-export const prisma = (globalThis as GlobalWithPrisma).__insurancePrisma ?? createServerDatabase();
-
-if (process.env.NODE_ENV !== "production") {
-  (globalThis as GlobalWithPrisma).__insurancePrisma = prisma;
+export function getPrismaClient(): PrismaClientType {
+  const globalState = globalThis as GlobalWithPrisma;
+  globalState.__insurancePrisma ??= createServerDatabase();
+  return globalState.__insurancePrisma;
 }
-
-export default prisma;
 
 export async function disconnectServerDatabase(): Promise<void> {
-  await prisma.$disconnect();
+  const globalState = globalThis as GlobalWithPrisma;
+  const client = globalState.__insurancePrisma;
+  if (!client) return;
+
+  await client.$disconnect();
+  globalState.__insurancePrisma = undefined;
 }
 
-export type ServerDatabase = PrismaClient;
-
-export { PrismaClient };
+export type ServerDatabase = PrismaClientType;
 
 // The existing SQLite data layer remains in src/lib/db.ts and is intentionally not replaced.
 // Prisma operations are only used by production-oriented server code after DATABASE_URL is configured.

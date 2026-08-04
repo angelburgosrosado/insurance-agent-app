@@ -64,13 +64,34 @@ DATABASE_URL='postgresql://placeholder:placeholder@localhost:5432/placeholder' p
 DATABASE_URL='postgresql://placeholder:placeholder@localhost:5432/placeholder' pnpm exec prisma generate
 ```
 
-The migration files under `prisma/migrations/` are checked in for reproducibility but are not applied by these instructions or by Phase 1.1. Do not run migration or seed commands against remote infrastructure without an explicitly authorized real database URL. `pnpm start` starts the previously generated production build:
+The migration files under `prisma/migrations/` are checked in for reproducibility but are not applied by these instructions or by Phase 1.1. Do not run migration or seed commands against remote infrastructure without explicit authorization. The active production deployment is Cloud Run revision `insurance-agent-app-00004-xv8` with 100% traffic; the Supabase RLS migration is pending application. `pnpm start` starts the previously generated production build:
 
 ```bash
 pnpm start
 ```
 
 A production start requires a successful `pnpm build` first.
+
+## Supabase schema and RLS verification
+
+The application schema is server-only. Prisma uses the protected server-side PostgreSQL connection; `anon` and `authenticated` must not directly read or mutate application tables through the Supabase Data API. The migration created with `supabase migration new harden_application_schema_rls` enables RLS on `User`, `Lead`, `LeadAttribution`, `LeadNote`, `FollowUpTask`, `ContentEntry`, `Campaign`, and `AuditEvent`, revokes their table privileges from both Data API roles, and adds no direct-access policies. The migration is local and pending application; this slice does not mutate Supabase.
+
+Without secrets, inspect and verify the linked remote state with:
+
+```bash
+supabase migration list --linked
+supabase db lint --linked
+```
+
+After explicit approval to apply the pending migration, run:
+
+```bash
+supabase db push --linked
+supabase db lint --linked
+supabase migration list --linked
+```
+
+`supabase db push --linked` changes the linked database and is not part of ordinary local development. Never print or commit credentials, connection strings, or environment files.
 
 ## Current local endpoints
 
@@ -108,7 +129,7 @@ This permanently deletes local leads and notes. Do not run the reset command aga
 ## Known local limitations
 
 - The project assumes a Node runtime that exposes `node:sqlite`; an older Node version may fail when loading `src/lib/db.ts`.
-- The checked-in Prisma migration is not applied; there is no hosted database, backup, or production deployment configuration.
+- The checked-in Prisma migration is not applied locally; the active production deployment is Cloud Run revision `insurance-agent-app-00004-xv8`. The Supabase RLS migration is prepared but pending application.
 - Supabase Google OAuth and email authentication are enabled and locally wired. Staff role enforcement still requires a server-backed role source.
 - Intake validation is basic and does not provide rate limiting, spam protection, or a documented CSRF strategy.
 - `/privacy` and `/disclosures` are linked and included in the generated sitemap but do not currently have route files. Admin navigation also includes placeholder links for tasks, campaigns, content, and analytics without corresponding route files.

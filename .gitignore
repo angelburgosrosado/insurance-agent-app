@@ -42,3 +42,18 @@ next-env.d.ts
 
 # local draft database
 /.data/
+
+text
+.git
+.git/**
+.next
+.next/**
+node_modules
+node_modules/**
+.data
+.data/**
+.env
+.env.*
+*.log
+coverage
+.DS_Store

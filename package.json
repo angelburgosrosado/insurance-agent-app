@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --import tsx --test tests/db.test.mjs tests/domain/lead-model.test.ts tests/domain/repository.test.ts tests/auth.test.ts",
+    "test": "node --import tsx --test tests/db.test.mjs tests/domain/lead-model.test.ts tests/domain/repository.test.ts tests/auth.test.ts tests/rls-migration.test.mjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

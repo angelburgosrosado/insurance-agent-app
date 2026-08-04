@@ -12,7 +12,7 @@ This document describes the current implementation of the private insurance-agen
 - Planned Google services: email, CRM, and calendar integrations; Google Analytics for analytics and content measurement.
 - Policy, underwriting, and claims entities are intentionally excluded from this model.
 
-Phase 1.1 adds the production entity schema, an idempotent non-personal seed, and a lazy Prisma server abstraction while preserving the existing SQLite draft data layer and routes. No remote database objects or cloud infrastructure are changed.
+Phase 1.1 adds the production entity schema, an idempotent non-personal seed, and a lazy Prisma server abstraction while preserving the existing SQLite draft data layer and routes. The active production deployment is Cloud Run service `insurance-agent-app`, revision `insurance-agent-app-00004-xv8`, with 100% traffic. Its image is in Artifact Registry and `DATABASE_URL` is bound from Secret Manager. The Supabase RLS hardening migration is prepared locally and is pending application; no remote database objects or cloud infrastructure are changed by this slice.
 
 ## Stack and runtime
 
@@ -77,11 +77,25 @@ Application environment variables currently referenced by source include:
 
 Environment files are ignored by Git. The local `.env.local` supplies the Supabase URL and publishable key; no key value is documented or committed. `next.config.ts` has no project-specific options. Metadata and sitemap URLs are hard-coded to `https://abglobalconsulting.com` in the current source.
 
-Phase 1.1 also defines `DATABASE_URL` for Prisma's PostgreSQL datasource, but no production database connection or credentials are configured. The Supabase CLI is not installed locally. The publishable key value is intentionally not documented or committed. Prisma validation/generation can use a non-secret placeholder value; no remote database connection is required. The migration files are checked in but are not applied in this phase.
+Phase 1.1 also defines `DATABASE_URL` for Prisma's PostgreSQL datasource. The publishable key value and database credentials are intentionally not documented or committed. Prisma validation/generation can use a non-secret placeholder value. The Supabase CLI is installed locally and the linked project's current remote state can be linted without applying the pending migration. The migration files are checked in but the new RLS migration is not applied in this phase.
 
 ## Security boundary
 
-The admin layout and admin API handlers validate a Supabase Auth JWT with `auth.getClaims()`, then resolve the authenticated Supabase user ID against the Prisma `User.id` field. Prisma `User.role` is authoritative; only `superadmin`, `admin`, and `user` authorize staff access. Anonymous page requests redirect to `/login`, authenticated users without a staff record or with an invalid role receive a safe `/login?error=forbidden` redirect, anonymous APIs receive 401, and authenticated non-staff API callers receive 403. User-editable metadata and claims are never used for authorization. This enforcement is implemented with dependency-injected repository fakes in tests, but cannot be live-verified until a Supabase PostgreSQL `DATABASE_URL` is configured and the checked-in migration is applied. SQLite is local-only in this baseline; it remains the active draft data path and is not a production database or a shared multi-instance persistence layer.
+The admin layout and admin API handlers validate a Supabase Auth JWT with `auth.getClaims()`, then resolve the authenticated Supabase user ID against the Prisma `User.id` field. Prisma `User.role` is authoritative; only `superadmin`, `admin`, and `user` authorize staff access. Anonymous page requests redirect to `/login`, authenticated users without a staff record or with an invalid role receive a safe `/login?error=forbidden` redirect, anonymous APIs receive 401, and authenticated non-staff API callers receive 403. User-editable metadata and claims are never used for authorization. The application schema is server-only: `anon` and `authenticated` have no table privileges and no direct-access RLS policies; server-side Prisma remains the intended access path as `postgres`. Apply and verify the pending migration only through the documented Supabase CLI workflow. SQLite is local-only in this baseline; it remains the active draft data path and is not a production database or a shared multi-instance persistence layer.
+
+## Supabase RLS migration gate
+
+The migration `supabase/migrations/20260804173903_harden_application_schema_rls.sql` enables RLS on all eight application tables, revokes table privileges from `anon` and `authenticated`, and closes future tables by default. It is pending application to the linked production project. From the repository root, review and apply it only after explicit authorization:
+
+```bash
+supabase migration list --linked
+supabase db lint --linked
+supabase db push --linked
+supabase db lint --linked
+supabase migration list --linked
+```
+
+`supabase db push --linked` is the apply operation and is intentionally not run by this slice. Do not place a database URL, password, or key in documentation or shell history.
 
 ## Testing surface
 

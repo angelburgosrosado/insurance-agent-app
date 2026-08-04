@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { db, leadInputFromUnknown } from "@/lib/db";
+import { leadInputFromUnknown } from "@/lib/db";
+import { getLeadRepository } from "@/lib/server/leads";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -25,7 +26,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Consent is required to submit this request" }, { status: 422 });
   }
 
-  const lead = db.createLead(leadInputFromUnknown(body));
+  const lead = await getLeadRepository().createLead(leadInputFromUnknown(body));
 
   return NextResponse.json({ ok: true, leadId: lead.id }, { status: 201 });
 }

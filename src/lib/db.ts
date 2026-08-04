@@ -18,18 +18,23 @@ type LeadInput = {
   source: string;
   medium: string;
   campaign: string;
+  consentText?: string;
+  consentVersion?: string;
+  consentAt?: string;
+  content?: string;
+  term?: string;
 };
 
 export type Lead = LeadInput & {
-  id: number;
+  id: number | string;
   status: LeadStatus;
   followUpDate: string;
   createdAt: string;
 };
 
 export type LeadNote = {
-  id: number;
-  leadId: number;
+  id: number | string;
+  leadId: number | string;
   body: string;
   author: string;
   createdAt: string;
@@ -152,9 +157,9 @@ export function seedDatabase(database: LeadDatabase) {
   ];
   demo.forEach(([firstName, lastName, email, phone, service, source, medium], index) => {
     const lead = database.createLead({ firstName, lastName, email, phone, service, contactTime: "", message: "Demo record", consent: true, source, medium, campaign: "" });
-    if (index === 1) database.updateLead(lead.id, { status: "reviewing" });
-    if (index === 2) database.updateLead(lead.id, { status: "assigned" });
-    if (index === 3) database.updateLead(lead.id, { status: "contacted" });
+    if (index === 1) database.updateLead(lead.id as number, { status: "reviewing" });
+    if (index === 2) database.updateLead(lead.id as number, { status: "assigned" });
+    if (index === 3) database.updateLead(lead.id as number, { status: "contacted" });
   });
 }
 
@@ -162,7 +167,7 @@ if (process.env.SEED_DEMO_DATA === "true") seedDatabase(db);
 
 export function leadInputFromUnknown(body: Record<string, unknown>): LeadCreateInput {
   return {
-    firstName: String(body.firstName ?? "").trim(), lastName: String(body.lastName ?? "").trim(), email: String(body.email ?? "").trim().toLowerCase(), phone: String(body.phone ?? "").trim(), service: String(body.service ?? "").trim(), contactTime: String(body.contactTime ?? "").trim(), message: String(body.message ?? "").trim(), consent: body.consent === true, source: String(body.source ?? "").trim(), medium: String(body.medium ?? "").trim(), campaign: String(body.campaign ?? "").trim(),
+    firstName: String(body.firstName ?? "").trim(), lastName: String(body.lastName ?? "").trim(), email: String(body.email ?? "").trim().toLowerCase(), phone: String(body.phone ?? "").trim(), service: String(body.service ?? "").trim(), contactTime: String(body.contactTime ?? "").trim(), message: String(body.message ?? "").trim(), consent: body.consent === true, consentText: String(body.consentText ?? "").trim(), consentVersion: String(body.consentVersion ?? "").trim(), consentAt: String(body.consentAt ?? new Date().toISOString()).trim(), source: String(body.source ?? "").trim().toLowerCase(), medium: String(body.medium ?? "").trim().toLowerCase(), campaign: String(body.campaign ?? "").trim().toLowerCase(), content: String(body.content ?? "").trim().toLowerCase(), term: String(body.term ?? "").trim().toLowerCase(),
   };
 }
 

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Lead, LeadStatus } from "@/lib/db";
+import type { LeadId } from "@/lib/server/leads";
 
 const statuses: LeadStatus[] = ["new", "reviewing", "assigned", "contacted", "qualified", "closed"];
 const labels: Record<LeadStatus, string> = { new: "New", reviewing: "Reviewing", assigned: "Assigned", contacted: "Contacted", qualified: "Qualified", closed: "Closed" };
@@ -12,7 +13,7 @@ export function LeadsTable({ initialLeads }: { initialLeads: Lead[] }) {
   const [leads, setLeads] = useState(initialLeads);
   const [error, setError] = useState("");
 
-  async function updateStatus(id: number, status: LeadStatus) {
+  async function updateStatus(id: LeadId, status: LeadStatus) {
     setError("");
     const response = await fetch("/api/admin/leads", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, status }) });
     if (!response.ok) { setError("Unable to update lead"); return; }

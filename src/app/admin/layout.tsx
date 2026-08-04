@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
-import { requireAuthenticatedUser } from "@/lib/auth/server";
+import { requireStaffUser } from "@/lib/auth/server";
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
-  await requireAuthenticatedUser();
+  await requireStaffUser();
   return children;
 }

@@ -1,16 +1,25 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { requireApiAuthentication } from "@/lib/auth/server";
+import { requireApiStaffAccess } from "@/lib/auth/server";
+
+async function requireStaffApiResponse() {
+  const authorization = await requireApiStaffAccess();
+  if (!authorization.authenticated) return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+  if (!authorization.authorized) return NextResponse.json({ error: "Staff access required" }, { status: 403 });
+  return null;
+}
 
 export async function GET(request: Request) {
-  if (!(await requireApiAuthentication())) return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+  const denied = await requireStaffApiResponse();
+  if (denied) return denied;
   const leadId = Number(new URL(request.url).searchParams.get("leadId"));
   if (!Number.isInteger(leadId) || leadId < 1) return NextResponse.json({ error: "Valid lead id is required" }, { status: 422 });
   return NextResponse.json({ notes: db.listNotes(leadId) });
 }
 
 export async function POST(request: Request) {
-  if (!(await requireApiAuthentication())) return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+  const denied = await requireStaffApiResponse();
+  if (denied) return denied;
   const body = await request.json().catch(() => null) as { leadId?: unknown; body?: unknown; author?: unknown } | null;
   const leadId = Number(body?.leadId);
   const noteBody = typeof body?.body === "string" ? body.body.trim() : "";
@@ -22,3 +31,4 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Lead not found" }, { status: 404 });
   }
 }
+

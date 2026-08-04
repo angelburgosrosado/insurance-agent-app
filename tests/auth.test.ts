@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { getSupabaseConfig } from "../src/lib/supabase/env";
-import { hasStaffAccess, isStaffRole } from "../src/lib/auth/authorization";
+import { hasStaffAccess, isStaffRole, resolveStaffAuthorization } from "../src/lib/auth/authorization";
 
 test("reports the Supabase configuration blocker without throwing", () => {
   assert.deepEqual(
@@ -72,4 +72,49 @@ test("allows authenticated staff roles but not anonymous or unknown roles", () =
     hasStaffAccess({ id: "user-1", user_metadata: { role: "admin" } }),
     false,
   );
+});
+
+test("authorizes only a Prisma User record whose id matches the Supabase user id", async () => {
+  const repository = {
+    user: {
+      findUnique: async ({ where }: { where: { id: string } }) =>
+        where.id === "staff-1" ? { role: "admin" } : null,
+    },
+  };
+
+  assert.deepEqual(await resolveStaffAuthorization({ id: "staff-1" }, repository), {
+    authenticated: true,
+    authorized: true,
+    role: "admin",
+  });
+  assert.deepEqual(await resolveStaffAuthorization({ id: "missing" }, repository), {
+    authenticated: true,
+    authorized: false,
+    reason: "staff_record_missing",
+  });
+});
+
+test("authorizes every approved Prisma role and rejects invalid roles", async () => {
+  for (const role of ["superadmin", "admin", "user"] as const) {
+    const repository = { user: { findUnique: async () => ({ role }) } };
+    assert.equal((await resolveStaffAuthorization({ id: "staff" }, repository)).authorized, true);
+  }
+
+  const invalid = { user: { findUnique: async () => ({ role: "owner" }) } };
+  assert.deepEqual(await resolveStaffAuthorization({ id: "staff" }, invalid), {
+    authenticated: true,
+    authorized: false,
+    reason: "invalid_staff_role",
+  });
+});
+
+test("rejects anonymous authorization without querying Prisma", async () => {
+  let queried = false;
+  const repository = { user: { findUnique: async () => { queried = true; return { role: "admin" }; } } };
+  assert.deepEqual(await resolveStaffAuthorization(null, repository), {
+    authenticated: false,
+    authorized: false,
+    reason: "anonymous",
+  });
+  assert.equal(queried, false);
 });

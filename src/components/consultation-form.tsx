@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const initialForm = {
   firstName: "",
@@ -99,7 +100,7 @@ export function ConsultationForm() {
       </label>
       <label className="flex gap-3 text-sm leading-6 text-[var(--ink-soft)]">
         <input required type="checkbox" checked={form.consent} onChange={(e) => update("consent", e.target.checked)} className="mt-1 accent-[var(--accent)]" />
-        I agree to be contacted about this request and acknowledge the privacy notice
+        <span>I agree to be contacted about this request and acknowledge the <Link href="/privacy" className="underline underline-offset-2 hover:text-[var(--ink)]">privacy notice</Link></span>
       </label>
       {state === "error" && <p role="alert" className="text-sm text-[var(--accent-deep)]">{error}</p>}
       <button disabled={state === "submitting"} className="w-full bg-[var(--ink)] px-6 py-4 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:translate-y-0 disabled:cursor-wait disabled:opacity-60">

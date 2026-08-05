@@ -1,30 +1,16 @@
 import { NextResponse } from "next/server";
 import { leadInputFromUnknown } from "@/lib/db";
 import { getLeadRepository } from "@/lib/server/leads";
-
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+import { validateLeadRequest } from "@/lib/server/lead-validation";
+import { leadRateLimiter, rateLimitResponse, requestClientKey } from "@/lib/server/rate-limit";
 
 export async function POST(request: Request) {
+  const rateLimit = leadRateLimiter.check(requestClientKey(request));
+  if (!rateLimit.allowed) return rateLimitResponse(rateLimit);
+
   const body = await request.json().catch(() => null);
-
-  if (!body || typeof body !== "object") {
-    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
-  }
-
-  const required = ["firstName", "lastName", "email", "phone", "service"];
-  const missing = required.find((field) => !String(body[field] ?? "").trim());
-
-  if (missing) {
-    return NextResponse.json({ error: "Complete all required fields" }, { status: 422 });
-  }
-
-  if (!emailPattern.test(String(body.email))) {
-    return NextResponse.json({ error: "Enter a valid email address" }, { status: 422 });
-  }
-
-  if (body.consent !== true) {
-    return NextResponse.json({ error: "Consent is required to submit this request" }, { status: 422 });
-  }
+  const validation = validateLeadRequest(body);
+  if (!validation.valid) return NextResponse.json({ error: validation.error }, { status: validation.error === "Invalid request" ? 400 : 422 });
 
   const lead = await getLeadRepository().createLead(leadInputFromUnknown(body));
 

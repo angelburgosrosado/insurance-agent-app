@@ -51,24 +51,24 @@ Phase 1.1 adds the Prisma schema, local server database abstraction, domain test
 - Insurance quoting, underwriting, applications, policy issuance, claims, carrier integrations, or coverage decisions.
 - A customer portal, client self-service, agent licensing/compliance workflow, or payment processing.
 - Email, SMS, CRM, calendar, ad-platform, or other third-party integrations.
-- Authentication, authorization, roles, sessions, or production access controls are not implemented in the current code. They remain a required prerequisite before treating internal features as deployable.
+- Authentication, authorization, roles, and sessions are implemented for the local private-app boundary. Production readiness still requires verified production configuration, staff records, migration state, and deployment checks.
 - Production database infrastructure, cloud storage, backups, migrations, replication, or multi-instance persistence.
 - New application pages or APIs beyond documenting the current repository.
 
 ## Security and data handling warning
 
-**`/admin` is not production-safe until authentication is complete.** The current `/admin` and `/admin/leads` pages are reachable without an authentication check, and every `/api/admin/*` handler lacks authentication and authorization. The public homepage also contains a link to `/admin` labeled “Internal access.” Treat the admin UI and admin APIs as development-only until the access-control work is finished.
+**`/admin` remains deployment-gated.** The `/admin` and `/admin/leads` pages and the current `/api/admin/*` handlers perform server-side Supabase session validation and staff-role resolution. They must not be treated as production-ready until the production database, staff role source, RLS migration, secrets, and endpoint behavior are verified together.
 
 **SQLite is local-only.** The current database is a file-backed SQLite database at `DATABASE_PATH` or `.data/leads.sqlite`. It is not a shared production datastore, does not provide the required deployment, backup, or multi-instance guarantees, and should not be treated as the final persistence architecture.
 
 ## Current gaps and limitations
 
-- `/privacy` and `/disclosures` are linked from the homepage and emitted in the sitemap, but route files are not present.
-- Admin links for `/admin/tasks`, `/admin/campaigns`, `/admin/content`, and `/admin/analytics` are present in the dashboard markup, but those route files are not present.
-- The current UI does not expose the notes or follow-up-date capabilities that exist in the database and admin API.
-- Lead intake has basic required-field, email-pattern, and consent validation only. There is no documented rate limiting, spam protection, or CSRF strategy.
-- No production deployment configuration is present in the inspected source.
-- Supabase project credentials/reference are not configured, and the Supabase CLI is not installed locally. Prisma schema validation and client generation require `DATABASE_URL`; use a non-secret placeholder such as `postgresql://placeholder:placeholder@localhost:5432/placeholder` for offline checks. The checked-in migration is reproducible but is not applied by Phase 1.1; seed execution and migration application require an explicitly configured real database and remain outside this deliverable.
+- `/privacy` and `/disclosures` are implemented as public routes, linked from the homepage, and emitted in the sitemap.
+- `/admin/tasks` and `/api/admin/tasks` now provide the initial follow-up task slice. Admin links for `/admin/campaigns`, `/admin/content`, and `/admin/analytics` remain placeholders without route files.
+- The current admin UI exposes follow-up-date editing and lazy internal-note retrieval/creation. Full task management remains unimplemented.
+- Lead intake has required-field, email-pattern, consent, and bounded in-process rate-limit validation. Spam protection, CSRF strategy, and external abuse monitoring remain incomplete.
+- Local Cloud Run deployment configuration is present. Production deployment, migration, secret, traffic, rollback, and endpoint verification remain separate gates.
+- Supabase project credentials/reference are intentionally not documented or committed. Prisma schema validation and client generation require `DATABASE_URL`; use a non-secret placeholder such as `postgresql://placeholder:***@localhost:5432/placeholder` for offline checks. The checked-in migration is reproducible but is not applied by this phase; seed execution and migration application require an explicitly configured real database and remain outside this deliverable.
 - The test suite includes in-memory SQLite data-layer tests and domain tests for lead status, consent, attribution normalization, and Prisma-client lifecycle behavior.
 
 ## Phase 1.1 deliverable
@@ -84,5 +84,5 @@ The Phase 1.1 deliverable includes:
 - `src/lib/server/db.ts` — lazy Prisma server abstraction and lead-domain normalization helpers.
 - `tests/domain/lead-model.test.ts` — lead status, consent, and attribution tests.
 
-- No remote infrastructure change, commit, or push is part of this deliverable. Staff role enforcement remains incomplete until a server-backed role source is configured.
+- No remote infrastructure change, commit, or push is part of this deliverable. Staff role enforcement is implemented against the server-side Prisma `User.role` source, but production use remains gated on verified database connectivity and staff records.
 

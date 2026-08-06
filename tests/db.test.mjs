@@ -46,3 +46,28 @@ test("stores and returns internal notes", () => {
   assert.equal(note.body, "Review coverage questions");
   assert.equal(database.listNotes(lead.id)[0].author, "Angel Burgos");
 });
+
+test("creates, lists, and updates follow-up tasks", () => {
+  const database = createDatabase(":memory:");
+  const lead = database.createLead({
+    firstName: "Leah",
+    lastName: "Okafor",
+    email: "leah@example.com",
+    phone: "555-0102",
+    service: "personal-insurance",
+    contactTime: "",
+    message: "",
+    consent: true,
+    source: "",
+    medium: "",
+    campaign: "",
+  });
+
+  const task = database.createTask({ leadId: lead.id, title: "Call prospect", dueAt: "2026-08-12" });
+  assert.equal(task.status, "pending");
+  assert.equal(database.listTasks()[0].title, "Call prospect");
+
+  const updated = database.updateTask(task.id, { status: "completed" });
+  assert.equal(updated.status, "completed");
+  assert.equal(updated.dueAt, "2026-08-12");
+});

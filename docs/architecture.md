@@ -20,7 +20,7 @@ Phase 1.1 adds the production entity schema, an idempotent non-personal seed, an
 - `pnpm@10.33.2` is the declared package manager. The checked-out runtime is Node `v22.22.2`; the database module requires a Node runtime that provides `node:sqlite`.
 - Tailwind CSS 4 is integrated through `@tailwindcss/postcss`; global styles are in `src/app/globals.css`.
 - The TypeScript alias `@/*` resolves to `src/*`.
-- There is no external database package. `src/lib/db.ts` uses synchronous `node:sqlite` access through `DatabaseSync`.
+- No external SQLite database package. `src/lib/db.ts` uses synchronous `node:sqlite` access through `DatabaseSync`.
 - Prisma `6.19.0` and `@prisma/client` `6.19.0` are now included for the production model. Prisma validation and generation require `DATABASE_URL` to be present, but do not connect to a database; offline checks use a non-secret placeholder such as `postgresql://placeholder:placeholder@localhost:5432/placeholder`. The checked-in migration is documentation/reproducibility for the schema and has not been applied; migration and seed execution require an explicitly configured real database.
 
 ## Request and data flow
@@ -30,7 +30,7 @@ Phase 1.1 adds the production entity schema, an idempotent non-personal seed, an
 3. `POST /api/leads` validates the JSON object, required contact fields, a basic email pattern, and `consent === true`.
 4. The handler normalizes string input in `leadInputFromUnknown`, inserts the record into SQLite, and returns `{ ok: true, leadId }` with HTTP 201.
 5. The browser navigates to `/thank-you` after a successful submission.
-6. The server-rendered admin pages read the shared database instance. The leads table calls `PATCH /api/admin/leads` to change status; the admin APIs also expose list and note operations.
+6. The server-rendered admin pages read the shared database instance. The leads table calls `PATCH /api/admin/leads` to change status and follow-up date; notes are loaded and created through the authenticated notes endpoints.
 
 ## Current routes
 
@@ -48,7 +48,7 @@ Phase 1.1 adds the production entity schema, an idempotent non-personal seed, an
 | `/robots.txt` | Generated metadata route allowing `/` and disallowing `/admin`, `/portal`, and `/api/`; points to the production sitemap URL. |
 | `/sitemap.xml` | Generated metadata route listing `/`, `/privacy`, and `/disclosures` under `https://abglobalconsulting.com`. |
 
-The homepage links to `/privacy` and `/disclosures`, and the admin navigation links to `/admin/tasks`, `/admin/campaigns`, `/admin/content`, and `/admin/analytics`, but no corresponding route files currently exist in `src/app`. `/portal` is also named in `robots.ts` but has no current route file.
+The homepage links to `/privacy` and `/disclosures`, and those route files exist. `/admin/tasks` and `/api/admin/tasks` are implemented against the repository boundary. The admin navigation links to `/admin/campaigns`, `/admin/content`, and `/admin/analytics`, but no corresponding route files currently exist in `src/app`. `/portal` is also named in `robots.ts` but has no current route file.
 
 ## Persistence model
 
@@ -81,7 +81,7 @@ Phase 1.1 also defines `DATABASE_URL` for Prisma's PostgreSQL datasource. The pu
 
 ## Security boundary
 
-The admin layout and admin API handlers validate a Supabase Auth JWT with `auth.getClaims()`, then resolve the authenticated Supabase user ID against the Prisma `User.id` field. Prisma `User.role` is authoritative; only `superadmin`, `admin`, and `user` authorize staff access. Anonymous page requests redirect to `/login`, authenticated users without a staff record or with an invalid role receive a safe `/login?error=forbidden` redirect, anonymous APIs receive 401, and authenticated non-staff API callers receive 403. User-editable metadata and claims are never used for authorization. The application schema is server-only: `anon` and `authenticated` have no table privileges and no direct-access RLS policies; server-side Prisma remains the intended access path as `postgres`. Apply and verify the pending migration only through the documented Supabase CLI workflow. SQLite is local-only in this baseline; it remains the active draft data path and is not a production database or a shared multi-instance persistence layer.
+- The admin layout and admin API handlers validate a Supabase Auth JWT with `auth.getClaims()`, then resolve the authenticated Supabase user ID against the Prisma `User.id` field. Prisma `User.role` is authoritative; only `superadmin`, `admin`, and `user` authorize staff access. Anonymous page requests redirect to `/login`, authenticated users without a staff record or with an invalid role receive a safe `/login?error=forbidden` redirect, anonymous APIs receive 401, and authenticated non-staff API callers receive 403. User-editable metadata and claims are never used for authorization. The application schema is server-only: `anon` and `authenticated` have no table privileges and no direct-access RLS policies; server-side Prisma remains the intended access path as `postgres`. Apply and verify the pending migration only through the documented Supabase CLI workflow. SQLite is local-only in this baseline; it remains the active local draft data path and is not a production database or a shared multi-instance persistence layer.
 
 ## Supabase RLS migration gate
 
@@ -104,12 +104,12 @@ The repository includes `tests/db.test.mjs`, `tests/domain/lead-model.test.ts`, 
 ## Current limitations
 
 - The SQLite database is local-only and file-backed; there is no hosted database, migration system, backup process, or multi-instance coordination.
-- Staff role enforcement is not complete; it requires a server-backed role table/claim source and policy design in the next slice.
-- Lead intake has basic required-field/email/consent validation only; there is no documented rate limiting, spam protection, or CSRF strategy.
-- The admin UI currently changes status only; follow-up dates and notes are supported by the database/API but are not surfaced in the existing leads table.
-- Several linked or navigational pages are not implemented yet, including privacy, disclosures, follow-up tasks, campaigns, content, and analytics.
+- Staff role enforcement is implemented against the server-side Prisma role source; production readiness still requires verified staff records and database connectivity.
+- Lead intake includes required-field, email-pattern, consent, and bounded in-process rate-limit validation. Spam protection, CSRF strategy, and external abuse monitoring remain incomplete.
+- The admin UI supports status updates, follow-up-date editing, lazy note loading, and note creation. Full follow-up task management remains unimplemented.
+- Several linked or navigational pages are not implemented yet, including follow-up tasks, campaigns, content, and analytics. Privacy and disclosure routes are implemented.
 - The implementation uses synchronous SQLite calls in server code and depends on the local Node `node:sqlite` runtime.
-- No production deployment configuration is present in the inspected source.
+- Dockerfile and Cloud Build deployment configuration are present; production deployment verification remains a separate gate.
 
 The existing SQLite implementation remains the active draft path. The Prisma schema is production-oriented but is not connected to routes or deployed infrastructure in this phase.
 

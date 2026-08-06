@@ -1,4 +1,4 @@
-import { createDatabase, type Lead, type LeadCreateInput, type LeadNote, type LeadStatus } from "@/lib/db";
+import { createDatabase, type FollowUpTask, type FollowUpTaskStatus, type Lead, type LeadCreateInput, type LeadNote, type LeadStatus } from "@/lib/db";
 import { getPrismaClient, type ServerDatabase } from "@/lib/server/db";
 
 export type LeadId = string | number;
@@ -24,6 +24,7 @@ export type PrismaLeadRecord = {
 };
 
 type PrismaNoteRecord = { id: string; leadId: string; body: string; author?: { name: string | null } | null; createdAt: Date };
+type PrismaTaskRecord = { id: string; leadId: string; title: string; dueAt: Date | null; status: string; createdAt: Date; updatedAt: Date };
 
 export type PrismaLeadClient = Pick<ServerDatabase, "$disconnect"> & {
   lead: {
@@ -36,6 +37,11 @@ export type PrismaLeadClient = Pick<ServerDatabase, "$disconnect"> & {
     findMany(args: Record<string, unknown>): Promise<PrismaNoteRecord[]>;
     create(args: Record<string, unknown>): Promise<PrismaNoteRecord>;
   };
+  followUpTask: {
+    findMany(args: Record<string, unknown>): Promise<PrismaTaskRecord[]>;
+    create(args: Record<string, unknown>): Promise<PrismaTaskRecord>;
+    update(args: Record<string, unknown>): Promise<PrismaTaskRecord>;
+  };
 };
 
 export type LeadRepository = {
@@ -45,6 +51,9 @@ export type LeadRepository = {
   updateLead(id: LeadId, changes: { status?: LeadStatus; followUpDate?: string }): Promise<Lead>;
   addNote(leadId: LeadId, body: string, author: string): Promise<LeadNote>;
   listNotes(leadId: LeadId): Promise<LeadNote[]>;
+  listTasks(): Promise<FollowUpTask[]>;
+  createTask(input: { leadId: LeadId; title: string; dueAt?: string }): Promise<FollowUpTask>;
+  updateTask(id: LeadId, changes: { status?: FollowUpTaskStatus; title?: string; dueAt?: string }): Promise<FollowUpTask>;
   close(): Promise<void>;
 };
 
@@ -68,6 +77,10 @@ export function mapPrismaLead(row: PrismaLeadRecord): Lead {
 
 function mapPrismaNote(row: PrismaNoteRecord): LeadNote {
   return { id: row.id, leadId: row.leadId, body: row.body, author: row.author?.name ?? "Marketing team", createdAt: row.createdAt.toISOString() };
+}
+
+function mapPrismaTask(row: PrismaTaskRecord): FollowUpTask {
+  return { id: row.id, leadId: row.leadId, title: row.title, dueAt: row.dueAt?.toISOString().slice(0, 10) ?? "", status: row.status as FollowUpTaskStatus, createdAt: row.createdAt.toISOString(), updatedAt: row.updatedAt.toISOString() };
 }
 
 function createPrismaRepository(prisma: PrismaLeadClient): LeadRepository {
@@ -96,6 +109,9 @@ function createPrismaRepository(prisma: PrismaLeadClient): LeadRepository {
       return mapPrismaNote(await prisma.leadNote.create({ data: { leadId: String(leadId), body, author: { connectOrCreate: { where: { email }, create: { email, name: author } } } } }));
     },
     async listNotes(leadId) { return (await prisma.leadNote.findMany({ where: { leadId: String(leadId) }, include: { author: { select: { name: true } } }, orderBy: [{ createdAt: "desc" }] })).map(mapPrismaNote); },
+    async listTasks() { return (await prisma.followUpTask.findMany({ orderBy: [{ status: "asc" }, { dueAt: "asc" }] })).map(mapPrismaTask); },
+    async createTask(input) { return mapPrismaTask(await prisma.followUpTask.create({ data: { leadId: String(input.leadId), title: input.title, dueAt: input.dueAt ? new Date(`${input.dueAt}T09:00:00.000Z`) : null } })); },
+    async updateTask(id, changes) { return mapPrismaTask(await prisma.followUpTask.update({ where: { id: String(id) }, data: { ...(changes.status ? { status: changes.status } : {}), ...(changes.title ? { title: changes.title } : {}), ...(changes.dueAt !== undefined ? { dueAt: changes.dueAt ? new Date(`${changes.dueAt}T09:00:00.000Z`) : null } : {}) } })); },
     async close() { await prisma.$disconnect(); },
   };
 }
@@ -111,6 +127,9 @@ function createSqliteRepository(filename?: string): LeadRepository {
     async createLead(input) { return database.createLead(input); }, async listLeads() { return database.listLeads(); },
     async getLead(id) { return database.getLead(sqliteId(id)); }, async updateLead(id, changes) { return database.updateLead(sqliteId(id), changes); },
     async addNote(leadId, body, author) { return database.addNote(sqliteId(leadId), body, author); }, async listNotes(leadId) { return database.listNotes(sqliteId(leadId)); },
+    async listTasks() { return database.listTasks(); },
+    async createTask(input) { return database.createTask({ leadId: sqliteId(input.leadId), title: input.title, dueAt: input.dueAt }); },
+    async updateTask(id, changes) { return database.updateTask(sqliteId(id), changes); },
     async close() { database.close(); },
   };
 }

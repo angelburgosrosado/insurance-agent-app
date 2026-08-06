@@ -5,6 +5,7 @@ import { mkdirSync } from "node:fs";
 import { dirname } from "node:path";
 
 export type LeadStatus = "new" | "reviewing" | "assigned" | "contacted" | "qualified" | "closed";
+export type FollowUpTaskStatus = "pending" | "completed" | "cancelled";
 
 type LeadInput = {
   firstName: string;
@@ -40,6 +41,16 @@ export type LeadNote = {
   createdAt: string;
 };
 
+export type FollowUpTask = {
+  id: number | string;
+  leadId: number | string;
+  title: string;
+  dueAt: string;
+  status: FollowUpTaskStatus;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type LeadDatabase = {
   createLead(input: LeadInput): Lead;
   listLeads(): Lead[];
@@ -47,6 +58,9 @@ export type LeadDatabase = {
   updateLead(id: number, changes: { status?: LeadStatus; followUpDate?: string }): Lead;
   addNote(leadId: number, body: string, author: string): LeadNote;
   listNotes(leadId: number): LeadNote[];
+  listTasks(): FollowUpTask[];
+  createTask(input: { leadId: number; title: string; dueAt?: string }): FollowUpTask;
+  updateTask(id: number, changes: { status?: FollowUpTaskStatus; title?: string; dueAt?: string }): FollowUpTask;
   close(): void;
 };
 
@@ -80,6 +94,10 @@ function rowToNote(row: Record<string, unknown>): LeadNote {
   };
 }
 
+function rowToTask(row: Record<string, unknown>): FollowUpTask {
+  return { id: Number(row.id), leadId: Number(row.lead_id), title: String(row.title), dueAt: String(row.due_at ?? ""), status: row.status as FollowUpTaskStatus, createdAt: String(row.created_at), updatedAt: String(row.updated_at) };
+}
+
 export function createDatabase(filename = process.env.DATABASE_PATH ?? ".data/leads.sqlite"): LeadDatabase {
   if (filename !== ":memory:") mkdirSync(dirname(filename), { recursive: true });
   const database = new DatabaseSync(filename);
@@ -108,6 +126,15 @@ export function createDatabase(filename = process.env.DATABASE_PATH ?? ".data/le
       body TEXT NOT NULL,
       author TEXT NOT NULL,
       created_at TEXT NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS follow_up_tasks (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      lead_id INTEGER NOT NULL REFERENCES leads(id) ON DELETE CASCADE,
+      title TEXT NOT NULL,
+      due_at TEXT NOT NULL DEFAULT '',
+      status TEXT NOT NULL DEFAULT 'pending',
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
     );
   `);
 
@@ -139,6 +166,21 @@ export function createDatabase(filename = process.env.DATABASE_PATH ?? ".data/le
     },
     listNotes(leadId) {
       return (database.prepare("SELECT * FROM lead_notes WHERE lead_id = ? ORDER BY datetime(created_at) DESC, id DESC").all(leadId) as Record<string, unknown>[]).map(rowToNote);
+    },
+    listTasks() {
+      return (database.prepare("SELECT * FROM follow_up_tasks ORDER BY CASE WHEN due_at = '' THEN 1 ELSE 0 END, datetime(due_at), datetime(created_at) DESC, id DESC").all() as Record<string, unknown>[]).map(rowToTask);
+    },
+    createTask(input) {
+      if (!this.getLead(input.leadId)) throw new Error("Lead not found");
+      const now = new Date().toISOString();
+      const result = database.prepare("INSERT INTO follow_up_tasks (lead_id,title,due_at,created_at,updated_at) VALUES (?,?,?,?,?)").run(input.leadId, input.title, input.dueAt ?? "", now, now);
+      return rowToTask(database.prepare("SELECT * FROM follow_up_tasks WHERE id = ?").get(Number(result.lastInsertRowid)) as Record<string, unknown>);
+    },
+    updateTask(id, changes) {
+      const current = database.prepare("SELECT * FROM follow_up_tasks WHERE id = ?").get(id) as Record<string, unknown> | undefined;
+      if (!current) throw new Error("Task not found");
+      database.prepare("UPDATE follow_up_tasks SET title = ?, due_at = ?, status = ?, updated_at = ? WHERE id = ?").run(changes.title ?? current.title, changes.dueAt ?? current.due_at, changes.status ?? current.status, new Date().toISOString(), id);
+      return rowToTask(database.prepare("SELECT * FROM follow_up_tasks WHERE id = ?").get(id) as Record<string, unknown>);
     },
     close() { database.close(); },
   };

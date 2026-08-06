@@ -101,7 +101,7 @@ supabase migration list --linked
 - `GET /api/admin/leads/notes?leadId=<id>` lists local notes.
 - `POST /api/admin/leads/notes` adds a local note.
 
-The admin pages and `/api/admin/*` endpoints now require a server-validated Supabase Auth session and redirect anonymous browser requests to `/login` (API requests receive HTTP 401). The existing SQLite data path is unchanged. Role enforcement is intentionally not complete: no server-backed staff-role source is configured yet, so this slice must not be treated as a role authorization boundary.
+The admin pages and `/api/admin/*` endpoints require a server-validated Supabase Auth session and redirect anonymous browser requests to `/login` (API requests receive HTTP 401). Authenticated staff authorization resolves the Supabase user ID against the server-side Prisma `User` record and its role. The existing SQLite data path is unchanged. Local auth wiring is not a substitute for production migration, staff-record, secret, RLS, and endpoint verification.
 
 ### Local authentication configuration
 
@@ -130,8 +130,8 @@ This permanently deletes local leads and notes. Do not run the reset command aga
 
 - The project assumes a Node runtime that exposes `node:sqlite`; an older Node version may fail when loading `src/lib/db.ts`.
 - The checked-in Prisma migration is not applied locally; the active production deployment is Cloud Run revision `insurance-agent-app-00004-xv8`. The Supabase RLS migration is prepared but pending application.
-- Supabase Google OAuth and email authentication are enabled and locally wired. Staff role enforcement still requires a server-backed role source.
-- Intake validation is basic and does not provide rate limiting, spam protection, or a documented CSRF strategy.
-- `/privacy` and `/disclosures` are linked and included in the generated sitemap but do not currently have route files. Admin navigation also includes placeholder links for tasks, campaigns, content, and analytics without corresponding route files.
-- The current admin table exposes status changes, while database/API support for notes and follow-up dates is not fully represented in the UI.
+- Supabase Google OAuth and email authentication are locally wired. Staff role enforcement uses the server-side Prisma role source, but production staff records and database connectivity require separate verification.
+- Intake validation includes a bounded in-process rate limiter. Spam protection, CSRF strategy, and external abuse monitoring remain incomplete.
+- `/privacy` and `/disclosures` are implemented, linked, and included in the generated sitemap. Admin navigation still includes placeholder links for tasks, campaigns, content, and analytics without corresponding route files.
+- The admin table exposes status changes, follow-up-date editing, lazy note loading, and note creation. Full task management remains unimplemented.
 

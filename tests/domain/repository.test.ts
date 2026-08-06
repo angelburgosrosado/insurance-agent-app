@@ -40,7 +40,7 @@ test("creates Prisma repository with injected client and maps nested attribution
   const repository = createLeadRepository({ mode: "prisma", prisma: client });
   const lead = await repository.createLead(leadInputFromUnknown({ firstName: "A", lastName: "B", email: "A@EXAMPLE.COM", phone: "1", service: "life", consent: true, consentText: "yes", consentVersion: "v1", consentAt: "2026-08-03T12:00:00.000Z", source: "Google", medium: "CPC" }));
   assert.equal(lead.id, "lead-1");
-  assert.deepEqual(args, { data: { firstName: "A", lastName: "B", email: "a@example.com", phone: "1", service: "life", contactTime: "", message: "", consent: true, consentText: "yes", consentVersion: "v1", consentAt: new Date("2026-08-03T12:00:00.000Z"), attribution: { create: { source: "google", medium: "cpc" } } }, include: { attribution: true } });
+  assert.deepEqual(args, { data: { firstName: "A", lastName: "B", email: "a@example.com", phone: "1", service: "life", contactTime: "", message: "", consent: true, consentText: "yes", consentVersion: "v1", consentAt: new Date("2026-08-03T12:00:00.000Z"), attribution: { create: { source: "google", medium: "cpc" } } }, include: { attribution: true, followUpTasks: { where: { status: "pending" }, orderBy: { dueAt: "asc" } } } });
 });
 
 test("selects SQLite only when explicitly requested and Prisma when DATABASE_URL exists", () => {

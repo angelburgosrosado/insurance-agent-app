@@ -20,6 +20,7 @@ export type PrismaLeadRecord = {
   createdAt: Date;
   updatedAt?: Date;
   attribution?: { source: string | null; medium: string | null; campaign: string | null; content: string | null; term: string | null } | null;
+  followUpTasks?: { dueAt: Date | null; status: string }[];
 };
 
 type PrismaNoteRecord = { id: string; leadId: string; body: string; author?: { name: string | null } | null; createdAt: Date };
@@ -56,11 +57,12 @@ export function getPersistenceMode(env: Record<string, string | undefined> = pro
 function text(value: string | null | undefined): string { return value ?? ""; }
 
 export function mapPrismaLead(row: PrismaLeadRecord): Lead {
+  const followUpTask = row.followUpTasks?.find((task) => task.status === "pending" && task.dueAt);
   return {
     id: row.id, firstName: row.firstName, lastName: row.lastName, email: row.email, phone: row.phone, service: row.service,
     contactTime: text(row.contactTime), message: text(row.message), consent: row.consent, consentText: row.consentText ?? "", consentVersion: row.consentVersion ?? "", consentAt: row.consentAt.toISOString(),
     source: text(row.attribution?.source), medium: text(row.attribution?.medium), campaign: text(row.attribution?.campaign), content: text(row.attribution?.content), term: text(row.attribution?.term),
-    status: row.status as LeadStatus, followUpDate: "", createdAt: row.createdAt.toISOString(),
+    status: row.status as LeadStatus, followUpDate: followUpTask?.dueAt?.toISOString().slice(0, 10) ?? "", createdAt: row.createdAt.toISOString(),
   };
 }
 
@@ -69,7 +71,7 @@ function mapPrismaNote(row: PrismaNoteRecord): LeadNote {
 }
 
 function createPrismaRepository(prisma: PrismaLeadClient): LeadRepository {
-  const include = { attribution: true } as const;
+  const include = { attribution: true, followUpTasks: { where: { status: "pending" }, orderBy: { dueAt: "asc" } } } as const;
   return {
     async createLead(input) {
       const attribution = Object.fromEntries(Object.entries({ source: input.source, medium: input.medium, campaign: input.campaign, content: input.content, term: input.term }).filter(([, value]) => value));
@@ -82,7 +84,13 @@ function createPrismaRepository(prisma: PrismaLeadClient): LeadRepository {
       const row = await prisma.lead.findUnique({ where: { id }, include });
       return row ? mapPrismaLead(row) : null;
     },
-    async updateLead(id, changes) { return mapPrismaLead(await prisma.lead.update({ where: { id: String(id) }, data: { ...(changes.status ? { status: changes.status } : {}) }, include })); },
+    async updateLead(id, changes) {
+      const followUpDate = changes.followUpDate;
+      return mapPrismaLead(await prisma.lead.update({ where: { id: String(id) }, data: {
+        ...(changes.status ? { status: changes.status } : {}),
+        ...(followUpDate !== undefined ? { followUpTasks: { deleteMany: { status: "pending" }, ...(followUpDate ? { create: { title: "Follow up with prospect", dueAt: new Date(`${followUpDate}T09:00:00.000Z`) } } : {}) } } : {}),
+      }, include }));
+    },
     async addNote(leadId, body, author) {
       const email = `legacy-${author.toLowerCase().replace(/[^a-z0-9]+/g, "-")}@internal.invalid`;
       return mapPrismaNote(await prisma.leadNote.create({ data: { leadId: String(leadId), body, author: { connectOrCreate: { where: { email }, create: { email, name: author } } } } }));

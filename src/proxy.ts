@@ -40,7 +40,10 @@ export async function proxy(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user && request.nextUrl.pathname.startsWith("/admin")) {
+  const isAdmin = user?.email?.toLowerCase() === "angelburgosrosado@gmail.com";
+
+  // Protect /admin and /portal routes from unauthenticated users
+  if (!user && (request.nextUrl.pathname.startsWith("/admin") || request.nextUrl.pathname.startsWith("/portal"))) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
@@ -48,17 +51,17 @@ export async function proxy(request: NextRequest) {
 
   // Admin Role check - for /admin routes, we must ensure they are an admin
   if (user && request.nextUrl.pathname.startsWith("/admin")) {
-    if (user.email?.toLowerCase() !== "angelburgosrosado@gmail.com") {
+    if (!isAdmin) {
        const url = request.nextUrl.clone();
-       url.pathname = "/unauthorized";
+       url.pathname = "/portal"; // Redirect non-admins to portal instead of generic unauthorized
        return NextResponse.redirect(url);
     }
   }
 
-  // Redirect logged-in admins from /login directly to /admin
+  // Redirect logged-in users from /login to their respective dashboards
   if (user && request.nextUrl.pathname === "/login") {
      const url = request.nextUrl.clone();
-     url.pathname = "/admin";
+     url.pathname = isAdmin ? "/admin" : "/portal";
      return NextResponse.redirect(url);
   }
 

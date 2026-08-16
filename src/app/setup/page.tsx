@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { saveEnvironmentVariables } from "./actions";
+import { Button } from "@/components/ui/button";
 
 export default function SetupWizard() {
   const [step, setStep] = useState(1);
@@ -12,7 +13,13 @@ export default function SetupWizard() {
   const [sendgrid, setSendgrid] = useState("");
   const [webhook, setWebhook] = useState("");
 
-  const handleSave = async () => {
+  const handleStep1Submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setStep(2);
+  };
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
     setIsSaving(true);
     const fd = new FormData();
     fd.append("DATABASE_URL", dbUrl);
@@ -24,8 +31,8 @@ export default function SetupWizard() {
     try {
       await saveEnvironmentVariables(fd);
       setStep(3);
-    } catch (e: any) {
-      alert("Failed to save variables: " + e.message);
+    } catch (err: any) {
+      alert("Failed to save variables: " + err.message);
     } finally {
       setIsSaving(false);
     }
@@ -44,7 +51,7 @@ export default function SetupWizard() {
 
         {/* STEP 1: Database */}
         {step === 1 && (
-          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4">
+          <form onSubmit={handleStep1Submit} className="space-y-6 animate-in fade-in slide-in-from-bottom-4">
             <div>
               <h2 className="text-lg font-semibold mb-4">Step 1: Database (Supabase)</h2>
               <p className="text-sm text-[var(--ink-soft)] mb-6">
@@ -86,19 +93,16 @@ export default function SetupWizard() {
             </div>
 
             <div className="flex justify-end pt-4">
-              <button 
-                onClick={() => setStep(2)}
-                className="bg-[var(--accent)] text-white px-4 py-2 rounded-sm text-sm font-medium hover:bg-[var(--accent-deep)]"
-              >
+              <Button type="submit" className="bg-black text-white hover:bg-black/90">
                 Next Step
-              </button>
+              </Button>
             </div>
-          </div>
+          </form>
         )}
 
         {/* STEP 2: Integrations */}
         {step === 2 && (
-          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4">
+          <form onSubmit={handleSave} className="space-y-6 animate-in fade-in slide-in-from-bottom-4">
             <div>
               <h2 className="text-lg font-semibold mb-4">Step 2: Integrations</h2>
               <p className="text-sm text-[var(--ink-soft)] mb-6">
@@ -130,21 +134,22 @@ export default function SetupWizard() {
             </div>
 
             <div className="flex justify-between pt-4">
-              <button 
+              <Button 
+                type="button"
+                variant="outline"
                 onClick={() => setStep(1)}
-                className="border border-[var(--line)] px-4 py-2 rounded-sm text-sm font-medium hover:bg-[#eef1ef]"
               >
                 Back
-              </button>
-              <button 
-                onClick={handleSave}
+              </Button>
+              <Button 
+                type="submit"
                 disabled={isSaving}
-                className="bg-[var(--accent)] text-white px-4 py-2 rounded-sm text-sm font-medium hover:bg-[var(--accent-deep)] disabled:opacity-50"
+                className="bg-black text-white hover:bg-black/90"
               >
                 {isSaving ? "Saving..." : "Save to .env.local"}
-              </button>
+              </Button>
             </div>
-          </div>
+          </form>
         )}
 
         {/* STEP 3: Summary & Firebase Command */}
@@ -178,12 +183,12 @@ export default function SetupWizard() {
             </div>
 
             <div className="flex justify-end pt-4">
-              <button 
+              <Button 
                 onClick={() => window.location.href = "/"}
-                className="bg-[var(--ink)] text-white px-4 py-2 rounded-sm text-sm font-medium"
+                className="bg-black text-white hover:bg-black/90"
               >
                 Go to Home
-              </button>
+              </Button>
             </div>
           </div>
         )}

@@ -1,10 +1,11 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
+import { useAnalytics } from "./analytics-provider";
 
 const initialForm = {
   firstName: "",
@@ -19,11 +20,17 @@ const initialForm = {
 
 export function ConsultationForm() {
   const router = useRouter();
+  const { track } = useAnalytics();
   const [form, setForm] = useState(initialForm);
   const [state, setState] = useState<"idle" | "submitting" | "error">("idle");
   const [error, setError] = useState("");
+  const formStartTracked = useRef(false);
 
   function update(field: keyof typeof initialForm, value: string | boolean) {
+    if (!formStartTracked.current) {
+      track("form_start", { form_name: "consultation_form" });
+      formStartTracked.current = true;
+    }
     setForm((current) => ({ ...current, [field]: value }));
   }
 
@@ -46,11 +53,14 @@ export function ConsultationForm() {
 
     if (!response.ok) {
       const payload = await response.json().catch(() => null);
-      setError(payload?.error ?? "Review the form and try again");
+      const errorMessage = payload?.error ?? "Review the form and try again";
+      setError(errorMessage);
       setState("error");
+      track("lead_submit_error", { form_name: "consultation_form", error_message: errorMessage });
       return;
     }
 
+    track("lead_submit_success", { form_name: "consultation_form", service: form.service });
     router.push("/thank-you");
   }
 

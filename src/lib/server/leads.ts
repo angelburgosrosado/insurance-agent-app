@@ -1,5 +1,6 @@
 import { createDatabase, type FollowUpTask, type FollowUpTaskStatus, type Lead, type LeadCreateInput, type LeadNote, type LeadStatus } from "@/lib/db";
 import { getPrismaClient, type ServerDatabase } from "@/lib/server/db";
+import { env } from "@/lib/server/env";
 
 export type LeadId = string | number;
 
@@ -57,9 +58,9 @@ export type LeadRepository = {
   close(): Promise<void>;
 };
 
-export function getPersistenceMode(env: Record<string, string | undefined> = process.env): "prisma" | "sqlite" {
-  if (env.LEAD_PERSISTENCE === "sqlite") return "sqlite";
-  if (env.LEAD_PERSISTENCE === "prisma" || env.DATABASE_URL) return "prisma";
+export function getPersistenceMode(envMap: Record<string, string | undefined> = env): "prisma" | "sqlite" {
+  if (envMap.LEAD_PERSISTENCE === "sqlite") return "sqlite";
+  if (envMap.LEAD_PERSISTENCE === "prisma" || envMap.DATABASE_URL) return "prisma";
   return "sqlite";
 }
 

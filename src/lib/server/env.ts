@@ -1,16 +1,20 @@
 export function validateEnv() {
   const required = [
     "DATABASE_URL",
-    // These will be needed for Supabase Auth in Phase 2
-    // "NEXT_PUBLIC_SUPABASE_URL",
-    // "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+    "NEXT_PUBLIC_SUPABASE_URL",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+    "SENDGRID_API_KEY",
+    "CRM_WEBHOOK_URL"
   ];
 
   const missing = required.filter((key) => !process.env[key]);
 
   if (missing.length > 0) {
-    // Only warn since during some build steps not all envs are present
-    console.warn(`⚠️ Warning: Missing required environment variables: ${missing.join(", ")}`);
+    if (process.env.NODE_ENV === "production" && !process.env.SKIP_ENV_VALIDATION) {
+      throw new Error(`❌ Missing required environment variables: ${missing.join(", ")}`);
+    } else {
+      console.warn(`⚠️ Warning: Missing required environment variables: ${missing.join(", ")}`);
+    }
   }
 
   return process.env as Record<string, string>;

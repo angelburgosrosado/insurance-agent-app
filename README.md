@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AB Global Consulting - Private Insurance Agent App
 
-## Getting Started
+A comprehensive Next.js web application for managing private insurance lead generation, customer intake, and marketing analytics.
 
-First, run the development server:
+## Tech Stack
+
+- **Framework:** [Next.js 16 (App Router)](https://nextjs.org/)
+- **Database ORM:** [Prisma](https://www.prisma.io/)
+- **Database Hosting:** [Supabase](https://supabase.com/) (PostgreSQL)
+- **Frontend Hosting:** [Firebase App Hosting](https://firebase.google.com/docs/app-hosting)
+- **Styling:** Tailwind CSS v4
+- **Charts:** Recharts
+
+## Local Development
+
+### 1. Prerequisites
+- Node.js >= 20
+- `pnpm` installed (`npm install -g pnpm`)
+
+### 2. Environment Setup
+Copy the `.env.example` file to `.env` (or `.env.local`) and fill in the required variables.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env
 ```
 
+For local development without Supabase, a SQLite database is supported by Prisma natively in this project, but for true parity, you should use a local Postgres or remote dev Supabase instance.
+
+### 3. Install Dependencies
+```bash
+pnpm install
+```
+
+### 4. Database Migrations
+Run the Prisma migrations to set up your schema.
+
+```bash
+npx prisma generate
+npx prisma db push # Or prisma migrate dev
+```
+
+### 5. Start Development Server
+```bash
+pnpm dev
+```
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Architecture
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The app is broken down into three main sections:
+1. **Public Site (`/`):** Dynamic, SEO-friendly landing pages for insurance services.
+2. **Client Portal (`/portal`):** Authenticated intake flows for leads to provide consent and book consultations.
+3. **Admin Dashboard (`/admin`):** Internal analytics, CRM, and campaign tracking for marketing operations.
 
-## Learn More
+## Deployment
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Please see [docs/deployment.md](./docs/deployment.md) for full instructions on how to deploy this application to Firebase App Hosting and Supabase.

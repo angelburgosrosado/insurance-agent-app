@@ -1,0 +1,345 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>AB Global Consulting | Expert-Led Financial Assurance</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Work+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline-variant": "#c6c6cd",
+                    "on-primary": "#ffffff",
+                    "surface-container-highest": "#d3e4fe",
+                    "primary": "#000000",
+                    "on-primary-fixed-variant": "#3f465c",
+                    "on-secondary-container": "#fefcff",
+                    "secondary-container": "#316bf3",
+                    "secondary-fixed-dim": "#b4c5ff",
+                    "on-secondary": "#ffffff",
+                    "primary-container": "#131b2e",
+                    "surface-dim": "#cbdbf5",
+                    "tertiary-container": "#171c1f",
+                    "surface": "#f8f9ff",
+                    "surface-container-low": "#eff4ff",
+                    "on-tertiary-fixed": "#171c1f",
+                    "on-surface-variant": "#45464d",
+                    "on-error": "#ffffff",
+                    "error": "#ba1a1a",
+                    "inverse-surface": "#213145",
+                    "surface-tint": "#565e74",
+                    "secondary-fixed": "#dbe1ff",
+                    "background": "#f8f9ff",
+                    "on-error-container": "#93000a",
+                    "on-background": "#0b1c30",
+                    "tertiary-fixed": "#dfe3e7",
+                    "on-secondary-fixed-variant": "#003ea8",
+                    "surface-container": "#e5eeff",
+                    "on-tertiary-container": "#808488",
+                    "surface-bright": "#f8f9ff",
+                    "secondary": "#0051d5",
+                    "tertiary-fixed-dim": "#c3c7cb",
+                    "on-primary-fixed": "#131b2e",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-container-high": "#dce9ff",
+                    "on-surface": "#0b1c30",
+                    "on-secondary-fixed": "#00174b",
+                    "tertiary": "#000000",
+                    "outline": "#76777d",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed": "#dae2fd",
+                    "on-tertiary-fixed-variant": "#43474b",
+                    "surface-variant": "#d3e4fe",
+                    "primary-fixed-dim": "#bec6e0",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-container": "#7c839b",
+                    "inverse-primary": "#bec6e0",
+                    "error-container": "#ffdad6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "margin-desktop": "40px",
+                    "container-max": "1280px",
+                    "unit": "8px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Manrope"],
+                    "display-lg-mobile": ["Manrope"],
+                    "headline-md": ["Manrope"],
+                    "label-sm": ["Work Sans"],
+                    "body-md": ["Work Sans"],
+                    "body-lg": ["Work Sans"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .trust-line { border-top: 2px solid theme('colors.secondary'); }
+        .bento-card { transition: transform 0.3s ease, border-color 0.3s ease; }
+        .bento-card:hover { transform: translateY(-4px); border-color: theme('colors.secondary'); }
+        .glass-effect { backdrop-filter: blur(8px); background: rgba(255, 255, 255, 0.8); }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-secondary-container">
+<!-- TopNavBar -->
+<header class="bg-surface-container-lowest border-b border-outline-variant fixed top-0 w-full z-50">
+<nav class="flex justify-between items-center px-margin-desktop w-full max-w-container-max mx-auto h-20">
+<div class="flex items-center gap-2">
+<span class="font-display-lg text-display-lg font-bold text-primary">AB Global Consulting</span>
+</div>
+<div class="hidden md:flex items-center gap-gutter">
+<a class="font-body-md text-body-md text-secondary font-bold border-b-2 border-secondary transition-colors" href="#">Insurance</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">LTC Planning</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Retirement</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Business</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="font-label-sm text-label-sm text-on-surface hover:text-secondary transition-colors">Español</button>
+<button class="bg-primary text-on-primary px-6 py-3 font-label-sm text-label-sm rounded-lg active:scale-95 transition-transform">Schedule Consultation</button>
+</div>
+</nav>
+</header>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative min-h-[819px] flex items-center overflow-hidden bg-primary-container">
+
+<div class="relative z-10 w-full max-w-container-max mx-auto px-margin-desktop grid grid-cols-1 md:grid-cols-2 gap-gutter items-center">
+<div class="flex flex-col gap-6">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 border border-secondary/20 rounded-full w-fit">
+<span class="material-symbols-outlined text-secondary scale-75" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-label-sm text-label-sm text-secondary">State Licensed 0215 Practitioner</span>
+</div>
+<h1 class="font-display-lg text-display-lg md:text-[64px] leading-tight text-white">
+                        Expert-Led Assurance for Your Financial Future
+                    </h1>
+<p class="font-body-lg text-body-lg text-white/70 max-w-lg">
+                        Preserving legacies through strategic Life, Health, and Annuity solutions. We specialize in protecting what matters most with precision and stability.
+                    </p>
+<div class="flex flex-wrap gap-4 mt-4">
+<button class="bg-secondary text-on-secondary px-8 py-4 rounded-lg font-label-sm text-label-sm shadow-lg hover:brightness-110 transition-all">Protect Your Future</button>
+<button class="border border-white/30 text-white px-8 py-4 rounded-lg font-label-sm text-label-sm hover:bg-white/10 transition-all">Hablo Español</button>
+</div>
+</div>
+<div class="hidden md:block">
+<div class="relative h-[500px] w-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+<img class="w-full h-full object-cover" data-alt="A professional financial consultation scene in a modern, high-end office with floor-to-ceiling windows overlooking a sunset cityscape. Two professionals in tailored navy suits are discussing high-stakes financial legacy planning. The lighting is warm and golden, reflecting the Corporate Modern aesthetic of AB Global Consulting. The mood is sophisticated, stable, and deeply expert-led." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_fOuCajCwaVDvlBZqpxemfgxD7WNRx4CWhXuBe88ypxmIke2VslQ8G0ng5fmPRiIPGhJEV4DEPsXSP_ShMgtFmr_4o3PYcule7AI4P2i1lIs--aXNmmQNCDj4wCAmA9KSV8bwPdY1Bft6jMq6uule5fWYXR-T-9toD6rmcBKMToj5omYRG7ectTa8OH6kZJPIxMj0GSTC56YiDAAC5Lx3eE0pxFUoYgIVq139BxfLAkXSnWZjBzk">
+</div>
+</div>
+</div>
+</section>
+<!-- Product Bento Grid -->
+<section class="py-24 px-margin-desktop max-w-container-max mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+<div>
+<h2 class="font-display-lg text-display-lg text-primary mb-4">Strategic Protection Tiers</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Comprehensive advisory focused on growth, longevity, and legacy preservation. Our 0215-specific portfolio ensures regulatory precision.</p>
+</div>
+<div class="flex gap-2">
+<span class="px-4 py-2 bg-surface-container-high rounded-full font-label-sm text-label-sm text-primary">0215 Certified</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Insurance Protection -->
+<div class="md:col-span-8 group bento-card bg-surface-container-lowest border border-outline-variant p-gutter rounded-xl">
+<div class="flex justify-between items-start mb-8">
+<span class="material-symbols-outlined text-secondary text-4xl">shield_person</span>
+<div class="text-right">
+<p class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">Insurance</p>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md mb-4">Insurance Protection</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Securing families with Life, Disability, and LTC solutions including Nationwide Heritage® and Effortless Life options.</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="p-4 bg-surface-container-low rounded-lg border border-transparent hover:border-secondary transition-all">
+<p class="font-label-sm text-label-sm font-bold mb-1">Nationwide Heritage®</p>
+<p class="text-[12px] text-on-surface-variant">Legacy-focused permanent life protection.</p>
+</div>
+<div class="p-4 bg-surface-container-low rounded-lg border border-transparent hover:border-secondary transition-all">
+<p class="font-label-sm text-label-sm font-bold mb-1">Effortless Life</p>
+<p class="text-[12px] text-on-surface-variant">Simplified underwriting for modern lifestyles.</p>
+</div>
+</div>
+</div>
+<!-- LTC Planning -->
+<div class="md:col-span-4 bento-card bg-primary-container text-white p-gutter rounded-xl flex flex-col justify-between">
+<div>
+<span class="material-symbols-outlined text-secondary-fixed text-4xl mb-6">medical_services</span>
+<h3 class="font-headline-md text-headline-md mb-4">LTC Planning</h3>
+<p class="font-body-md text-body-md text-white/70 mb-4">Mastering the choice between Cash-Indemnity and Reimbursement models.</p>
+<div class="py-3 px-4 bg-white/10 rounded-lg border border-white/20 mb-2">
+<p class="font-label-sm text-label-sm">Nationwide CareMatters Together</p>
+</div>
+</div>
+<a class="flex items-center gap-2 font-label-sm text-label-sm text-secondary-fixed hover:gap-4 transition-all" href="#">Compare Solutions <span class="material-symbols-outlined">arrow_forward</span></a>
+</div>
+<!-- Retirement Strategies -->
+<div class="md:col-span-4 bento-card bg-surface-container-lowest border border-outline-variant p-gutter rounded-xl">
+<span class="material-symbols-outlined text-secondary text-4xl mb-6">trending_up</span>
+<h3 class="font-headline-md text-headline-md mb-4">Retirement</h3>
+<div class="flex flex-col gap-3">
+<div class="flex justify-between items-center py-2 border-b border-outline-variant">
+<span class="font-body-md text-body-md">Nationwide Defender®</span>
+<span class="text-[10px] font-bold text-secondary px-2 bg-secondary/10 rounded">RILA</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-outline-variant">
+<span class="font-body-md text-body-md">Peak® 10</span>
+<span class="material-symbols-outlined text-[16px]">verified</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-outline-variant">
+<span class="font-body-md text-body-md">Secure Growth®</span>
+<span class="material-symbols-outlined text-[16px]">verified</span>
+</div>
+<div class="flex justify-between items-center py-2">
+<span class="font-body-md text-body-md">Income Promise Select®</span>
+<span class="material-symbols-outlined text-[16px]">verified</span>
+</div>
+</div>
+</div>
+<!-- Business Strategies -->
+<div class="md:col-span-8 bento-card bg-surface-container-high p-gutter rounded-xl relative overflow-hidden">
+<div class="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-gutter">
+<div>
+<h3 class="font-headline-md text-headline-md mb-4">Business Strategies</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Expert risk management for the corporate ecosystem: Key Person, Buy-Sell agreements, and Exec Comp strategies.</p>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-label-sm text-label-sm">Consultation</button>
+</div>
+<div class="flex flex-col gap-4">
+<div class="bg-white/50 p-4 rounded-lg flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary">groups</span>
+<span class="font-label-sm text-label-sm">Key Person Protection</span>
+</div>
+<div class="bg-white/50 p-4 rounded-lg flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary">handshake</span>
+<span class="font-label-sm text-label-sm">Buy-Sell Agreements</span>
+</div>
+</div>
+</div>
+<div class="absolute right-[-10%] bottom-[-20%] opacity-10">
+<span class="material-symbols-outlined text-[300px]">business_center</span>
+</div>
+</div>
+<!-- College Funding -->
+<div class="md:col-span-6 bento-card bg-secondary-container text-white p-gutter rounded-xl">
+<div class="flex items-center justify-between mb-8">
+<span class="material-symbols-outlined text-4xl">school</span>
+<div class="text-right">
+<p class="font-display-lg text-[40px] leading-none mb-1">6.08%</p>
+<p class="font-label-sm text-[12px] opacity-80 uppercase">Avg Annual Tuition Inflation</p>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md mb-2">College Funding</h3>
+<p class="font-body-md text-body-md text-white/80">Outpace rising educational costs through targeted funding vehicles designed for generational growth.</p>
+</div>
+<!-- Estate Preservation -->
+<div class="md:col-span-6 bento-card bg-surface-container-lowest border border-outline-variant p-gutter rounded-xl flex items-center gap-gutter">
+<div class="h-24 w-24 rounded-full border-4 border-secondary/20 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary text-4xl" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md mb-2">Estate Preservation</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Utilizing Life Insurance Trusts and Charitable strategies to anchor your legacy.</p>
+<div class="flex gap-2">
+<span class="text-[11px] font-bold px-2 py-1 bg-surface-container-high rounded">Trust Planning</span>
+<span class="text-[11px] font-bold px-2 py-1 bg-surface-container-high rounded">Charitable Giving</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="py-24 bg-surface-container-low">
+<div class="max-w-container-max mx-auto px-margin-desktop text-center">
+<div class="max-w-3xl mx-auto">
+<h2 class="font-display-lg text-display-lg text-primary mb-6">Anchor Your Legacy with AB Global</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-10">Bilingual expertise across Florida. Licensed agent Angel Burgos (G328926) specializes in complex insurance and retirement structures.</p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center">
+<a class="bg-primary text-on-primary px-10 py-5 rounded-lg font-label-sm text-label-sm flex items-center justify-center gap-2" href="#">
+                            Request Portfolio Review <span class="material-symbols-outlined">arrow_outward</span>
+</a>
+<a class="border border-outline text-on-surface px-10 py-5 rounded-lg font-label-sm text-label-sm flex items-center justify-center gap-2" href="#">
+                            Encuentre su Agente <span class="material-symbols-outlined">public</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-primary-container text-on-primary-container">
+<div class="w-full py-gutter px-margin-desktop grid grid-cols-1 md:grid-cols-2 gap-gutter max-w-container-max mx-auto">
+<div class="flex flex-col gap-6">
+<p class="font-headline-md text-headline-md font-bold text-on-primary-fixed">AB Global Consulting</p>
+<p class="font-body-md text-body-md max-w-md opacity-80">
+                    High-stakes financial protection and consultancy. Specialized in Annuities, Life Insurance, and Corporate Legacy structures. (No Auto/Home coverage provided).
+                </p>
+<div class="flex gap-4">
+<a class="font-body-md text-body-md text-secondary-fixed underline" href="#">Contact Us</a>
+<a class="font-body-md text-body-md opacity-80 hover:opacity-100 transition-opacity" href="#">Branch Address</a>
+<a class="font-body-md text-body-md opacity-80 hover:opacity-100 transition-opacity" href="#">Privacy Policy</a>
+</div>
+</div>
+<div class="flex flex-col justify-end items-start md:items-end gap-4">
+<div class="flex gap-4 mb-4">
+<div class="text-right">
+<p class="font-label-sm text-label-sm text-on-primary-fixed">Angel Burgos</p>
+<p class="text-[12px] opacity-60">Agent Code: F6D9U</p>
+</div>
+<div class="h-10 w-10 bg-secondary rounded-full flex items-center justify-center text-on-secondary">
+<span class="material-symbols-outlined text-[20px]">person</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-right opacity-80 max-w-xs md:max-w-md">
+                    © 2024 AB Global Consulting. Angel Burgos, Agent Code: F6D9U, FL License: G328926.
+                </p>
+</div>
+</div>
+<!-- Mandatory Disclosures -->
+<div class="border-t border-white/10 py-8 px-margin-desktop max-w-container-max mx-auto">
+<div class="font-body-md text-[12px] leading-relaxed opacity-60 flex flex-col gap-4">
+<p>WFGIA Disclosures: AB Global Consulting is an independent financial services firm. Nationwide Heritage®, Nationwide CareMatters Together®, Nationwide Defender®, Peak® 10, Secure Growth®, and Income Promise Select® are registered trademarks of Nationwide Mutual Insurance Company and its affiliates.</p>
+<p>Insurance products are issued by various insurance companies and are not FDIC insured, not bank guaranteed, and may lose value. Licensed in Florida (License: G328926) for Life, Health, and Annuities only (0215). This firm does not provide Property &amp; Casualty (Auto/Home) insurance services.</p>
+</div>
+</div>
+</footer>
+<script>
+        // Intersection Observer for bento cards
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100');
+                    entry.target.classList.remove('opacity-0', 'translate-y-4');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.bento-card').forEach(card => {
+            card.classList.add('opacity-0', 'translate-y-4', 'transition-all', 'duration-700');
+            observer.observe(card);
+        });
+    </script>
+</body></html>

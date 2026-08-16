@@ -3,6 +3,8 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/Button";
 
 const initialForm = {
   firstName: "",
@@ -52,61 +54,95 @@ export function ConsultationForm() {
     router.push("/thank-you");
   }
 
+  const selectStyles = "w-full px-4 py-3 rounded border border-slate-300 bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors duration-200";
+
   return (
-    <form onSubmit={submit} className="space-y-5" noValidate>
-      <div className="grid gap-5 sm:grid-cols-2">
-        <label className="space-y-2 text-sm font-medium">
-          First name
-          <input required value={form.firstName} onChange={(e) => update("firstName", e.target.value)} className="w-full border-b border-[var(--line)] bg-transparent px-0 py-3 outline-none transition-colors focus:border-[var(--accent)]" />
-        </label>
-        <label className="space-y-2 text-sm font-medium">
-          Last name
-          <input required value={form.lastName} onChange={(e) => update("lastName", e.target.value)} className="w-full border-b border-[var(--line)] bg-transparent px-0 py-3 outline-none transition-colors focus:border-[var(--accent)]" />
-        </label>
+    <form onSubmit={submit} className="space-y-6" noValidate>
+      <div className="grid gap-6 sm:grid-cols-2">
+        <Input 
+          label="First name"
+          required 
+          value={form.firstName} 
+          onChange={(e) => update("firstName", e.target.value)} 
+        />
+        <Input 
+          label="Last name"
+          required 
+          value={form.lastName} 
+          onChange={(e) => update("lastName", e.target.value)} 
+        />
       </div>
-      <div className="grid gap-5 sm:grid-cols-2">
-        <label className="space-y-2 text-sm font-medium">
-          Email
-          <input required type="email" value={form.email} onChange={(e) => update("email", e.target.value)} className="w-full border-b border-[var(--line)] bg-transparent px-0 py-3 outline-none transition-colors focus:border-[var(--accent)]" />
-        </label>
-        <label className="space-y-2 text-sm font-medium">
-          Phone
-          <input required type="tel" value={form.phone} onChange={(e) => update("phone", e.target.value)} className="w-full border-b border-[var(--line)] bg-transparent px-0 py-3 outline-none transition-colors focus:border-[var(--accent)]" />
-        </label>
+      <div className="grid gap-6 sm:grid-cols-2">
+        <Input 
+          label="Email"
+          type="email"
+          required 
+          value={form.email} 
+          onChange={(e) => update("email", e.target.value)} 
+        />
+        <Input 
+          label="Phone"
+          type="tel"
+          required 
+          value={form.phone} 
+          onChange={(e) => update("phone", e.target.value)} 
+        />
       </div>
-      <label className="block space-y-2 text-sm font-medium">
-        What would you like to discuss?
-        <select required value={form.service} onChange={(e) => update("service", e.target.value)} className="w-full border-b border-[var(--line)] bg-transparent py-3 outline-none focus:border-[var(--accent)]">
+      
+      <div className="flex flex-col gap-2 w-full">
+        <label className="text-primary font-semibold text-sm">
+          What would you like to discuss?
+        </label>
+        <select required value={form.service} onChange={(e) => update("service", e.target.value)} className={selectStyles}>
           <option value="">Select a service area</option>
-          <option value="personal-insurance">Personal insurance</option>
-          <option value="business-insurance">Business insurance</option>
-          <option value="life-insurance">Life insurance</option>
-          <option value="health-insurance">Health insurance</option>
+          <option value="life-insurance">Life insurance & Heritage®</option>
+          <option value="ltc-planning">LTC Planning & CareMatters</option>
+          <option value="retirement">Retirement & Annuities</option>
+          <option value="business">Business Strategies (Buy-Sell, Key Person)</option>
           <option value="not-sure">I am not sure yet</option>
         </select>
-      </label>
-      <label className="block space-y-2 text-sm font-medium">
-        Preferred contact timing
-        <select value={form.contactTime} onChange={(e) => update("contactTime", e.target.value)} className="w-full border-b border-[var(--line)] bg-transparent py-3 outline-none focus:border-[var(--accent)]">
+      </div>
+
+      <div className="flex flex-col gap-2 w-full">
+        <label className="text-primary font-semibold text-sm">
+          Preferred contact timing
+        </label>
+        <select value={form.contactTime} onChange={(e) => update("contactTime", e.target.value)} className={selectStyles}>
           <option value="">No preference</option>
           <option value="morning">Morning</option>
           <option value="afternoon">Afternoon</option>
           <option value="evening">Evening</option>
         </select>
+      </div>
+
+      <div className="flex flex-col gap-2 w-full">
+        <label className="text-primary font-semibold text-sm">
+          Additional context <span className="font-normal text-slate-500">optional</span>
+        </label>
+        <textarea 
+          value={form.message} 
+          onChange={(e) => update("message", e.target.value)} 
+          rows={3} 
+          className="w-full px-4 py-3 rounded border border-slate-300 bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors duration-200 resize-none"
+        />
+      </div>
+
+      <label className="flex gap-3 text-sm leading-6 text-slate-600 items-start">
+        <input required type="checkbox" checked={form.consent} onChange={(e) => update("consent", e.target.checked)} className="mt-1 h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary" />
+        <span>I agree to be contacted about this request and acknowledge the <Link href="/privacy" className="underline underline-offset-2 hover:text-primary font-medium">privacy notice</Link></span>
       </label>
-      <label className="block space-y-2 text-sm font-medium">
-        Additional context <span className="font-normal text-[var(--ink-soft)]">optional</span>
-        <textarea value={form.message} onChange={(e) => update("message", e.target.value)} rows={3} className="w-full resize-none border-b border-[var(--line)] bg-transparent py-3 outline-none focus:border-[var(--accent)]" />
-      </label>
-      <label className="flex gap-3 text-sm leading-6 text-[var(--ink-soft)]">
-        <input required type="checkbox" checked={form.consent} onChange={(e) => update("consent", e.target.checked)} className="mt-1 accent-[var(--accent)]" />
-        <span>I agree to be contacted about this request and acknowledge the <Link href="/privacy" className="underline underline-offset-2 hover:text-[var(--ink)]">privacy notice</Link></span>
-      </label>
-      {state === "error" && <p role="alert" className="text-sm text-[var(--accent-deep)]">{error}</p>}
-      <button disabled={state === "submitting"} className="w-full bg-[var(--ink)] px-6 py-4 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:translate-y-0 disabled:cursor-wait disabled:opacity-60">
-        {state === "submitting" ? "Submitting request" : "Request a consultation"}
-      </button>
-      <p className="text-xs leading-5 text-[var(--ink-soft)]">This request is for an initial conversation only. It is not an application for insurance or a coverage decision</p>
+      
+      {state === "error" && <p role="alert" className="text-sm font-medium text-[#ba1a1a]">{error}</p>}
+      
+      <Button 
+        type="submit" 
+        fullWidth
+        disabled={state === "submitting"}
+      >
+        {state === "submitting" ? "Submitting request..." : "Request a consultation"}
+      </Button>
+      
+      <p className="text-xs leading-5 text-slate-500 text-center">This request is for an initial conversation only. It is not an application for insurance or a coverage decision.</p>
     </form>
   );
 }

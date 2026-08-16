@@ -1,0 +1,510 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Marketing Analytics Dashboard | AB Global Consulting</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Work+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#c6c6cd",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#d3e4fe",
+                        "primary": "#000000",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "on-secondary-container": "#fefcff",
+                        "secondary-container": "#316bf3",
+                        "secondary-fixed-dim": "#b4c5ff",
+                        "on-secondary": "#ffffff",
+                        "primary-container": "#131b2e",
+                        "surface-dim": "#cbdbf5",
+                        "tertiary-container": "#171c1f",
+                        "surface": "#f8f9ff",
+                        "surface-container-low": "#eff4ff",
+                        "on-tertiary-fixed": "#171c1f",
+                        "on-surface-variant": "#45464d",
+                        "on-error": "#ffffff",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#213145",
+                        "surface-tint": "#565e74",
+                        "secondary-fixed": "#dbe1ff",
+                        "background": "#f8f9ff",
+                        "on-error-container": "#93000a",
+                        "on-background": "#0b1c30",
+                        "tertiary-fixed": "#dfe3e7",
+                        "on-secondary-fixed-variant": "#003ea8",
+                        "surface-container": "#e5eeff",
+                        "on-tertiary-container": "#808488",
+                        "surface-bright": "#f8f9ff",
+                        "secondary": "#0051d5",
+                        "tertiary-fixed-dim": "#c3c7cb",
+                        "on-primary-fixed": "#131b2e",
+                        "inverse-on-surface": "#eaf1ff",
+                        "surface-container-high": "#dce9ff",
+                        "on-surface": "#0b1c30",
+                        "on-secondary-fixed": "#00174b",
+                        "tertiary": "#000000",
+                        "outline": "#76777d",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#dae2fd",
+                        "on-tertiary-fixed-variant": "#43474b",
+                        "surface-variant": "#d3e4fe",
+                        "primary-fixed-dim": "#bec6e0",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#7c839b",
+                        "inverse-primary": "#bec6e0",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "margin-desktop": "40px",
+                        "container-max": "1280px",
+                        "unit": "8px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Manrope"],
+                        "display-lg-mobile": ["Manrope"],
+                        "headline-md": ["Manrope"],
+                        "label-sm": ["Work Sans"],
+                        "body-md": ["Work Sans"],
+                        "body-lg": ["Work Sans"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "label-sm": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .chart-bar {
+            transition: height 1s ease-in-out;
+        }
+        .bento-card {
+            border: 1px solid #c6c6cd; /* outline-variant */
+            transition: all 0.2s ease-in-out;
+        }
+        .bento-card:hover {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            border-color: #76777d; /* outline */
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<div class="flex h-screen overflow-hidden">
+<!-- SideNavBar Component -->
+<aside class="hidden md:flex flex-col h-full py-unit px-4 bg-surface-container-low dark:bg-primary-container border-r border-outline-variant w-64 flex-shrink-0">
+<div class="mb-10 px-2">
+<span class="font-headline-md text-headline-md font-bold text-primary">AB Global</span>
+</div>
+<nav class="flex-grow space-y-1">
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-primary-container hover:bg-surface-container-highest transition-colors rounded-lg cursor-pointer">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-sm text-label-sm">Dashboard</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-primary-container hover:bg-surface-container-highest transition-colors rounded-lg cursor-pointer">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-sm text-label-sm">Lead Management</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-full cursor-default">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-sm text-label-sm">Campaign Tracking</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-primary-container hover:bg-surface-container-highest transition-colors rounded-lg cursor-pointer">
+<span class="material-symbols-outlined" data-icon="fact_check">fact_check</span>
+<span class="font-label-sm text-label-sm">Compliance Status</span>
+</div>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-4 space-y-1">
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-primary-container hover:bg-surface-container-highest transition-colors rounded-lg cursor-pointer">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-sm text-label-sm">Settings</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-primary-container hover:bg-surface-container-highest transition-colors rounded-lg cursor-pointer">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-label-sm text-label-sm">Support</span>
+</div>
+<div class="mt-6 flex items-center gap-3 p-2 bg-surface-container rounded-lg">
+<div class="w-10 h-10 rounded-full bg-secondary text-white flex items-center justify-center font-bold">AB</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm truncate">Angel Burgos</span>
+<span class="text-[10px] opacity-70">License: G328926</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-grow overflow-y-auto scroll-smooth bg-surface">
+<!-- TopNavBar Component (Embedded as header) -->
+<header class="flex justify-between items-center px-margin-desktop w-full max-w-container-max mx-auto h-20 bg-surface sticky top-0 z-30">
+<div class="flex flex-col">
+<h1 class="font-headline-md text-headline-md text-primary">Marketing Analytics</h1>
+<p class="text-on-surface-variant font-label-sm">Performance summary for the last 30 days</p>
+</div>
+<div class="flex items-center gap-gutter">
+<button class="hidden md:flex items-center gap-2 px-4 py-2 border border-outline text-on-surface rounded-lg hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="font-label-sm">Oct 24 - Nov 23, 2024</span>
+</button>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-label-sm hover:opacity-90 transition-opacity active:scale-95">
+                        Export Report
+                    </button>
+</div>
+</header>
+<div class="px-margin-desktop py-gutter max-w-container-max mx-auto space-y-gutter">
+<!-- Performance Summary Grid (Key Metrics) -->
+<section class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="bento-card bg-surface-container-lowest p-6 rounded-xl flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="text-on-surface-variant font-label-sm">Total Spend</span>
+<span class="text-secondary material-symbols-outlined" data-icon="payments">payments</span>
+</div>
+<div class="mt-4">
+<h2 class="text-headline-md font-bold text-primary">$12,450.00</h2>
+<p class="text-green-600 font-label-sm mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="trending_up">trending_up</span> +8.2%
+                            </p>
+</div>
+</div>
+<div class="bento-card bg-surface-container-lowest p-6 rounded-xl flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="text-on-surface-variant font-label-sm">Cost Per Lead (CPL)</span>
+<span class="text-secondary material-symbols-outlined" data-icon="person_search">person_search</span>
+</div>
+<div class="mt-4">
+<h2 class="text-headline-md font-bold text-primary">$42.18</h2>
+<p class="text-green-600 font-label-sm mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="trending_down">trending_down</span> -12.4%
+                            </p>
+</div>
+</div>
+<div class="bento-card bg-surface-container-lowest p-6 rounded-xl flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="text-on-surface-variant font-label-sm">Return on Investment</span>
+<span class="text-secondary material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<div class="mt-4">
+<h2 class="text-headline-md font-bold text-primary">382%</h2>
+<p class="text-green-600 font-label-sm mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="trending_up">trending_up</span> +15.7%
+                            </p>
+</div>
+</div>
+<div class="bento-card bg-surface-container-lowest p-6 rounded-xl flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="text-on-surface-variant font-label-sm">New Annuity Leads</span>
+<span class="text-secondary material-symbols-outlined" data-icon="verified">verified</span>
+</div>
+<div class="mt-4">
+<h2 class="text-headline-md font-bold text-primary">295</h2>
+<p class="text-red-600 font-label-sm mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="trending_down">trending_down</span> -2.1%
+                            </p>
+</div>
+</div>
+</section>
+<!-- Lead Trends & Attribution Section -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Main Trend Chart -->
+<div class="lg:col-span-2 bento-card bg-surface-container-lowest p-8 rounded-xl relative overflow-hidden h-[400px]">
+<div class="flex justify-between items-center mb-10 relative z-10">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary">Lead Trends</h3>
+<p class="text-on-surface-variant font-body-md">Daily lead acquisition over 30 days</p>
+</div>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-secondary"></div>
+<span class="text-label-sm font-label-sm">Qualified</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-outline-variant"></div>
+<span class="text-label-sm font-label-sm">Total</span>
+</div>
+</div>
+</div>
+<!-- Simulated Chart Bars -->
+<div class="flex items-end justify-between h-48 gap-1 md:gap-2">
+<div class="flex flex-col items-center flex-1 group">
+<div class="w-full bg-secondary rounded-t-sm chart-bar opacity-80 group-hover:opacity-100" style="height: 40%;"></div>
+<div class="w-full bg-outline-variant/20 rounded-t-sm h-12"></div>
+</div>
+<div class="flex flex-col items-center flex-1 group">
+<div class="w-full bg-secondary rounded-t-sm chart-bar opacity-80 group-hover:opacity-100" style="height: 55%;"></div>
+<div class="w-full bg-outline-variant/20 rounded-t-sm h-16"></div>
+</div>
+<div class="flex flex-col items-center flex-1 group">
+<div class="w-full bg-secondary rounded-t-sm chart-bar opacity-80 group-hover:opacity-100" style="height: 35%;"></div>
+<div class="w-full bg-outline-variant/20 rounded-t-sm h-8"></div>
+</div>
+<div class="flex flex-col items-center flex-1 group">
+<div class="w-full bg-secondary rounded-t-sm chart-bar opacity-80 group-hover:opacity-100" style="height: 70%;"></div>
+<div class="w-full bg-outline-variant/20 rounded-t-sm h-24"></div>
+</div>
+<div class="flex flex-col items-center flex-1 group">
+<div class="w-full bg-secondary rounded-t-sm chart-bar opacity-80 group-hover:opacity-100" style="height: 60%;"></div>
+<div class="w-full bg-outline-variant/20 rounded-t-sm h-18"></div>
+</div>
+<div class="flex flex-col items-center flex-1 group">
+<div class="w-full bg-secondary rounded-t-sm chart-bar opacity-80 group-hover:opacity-100" style="height: 85%;"></div>
+<div class="w-full bg-outline-variant/20 rounded-t-sm h-32"></div>
+</div>
+<div class="flex flex-col items-center flex-1 group">
+<div class="w-full bg-secondary rounded-t-sm chart-bar opacity-80 group-hover:opacity-100" style="height: 45%;"></div>
+<div class="w-full bg-outline-variant/20 rounded-t-sm h-14"></div>
+</div>
+<div class="flex flex-col items-center flex-1 group">
+<div class="w-full bg-secondary rounded-t-sm chart-bar opacity-80 group-hover:opacity-100" style="height: 50%;"></div>
+<div class="w-full bg-outline-variant/20 rounded-t-sm h-16"></div>
+</div>
+<div class="flex flex-col items-center flex-1 group">
+<div class="w-full bg-secondary rounded-t-sm chart-bar opacity-80 group-hover:opacity-100" style="height: 30%;"></div>
+<div class="w-full bg-outline-variant/20 rounded-t-sm h-10"></div>
+</div>
+<div class="flex flex-col items-center flex-1 group">
+<div class="w-full bg-secondary rounded-t-sm chart-bar opacity-80 group-hover:opacity-100" style="height: 95%;"></div>
+<div class="w-full bg-outline-variant/20 rounded-t-sm h-36"></div>
+</div>
+</div>
+<div class="mt-4 border-t border-outline-variant pt-4 flex justify-between text-on-surface-variant font-label-sm">
+<span>Oct 24</span>
+<span>Nov 01</span>
+<span>Nov 08</span>
+<span>Nov 15</span>
+<span>Nov 23</span>
+</div>
+</div>
+<!-- Source Attribution -->
+<div class="bento-card bg-surface-container-lowest p-8 rounded-xl h-[400px] flex flex-col">
+<h3 class="font-headline-md text-headline-md text-primary mb-6">Source Attribution</h3>
+<div class="space-y-6 flex-grow">
+<!-- LinkedIn -->
+<div class="space-y-2">
+<div class="flex justify-between font-label-sm">
+<span class="flex items-center gap-2">LinkedIn <span class="text-[10px] bg-secondary-container text-on-secondary-container px-1.5 rounded">High Intent</span></span>
+<span>42%</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 42%"></div>
+</div>
+</div>
+<!-- Meta -->
+<div class="space-y-2">
+<div class="flex justify-between font-label-sm">
+<span class="flex items-center gap-2">Meta Ads (FB/IG)</span>
+<span>28%</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-secondary opacity-70 h-full rounded-full" style="width: 28%"></div>
+</div>
+</div>
+<!-- Google Search -->
+<div class="space-y-2">
+<div class="flex justify-between font-label-sm">
+<span class="flex items-center gap-2">Google Search (SEM)</span>
+<span>18%</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-secondary opacity-50 h-full rounded-full" style="width: 18%"></div>
+</div>
+</div>
+<!-- Referral -->
+<div class="space-y-2">
+<div class="flex justify-between font-label-sm">
+<span class="flex items-center gap-2">B2B Referrals</span>
+<span>12%</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-secondary opacity-30 h-full rounded-full" style="width: 12%"></div>
+</div>
+</div>
+</div>
+<div class="mt-6">
+<button class="w-full py-2 border border-secondary text-secondary rounded-lg font-label-sm hover:bg-secondary/5 transition-colors">
+                                View Detail Breakdown
+                            </button>
+</div>
+</div>
+</section>
+<!-- Content Performance & Active Campaigns -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-gutter pb-margin-desktop">
+<!-- Resource Center / Blog Activity -->
+<div class="bento-card bg-surface-container-lowest p-8 rounded-xl">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md text-primary">Content Performance</h3>
+<span class="text-on-surface-variant font-label-sm">Engagement Rate: 4.8%</span>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-4 p-4 rounded-lg bg-surface-container-low border border-outline-variant/30">
+<div class="w-16 h-16 rounded overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A high-end professional photograph showing a stack of financial planning documents and a fountain pen on a mahogany desk. The lighting is warm and directional, creating a sophisticated and trustworthy atmosphere consistent with premium consulting. The color palette features deep blues and rich wood tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDioGQnnJc6FK-BcWk1ZJ8BL1z_gwoJqpbN4zK2KnZJ1fJRFG6vhXwPhC0uQDiXramPMEeS4Guj_BomIzTj7oH9PHREX9SXtqZLPJVZQg3XMOPZDFRUnwNo-h3lTvWfc400mxaXspQWj6oydpxuKrTxjRnsQid4P4HwUuRTZYHLYO7FMVLpKcg1RzzkYBmtDqHC9r434XpKWCnTxzo70LnD2rjEBZWZZ5OqFV5pggxpR2PmfKBEte4">
+</div>
+<div class="flex-grow">
+<h4 class="font-label-sm text-primary">Annuities: The 2024 Stability Guide</h4>
+<div class="flex gap-4 mt-2 text-[12px] text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" data-icon="visibility">visibility</span> 1.2k Views</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" data-icon="download">download</span> 84 PDFs</span>
+</div>
+</div>
+<div class="text-right">
+<span class="block font-bold text-primary">12</span>
+<span class="text-[10px] uppercase text-on-surface-variant">Leads</span>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-lg bg-surface-container-low border border-outline-variant/30">
+<div class="w-16 h-16 rounded overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Close up image of a multiracial family laughing together in a bright, modern living room. The focus is on their happiness and security, reflecting themes of life insurance and family legacy. The aesthetic is bright and airy with high-key lighting and soft neutral colors to match a corporate-modern design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0qb1r5O6m2hQsRkm0Dw5FDwJUP0NVpXDxL5ZBDb5XYJJ5cB7g2dzbg3E5lDggNsuiRdPzfpJCiGw5C8fz883kxVjITYwpRVuwiTgiAqMlU69RzmFt7YjhQ4nR-tvrvZD1lKfwAJedZQOg5TxlF_qzFVVU75HSMDHiQhJQmG6hyh0kVIOgfffxLgCqRDC0eKZTVpGh3Zs2eSRfYDSzy5lBHmprGbwjZvr_Pii2WnkxtqDIhLBhny8">
+</div>
+<div class="flex-grow">
+<h4 class="font-label-sm text-primary">Why Whole Life Isn't Just for Seniors</h4>
+<div class="flex gap-4 mt-2 text-[12px] text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" data-icon="visibility">visibility</span> 850 Views</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" data-icon="share">share</span> 42 Shares</span>
+</div>
+</div>
+<div class="text-right">
+<span class="block font-bold text-primary">8</span>
+<span class="text-[10px] uppercase text-on-surface-variant">Leads</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Active Campaigns Control -->
+<div class="bento-card bg-primary-container p-8 rounded-xl text-white">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md">Active Campaigns</h3>
+<button class="bg-secondary text-white px-4 py-1.5 rounded-full font-label-sm hover:brightness-110 transition-all">
+                                + New Campaign
+                            </button>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-4 bg-white/5 rounded-lg border border-white/10">
+<div class="flex items-center gap-4">
+<div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+<div>
+<h4 class="font-label-sm">High Net Worth Retention</h4>
+<p class="text-[12px] opacity-60">Meta Ads • Started Oct 12</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="text-right">
+<span class="block font-bold">$2,400</span>
+<span class="text-[10px] opacity-60 uppercase">Spent</span>
+</div>
+<span class="material-symbols-outlined cursor-pointer hover:text-secondary-fixed-dim" data-icon="more_vert">more_vert</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-white/5 rounded-lg border border-white/10">
+<div class="flex items-center gap-4">
+<div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+<div>
+<h4 class="font-label-sm">Bilingual Retirement Planning</h4>
+<p class="text-[12px] opacity-60">Google Search • Started Nov 01</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="text-right">
+<span class="block font-bold">$1,850</span>
+<span class="text-[10px] opacity-60 uppercase">Spent</span>
+</div>
+<span class="material-symbols-outlined cursor-pointer hover:text-secondary-fixed-dim" data-icon="more_vert">more_vert</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-white/5 rounded-lg border border-white/10">
+<div class="flex items-center gap-4">
+<div class="w-2 h-2 rounded-full bg-yellow-500"></div>
+<div>
+<h4 class="font-label-sm">Health Coverage Q4 Push</h4>
+<p class="text-[12px] opacity-60">LinkedIn Ads • Paused</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="text-right opacity-50">
+<span class="block font-bold">$840</span>
+<span class="text-[10px] opacity-60 uppercase">Spent</span>
+</div>
+<span class="material-symbols-outlined cursor-pointer hover:text-secondary-fixed-dim" data-icon="more_vert">more_vert</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer Component -->
+<footer class="w-full py-gutter px-margin-desktop grid grid-cols-1 md:grid-cols-2 gap-gutter max-w-container-max mx-auto bg-primary-container dark:bg-tertiary-container mt-auto">
+<div class="flex flex-col justify-center">
+<span class="font-headline-md text-headline-md font-bold text-on-primary-fixed mb-4">AB Global Consulting</span>
+<p class="text-on-primary-container opacity-80 font-body-md max-w-md">
+                        © 2024 AB Global Consulting. Angel Burgos, Agent Code: F6D9U, FL License: G328926. Professional marketing analytics for high-stakes financial protection.
+                    </p>
+</div>
+<div class="flex flex-col md:items-end justify-center gap-4">
+<div class="flex gap-gutter">
+<a class="text-on-primary-container opacity-80 hover:opacity-100 transition-opacity font-body-md" href="#">Contact Us</a>
+<a class="text-on-primary-container opacity-80 hover:opacity-100 transition-opacity font-body-md" href="#">Branch Address</a>
+</div>
+<div class="flex gap-gutter">
+<a class="text-on-primary-container opacity-80 hover:opacity-100 transition-opacity font-body-md" href="#">WFGIA Disclosures</a>
+<a class="text-on-primary-container opacity-80 hover:opacity-100 transition-opacity font-body-md" href="#">Privacy Policy</a>
+</div>
+</div>
+</footer>
+</main>
+</div>
+<!-- Mobile Navigation Shell -->
+<div class="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-surface-container-low border-t border-outline-variant flex justify-around items-center px-4 z-50">
+<div class="flex flex-col items-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[10px] font-label-sm">Home</span>
+</div>
+<div class="flex flex-col items-center text-secondary">
+<span class="material-symbols-outlined" data-icon="analytics" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="text-[10px] font-label-sm">Analytics</span>
+</div>
+<div class="flex flex-col items-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="text-[10px] font-label-sm">Leads</span>
+</div>
+<div class="flex flex-col items-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-[10px] font-label-sm">Settings</span>
+</div>
+</div>
+<script>
+        // Simple Interaction: Animate bars on load
+        window.addEventListener('DOMContentLoaded', () => {
+            const bars = document.querySelectorAll('.chart-bar');
+            bars.forEach(bar => {
+                const height = bar.style.height;
+                bar.style.height = '0';
+                setTimeout(() => {
+                    bar.style.height = height;
+                }, 300);
+            });
+        });
+    </script>
+</body></html>

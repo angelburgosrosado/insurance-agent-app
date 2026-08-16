@@ -1,34 +1,38 @@
 @import "tailwindcss";
 
 :root {
-  --ink: #132331;
-  --ink-soft: #51616c;
-  --paper: #f4f6f3;
-  --surface: #ffffff;
-  --line: #d9e0dc;
-  --accent: #b86c3d;
-  --accent-deep: #8d4e2c;
-  --sage: #dce7df;
+  --sentinel-navy: #000f27;
+  --professional-gold: #c5a059;
+  --trust-teal: #159895;
+  --surface-base: #f7f9fb;
+  --surface-card: #ffffff;
+  --outline-light: #e2e8f0;
+  --text-dark: #191c1e;
+  --text-light: #ffffff;
+  --error-red: #ba1a1a;
 }
 
 @theme inline {
-  --color-background: var(--paper);
-  --color-foreground: var(--ink);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--surface-base);
+  --color-foreground: var(--text-dark);
+  
+  --color-primary: var(--sentinel-navy);
+  --color-secondary: var(--professional-gold);
+  --color-tertiary: var(--trust-teal);
+  
+  --font-sans: var(--font-inter), sans-serif;
 }
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
-  background: var(--paper);
-  color: var(--ink);
-  font-family: var(--font-geist-sans), sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
 }
 a { color: inherit; text-decoration: none; }
 button, a { -webkit-tap-highlight-color: transparent; }
 input, textarea, select { font: inherit; }
-input::placeholder, textarea::placeholder { color: #70808a; opacity: 1; }
 
 @keyframes rise-in {
   from { opacity: 0; transform: translateY(14px); }

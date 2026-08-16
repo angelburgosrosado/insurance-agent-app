@@ -1,0 +1,375 @@
+<!DOCTYPE html><html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Resource Center | AB Global Consulting</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Work+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "outline": "#76777d",
+                "on-background": "#0b1c30",
+                "secondary-fixed-dim": "#b4c5ff",
+                "primary": "#000000",
+                "tertiary-fixed-dim": "#c3c7cb",
+                "outline-variant": "#c6c6cd",
+                "surface-container": "#e5eeff",
+                "on-secondary": "#ffffff",
+                "surface-variant": "#d3e4fe",
+                "surface-tint": "#565e74",
+                "on-primary-fixed-variant": "#3f465c",
+                "inverse-surface": "#213145",
+                "on-secondary-fixed": "#00174b",
+                "inverse-on-surface": "#eaf1ff",
+                "tertiary-fixed": "#dfe3e7",
+                "surface-container-low": "#eff4ff",
+                "background": "#f8f9ff",
+                "on-tertiary-fixed": "#171c1f",
+                "error-container": "#ffdad6",
+                "surface-container-high": "#dce9ff",
+                "primary-fixed-dim": "#bec6e0",
+                "inverse-primary": "#bec6e0",
+                "surface-container-highest": "#d3e4fe",
+                "surface": "#f8f9ff",
+                "on-surface": "#0b1c30",
+                "on-primary": "#ffffff",
+                "surface-dim": "#cbdbf5",
+                "surface-bright": "#f8f9ff",
+                "primary-fixed": "#dae2fd",
+                "on-surface-variant": "#45464d",
+                "on-tertiary-container": "#808488",
+                "on-tertiary": "#ffffff",
+                "secondary-container": "#316bf3",
+                "primary-container": "#131b2e",
+                "on-error-container": "#93000a",
+                "on-primary-fixed": "#131b2e",
+                "secondary-fixed": "#dbe1ff",
+                "on-primary-container": "#7c839b",
+                "tertiary": "#000000",
+                "secondary": "#0051d5",
+                "on-secondary-fixed-variant": "#003ea8",
+                "error": "#ba1a1a",
+                "on-secondary-container": "#fefcff",
+                "on-error": "#ffffff",
+                "tertiary-container": "#171c1f",
+                "on-tertiary-fixed-variant": "#43474b",
+                "surface-container-lowest": "#ffffff"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+            "spacing": {
+                "margin-mobile": "16px",
+                "unit": "8px",
+                "margin-desktop": "40px",
+                "container-max": "1280px",
+                "gutter": "24px"
+            },
+            "fontFamily": {
+                "body-md": ["Work Sans"],
+                "display-lg-mobile": ["Manrope"],
+                "label-sm": ["Work Sans"],
+                "headline-md": ["Manrope"],
+                "body-lg": ["Work Sans"],
+                "display-lg": ["Manrope"]
+            },
+            "fontSize": {
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                "label-sm": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+        .trust-line {
+            position: relative;
+        }
+        .trust-line::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            width: 40px;
+            height: 2px;
+            background-color: #0051d5;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md">
+<!-- Top Navigation Bar -->
+<nav class="bg-surface-container-lowest dark:bg-primary-container docked full-width top-0 border-b border-outline-variant dark:border-outline z-50 sticky">
+<div class="flex justify-between items-center px-margin-desktop w-full max-w-container-max mx-auto h-20">
+<div class="flex items-center gap-4">
+<span class="font-display-lg text-display-lg font-bold text-primary dark:text-on-primary-fixed">AB Global</span>
+</div>
+<!-- Desktop Links -->
+<div class="hidden md:flex items-center gap-gutter">
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-primary-container hover:text-secondary dark:hover:text-secondary-fixed transition-colors" href="#">Insurance</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-primary-container hover:text-secondary dark:hover:text-secondary-fixed transition-colors" href="#">LTC Planning</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-primary-container hover:text-secondary dark:hover:text-secondary-fixed transition-colors" href="#">Retirement</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-primary-container hover:text-secondary dark:hover:text-secondary-fixed transition-colors" href="#">Business</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden lg:block font-body-md text-body-md text-on-surface-variant px-4 py-2 hover:opacity-80">Español</button>
+<button class="bg-primary text-on-primary px-6 py-3 font-label-sm text-label-sm rounded-lg active:scale-95 transition-transform">Schedule Consultation</button>
+</div>
+</div>
+</nav>
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-12">
+<!-- Hero Section: Featured Article -->
+<section class="mb-16">
+<div class="relative overflow-hidden rounded-xl bg-primary-container min-h-[500px] flex items-center group">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-40 group-hover:scale-105 transition-transform duration-700" data-alt="A professional, high-end editorial photograph of a secure, modern bank interior with sleek architectural lines and soft, atmospheric lighting. The color palette features deep navy blues and clean whites, reflecting a sense of stability and long-term financial security. The image is minimalist yet authoritative, suitable for a premier financial consulting brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWfMN_HggGPsSTx2Ax9t81QeowlTFW4md-zUE0idG8cAhPs6dC0fdJ-Nzjs-TzP67TGQinxFg3zeyrL0wKJ2Wv76jBTtoQAwiuax9fVQvCZtLWKOsvre4eGDQFcC_aM435TzT7sz6M-69jYGtPvRJi21XOZIaAgHpg3xolsskwYP-xTx_HjMNBeNBQY220yCHMK3L4wfwoOYssGsw6utJrZnt_MPku4QSAwvGO5evYlZiNW_Q6nKE">
+</div>
+<div class="relative z-10 p-8 md:p-16 max-w-2xl">
+<div class="inline-flex items-center gap-2 bg-secondary text-on-secondary px-3 py-1 rounded-full text-label-sm mb-6 uppercase tracking-wider">
+                        Featured / Destacado
+                    </div>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-white mb-6 leading-tight">
+                        Annuities: The 2024 Stability Guide
+                        <span class="block text-secondary-fixed text-headline-md mt-2">Anualidades: Guía de Estabilidad 2024</span>
+</h1>
+<p class="text-on-primary-container font-body-lg text-body-lg mb-8 max-w-lg">
+                        Navigate the evolving economic landscape with fixed-indexed strategies designed for lifelong income and principal protection.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4">
+<button class="bg-secondary-container text-on-secondary-container px-8 py-4 rounded-lg font-label-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+                            Read Full Guide <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<button class="border border-outline-variant text-white px-8 py-4 rounded-lg font-label-sm flex items-center justify-center gap-2 hover:bg-white/10 transition-colors">
+                            Download PDF (Bilingual)
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Search & Categories Bar -->
+<section class="mb-12">
+<div class="bg-surface-container-high p-6 rounded-xl flex flex-col md:flex-row items-center gap-6">
+<div class="relative w-full md:flex-1">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-12 pr-4 py-4 rounded-lg bg-surface border-none focus:ring-2 focus:ring-secondary text-body-md" placeholder="Search resources (e.g. Life Insurance, Annuities...)" type="text">
+</div>
+<div class="flex gap-4 overflow-x-auto w-full md:w-auto no-scrollbar">
+<button class="whitespace-nowrap px-6 py-4 bg-surface text-on-surface rounded-lg font-label-sm hover:bg-secondary-container transition-colors shadow-sm">Insurance Protection</button>
+<button class="whitespace-nowrap px-6 py-4 bg-surface text-on-surface rounded-lg font-label-sm hover:bg-secondary-container transition-colors shadow-sm">Retirement Strategies</button>
+<button class="whitespace-nowrap px-6 py-4 bg-surface text-on-surface rounded-lg font-label-sm hover:bg-secondary-container transition-colors shadow-sm">Business Protection</button>
+</div>
+</div>
+</section>
+<!-- Recent Articles Grid -->
+<section class="mb-20">
+<div class="flex items-end justify-between mb-8 border-b border-outline-variant pb-4">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary uppercase tracking-widest">Recent Knowledge / Conocimientos Recientes</h2>
+<p class="text-on-surface-variant mt-1">Latest insights for your financial legacy.</p>
+</div>
+<a class="text-secondary font-label-sm flex items-center gap-1 hover:underline" href="#">
+                    View All <span class="material-symbols-outlined">chevron_right</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Card 1 -->
+<article class="bg-white rounded-xl border border-outline-variant overflow-hidden hover:shadow-xl transition-shadow group">
+<div class="h-48 overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform" data-alt="A clean, professional photograph of a diverse family of three generations laughing together in a brightly lit, modern living room. The lighting is soft and warm, conveying a sense of happiness and security. The image style is premium corporate lifestyle photography, using a palette of soft greys, whites, and navy accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxUchHpXSCPo3Nh7mAEZwSd0Gq_YPBNQWn-94TSvAZjduLG6KAguAkv62Y0PiK0Xs5RKSzxe7cz72Wf9jOIADA4gkuzEZ57HSvmF-HWFsjuNPrcJ4hbGfpEe7IgaN93RJuhlgVPLmjgRls-Ks6_ahouFivROaqzZtcD2ip2e2Q7V_Pv91_44vtfDU-H_Uafj9JNOkDr-B8diuLMnf2mUcPZcbYC_4qOtHO4wlCU_wXXbgWJqxxIb8">
+<span class="absolute top-4 left-4 bg-primary text-white px-3 py-1 text-xs font-bold rounded">LIFE INSURANCE</span>
+</div>
+<div class="p-6">
+<h3 class="font-headline-md text-headline-md mb-2 leading-tight">Life Insurance 101 / Seguros de Vida 101</h3>
+<p class="text-on-surface-variant text-body-md line-clamp-3 mb-6">
+                            Understanding the fundamental differences between term and permanent coverage for your family's future.
+                        </p>
+<div class="flex items-center justify-between mt-auto">
+<span class="text-label-sm text-outline">5 min read</span>
+<span class="material-symbols-outlined text-secondary group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</div>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="bg-white rounded-xl border border-outline-variant overflow-hidden hover:shadow-xl transition-shadow group">
+<div class="h-48 overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform" data-alt="A high-end architectural photo of a modern corporate boardroom with glass walls and a view of a city skyline at dusk. The room is quiet and professional, with a large mahogany table and ergonomic leather chairs. The color palette is dominated by cool blues, silvers, and deep navys, suggesting business protection and high-level consulting expertise." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAO-u7xagJ-1JWVNXsyKNX-RowkVEp3cGdQnQNFgeDJU_6EaMn7Io62WmBTShWYPnBuX50-EtjOEL_0iNJZflDAhk1oYxBix26kDScc3zxhTqKbX1VWDu0Muo5q-Xlov12VetctGL8jaNmUs3c9BvyQNWAwzu-ueMBmeAwbkTfmz-qlGsH5yH8gQRUHc4dtyIH1DMAY8maQqLzsrp10Q5ksKw7N1aSpjn-ek5KNiEC9tpXRtzV9BsE">
+<span class="absolute top-4 left-4 bg-primary text-white px-3 py-1 text-xs font-bold rounded">BUSINESS</span>
+</div>
+<div class="p-6">
+<h3 class="font-headline-md text-headline-md mb-2 leading-tight">Key Person Protection / Protección de Socios</h3>
+<p class="text-on-surface-variant text-body-md line-clamp-3 mb-6">
+                            Ensuring business continuity when your most valuable asset is the leadership team itself.
+                        </p>
+<div class="flex items-center justify-between mt-auto">
+<span class="text-label-sm text-outline">7 min read</span>
+<span class="material-symbols-outlined text-secondary group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</div>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="bg-white rounded-xl border border-outline-variant overflow-hidden hover:shadow-xl transition-shadow group">
+<div class="h-48 overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform" data-alt="A tranquil, minimalist close-up image of a person’s hands gently holding a small plant growing out of a heap of dark, rich soil. The background is a clean, out-of-focus white space. The lighting is natural and bright. This visual represents growth, care, and the long-term cultivation of retirement savings, using a professional and trustworthy aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAb9wAY77SEbeJu2oiOFgmHIpXDcCk1mrsWnrT2pRRDfC1wfusACtwwF7LgzakcE7wgauybSHfXiVEy5LJkVGiLDhb7T1T-86y68XfhEsEZPmp6uUgOnl1Y-WxhWkoL-GCO0a-WB204_3bQV_O8md7vTeANYRMMoiSPTjqDR0VNqZzgvuSMwNOpB0ObOemM3wfTEh6bwScvoXrtRIutONQrVqMczB4fH2AXHbb1YXqR9nxaVBNZx2I">
+<span class="absolute top-4 left-4 bg-primary text-white px-3 py-1 text-xs font-bold rounded">RETIREMENT</span>
+</div>
+<div class="p-6">
+<h3 class="font-headline-md text-headline-md mb-2 leading-tight">Tax-Free Income Hub / Centro de Ingresos Libres</h3>
+<p class="text-on-surface-variant text-body-md line-clamp-3 mb-6">
+                            Strategies for building a retirement nest egg that Uncle Sam can't touch. Learn about modern LIRPs.
+                        </p>
+<div class="flex items-center justify-between mt-auto">
+<span class="text-label-sm text-outline">6 min read</span>
+<span class="material-symbols-outlined text-secondary group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</div>
+</div>
+</article>
+</div>
+</section>
+<!-- Education Center: Data Hook Section -->
+<section class="mb-20 bg-surface-container rounded-3xl p-8 md:p-16 relative overflow-hidden">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+<div>
+<h2 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-6">The Education Inflation Reality</h2>
+<p class="text-body-lg text-on-surface-variant mb-8 leading-relaxed">
+                        College tuition has experienced an average annual inflation rate of <span class="font-bold text-secondary text-3xl">6.08%</span> over the last decade. While standard savings accounts yield minimal returns, our specialized college planning strategies aim to outpace rising costs.
+                    </p>
+<div class="bg-white/50 backdrop-blur-sm p-6 rounded-xl border border-white/20 mb-8">
+<div class="flex items-center gap-4 mb-4">
+<span class="material-symbols-outlined text-secondary scale-150">trending_up</span>
+<span class="font-headline-md text-headline-md">Impact on $50,000 Tuition</span>
+</div>
+<div class="space-y-4">
+<div class="h-2 bg-outline-variant rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-full"></div>
+</div>
+<p class="text-label-sm text-outline">Projected cost in 18 years: <span class="font-bold text-on-surface">$145,200+</span> at current inflation.</p>
+</div>
+</div>
+<button class="bg-primary text-on-primary px-8 py-4 rounded-lg font-label-sm hover:bg-secondary transition-colors">Start College Planning Now</button>
+</div>
+<div class="hidden lg:block">
+<img class="rounded-2xl shadow-2xl" data-alt="A sophisticated 3D data visualization showing glowing lines of growth against a dark navy background. The chart elements are sharp and precise, symbolizing financial accuracy and projected growth. The lighting creates a high-tech yet corporate feel, emphasizing the precision of AB Global Consulting's data-driven approach to education planning." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBszA9LU_oEVWV5LgCyncBuEi-3vlfJ8iEhqE9KPz6cOBGMIGA6nIgW6Q1C2_V3f9jwXCbSwHjqd5plFwrId7EblpDvIeGAhwknKnhqu3v_5kol604QFzuJmfJrcxWUIOCAzmm0aGFgj7cMwpnrReIDO79Ynpg6W0iK_XZ7Hj63qyVFES2SGuyDhWqfWojf6LOwzaDtc53IMw3nlxLTNr6k6QmGD8NAphBW_CLiSBimnoQ1OBx0HI">
+</div>
+</div>
+</section>
+<!-- FAQ Module with Schema Structure -->
+<section class="mb-20">
+<div class="text-center mb-12">
+<h2 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary">Common Questions / Preguntas Frecuentes</h2>
+<div class="w-24 h-1 bg-secondary mx-auto mt-4"></div>
+</div>
+<div class="max-w-3xl mx-auto space-y-4">
+<!-- FAQ Item 1 -->
+<details class="group border border-outline-variant rounded-xl bg-white overflow-hidden" open="">
+<summary class="flex items-center justify-between p-6 cursor-pointer list-none hover:bg-surface-container-low transition-colors">
+<span class="font-headline-md text-headline-md">What is the difference between Term and Whole Life?</span>
+<span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="px-6 pb-6 text-on-surface-variant border-t border-outline-variant pt-4">
+                        Term life insurance provides coverage for a specific period (e.g., 20 years), while Whole Life is permanent coverage that includes a cash value component. Term is typically more affordable, whereas Whole Life offers lifelong protection and a living benefit through equity growth.
+                    </div>
+</details>
+<!-- FAQ Item 2 -->
+<details class="group border border-outline-variant rounded-xl bg-white overflow-hidden">
+<summary class="flex items-center justify-between p-6 cursor-pointer list-none hover:bg-surface-container-low transition-colors">
+<span class="font-headline-md text-headline-md">¿Cómo funcionan las anualidades indexadas?</span>
+<span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="px-6 pb-6 text-on-surface-variant border-t border-outline-variant pt-4">
+                        Las anualidades indexadas ofrecen un equilibrio entre seguridad y crecimiento. Su rendimiento está vinculado a un índice bursátil (como el S&amp;P 500), pero cuentan con una garantía de que el capital principal no disminuirá incluso si el mercado cae.
+                    </div>
+</details>
+<!-- FAQ Item 3 -->
+<details class="group border border-outline-variant rounded-xl bg-white overflow-hidden">
+<summary class="flex items-center justify-between p-6 cursor-pointer list-none hover:bg-surface-container-low transition-colors">
+<span class="font-headline-md text-headline-md">Do I need a medical exam for life insurance?</span>
+<span class="material-symbols-outlined group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="px-6 pb-6 text-on-surface-variant border-t border-outline-variant pt-4">
+                        Not necessarily. While traditional policies may require a medical exam, we offer many "no-medical-exam" options that utilize accelerated underwriting for faster approval based on your health history.
+                    </div>
+</details>
+</div>
+</section>
+<!-- CTA Banners: Lead Magnets -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-gutter mb-20">
+<div class="bg-primary-container p-10 rounded-3xl text-white flex flex-col items-start border border-outline-variant/20 relative overflow-hidden group">
+<span class="material-symbols-outlined text-secondary-fixed text-5xl mb-6">menu_book</span>
+<h3 class="text-headline-md font-display-lg mb-4">Retirement Security Guide</h3>
+<p class="text-on-primary-container mb-8">Download our comprehensive bilingual guide on 2024 retirement trends and protection strategies.</p>
+<button class="mt-auto bg-white text-primary px-8 py-4 rounded-lg font-label-sm hover:bg-secondary-fixed transition-colors">Download Guide</button>
+<div class="absolute -bottom-10 -right-10 w-48 h-48 bg-secondary opacity-10 rounded-full blur-3xl group-hover:scale-150 transition-transform"></div>
+</div>
+<div class="bg-surface-container-highest p-10 rounded-3xl flex flex-col items-start border border-outline-variant group">
+<span class="material-symbols-outlined text-primary text-5xl mb-6">event_available</span>
+<h3 class="text-headline-md font-display-lg mb-4">Expert Consultation</h3>
+<p class="text-on-surface-variant mb-8">Sit down with Angel Burgos for a customized financial protection review. No obligation, just clarity.</p>
+<button class="mt-auto bg-secondary text-white px-8 py-4 rounded-lg font-label-sm hover:opacity-90 transition-opacity">Schedule Appointment</button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-primary-container dark:bg-tertiary-container w-full py-gutter px-margin-desktop grid grid-cols-1 md:grid-cols-2 gap-gutter max-w-container-max mx-auto border-t border-white/10">
+<div class="flex flex-col gap-6">
+<div class="font-headline-md text-headline-md font-bold text-on-primary-fixed">AB Global Consulting</div>
+<p class="text-on-primary-container font-body-md opacity-80 max-w-md">
+                Specializing in Life, Health, and Annuity products designed for long-term security and legacy protection.
+            </p>
+<div class="flex items-center gap-4 text-on-primary-fixed">
+<span class="material-symbols-outlined">verified</span>
+<span class="text-label-sm">License: 0215 Life, Health &amp; Variable Annuity</span>
+</div>
+</div>
+<div class="flex flex-col md:items-end justify-between">
+<div class="grid grid-cols-2 gap-8 text-right">
+<div class="space-y-3">
+<a class="block text-on-primary-container opacity-80 hover:opacity-100 transition-opacity" href="#">Contact Us</a>
+<a class="block text-on-primary-container opacity-80 hover:opacity-100 transition-opacity" href="#">Branch Address</a>
+</div>
+<div class="space-y-3">
+<a class="block text-on-primary-container opacity-80 hover:opacity-100 transition-opacity" href="#">WFGIA Disclosures</a>
+<a class="block text-on-primary-container opacity-80 hover:opacity-100 transition-opacity" href="#">Privacy Policy</a>
+</div>
+</div>
+<div class="mt-12 text-on-primary-container text-label-sm opacity-60 text-right">
+                © 2024 AB Global Consulting. Angel Burgos, Agent Code: F6D9U, FL License: G328926.
+            </div>
+</div>
+</footer>
+<script>
+        // Simple search interaction
+        document.querySelector('input').addEventListener('input', (e) => {
+            console.log('Searching for:', e.target.value);
+            // This would normally trigger a filtered grid view
+        });
+
+        // Tab selection visual logic
+        const categoryButtons = document.querySelectorAll('button.whitespace-nowrap');
+        categoryButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                categoryButtons.forEach(b => b.classList.remove('bg-secondary-container', 'font-bold'));
+                btn.classList.add('bg-secondary-container', 'font-bold');
+            });
+        });
+    </script>
+</body></html>

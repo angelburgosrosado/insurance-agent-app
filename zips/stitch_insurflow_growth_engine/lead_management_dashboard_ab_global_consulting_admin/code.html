@@ -1,0 +1,398 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Lead Management | AB Global Consulting</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Work+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid #c6c6cd;
+        }
+        .tonal-sidebar {
+            border-right: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .status-chip {
+            padding: 2px 10px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "outline-variant": "#c6c6cd",
+                      "on-primary": "#ffffff",
+                      "surface-container-highest": "#d3e4fe",
+                      "primary": "#000000",
+                      "on-primary-fixed-variant": "#3f465c",
+                      "on-secondary-container": "#fefcff",
+                      "secondary-container": "#316bf3",
+                      "secondary-fixed-dim": "#b4c5ff",
+                      "on-secondary": "#ffffff",
+                      "primary-container": "#131b2e",
+                      "surface-dim": "#cbdbf5",
+                      "tertiary-container": "#171c1f",
+                      "surface": "#f8f9ff",
+                      "surface-container-low": "#eff4ff",
+                      "on-tertiary-fixed": "#171c1f",
+                      "on-surface-variant": "#45464d",
+                      "on-error": "#ffffff",
+                      "error": "#ba1a1a",
+                      "inverse-surface": "#213145",
+                      "surface-tint": "#565e74",
+                      "secondary-fixed": "#dbe1ff",
+                      "background": "#f8f9ff",
+                      "on-error-container": "#93000a",
+                      "on-background": "#0b1c30",
+                      "tertiary-fixed": "#dfe3e7",
+                      "on-secondary-fixed-variant": "#003ea8",
+                      "surface-container": "#e5eeff",
+                      "on-tertiary-container": "#808488",
+                      "surface-bright": "#f8f9ff",
+                      "secondary": "#0051d5",
+                      "tertiary-fixed-dim": "#c3c7cb",
+                      "on-primary-fixed": "#131b2e",
+                      "inverse-on-surface": "#eaf1ff",
+                      "surface-container-high": "#dce9ff",
+                      "on-surface": "#0b1c30",
+                      "on-secondary-fixed": "#00174b",
+                      "tertiary": "#000000",
+                      "outline": "#76777d",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-fixed": "#dae2fd",
+                      "on-tertiary-fixed-variant": "#43474b",
+                      "surface-variant": "#d3e4fe",
+                      "primary-fixed-dim": "#bec6e0",
+                      "on-tertiary": "#ffffff",
+                      "on-primary-container": "#7c839b",
+                      "inverse-primary": "#bec6e0",
+                      "error-container": "#ffdad6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "margin-mobile": "16px",
+                      "margin-desktop": "40px",
+                      "container-max": "1280px",
+                      "unit": "8px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "display-lg": ["Manrope"],
+                      "display-lg-mobile": ["Manrope"],
+                      "headline-md": ["Manrope"],
+                      "label-sm": ["Work Sans"],
+                      "body-md": ["Work Sans"],
+                      "body-lg": ["Work Sans"]
+              },
+              "fontSize": {
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "label-sm": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex overflow-hidden">
+<!-- SideNavBar (The Anchor) -->
+<aside class="hidden md:flex flex-col h-full w-64 bg-surface-container-low dark:bg-primary-container tonal-sidebar py-unit px-4 z-50">
+<div class="mb-10 px-2">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">AB Global</h1>
+<p class="text-[10px] uppercase tracking-widest text-outline">Admin Panel</p>
+</div>
+<nav class="flex-1 space-y-2">
+<!-- Navigation items from JSON -->
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-primary-container hover:bg-surface-container-highest transition-colors rounded-full font-label-sm" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-full font-label-sm shadow-sm" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span>Lead Management</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-primary-container hover:bg-surface-container-highest transition-colors rounded-full font-label-sm" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span>Campaign Tracking</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-primary-container hover:bg-surface-container-highest transition-colors rounded-full font-label-sm" href="#">
+<span class="material-symbols-outlined" data-icon="fact_check">fact_check</span>
+<span>Compliance Status</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 border-t border-outline-variant">
+<div class="flex items-center gap-3 mb-6 px-2">
+<div class="w-10 h-10 rounded-full bg-secondary text-white flex items-center justify-center font-bold">AB</div>
+<div class="overflow-hidden">
+<p class="font-label-sm text-on-surface truncate">Angel Burgos</p>
+<p class="text-[11px] text-outline truncate">License: G328926</p>
+</div>
+</div>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant font-label-sm hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant font-label-sm hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span>Support</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-screen overflow-y-auto relative">
+<!-- Top Navigation Area (Mobile and Action bar) -->
+<header class="flex justify-between items-center px-margin-desktop h-20 w-full sticky top-0 bg-background/80 backdrop-blur-md z-40">
+<div class="flex items-center gap-4">
+<button class="md:hidden p-2 text-primary">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h2 class="font-headline-md text-headline-md text-primary">Lead Management</h2>
+</div>
+<div class="flex items-center gap-gutter">
+<div class="hidden lg:flex items-center gap-2 px-3 py-1.5 bg-surface-container rounded-lg">
+<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+<span class="text-[12px] font-semibold text-on-surface">GA4 Sync Active</span>
+</div>
+<button class="flex items-center gap-2 bg-primary text-on-primary px-6 py-2.5 rounded-full font-label-sm hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+                    New Campaign
+                </button>
+</div>
+</header>
+<section class="p-margin-desktop space-y-gutter max-w-container-max w-full mx-auto">
+<!-- Quick Metrics Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<div class="bg-surface-container-lowest p-6 border border-outline-variant rounded-xl flex flex-col gap-2">
+<div class="flex justify-between items-start">
+<span class="text-on-surface-variant font-label-sm">Total Leads (MTD)</span>
+<span class="material-symbols-outlined text-secondary" data-icon="trending_up">trending_up</span>
+</div>
+<p class="font-display-lg text-primary leading-none">1,248</p>
+<p class="text-[12px] text-green-600 font-bold">+12.5% from last month</p>
+</div>
+<div class="bg-surface-container-lowest p-6 border border-outline-variant rounded-xl flex flex-col gap-2">
+<div class="flex justify-between items-start">
+<span class="text-on-surface-variant font-label-sm">Conversion Rate</span>
+<span class="material-symbols-outlined text-secondary" data-icon="pie_chart">pie_chart</span>
+</div>
+<p class="font-display-lg text-primary leading-none">24.2%</p>
+<p class="text-[12px] text-on-surface-variant">Benchmark: 18%</p>
+</div>
+<div class="bg-surface-container-lowest p-6 border border-outline-variant rounded-xl flex flex-col gap-2">
+<div class="flex justify-between items-start">
+<span class="text-on-surface-variant font-label-sm">Top Source</span>
+<span class="material-symbols-outlined text-secondary" data-icon="share">share</span>
+</div>
+<p class="font-display-lg text-primary leading-none truncate">Direct Search</p>
+<p class="text-[12px] text-on-surface-variant">42% of total traffic</p>
+</div>
+<div class="bg-surface-container-lowest p-6 border border-outline-variant rounded-xl flex flex-col gap-2">
+<div class="flex justify-between items-start">
+<span class="text-on-surface-variant font-label-sm">Pending Follow-ups</span>
+<span class="material-symbols-outlined text-error" data-icon="notification_important">notification_important</span>
+</div>
+<p class="font-display-lg text-primary leading-none">14</p>
+<p class="text-[12px] text-error font-bold">Action required today</p>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Main Table Section -->
+<div class="lg:col-span-2 space-y-gutter">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
+<div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-headline-md text-primary">Recent Lead Submissions</h3>
+<button class="text-secondary font-label-sm hover:underline">View All</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low text-on-surface-variant font-label-sm">
+<tr>
+<th class="px-6 py-3 border-b border-outline-variant">Name</th>
+<th class="px-6 py-3 border-b border-outline-variant">Type</th>
+<th class="px-6 py-3 border-b border-outline-variant">Status</th>
+<th class="px-6 py-3 border-b border-outline-variant">Source</th>
+<th class="px-6 py-3 border-b border-outline-variant text-right">Action</th>
+</tr>
+</thead>
+<tbody class="text-body-md text-on-surface">
+<tr class="hover:bg-surface transition-colors">
+<td class="px-6 py-4 border-b border-outline-variant font-semibold">Julianna Valez</td>
+<td class="px-6 py-4 border-b border-outline-variant">LTC Planning</td>
+<td class="px-6 py-4 border-b border-outline-variant">
+<span class="status-chip bg-surface-container-highest text-secondary">New</span>
+</td>
+<td class="px-6 py-4 border-b border-outline-variant text-on-surface-variant text-sm">Transamerica Direct</td>
+<td class="px-6 py-4 border-b border-outline-variant text-right">
+<button class="p-1 hover:bg-surface-container rounded transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface transition-colors">
+<td class="px-6 py-4 border-b border-outline-variant font-semibold">Robert Chen</td>
+<td class="px-6 py-4 border-b border-outline-variant">Annuity</td>
+<td class="px-6 py-4 border-b border-outline-variant">
+<span class="status-chip bg-yellow-100 text-yellow-800">In-Progress</span>
+</td>
+<td class="px-6 py-4 border-b border-outline-variant text-on-surface-variant text-sm">Google Ads</td>
+<td class="px-6 py-4 border-b border-outline-variant text-right">
+<button class="p-1 hover:bg-surface-container rounded transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface transition-colors">
+<td class="px-6 py-4 border-b border-outline-variant font-semibold">ABG Global Tech</td>
+<td class="px-6 py-4 border-b border-outline-variant">Business</td>
+<td class="px-6 py-4 border-b border-outline-variant">
+<span class="status-chip bg-green-100 text-green-800">Converted</span>
+</td>
+<td class="px-6 py-4 border-b border-outline-variant text-on-surface-variant text-sm">Referral</td>
+<td class="px-6 py-4 border-b border-outline-variant text-right">
+<button class="p-1 hover:bg-surface-container rounded transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface transition-colors">
+<td class="px-6 py-4 border-b border-outline-variant font-semibold">Marcus Thorne</td>
+<td class="px-6 py-4 border-b border-outline-variant">Life Insurance</td>
+<td class="px-6 py-4 border-b border-outline-variant">
+<span class="status-chip bg-surface-container-highest text-secondary">New</span>
+</td>
+<td class="px-6 py-4 border-b border-outline-variant text-on-surface-variant text-sm">FB Campaign</td>
+<td class="px-6 py-4 border-b border-outline-variant text-right">
+<button class="p-1 hover:bg-surface-container rounded transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Side Panels: Compliance & Integrations -->
+<div class="space-y-gutter">
+<!-- Compliance Status Indicator -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1.5 h-full bg-error"></div>
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-error" data-icon="policy">policy</span>
+<h4 class="font-headline-md text-primary text-lg">Compliance Alert</h4>
+</div>
+<p class="text-sm font-bold text-on-surface mb-2">Transamerica LTC Restrictions</p>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+                            New state-specific disclosure requirements effective for FL and CA as of June 1st. 
+                            Ensure all Long-Term Care illustrations are updated to Version 4.2.
+                        </p>
+<div class="mt-4 flex flex-col gap-2">
+<a class="flex items-center justify-between p-2 bg-surface rounded border border-outline-variant hover:bg-surface-container transition-colors" href="#">
+<span class="text-xs font-semibold">Review Guidelines</span>
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</a>
+</div>
+</div>
+<!-- Sync Status with GA4/Marketing -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6">
+<h4 class="font-headline-md text-primary text-lg mb-4">Marketing Sync</h4>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-cover bg-center" data-alt="A minimalist tech logo representing Google Analytics 4, styled in a clean professional navy and white corporate aesthetic for a financial dashboard." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAwXuzLK1MKvRZKCsgHrgU751-tX3yRZ0zRDmy25AF2QN-WGi-fZWNeSF1mW6mAk4KJaOazJ1Vsw-uysjQ5th4kxND1A-i2Vj1eOod1gDHxnpN0oPYMoQ7ATMmB81OmVUnmebYo5OquNbGzPTCF_2Qddve2KcSbJ35ZyKOwdbYrQ8HceYeoFYZCSES8zSye8f_qQvZQt_jtMDduyey5lI7zG2MjtqThRrUyZrP6uMXsvnlZbSRKgOg')"></div>
+<span class="font-label-sm">GA4 Data Pipeline</span>
+</div>
+<span class="text-[10px] text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded border border-green-200">SYNCED</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-cover bg-center" data-alt="A clean icon representing digital marketing automation and CRM integration, designed in a sophisticated corporate style with deep blue and soft grey tones." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDoW7wqO4t6s2y5WNjzRpfWT7SFVRbmMVRXhapQevZjYCUmqbLyycMFhUnfNq0W4M8FfD0QGGQd6nKydoNEsP2rioNS4RzBtecJCz59YeqSFQtupNyvwmNMV0FaGFTuT8VmPY1PFjmi-58N2-7NWA3WnyWaSTTQLnGaGMfPFs4CRjMcI5dgEajJrwoGB-JrbGEoX646Ssl0s9RZ3q1UWNKHpF2K94W1KsWnInlar5KvpvFR9MMHgc0')"></div>
+<span class="font-label-sm">Mailchimp API</span>
+</div>
+<span class="text-[10px] text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded border border-green-200">SYNCED</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-cover bg-center" data-alt="A professional digital icon for Meta Facebook marketing tools, utilizing a minimalist corporate palette of trustworthy navy and light slate." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBeAOzapD0nv5qRfDI7kQmIv8uPKit37Ah_gjGABbxjpvwWg2wNgHe65Rpw3ZetnMsr_SQGI0bSYXvNE6uxBJU7aFdujNfUbfZRJI350aBaWRk5Z2vkSAV5xNeFEb4M1r3-kUCpfIrW_hF45-RQMQaaS6ufGg5O2BzejkHefeWPA6pOnz0ggsr-GUh9dMPpsyG8s0w5MebIop2vT2MtanisbYVy-Fv9jLaC289Ga6eBRBPD5x43lmw')"></div>
+<span class="font-label-sm">Meta Pixel</span>
+</div>
+<span class="text-[10px] text-yellow-600 font-bold bg-yellow-50 px-2 py-0.5 rounded border border-yellow-200">DELAYED</span>
+</div>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant">
+<p class="text-[11px] text-on-surface-variant">Last successful full sync: 4 minutes ago</p>
+<button class="mt-2 w-full py-2 text-secondary font-label-sm border border-secondary rounded-lg hover:bg-secondary-container transition-colors">
+                                Force Global Refresh
+                            </button>
+</div>
+</div>
+<!-- Visual Accent Card -->
+<div class="relative rounded-xl overflow-hidden h-40 group shadow-sm">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" data-alt="An abstract high-end photographic composition of architectural glass and steel skyscrapers, symbolizing financial growth and corporate stability. The lighting is bright and modern, conforming to a sophisticated light-mode UI aesthetic with professional blue and white tints." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBOoXDZE6NTVtqbGA1BGig81xS5-1HuPcyNmmEzB4D48DQmwedUDseZT8Ldp1TqBuiKFqadiEVZY9eKDbJsKnyd8kFNzizezy2R0FkY95UHjY3fTaNGgT2LSmJkodC2rddezRT___UP81pjnP_0ySU4Eq3zVCLYNyfhLWGPFMwKOZE6zyv3t_csAX1pg_7fc-LsVwhRmbclsPwwhJrSvwE5GbrFY4iDS6DSobsQgX7Vvx8GuQ_FVxU')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex flex-col justify-end p-4">
+<p class="text-white font-bold font-headline-md text-sm">Strategic Advisory</p>
+<p class="text-white/80 text-xs">Quarterly growth review available.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="mt-auto w-full py-gutter px-margin-desktop bg-primary-container dark:bg-tertiary-container grid grid-cols-1 md:grid-cols-2 gap-gutter max-w-container-max mx-auto">
+<div class="space-y-2">
+<h3 class="font-headline-md text-headline-md font-bold text-on-primary-fixed">AB Global Consulting</h3>
+<p class="text-on-primary-container font-body-md opacity-80 max-w-sm">
+                    Strategic lead intelligence for independent financial advisors specializing in high-stakes protection and legacy planning.
+                </p>
+</div>
+<div class="flex flex-col md:items-end justify-between">
+<div class="flex gap-4 mb-4">
+<a class="text-on-primary-container opacity-80 hover:opacity-100 transition-opacity font-body-md" href="#">Contact Us</a>
+<a class="text-on-primary-container opacity-80 hover:opacity-100 transition-opacity font-body-md" href="#">WFGIA Disclosures</a>
+<a class="text-on-primary-container opacity-80 hover:opacity-100 transition-opacity font-body-md" href="#">Privacy Policy</a>
+</div>
+<p class="text-[12px] text-on-primary-container opacity-60">
+                    © 2024 AB Global Consulting. Angel Burgos, Agent Code: F6D9U, FL License: G328926.
+                </p>
+</div>
+</footer>
+</main>
+<!-- FAB Suppression: Not rendered on Admin/Dashboard as per logic "Suppress the FAB on Settings, Profile, Details, and Transactional screens" -->
+<script>
+        // Simple micro-interactions
+        document.querySelectorAll('tr').forEach(row => {
+            row.addEventListener('click', () => {
+                row.style.transform = 'scale(0.99)';
+                setTimeout(() => {
+                    row.style.transform = 'scale(1)';
+                }, 100);
+            });
+        });
+
+        // Search Bar (hidden in JSON top bar, so we keep it internal to dashboard if needed)
+        // Here we just provide basic console log for demonstration
+        console.log("Lead Management Dashboard Loaded: AB Global Consulting");
+    </script>
+</body></html>

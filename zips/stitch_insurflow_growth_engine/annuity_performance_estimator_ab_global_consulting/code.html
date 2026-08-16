@@ -1,0 +1,454 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Annuity Performance Estimator | AB Global Consulting</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Work+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-container": "#808488",
+                        "on-secondary-fixed-variant": "#003ea8",
+                        "on-background": "#0b1c30",
+                        "surface-container-low": "#eff4ff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-secondary-fixed": "#00174b",
+                        "tertiary-fixed-dim": "#c3c7cb",
+                        "primary-container": "#131b2e",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#565e74",
+                        "secondary-fixed-dim": "#b4c5ff",
+                        "error-container": "#ffdad6",
+                        "primary": "#000000",
+                        "on-primary-fixed": "#131b2e",
+                        "primary-fixed-dim": "#bec6e0",
+                        "outline": "#76777d",
+                        "on-tertiary-fixed-variant": "#43474b",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-surface": "#0b1c30",
+                        "surface-container": "#e5eeff",
+                        "secondary-container": "#316bf3",
+                        "tertiary-container": "#171c1f",
+                        "primary-fixed": "#dae2fd",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#dbe1ff",
+                        "outline-variant": "#c6c6cd",
+                        "tertiary": "#000000",
+                        "on-surface-variant": "#45464d",
+                        "surface": "#f8f9ff",
+                        "secondary": "#0051d5",
+                        "on-error-container": "#93000a",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#171c1f",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "on-secondary-container": "#fefcff",
+                        "surface-container-high": "#dce9ff",
+                        "inverse-surface": "#213145",
+                        "on-error": "#ffffff",
+                        "surface-variant": "#d3e4fe",
+                        "on-primary-container": "#7c839b",
+                        "inverse-primary": "#bec6e0",
+                        "tertiary-fixed": "#dfe3e7",
+                        "surface-bright": "#f8f9ff",
+                        "background": "#f8f9ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "40px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Work Sans"],
+                        "body-md": ["Work Sans"],
+                        "body-lg": ["Work Sans"],
+                        "headline-md": ["Manrope"],
+                        "display-lg-mobile": ["Manrope"],
+                        "display-lg": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .slider-thumb::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #0051d5;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(198, 198, 205, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- TopNavBar (Shared Component) -->
+<header class="bg-surface-container-lowest border-b border-outline-variant sticky top-0 z-50">
+<nav class="flex justify-between items-center px-margin-desktop w-full max-w-container-max mx-auto h-20">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-[28px] md:text-display-lg font-bold text-primary tracking-tight">AB Global Consulting</span>
+<div class="hidden lg:flex gap-6 items-center">
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md text-body-md" href="#">Insurance</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md text-body-md" href="#">LTC Planning</a>
+<a class="text-secondary font-bold border-b-2 border-secondary font-body-md text-body-md" href="#">Retirement</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md text-body-md" href="#">Business</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden md:block text-on-surface-variant font-label-sm hover:text-primary transition-colors">Español</button>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-full font-label-sm active:scale-95 transition-transform">Schedule Consultation</button>
+</div>
+</nav>
+</header>
+<main class="w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-12">
+<!-- Hero Section -->
+<section class="mb-12">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+<div class="max-w-2xl">
+<span class="text-secondary font-label-sm uppercase tracking-widest block mb-2">Financial Tools / Herramientas Financieras</span>
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-background leading-tight mb-4">
+                        Annuity Performance Estimator <br>
+<span class="text-on-surface-variant font-medium">Estimador de Rendimiento de Anualidades</span>
+</h1>
+<p class="text-body-lg text-on-surface-variant font-body-lg max-w-xl">
+                        Map out your legacy. Compare how different annuity structures can secure your retirement income while protecting your hard-earned principal.
+                    </p>
+</div>
+<div class="flex items-center gap-3 bg-surface-container-high px-4 py-2 rounded-lg border border-outline-variant">
+<span class="material-symbols-outlined text-secondary">verified_user</span>
+<div>
+<p class="text-[10px] font-bold text-secondary uppercase leading-none">FL License: G328926</p>
+<p class="text-[12px] text-on-surface-variant">Angel Burgos, Senior Consultant</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Tool Layout (Bento Style) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Sidebar: Inputs -->
+<aside class="lg:col-span-4 space-y-6">
+<div class="glass-card p-6 rounded-xl space-y-8">
+<h3 class="font-headline-md text-headline-md text-primary border-l-4 border-secondary pl-4">Custom Configuration</h3>
+<!-- Investment -->
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<label class="font-label-sm text-on-surface-variant">Initial Investment / Inversión Inicial</label>
+<span class="font-bold text-secondary text-lg" id="invest-val-display">$100,000</span>
+</div>
+<input class="w-full h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer slider-thumb" id="invest-slider" max="1000000" min="10000" step="5000" type="range" value="100000">
+<div class="flex justify-between text-[12px] text-outline">
+<span>$10k</span>
+<span>$1M</span>
+</div>
+</div>
+<!-- Contribution -->
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<label class="font-label-sm text-on-surface-variant">Monthly Addition / Adición Mensual</label>
+<span class="font-bold text-secondary text-lg" id="contribute-val-display">$500</span>
+</div>
+<input class="w-full h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer slider-thumb" id="contribute-slider" max="5000" min="0" step="100" type="range" value="500">
+<div class="flex justify-between text-[12px] text-outline">
+<span>$0</span>
+<span>$5k</span>
+</div>
+</div>
+<!-- Years -->
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<label class="font-label-sm text-on-surface-variant">Years to Retirement / Años para Jubilación</label>
+<span class="font-bold text-secondary text-lg" id="years-val-display">20 Years</span>
+</div>
+<input class="w-full h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer slider-thumb" id="years-slider" max="40" min="1" step="1" type="range" value="20">
+</div>
+<!-- Risk Profile Selection -->
+<div class="space-y-4">
+<label class="font-label-sm text-on-surface-variant block">Risk Strategy / Estrategia de Riesgo</label>
+<div class="space-y-2">
+<button class="risk-btn w-full flex items-center justify-between p-4 rounded-lg border border-outline-variant bg-white text-left hover:border-secondary transition-all group" data-risk="fixed" onclick="setRisk('fixed')">
+<div>
+<p class="font-bold text-on-surface group-aria-pressed:text-secondary">Principal Protection</p>
+<p class="text-[12px] text-on-surface-variant">Fixed Annuity - Guaranteed Growth</p>
+</div>
+<span class="material-symbols-outlined text-outline group-aria-pressed:text-secondary">shield</span>
+</button>
+<button aria-pressed="true" class="risk-btn w-full flex items-center justify-between p-4 rounded-lg border-2 border-secondary bg-secondary-container/10 text-left transition-all group" data-risk="balanced" onclick="setRisk('balanced')">
+<div>
+<p class="font-bold text-secondary">Balanced Growth</p>
+<p class="text-[12px] text-on-surface-variant">Fixed Indexed - S&amp;P 500 Caps</p>
+</div>
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">balance</span>
+</button>
+<button class="risk-btn w-full flex items-center justify-between p-4 rounded-lg border border-outline-variant bg-white text-left hover:border-secondary transition-all group" data-risk="market" onclick="setRisk('market')">
+<div>
+<p class="font-bold text-on-surface group-aria-pressed:text-secondary">Market Opportunity</p>
+<p class="text-[12px] text-on-surface-variant">RILA - Buffered Market Upside</p>
+</div>
+<span class="material-symbols-outlined text-outline group-aria-pressed:text-secondary">trending_up</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Trust Badge -->
+<div class="bg-primary-container p-6 rounded-xl text-white">
+<p class="text-[12px] font-bold uppercase text-on-primary-container mb-4">Institutional Partners</p>
+<div class="flex flex-wrap gap-4 opacity-70 grayscale contrast-125">
+<img alt="Nationwide" class="h-6 object-contain brightness-0 invert" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDoaLaE1Nxr1ZnwhWFBd3Uvypi_DzjAK312o-4pJjO0Xilk00kcpTItrz_WO3RQAO-cyCwLHn3Q0di9piy3JAKql5X57s9jJ7dwnMnMId5YZP7DWWtWBMGjylasMmvJT2D2ugr60JuDWM7d-HHt3nDZniXkHgM6DCKgPxd_h-2T9jX6_1aqpuTTSLf_o0oyXL6iIfWgS6jokd70hVV2tdPTLC78AytvAYVi-vcXeB1mXvnGA5LGg4g">
+<!-- Simplified placeholder for partner logos -->
+</div>
+</div>
+</aside>
+<!-- Main Content: Results -->
+<div class="lg:col-span-8 space-y-8">
+<!-- Performance Overview -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm">
+<p class="font-label-sm text-on-surface-variant">Estimated Value / Valor Estimado</p>
+<h2 class="font-display-lg text-[32px] text-primary mt-1" id="final-value">$452,890</h2>
+<div class="mt-2 flex items-center text-green-600 text-sm font-bold">
+<span class="material-symbols-outlined text-sm mr-1">arrow_upward</span>
+                            +352% Growth
+                        </div>
+</div>
+<div class="bg-white p-6 rounded-xl border border-outline-variant shadow-sm">
+<p class="font-label-sm text-on-surface-variant">Monthly Income / Ingreso Mensual</p>
+<h2 class="font-display-lg text-[32px] text-secondary mt-1" id="monthly-income">$3,150</h2>
+<p class="text-[12px] text-on-surface-variant">Projected Lifetime Payment</p>
+</div>
+<div class="bg-secondary p-6 rounded-xl text-white flex flex-col justify-between">
+<div>
+<p class="font-label-sm text-on-secondary opacity-80">Protection Level</p>
+<h2 class="font-headline-md text-white mt-1">100% Principal</h2>
+</div>
+<p class="text-[12px]">Guaranteed by Nationwide®</p>
+</div>
+</div>
+<!-- Projection Chart Placeholder -->
+<div class="glass-card p-8 rounded-xl min-h-[400px] flex flex-col">
+<div class="flex justify-between items-center mb-8">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary">Projection Over Time</h3>
+<p class="text-on-surface-variant text-sm">Proyección de Crecimiento a Largo Plazo</p>
+</div>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-secondary"></span>
+<span class="text-xs font-bold text-on-surface">Market Performance</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-outline"></span>
+<span class="text-xs font-bold text-on-surface">Guaranteed Minimum</span>
+</div>
+</div>
+</div>
+<div class="flex-grow chart-container flex items-end justify-between gap-2 border-b border-outline-variant pb-2 px-4">
+<!-- Simulated Chart Bars -->
+<div class="w-full bg-surface-container h-8 rounded-t"></div>
+<div class="w-full bg-surface-container h-12 rounded-t"></div>
+<div class="w-full bg-surface-container h-16 rounded-t"></div>
+<div class="w-full bg-surface-container h-24 rounded-t"></div>
+<div class="w-full bg-surface-container-high h-32 rounded-t"></div>
+<div class="w-full bg-secondary/20 h-40 rounded-t"></div>
+<div class="w-full bg-secondary/40 h-52 rounded-t"></div>
+<div class="w-full bg-secondary/60 h-64 rounded-t"></div>
+<div class="w-full bg-secondary/80 h-72 rounded-t"></div>
+<div class="w-full bg-secondary h-80 rounded-t"></div>
+</div>
+<div class="flex justify-between mt-4 text-[12px] text-outline px-4">
+<span>Today</span>
+<span>5 Years</span>
+<span>10 Years</span>
+<span>15 Years</span>
+<span>20 Years</span>
+</div>
+</div>
+<!-- Product Solutions -->
+<div class="space-y-4">
+<h4 class="font-label-sm text-secondary uppercase font-bold tracking-widest">Recommended Solutions / Soluciones Recomendadas</h4>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="group border border-outline-variant rounded-xl p-5 hover:border-secondary transition-all cursor-pointer bg-white">
+<div class="flex justify-between items-start mb-3">
+<h5 class="font-bold text-primary">Nationwide Defender® (RILA)</h5>
+<span class="bg-surface-container-highest text-[10px] font-bold px-2 py-1 rounded">MOST POPULAR</span>
+</div>
+<p class="text-sm text-on-surface-variant mb-4">Captures market growth with a 10% downside buffer. Ideal for balancing growth and risk.</p>
+<div class="flex items-center text-secondary font-bold text-sm">
+                                Learn More <span class="material-symbols-outlined ml-1 text-[18px] group-hover:translate-x-1 transition-transform">chevron_right</span>
+</div>
+</div>
+<div class="group border border-outline-variant rounded-xl p-5 hover:border-secondary transition-all cursor-pointer bg-white">
+<div class="flex justify-between items-start mb-3">
+<h5 class="font-bold text-primary">Nationwide Peak® 10</h5>
+<span class="bg-surface-container-highest text-[10px] font-bold px-2 py-1 rounded">SECURE INCOME</span>
+</div>
+<p class="text-sm text-on-surface-variant mb-4">A fixed indexed annuity designed for maximum principal protection and lifetime income.</p>
+<div class="flex items-center text-secondary font-bold text-sm">
+                                Learn More <span class="material-symbols-outlined ml-1 text-[18px] group-hover:translate-x-1 transition-transform">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+<!-- CTA -->
+<div class="bg-surface-container-low rounded-2xl p-8 text-center border-2 border-dashed border-secondary/30">
+<h3 class="font-headline-md text-headline-md mb-2">Ready for a Personalized Analysis?</h3>
+<p class="text-on-surface-variant mb-6">Receive a comprehensive bilingual retirement PDF report customized to your exact financial goals.</p>
+<button class="bg-secondary text-white px-10 py-4 rounded-full font-bold text-lg hover:shadow-xl active:scale-95 transition-all">
+                        Request a Personalized Analysis / Solicitar Análisis
+                    </button>
+<p class="text-[12px] text-on-surface-variant mt-4">Free consultation with a licensed professional. No obligation.</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer / Compliance -->
+<footer class="bg-primary-container text-on-primary-container py-12 mt-20 border-t border-outline/20">
+<div class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="space-y-6">
+<h2 class="font-headline-md text-on-primary-fixed">AB Global Consulting</h2>
+<div class="flex gap-4">
+<div class="p-3 bg-white/5 rounded-lg border border-white/10 w-fit">
+<p class="text-[10px] text-on-primary-container font-bold uppercase">Florida Office</p>
+<p class="text-sm">Miami Financial District, FL</p>
+</div>
+<div class="p-3 bg-white/5 rounded-lg border border-white/10 w-fit">
+<p class="text-[10px] text-on-primary-container font-bold uppercase">Contact</p>
+<p class="text-sm">info@abglobalconsulting.com</p>
+</div>
+</div>
+<div class="pt-4 flex flex-wrap gap-4 text-sm font-label-sm">
+<a class="hover:text-white transition-colors" href="#">Contact Us</a>
+<a class="hover:text-white transition-colors" href="#">Branch Address</a>
+<a class="hover:text-white transition-colors" href="#">WFGIA Disclosures</a>
+<a class="hover:text-white transition-colors underline text-secondary-fixed" href="#">Privacy Policy</a>
+</div>
+</div>
+<div class="bg-white/5 p-6 rounded-xl space-y-4">
+<h4 class="font-bold text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-fixed">info</span>
+                    Important Disclosures
+                </h4>
+<p class="text-[12px] leading-relaxed opacity-80">
+                    Projections are for illustrative purposes only and do not constitute a guarantee of future performance. Fixed and indexed annuities are insurance products, not investments, and are subject to the claims-paying ability of the issuing company. Early withdrawals may be subject to surrender charges and tax penalties. Nationwide Defender® and Nationwide Peak® 10 are registered trademarks of Nationwide Mutual Insurance Company. Consult a licensed professional for a personalized quote.
+                </p>
+<div class="border-t border-white/10 pt-4">
+<p class="text-[11px] opacity-60">
+                        © 2024 AB Global Consulting. Angel Burgos, Agent Code: F6D9U, FL License: G328926. All rights reserved.
+                    </p>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        const sliders = {
+            invest: document.getElementById('invest-slider'),
+            contribute: document.getElementById('contribute-slider'),
+            years: document.getElementById('years-slider')
+        };
+
+        const displays = {
+            invest: document.getElementById('invest-val-display'),
+            contribute: document.getElementById('contribute-val-display'),
+            years: document.getElementById('years-val-display'),
+            finalValue: document.getElementById('final-value'),
+            monthlyIncome: document.getElementById('monthly-income')
+        };
+
+        let currentRisk = 'balanced';
+
+        function formatCurrency(val) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
+        }
+
+        function calculate() {
+            const P = parseInt(sliders.invest.value);
+            const PMT = parseInt(sliders.contribute.value);
+            const n = 12;
+            const t = parseInt(sliders.years.value);
+            
+            let r = 0.05; // Base rate
+            if(currentRisk === 'fixed') r = 0.035;
+            if(currentRisk === 'market') r = 0.075;
+
+            // Compound interest formula with monthly additions
+            // A = P(1 + r/n)^(nt) + PMT × {[(1 + r/n)^(nt) - 1] / (r/n)}
+            const compoundInterest = P * Math.pow(1 + r/n, n * t);
+            const annuityFactor = PMT * ((Math.pow(1 + r/n, n * t) - 1) / (r/n));
+            const final = compoundInterest + annuityFactor;
+
+            displays.invest.textContent = formatCurrency(P);
+            displays.contribute.textContent = formatCurrency(PMT);
+            displays.years.textContent = `${t} Years`;
+            displays.finalValue.textContent = formatCurrency(final);
+            
+            // Estimated monthly income (simplified 7% payout rule)
+            const monthly = (final * 0.07) / 12;
+            displays.monthlyIncome.textContent = formatCurrency(monthly);
+
+            // Update UI Bars (simplified animation)
+            const bars = document.querySelectorAll('.chart-container div');
+            bars.forEach((bar, idx) => {
+                const growthFactor = (idx + 1) / bars.length;
+                const height = 20 + (growthFactor * 80 * (final/1000000));
+                bar.style.height = `${Math.min(height, 95)}%`;
+            });
+        }
+
+        function setRisk(risk) {
+            currentRisk = risk;
+            document.querySelectorAll('.risk-btn').forEach(btn => {
+                btn.classList.remove('border-2', 'border-secondary', 'bg-secondary-container/10');
+                btn.classList.add('border', 'border-outline-variant', 'bg-white');
+                btn.removeAttribute('aria-pressed');
+                
+                if(btn.dataset.risk === risk) {
+                    btn.classList.remove('border', 'border-outline-variant', 'bg-white');
+                    btn.classList.add('border-2', 'border-secondary', 'bg-secondary-container/10');
+                    btn.setAttribute('aria-pressed', 'true');
+                }
+            });
+            calculate();
+        }
+
+        Object.values(sliders).forEach(s => s.addEventListener('input', calculate));
+        
+        // Initial calc
+        calculate();
+    </script>
+</body></html>

@@ -1,0 +1,375 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Personalized Quote Intake - AB Global Consulting</title>
+<!-- Google Fonts: Manrope & Work Sans -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Work+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline-variant": "#c6c6cd",
+                    "on-primary": "#ffffff",
+                    "surface-container-highest": "#d3e4fe",
+                    "primary": "#000000",
+                    "on-primary-fixed-variant": "#3f465c",
+                    "on-secondary-container": "#fefcff",
+                    "secondary-container": "#316bf3",
+                    "secondary-fixed-dim": "#b4c5ff",
+                    "on-secondary": "#ffffff",
+                    "primary-container": "#131b2e",
+                    "surface-dim": "#cbdbf5",
+                    "tertiary-container": "#171c1f",
+                    "surface": "#f8f9ff",
+                    "surface-container-low": "#eff4ff",
+                    "on-tertiary-fixed": "#171c1f",
+                    "on-surface-variant": "#45464d",
+                    "on-error": "#ffffff",
+                    "error": "#ba1a1a",
+                    "inverse-surface": "#213145",
+                    "surface-tint": "#565e74",
+                    "secondary-fixed": "#dbe1ff",
+                    "background": "#f8f9ff",
+                    "on-error-container": "#93000a",
+                    "on-background": "#0b1c30",
+                    "tertiary-fixed": "#dfe3e7",
+                    "on-secondary-fixed-variant": "#003ea8",
+                    "surface-container": "#e5eeff",
+                    "on-surface": "#0b1c30",
+                    "on-secondary-fixed": "#00174b",
+                    "tertiary": "#000000",
+                    "outline": "#76777d",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed": "#dae2fd",
+                    "on-tertiary-fixed-variant": "#43474b",
+                    "surface-variant": "#d3e4fe",
+                    "primary-fixed-dim": "#bec6e0",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-container": "#7c839b",
+                    "inverse-primary": "#bec6e0",
+                    "error-container": "#ffdad6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "margin-desktop": "40px",
+                    "container-max": "1280px",
+                    "unit": "8px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Manrope"],
+                    "display-lg-mobile": ["Manrope"],
+                    "headline-md": ["Manrope"],
+                    "label-sm": ["Work Sans"],
+                    "body-md": ["Work Sans"],
+                    "body-lg": ["Work Sans"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        display: inline-block;
+        vertical-align: middle;
+      }
+      .step-inactive { display: none; }
+      .step-active { display: block; animation: fadeIn 0.4s ease-out; }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .progress-bar { transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+      .card-glow:hover { border-color: #316bf3; box-shadow: 0 0 0 1px #316bf3; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-secondary-container">
+<!-- TopNavBar -->
+<header class="bg-surface-container-lowest border-b border-outline-variant w-full sticky top-0 z-50">
+<div class="flex justify-between items-center px-margin-desktop w-full max-w-container-max mx-auto h-20">
+<div class="flex items-center gap-4">
+<span class="font-display-lg text-display-lg font-bold text-primary">AB Global Consulting</span>
+</div>
+<nav class="hidden md:flex items-center gap-gutter">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Insurance</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">LTC Planning</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Retirement</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Business</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="text-on-surface font-label-sm border border-outline px-4 py-2 rounded-lg hover:bg-surface-container-high transition-colors">Español</button>
+<button class="bg-primary text-on-primary font-label-sm px-6 py-2.5 rounded-lg active:scale-95 transition-transform">Schedule Consultation</button>
+</div>
+</div>
+</header>
+<main class="min-h-[calc(100vh-80px)] flex flex-col items-center py-12 px-margin-mobile md:px-margin-desktop">
+<!-- Intake Header & Progress -->
+<div class="w-full max-w-3xl text-center mb-10">
+<h1 class="font-display-lg text-display-lg mb-4">Personalized Quote Request</h1>
+<p class="text-on-surface-variant max-w-xl mx-auto">Soluciones financieras personalizadas para proteger su legado. Complete los pasos a continuación para una cotización precisa.</p>
+<div class="mt-8 flex justify-between text-xs font-bold uppercase tracking-wider text-outline mb-2">
+<span class="text-secondary" id="step-label-1">Step 1: Basics</span>
+<span id="step-label-2">Step 2: Details</span>
+<span id="step-label-3">Step 3: Summary</span>
+</div>
+<div class="h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-secondary progress-bar" id="progress-bar" style="width: 33.33%;"></div>
+</div>
+</div>
+<!-- Form Container -->
+<div class="w-full max-w-3xl bg-surface-container-lowest border border-outline-variant p-gutter md:p-10 rounded-xl">
+<form id="quote-form">
+<!-- STEP 1: BASICS -->
+<div class="step-active" id="step-1">
+<div class="mb-8">
+<label class="block font-headline-md text-headline-md mb-2">What is your zip code? / ¿Cuál es su código postal?</label>
+<input class="w-full h-14 bg-surface-container-low border border-outline-variant rounded-lg px-4 focus:ring-2 focus:ring-secondary focus:border-secondary outline-none transition-all text-body-lg" placeholder="e.g. 33101" type="text">
+</div>
+<div class="mb-8">
+<p class="block font-headline-md text-headline-md mb-6">Type of coverage / Tipo de cobertura</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<label class="relative flex flex-col p-6 border border-outline-variant rounded-xl cursor-pointer card-glow transition-all group has-[:checked]:border-secondary has-[:checked]:bg-surface-container">
+<input class="absolute top-4 right-4 text-secondary focus:ring-secondary" name="coverage" type="radio" value="life">
+<span class="material-symbols-outlined text-4xl text-secondary mb-3">family_restroom</span>
+<span class="font-bold text-body-lg">Life Insurance</span>
+<span class="text-sm text-on-surface-variant">Protección para su familia / Family protection</span>
+</label>
+<label class="relative flex flex-col p-6 border border-outline-variant rounded-xl cursor-pointer card-glow transition-all group has-[:checked]:border-secondary has-[:checked]:bg-surface-container">
+<input class="absolute top-4 right-4 text-secondary focus:ring-secondary" name="coverage" type="radio" value="ltc">
+<span class="material-symbols-outlined text-4xl text-secondary mb-3">medical_services</span>
+<span class="font-bold text-body-lg">LTC Planning</span>
+<span class="text-sm text-on-surface-variant">Cuidados a largo plazo / Long-term care</span>
+</label>
+<label class="relative flex flex-col p-6 border border-outline-variant rounded-xl cursor-pointer card-glow transition-all group has-[:checked]:border-secondary has-[:checked]:bg-surface-container">
+<input class="absolute top-4 right-4 text-secondary focus:ring-secondary" name="coverage" type="radio" value="annuity">
+<span class="material-symbols-outlined text-4xl text-secondary mb-3">account_balance</span>
+<span class="font-bold text-body-lg">Annuity</span>
+<span class="text-sm text-on-surface-variant">Estabilidad en el retiro / Retirement stability</span>
+</label>
+<label class="relative flex flex-col p-6 border border-outline-variant rounded-xl cursor-pointer card-glow transition-all group has-[:checked]:border-secondary has-[:checked]:bg-surface-container">
+<input class="absolute top-4 right-4 text-secondary focus:ring-secondary" name="coverage" type="radio" value="business">
+<span class="material-symbols-outlined text-4xl text-secondary mb-3">business_center</span>
+<span class="font-bold text-body-lg">Business</span>
+<span class="text-sm text-on-surface-variant">Soluciones corporativas / Corporate solutions</span>
+</label>
+</div>
+</div>
+<div class="flex justify-end pt-6">
+<button class="bg-secondary text-on-secondary px-10 py-3.5 rounded-lg font-bold flex items-center gap-2 hover:bg-opacity-90 transition-all" onclick="nextStep(2)" type="button">
+                            Next Step / Próximo Paso <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- STEP 2: DETAILS -->
+<div class="step-inactive" id="step-2">
+<p class="block font-headline-md text-headline-md mb-8">Qualification Questions / Preguntas de Calificación</p>
+<div class="space-y-8">
+<div>
+<label class="block font-bold text-body-lg mb-3">Are you currently employed? / ¿Está empleado actualmente?</label>
+<div class="flex gap-4">
+<label class="flex-1 border border-outline-variant rounded-lg p-4 flex items-center gap-3 cursor-pointer has-[:checked]:border-secondary has-[:checked]:bg-surface-container">
+<input class="text-secondary" name="employed" type="radio"> Yes / Sí
+                                </label>
+<label class="flex-1 border border-outline-variant rounded-lg p-4 flex items-center gap-3 cursor-pointer has-[:checked]:border-secondary has-[:checked]:bg-surface-container">
+<input class="text-secondary" name="employed" type="radio"> No
+                                </label>
+</div>
+</div>
+<div>
+<label class="block font-bold text-body-lg mb-3">Tobacco use in the last 12 months? / ¿Consumo de tabaco en los últimos 12 meses?</label>
+<div class="flex gap-4">
+<label class="flex-1 border border-outline-variant rounded-lg p-4 flex items-center gap-3 cursor-pointer has-[:checked]:border-secondary has-[:checked]:bg-surface-container">
+<input class="text-secondary" name="tobacco" type="radio"> Yes / Sí
+                                </label>
+<label class="flex-1 border border-outline-variant rounded-lg p-4 flex items-center gap-3 cursor-pointer has-[:checked]:border-secondary has-[:checked]:bg-surface-container">
+<input class="text-secondary" name="tobacco" type="radio"> No
+                                </label>
+</div>
+</div>
+<div>
+<label class="block font-bold text-body-lg mb-3">Estimated Annual Income / Ingreso Anual Estimado</label>
+<select class="w-full h-14 bg-surface-container-low border border-outline-variant rounded-lg px-4 focus:ring-2 focus:ring-secondary outline-none transition-all">
+<option>$25,000 - $50,000</option>
+<option>$50,000 - $100,000</option>
+<option>$100,000 - $250,000</option>
+<option>$250,000+</option>
+</select>
+</div>
+</div>
+<div class="flex justify-between pt-10">
+<button class="text-on-surface-variant font-bold flex items-center gap-2 hover:text-primary" onclick="nextStep(1)" type="button">
+<span class="material-symbols-outlined">arrow_back</span> Back
+                        </button>
+<button class="bg-secondary text-on-secondary px-10 py-3.5 rounded-lg font-bold flex items-center gap-2 hover:bg-opacity-90 transition-all" onclick="nextStep(3)" type="button">
+                            View Summary / Ver Resumen <span class="material-symbols-outlined">analytics</span>
+</button>
+</div>
+</div>
+<!-- STEP 3: SUMMARY & REQUEST -->
+<div class="step-inactive" id="step-3">
+<p class="block font-headline-md text-headline-md mb-6">Quote Summary / Resumen de Cotización</p>
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant mb-8">
+<div class="flex justify-between items-center pb-4 border-b border-outline-variant">
+<span class="text-on-surface-variant">Product Category</span>
+<span class="font-bold text-secondary" id="summary-coverage">Life Insurance</span>
+</div>
+<div class="flex justify-between items-center py-4 border-b border-outline-variant">
+<span class="text-on-surface-variant">License Verification</span>
+<span class="flex items-center gap-2 text-sm bg-surface-container-high px-3 py-1 rounded-full font-bold">
+<span class="material-symbols-outlined text-green-600 text-lg">verified</span> FL G328926
+                            </span>
+</div>
+<div class="flex justify-between items-center pt-4">
+<span class="text-on-surface-variant">Estimated Eligibility</span>
+<span class="font-bold text-green-700">High Confidence</span>
+</div>
+</div>
+<div class="space-y-4 mb-8">
+<div>
+<label class="block font-label-sm mb-1">Full Name / Nombre Completo</label>
+<input class="w-full h-12 bg-surface-container-low border border-outline-variant rounded-lg px-4 focus:ring-2 focus:ring-secondary" type="text">
+</div>
+<div>
+<label class="block font-label-sm mb-1">Phone Number / Teléfono</label>
+<input class="w-full h-12 bg-surface-container-low border border-outline-variant rounded-lg px-4 focus:ring-2 focus:ring-secondary" type="tel">
+</div>
+</div>
+<div class="flex justify-between items-center pt-6">
+<button class="text-on-surface-variant font-bold flex items-center gap-2 hover:text-primary" onclick="nextStep(2)" type="button">
+<span class="material-symbols-outlined">arrow_back</span> Back
+                        </button>
+<button class="bg-primary text-on-primary px-12 py-4 rounded-lg font-bold text-body-lg active:scale-95 transition-transform" type="submit">
+                            Submit Request / Enviar Solicitud
+                        </button>
+</div>
+</div>
+</form>
+</div>
+<!-- Trust Indicators & Security Badges -->
+<div class="mt-12 w-full max-w-3xl flex flex-col md:flex-row items-center justify-between gap-6 opacity-80">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-3xl text-secondary">lock</span>
+<div class="text-left">
+<p class="font-bold text-sm">Bank-Grade Encryption</p>
+<p class="text-xs text-on-surface-variant">Your data is safe and protected.</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-3xl text-secondary">gpp_maybe</span>
+<div class="text-left">
+<p class="font-bold text-sm">Privacy Guaranteed</p>
+<p class="text-xs text-on-surface-variant">We never sell your personal information.</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="bg-outline-variant w-10 h-10 rounded-full flex items-center justify-center font-bold text-white text-xs">SSL</div>
+<span class="text-xs font-bold">SECURE 256-BIT</span>
+</div>
+</div>
+<!-- Visual Anchor: Abstract Safe Growth -->
+<div class="mt-20 w-full max-w-4xl h-48 rounded-2xl relative overflow-hidden bg-primary-container">
+
+<div class="relative z-10 flex flex-col items-center justify-center h-full text-white text-center p-8">
+<h3 class="font-headline-md text-headline-md mb-2">Legacy and Protection</h3>
+<p class="text-on-primary-container max-w-lg">Providing stable financial products to ensure your family's future and retirement peace of mind.</p>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-primary-container text-on-primary-container w-full py-gutter px-margin-desktop mt-auto">
+<div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div>
+<span class="font-headline-md text-headline-md font-bold text-on-primary-fixed block mb-4">AB Global Consulting</span>
+<p class="font-body-md text-body-md opacity-80 max-w-md">Professional Life, Health, and Annuity Consulting. Bilingual services tailored to high-stakes financial protection.</p>
+<div class="mt-6 flex flex-wrap gap-4">
+<span class="bg-on-primary-container/10 px-3 py-1 rounded text-xs font-bold border border-on-primary-container/20">License: G328926</span>
+<span class="bg-on-primary-container/10 px-3 py-1 rounded text-xs font-bold border border-on-primary-container/20">Agent: Angel Burgos</span>
+<span class="bg-on-primary-container/10 px-3 py-1 rounded text-xs font-bold border border-on-primary-container/20">Code: F6D9U</span>
+</div>
+</div>
+<div class="flex flex-col md:items-end justify-between">
+<nav class="flex flex-wrap gap-x-8 gap-y-2 mb-8">
+<a class="font-body-md text-body-md hover:text-secondary-fixed transition-colors" href="#">Contact Us</a>
+<a class="font-body-md text-body-md hover:text-secondary-fixed transition-colors" href="#">Branch Address</a>
+<a class="font-body-md text-body-md hover:text-secondary-fixed transition-colors" href="#">WFGIA Disclosures</a>
+<a class="font-body-md text-body-md hover:text-secondary-fixed transition-colors" href="#">Privacy Policy</a>
+</nav>
+<p class="text-sm opacity-60 text-right">© 2024 AB Global Consulting. Angel Burgos, Agent Code: F6D9U, FL License: G328926.</p>
+</div>
+</div>
+</footer>
+<script>
+        function nextStep(step) {
+            // Hide all steps
+            document.querySelectorAll('[id^="step-"]').forEach(el => {
+                el.classList.remove('step-active');
+                el.classList.add('step-inactive');
+            });
+            
+            // Show target step
+            const currentStep = document.getElementById(`step-${step}`);
+            currentStep.classList.remove('step-inactive');
+            currentStep.classList.add('step-active');
+
+            // Update Progress Bar
+            const progress = (step / 3) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+
+            // Update Labels
+            for (let i = 1; i <= 3; i++) {
+                const label = document.getElementById(`step-label-${i}`);
+                if (i <= step) {
+                    label.classList.add('text-secondary');
+                    label.classList.remove('text-outline');
+                } else {
+                    label.classList.remove('text-secondary');
+                    label.classList.add('text-outline');
+                }
+            }
+
+            // Map summary if going to step 3
+            if (step === 3) {
+                const selected = document.querySelector('input[name="coverage"]:checked');
+                if (selected) {
+                    const labels = {
+                        'life': 'Life Insurance',
+                        'ltc': 'LTC Planning',
+                        'annuity': 'Annuity',
+                        'business': 'Business Coverage'
+                    };
+                    document.getElementById('summary-coverage').innerText = labels[selected.value];
+                }
+            }
+
+            // Scroll to top of form smoothly
+            window.scrollTo({ top: 150, behavior: 'smooth' });
+        }
+
+        // Form Submission Prevent Default
+        document.getElementById('quote-form').onsubmit = (e) => {
+            e.preventDefault();
+            alert('Quote Request Submitted! A consultant will reach out shortly. / ¡Solicitud enviada! Un consultor se comunicará pronto.');
+        };
+    </script>
+</body></html>

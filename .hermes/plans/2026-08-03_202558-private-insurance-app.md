@@ -41,16 +41,19 @@
 **Objective:** Create a reproducible starting point before production work begins
 
 **Files:**
+
 - Create: `docs/architecture.md`
 - Create: `docs/local-development.md`
 - Create: `docs/scope.md`
 
 **Actions:**
+
 - Record current routes, data fields, environment variables, local commands, and known limitations
 - Document that `/admin` is not production-safe until authentication is complete
 - Mark SQLite as local-only
 
 **Validation:**
+
 - `pnpm run test`
 - `pnpm run lint`
 - `pnpm run build`
@@ -60,15 +63,18 @@
 **Objective:** Run the same verification commands on every change
 
 **Files:**
+
 - Create: `.github/workflows/ci.yml`
 - Modify: `package.json`
 
 **Actions:**
+
 - Define Node and pnpm versions
 - Run install, test, lint, typecheck, and build
 - Add dependency audit without printing secrets
 
 **Validation:**
+
 - Run the workflow locally where possible
 - Confirm a deliberate test failure causes CI failure
 
@@ -81,12 +87,14 @@
 **Objective:** Establish the minimum normalized schema for leads, attribution, notes, tasks, users, content, and audit records
 
 **Files:**
+
 - Create: `prisma/schema.prisma`
 - Create: `prisma/seed.ts`
 - Create: `src/lib/server/db.ts`
 - Create: `tests/domain/lead-model.test.ts`
 
 **Entities:**
+
 - `User`: id, email, name, role, password hash or external auth id, timestamps
 - `Lead`: contact data, service, consent, status, follow-up date, timestamps
 - `LeadAttribution`: source, medium, campaign, landing page, referrer
@@ -97,6 +105,7 @@
 - `AuditEvent`: actor, action, entity, entity id, metadata, timestamp
 
 **Validation:**
+
 - Schema validation passes
 - Test verifies valid lead statuses, required consent, and attribution normalization
 
@@ -105,6 +114,7 @@
 **Objective:** Make database startup explicit and fail safely when production configuration is incomplete
 
 **Files:**
+
 - Create: `prisma/migrations/*`
 - Create: `src/lib/server/env.ts`
 - Create: `.env.example`
@@ -112,12 +122,14 @@
 - Modify: `package.json`
 
 **Actions:**
+
 - Add `DATABASE_URL`
 - Add separate `DIRECT_URL` only if the selected hosted PostgreSQL provider requires it
 - Validate environment variables at server startup
 - Keep `.data/` SQLite path limited to local draft mode
 
 **Validation:**
+
 - Missing required environment variables produce a clear startup error
 - Migration applies to an empty test database
 - No secrets appear in logs
@@ -127,6 +139,7 @@
 **Objective:** Preserve current demo and locally submitted lead records during the infrastructure transition
 
 **Files:**
+
 - Create: `scripts/migrate-draft-leads.ts`
 - Modify: `src/lib/db.ts`
 - Modify: `src/app/api/leads/route.ts`
@@ -134,6 +147,7 @@
 - Modify: `src/app/api/admin/leads/notes/route.ts`
 
 **Validation:**
+
 - Export/import count matches
 - Duplicate handling is deterministic
 - API behavior remains unchanged for valid and invalid submissions
@@ -150,10 +164,12 @@
 **Decision required:** Managed auth provider versus self-hosted credentials. Preferred default is a managed provider with secure HTTP-only session cookies and documented role claims
 
 **Files:**
+
 - Modify: `docs/architecture.md`
 - Create: `docs/security-model.md`
 
 **Roles:**
+
 - `admin`: user and system configuration
 - `marketing`: leads, campaigns, content, analytics
 - `advisor`: assigned leads, notes, follow-up tasks
@@ -164,6 +180,7 @@
 **Objective:** Prevent unauthenticated access to private routes and APIs
 
 **Files:**
+
 - Create: `src/lib/server/auth.ts`
 - Create: `src/lib/server/authorization.ts`
 - Create: `src/middleware.ts` if required by the selected auth implementation
@@ -173,6 +190,7 @@
 - Create: `tests/security/authorization.test.ts`
 
 **Validation:**
+
 - Anonymous users cannot access `/admin`, `/admin/leads`, or admin APIs
 - Users cannot invoke APIs outside their role
 - Session cookies are HTTP-only, secure in production, same-site, and bounded by expiry
@@ -184,12 +202,14 @@
 **Objective:** Make private lead operations traceable and resilient
 
 **Files:**
+
 - Create: `src/lib/server/audit.ts`
 - Create: `src/lib/server/rate-limit.ts`
 - Modify: all mutating admin route handlers
 - Create: `tests/security/audit.test.ts`
 
 **Controls:**
+
 - Audit lead reads only where required by policy
 - Audit status, note, assignment, and deletion changes
 - Validate payload size and field lengths
@@ -206,11 +226,13 @@
 **Objective:** Display live PostgreSQL metrics and recent leads
 
 **Files:**
+
 - Modify: `src/app/admin/page.tsx`
 - Create: `src/lib/server/admin-metrics.ts`
 - Create: `tests/admin/admin-metrics.test.ts`
 
 **Acceptance criteria:**
+
 - Counts are derived from the database
 - Date windows use the server timezone policy
 - Empty states are explicit
@@ -221,6 +243,7 @@
 **Objective:** Provide usable lead operations for marketing and advisor roles
 
 **Files:**
+
 - Modify: `src/app/admin/leads/page.tsx`
 - Modify: `src/components/leads-table.tsx`
 - Create: `src/components/lead-filters.tsx`
@@ -228,6 +251,7 @@
 - Create: `tests/admin/leads-api.test.ts`
 
 **Features:**
+
 - Search by name and email
 - Filter by status, service, source, assignee, and date range
 - Stable pagination
@@ -238,6 +262,7 @@
 **Objective:** Complete the internal prospect workflow
 
 **Files:**
+
 - Create: `src/app/admin/leads/[id]/page.tsx`
 - Create: `src/components/lead-detail.tsx`
 - Create: `src/components/lead-notes.tsx`
@@ -247,6 +272,7 @@
 - Create: `tests/admin/lead-detail.test.ts`
 
 **Acceptance criteria:**
+
 - Status changes are role-restricted and audited
 - Notes are append-only or explicitly editable with audit history
 - Tasks support assignee, due date, priority, completion, and overdue state
@@ -257,12 +283,14 @@
 **Objective:** Make lead records operationally safe for privacy review
 
 **Files:**
+
 - Create: `src/lib/server/retention.ts`
 - Create: `scripts/retention-report.ts`
 - Modify: lead schema and detail pages
 - Create: `tests/security/retention.test.ts`
 
 **Actions:**
+
 - Store consent text/version and timestamp
 - Support correction and deletion requests
 - Define retention period with business/legal approval
@@ -277,12 +305,14 @@
 **Objective:** Create indexable, reusable pages for each approved insurance guidance area
 
 **Files:**
+
 - Create: `src/app/services/[slug]/page.tsx`
 - Create: `src/lib/content/services.ts`
 - Create: `src/components/service-page.tsx`
 - Create: `tests/seo/service-pages.test.ts`
 
 **Acceptance criteria:**
+
 - Each page has one H1, canonical metadata, descriptive title, description, CTA, FAQ block, and internal links
 - Copy avoids unsupported financial or insurance promises
 - Pages are excluded from indexing until content approval is complete
@@ -292,6 +322,7 @@
 **Objective:** Support approved educational content without introducing an uncontrolled CMS
 
 **Files:**
+
 - Create: `src/app/resources/page.tsx`
 - Create: `src/app/resources/[slug]/page.tsx`
 - Create: `src/lib/content/*`
@@ -305,6 +336,7 @@
 **Objective:** Make approved public pages search-ready and measurable
 
 **Files:**
+
 - Modify: `src/app/layout.tsx`
 - Modify: `src/app/sitemap.ts`
 - Modify: `src/app/robots.ts`
@@ -312,6 +344,7 @@
 - Create: `tests/seo/metadata.test.ts`
 
 **Actions:**
+
 - Add Organization or ProfessionalService schema only after factual business details are supplied
 - Add BreadcrumbList and FAQPage schema where content qualifies
 - Add canonical and alternate metadata rules
@@ -329,6 +362,7 @@
 **Decision required:** Portal scope must be limited to profile, communication preferences, consultation requests, appointment status, and approved documents or messages
 
 **Files:**
+
 - Create: `docs/prospect-portal-scope.md`
 - Modify: `docs/scope.md`
 
@@ -337,12 +371,14 @@
 **Objective:** Allow prospects to manage their own intake information securely
 
 **Files:**
+
 - Create: `src/app/portal/*`
 - Create: `src/components/portal/*`
 - Create: `src/app/api/portal/*`
 - Create: `tests/portal/profile.test.ts`
 
 **Validation:**
+
 - Prospect can access only their own record
 - Staff roles cannot accidentally inherit prospect-only UI assumptions
 - Consent preferences are versioned
@@ -353,6 +389,7 @@
 **Objective:** Support a consultation request without implementing coverage or policy decisions
 
 **Files:**
+
 - Create: `src/app/api/portal/appointments/route.ts`
 - Create: `src/components/appointment-request.tsx`
 - Create: `tests/portal/appointments.test.ts`
@@ -368,12 +405,14 @@
 **Objective:** Define reliable conversion events before adding vendor scripts
 
 **Files:**
+
 - Create: `src/lib/analytics/events.ts`
 - Create: `src/components/analytics-provider.tsx`
 - Modify: `src/components/consultation-form.tsx`
 - Create: `tests/analytics/events.test.ts`
 
 **Events:**
+
 - `page_view`
 - `cta_view`
 - `cta_click`
@@ -390,12 +429,14 @@
 **Objective:** Integrate analytics without coupling the application to one vendor
 
 **Files:**
+
 - Create: `src/lib/analytics/providers/ga4.ts`
 - Create: `src/lib/analytics/providers/meta.ts`
 - Create: `src/lib/analytics/dispatcher.ts`
 - Create: `docs/analytics-events.md`
 
 **Validation:**
+
 - Scripts load only after required consent
 - Events are observable in local debug mode
 - Production identifiers are environment variables
@@ -405,6 +446,7 @@
 **Objective:** Deliver new lead notifications and optional CRM records with retries and observability
 
 **Files:**
+
 - Create: `src/lib/integrations/email.ts`
 - Create: `src/lib/integrations/crm.ts`
 - Create: `src/lib/server/jobs.ts`
@@ -412,6 +454,7 @@
 - Create: `tests/integrations/lead-delivery.test.ts`
 
 **Requirements:**
+
 - Idempotency keys
 - Retry with bounded backoff
 - Dead-letter or failure record
@@ -427,12 +470,14 @@
 **Objective:** Make campaign traffic and landing pages manageable by authorized staff
 
 **Files:**
+
 - Create: `src/app/admin/campaigns/*`
 - Create: `src/app/admin/content/*`
 - Modify: Prisma schema and migrations
 - Create: `tests/admin/campaigns.test.ts`
 
 **Acceptance criteria:**
+
 - Draft, review, publish, archive states
 - Preview links do not expose unpublished content publicly
 - Campaign attribution maps to leads
@@ -443,11 +488,13 @@
 **Objective:** Display actionable funnel metrics without fabricating attribution
 
 **Files:**
+
 - Create: `src/app/admin/analytics/page.tsx`
 - Create: `src/lib/server/analytics-queries.ts`
 - Create: `tests/admin/analytics-queries.test.ts`
 
 **Metrics:**
+
 - Visits and CTA interactions where available
 - Form starts and completions
 - Leads by source, medium, campaign, service, and status
@@ -465,12 +512,14 @@
 **Decision required:** Cloud Run, Vercel, or another approved platform. The choice must support PostgreSQL, secrets, scheduled jobs, logs, and rollback
 
 **Files:**
+
 - Create: `docs/deployment.md`
 - Create: `Dockerfile` or platform configuration
 - Create: `.github/workflows/deploy.yml`
 - Create: `infra/*` only if infrastructure-as-code is approved
 
 **Validation:**
+
 - Preview and production environments are isolated
 - Secrets are injected by the platform
 - Database backups and restore procedure are documented
@@ -481,11 +530,13 @@
 **Objective:** Confirm the private app is safe for real users and staff
 
 **Files:**
+
 - Create: `docs/security-review.md`
 - Create: `docs/privacy-data-map.md`
 - Create: `docs/incident-response.md`
 
 **Checklist:**
+
 - Authentication and authorization
 - Input validation and output encoding
 - Rate limits
@@ -503,11 +554,13 @@
 **Objective:** Prove the system works end to end in a production-like environment
 
 **Files:**
+
 - Create: `tests/e2e/public-lead-flow.spec.ts`
 - Create: `tests/e2e/admin-lead-flow.spec.ts`
 - Create: `docs/release-checklist.md`
 
 **Commands:**
+
 - `pnpm run test`
 - `pnpm run lint`
 - `pnpm exec tsc --noEmit`

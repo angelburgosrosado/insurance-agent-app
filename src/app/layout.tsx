@@ -35,8 +35,12 @@ export const metadata: Metadata = {
 };
 
 import { getOrganizationSchema } from "@/lib/seo/schema";
+import { missingEnvVars } from "@/lib/server/env";
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
+  const isDev = process.env.NODE_ENV === "development";
+  const needsSetup = isDev && missingEnvVars && missingEnvVars.length > 0;
+
   return (
     <html lang="en" className={inter.variable}>
       <body>
@@ -44,6 +48,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(getOrganizationSchema()) }}
         />
+        {needsSetup && (
+          <div className="bg-[var(--accent)] text-white text-center py-2 text-sm font-medium sticky top-0 z-50">
+            Welcome to development! Some environment variables are missing. <a href="/setup" className="underline font-bold hover:text-[#eef1ef]">Go to Setup Wizard</a>
+          </div>
+        )}
         <AnalyticsProvider>
           {children}
         </AnalyticsProvider>

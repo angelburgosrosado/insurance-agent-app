@@ -17,7 +17,7 @@ export function validateEnv() {
     }
   }
 
-  return process.env as Record<string, string>;
+  return { env: process.env as Record<string, string>, missing };
 }
 
-export const env = validateEnv();
+export const { env, missing: missingEnvVars } = validateEnv();

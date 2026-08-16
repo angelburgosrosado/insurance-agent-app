@@ -33,18 +33,7 @@ export const metadata: Metadata = {
   },
 };
 
-const organizationSchema = {
-  "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  name: "AB Global Consulting",
-  url: "https://abglobalconsulting.com",
-  founder: {
-    "@type": "Person",
-    name: "Angel Burgos",
-  },
-  description:
-    "Insurance consulting and customer acquisition services for individuals, families, and businesses.",
-};
+import { getOrganizationSchema } from "@/lib/seo/schema";
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -52,7 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(getOrganizationSchema()) }}
         />
         {children}
       </body>

@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
+    "postinstall": "prisma generate",
     "start": "next start",
     "lint": "eslint",
     "test": "node --import tsx --test tests/db.test.mjs tests/domain/lead-model.test.ts tests/domain/repository.test.ts tests/auth.test.ts tests/rls-migration.test.mjs tests/leads-hardening.test.ts",

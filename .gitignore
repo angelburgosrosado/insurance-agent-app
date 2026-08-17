@@ -57,3 +57,4 @@ node_modules/**
 *.log
 coverage
 .DS_Store
+insurance-agent-app/

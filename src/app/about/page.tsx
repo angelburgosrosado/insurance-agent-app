@@ -55,16 +55,12 @@ export default function AboutPage() {
                 : "Combining an analytical, engineering-driven mindset with premier independent brokerage access to protect what matters most—your family, your health, and your retirement."}
             </p>
             <div className="flex flex-wrap gap-4 pt-2">
-              <Link href="/#consultation">
-                <Button variant="secondary" className="!bg-secondary !text-white !border-secondary hover:!bg-secondary/90 shadow-lg px-8 py-3.5 font-bold">
-                  {t.hero_cta_consultation}
-                </Button>
-              </Link>
-              <a href="tel:3863331482">
-                <Button variant="secondary" className="!text-white !border-white/30 hover:!bg-white/10 px-6 py-3.5">
-                  Direct: (386) 333-1482
-                </Button>
-              </a>
+              <Button href="/#consultation" variant="secondary" className="!bg-secondary !text-white !border-secondary hover:!bg-secondary/90 shadow-lg px-8 py-3.5 font-bold">
+                {t.hero_cta_consultation}
+              </Button>
+              <Button href="tel:3863331482" variant="secondary" className="!text-white !border-white/30 hover:!bg-white/10 px-6 py-3.5">
+                Direct: (386) 333-1482
+              </Button>
             </div>
           </div>
 
@@ -283,11 +279,9 @@ export default function AboutPage() {
                   ? "Ya sea que esté evaluando un IUL, transfiriendo un 401(k) a una anualidad o planificando gastos finales con Everest, estamos listos para guiarle paso a paso."
                   : "Whether evaluating an IUL, rolling over a 401(k) to an annuity, or planning final expenses with Everest, we are here to provide clear, actionable guidance."}
               </p>
-              <Link href="/#consultation" className="block">
-                <Button variant="secondary" className="w-full !bg-secondary !text-white !border-secondary hover:!bg-secondary/90 py-3.5 font-bold text-sm">
-                  {t.nav_consultation}
-                </Button>
-              </Link>
+              <Button href="/#consultation" variant="secondary" className="w-full !bg-secondary !text-white !border-secondary hover:!bg-secondary/90 py-3.5 font-bold text-sm">
+                {t.nav_consultation}
+              </Button>
               <div className="pt-4 border-t border-white/10 space-y-2 text-xs text-white/80">
                 <p><strong>📞 {lang === "es" ? "Llamada Directa:" : "Direct Call:"}</strong> (386) 333-1482</p>
                 <p><strong>🏢 {lang === "es" ? "Oficina Central:" : "Office Phone:"}</strong> (407) 930-6226</p>

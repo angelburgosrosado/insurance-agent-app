@@ -216,11 +216,9 @@ export function Navbar() {
 
         {/* CTA & Language in Main Nav */}
         <div className="hidden sm:flex items-center gap-3">
-          <Link href="/#consultation">
-            <Button variant="primary" className="!bg-secondary !text-white !border-secondary hover:!bg-secondary/90 text-xs font-bold px-5 py-2.5 shadow-md">
-              {t.nav_consultation}
-            </Button>
-          </Link>
+          <Button href="/#consultation" variant="primary" className="!bg-secondary !text-white !border-secondary hover:!bg-secondary/90 text-xs font-bold px-5 py-2.5 shadow-md">
+            {t.nav_consultation}
+          </Button>
         </div>
 
         {/* Mobile Hamburger Toggle */}
@@ -324,11 +322,9 @@ export function Navbar() {
             <a href="tel:3863331482" className="block text-center py-2.5 bg-slate-900 text-white rounded-xl text-xs font-bold shadow-sm">
               📞 {t.nav_call}
             </a>
-            <Link href="/#consultation" onClick={() => setMobileMenuOpen(false)} className="block w-full">
-              <Button variant="primary" className="w-full py-3 text-sm font-bold !bg-secondary !text-white !border-secondary">
-                {t.nav_consultation}
-              </Button>
-            </Link>
+            <Button href="/#consultation" onClick={() => setMobileMenuOpen(false)} variant="primary" className="w-full py-3 text-sm font-bold !bg-secondary !text-white !border-secondary">
+              {t.nav_consultation}
+            </Button>
           </div>
         </div>
       )}

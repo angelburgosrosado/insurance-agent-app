@@ -45,16 +45,12 @@ export default function Home() {
             </p>
 
             <div className="flex flex-wrap gap-4 pt-2">
-              <Link href="/#consultation">
-                <Button variant="secondary" className="!bg-secondary !text-white !border-secondary hover:!bg-secondary/90 shadow-xl px-8 py-4 text-sm md:text-base font-bold">
-                  {t.hero_cta_consultation}
-                </Button>
-              </Link>
-              <Link href="/tools/iul-calculator">
-                <Button variant="secondary" className="!text-white !border-white/30 hover:!bg-white/10 px-6 py-4 text-sm md:text-base font-medium">
-                  {t.hero_cta_calculator}
-                </Button>
-              </Link>
+              <Button href="/#consultation" variant="secondary" className="!bg-secondary !text-white !border-secondary hover:!bg-secondary/90 shadow-xl px-8 py-4 text-sm md:text-base font-bold">
+                {t.hero_cta_consultation}
+              </Button>
+              <Button href="/tools/iul-calculator" variant="secondary" className="!text-white !border-white/30 hover:!bg-white/10 px-6 py-4 text-sm md:text-base font-medium">
+                {t.hero_cta_calculator}
+              </Button>
             </div>
 
             <div className="flex items-center gap-6 pt-3 text-xs text-white/70">

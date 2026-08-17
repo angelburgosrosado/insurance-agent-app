@@ -60,16 +60,12 @@ export function ServicePageLayout({ service }: { service: ServiceInfo }) {
               {shortDescription}
             </p>
             <div className="flex flex-wrap gap-4 pt-2">
-              <Link href="/#consultation">
-                <Button variant="secondary" className="!bg-secondary !text-white !border-secondary hover:!bg-secondary/90 shadow-lg px-8 py-3.5 font-bold">
-                  {lang === "es" ? "Solicitar Cotización Personalizada" : "Request a Personalized Quote"}
-                </Button>
-              </Link>
-              <a href="tel:3863331482">
-                <Button variant="secondary" className="!text-white !border-white/30 hover:!bg-white/10 px-6 py-3.5">
-                  {lang === "es" ? "Llamar a Angel Burgos (Directo)" : "Call Angel Burgos (Direct)"}
-                </Button>
-              </a>
+              <Button href="/#consultation" variant="secondary" className="!bg-secondary !text-white !border-secondary hover:!bg-secondary/90 shadow-lg px-8 py-3.5 font-bold">
+                {lang === "es" ? "Solicitar Cotización Personalizada" : "Request a Personalized Quote"}
+              </Button>
+              <Button href="tel:3863331482" variant="secondary" className="!text-white !border-white/30 hover:!bg-white/10 px-6 py-3.5">
+                {lang === "es" ? "Llamar a Angel Burgos (Directo)" : "Call Angel Burgos (Direct)"}
+              </Button>
             </div>
           </div>
 
@@ -216,11 +212,9 @@ export function ServicePageLayout({ service }: { service: ServiceInfo }) {
               </p>
             </div>
 
-            <Link href="/#consultation" className="block">
-              <Button variant="primary" className="w-full !bg-secondary !text-white !border-secondary hover:!bg-secondary/90 font-bold py-3 text-sm shadow-md">
-                {t.nav_consultation}
-              </Button>
-            </Link>
+            <Button href="/#consultation" variant="primary" className="w-full !bg-secondary !text-white !border-secondary hover:!bg-secondary/90 font-bold py-3 text-sm shadow-md">
+              {t.nav_consultation}
+            </Button>
 
             <div className="space-y-2 pt-2 border-t border-slate-100 text-center">
               <a href="tel:3863331482" className="block text-xs font-bold text-slate-700 hover:text-secondary">

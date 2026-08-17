@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { saveEnvironmentVariables } from "./actions";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 
 export default function SetupWizard() {
   const [step, setStep] = useState(1);

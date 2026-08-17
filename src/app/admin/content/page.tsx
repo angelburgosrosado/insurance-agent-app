@@ -3,6 +3,9 @@ import Link from "next/link";
 import { PlusCircle, Search, Edit } from "lucide-react";
 import { DashboardLayout } from "@/components/admin/layout";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function AdminContentPage() {
   const prisma = getPrismaClient();
   const contents = await prisma.contentEntry.findMany({

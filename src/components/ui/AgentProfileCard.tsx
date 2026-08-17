@@ -10,18 +10,18 @@ interface AgentProfileCardProps {
 
 export const AgentProfileCard: React.FC<AgentProfileCardProps> = ({
   name = "Angel Burgos",
-  title = "Expert Financial Advisor",
-  imageUrl = "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=800&auto=format&fit=crop", // Using a professional placeholder for now
+  title = "Founder, F6D9U / FL License: G328926",
+  imageUrl = "/images/angel-burgos.png",
   bilingual = true,
   className = ""
 }) => {
   return (
-    <div className={`bg-primary text-white rounded-lg p-6 md:p-8 flex flex-col md:flex-row items-center md:items-start gap-8 w-full shadow-lg border border-primary/20 ${className}`}>
+    <div className={`bg-primary text-white rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center md:items-start gap-8 w-full shadow-xl border border-primary/20 ${className}`}>
       <div className="flex-shrink-0">
         <img 
           src={imageUrl} 
           alt={name} 
-          className="w-32 h-32 md:w-40 md:h-40 object-cover rounded-lg shadow-md border-2 border-secondary/20"
+          className="w-32 h-32 md:w-36 md:h-36 object-cover object-top rounded-2xl shadow-lg border-2 border-secondary/40 bg-white"
         />
       </div>
       <div className="flex flex-col text-center md:text-left justify-center space-y-4">

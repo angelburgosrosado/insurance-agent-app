@@ -1,5 +1,6 @@
 import { getPrismaClient } from "@/lib/server/db";
 import Link from "next/link";
+import { Navbar } from "@/components/Navbar";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -25,15 +26,7 @@ export default async function ResourcesPage() {
 
   return (
     <main className="min-h-[100dvh] bg-[#eef1ef] text-[var(--ink)]">
-      <header className="border-b border-[var(--line)] bg-white">
-        <div className="mx-auto flex max-w-[1400px] items-center justify-between px-5 py-5 lg:px-8">
-          <div>
-            <Link href="/" className="text-sm font-semibold hover:underline">AB Global Consulting</Link>
-            <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--ink-soft)]">Resource Center</p>
-          </div>
-          <Link href="/#consultation" className="text-sm text-[var(--accent-deep)] hover:underline">Request Consultation</Link>
-        </div>
-      </header>
+      <Navbar />
       
       <section className="mx-auto max-w-4xl p-5 lg:p-10">
         <div className="border-b border-[var(--line)] pb-8 mb-10">

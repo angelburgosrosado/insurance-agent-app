@@ -132,7 +132,10 @@ model ContentEntry {
   id          String        @id @default(uuid()) @db.Uuid
   slug        String        @unique
   title       String
+  summary     String?
   body        String
+  type        String        @default("article")
+  seoMetadata String?       @default("{}")
   status      ContentStatus @default(draft)
   publishedAt DateTime?
   createdAt   DateTime      @default(now())

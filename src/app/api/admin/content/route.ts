@@ -9,7 +9,7 @@ export async function GET(request: Request) {
     const prisma = getPrismaClient();
     
     const contents = await prisma.contentEntry.findMany({
-      where: status ? { status } : undefined,
+      where: status ? { status: status as any } : undefined,
       orderBy: { createdAt: "desc" },
     });
 

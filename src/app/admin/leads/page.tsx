@@ -29,7 +29,7 @@ export default async function LeadsPage({
   }
   
   if (params.status) {
-    where.status = params.status;
+    where.status = params.status as Prisma.EnumLeadStatusFilter<"Lead">;
   }
 
   const [leads, totalLeads] = await Promise.all([

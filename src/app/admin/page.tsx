@@ -7,6 +7,9 @@ const statusLabels: Record<string, string> = {
 
 function serviceLabel(value: string) { return value.replaceAll("-", " ").replace(/\b\w/g, (letter) => letter.toUpperCase()); }
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function AdminPage() {
   const data = await getDashboardMetrics();
   
@@ -92,6 +95,3 @@ export default async function AdminPage() {
     </main>
   );
 }
-
-export const dynamic = "force-dynamic";
-export const revalidate = 0;

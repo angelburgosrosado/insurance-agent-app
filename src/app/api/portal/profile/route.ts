@@ -40,11 +40,10 @@ export async function POST(request: Request) {
     });
 
     const consentVersion = "v1.0-portal-update";
-    const consentTimestamp = new Date();
+    const consentAt = new Date();
 
     if (lead) {
       // Update existing lead
-      // Only log consent change if it actually changed
       const consentChanged = lead.consent !== consent;
       
       lead = await prisma.lead.update({
@@ -54,7 +53,7 @@ export async function POST(request: Request) {
           lastName: lastName || lead.lastName,
           phone: phone || lead.phone,
           consent: consent,
-          ...(consentChanged ? { consentVersion, consentTimestamp } : {})
+          ...(consentChanged ? { consentVersion, consentAt } : {})
         }
       });
 
@@ -62,11 +61,10 @@ export async function POST(request: Request) {
         // Log Audit Event
         await prisma.auditEvent.create({
           data: {
-            actor: user.email,
             action: "UPDATE_CONSENT",
-            entity: "LEAD",
+            entityType: "LEAD",
             entityId: lead.id,
-            metadata: JSON.stringify({ consent, version: consentVersion })
+            metadata: { consent, version: consentVersion }
           }
         });
       }
@@ -77,22 +75,22 @@ export async function POST(request: Request) {
           firstName: firstName || "",
           lastName: lastName || "",
           email: user.email,
-          phone: phone || null,
-          service: "business-consulting", // default requirement for DB
+          phone: phone || "",
+          service: "general-consulting",
           consent: consent,
+          consentText: "Portal Profile Consent Update",
           consentVersion,
-          consentTimestamp,
+          consentAt,
           status: "new",
         }
       });
 
       await prisma.auditEvent.create({
         data: {
-          actor: user.email,
           action: "CREATE_PORTAL_LEAD",
-          entity: "LEAD",
+          entityType: "LEAD",
           entityId: lead.id,
-          metadata: JSON.stringify({ method: "portal_profile" })
+          metadata: { method: "portal_profile" }
         }
       });
     }

@@ -50,10 +50,9 @@ export async function POST(request: Request) {
     const task = await prisma.followUpTask.create({
       data: {
         leadId: lead.id,
-        assignee: "angelburgosrosado@gmail.com", // Assign to admin
-        dueDate: new Date(preferredDate),
+        title: `Requested consultation for ${preferredDate} at ${preferredTime}`,
+        dueAt: new Date(preferredDate),
         status: "pending",
-        priority: "high"
       }
     });
 
@@ -61,7 +60,6 @@ export async function POST(request: Request) {
     await prisma.leadNote.create({
       data: {
         leadId: lead.id,
-        author: user.email,
         body: `Requested consultation for ${preferredDate} at ${preferredTime}. Reason: ${reason || "N/A"}`
       }
     });
@@ -69,11 +67,10 @@ export async function POST(request: Request) {
     // Audit the action
     await prisma.auditEvent.create({
       data: {
-        actor: user.email,
         action: "REQUEST_CONSULTATION",
-        entity: "LEAD",
+        entityType: "LEAD",
         entityId: lead.id,
-        metadata: JSON.stringify({ preferredDate, preferredTime, reason })
+        metadata: { preferredDate, preferredTime, reason }
       }
     });
 

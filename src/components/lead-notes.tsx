@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "./ui/button";
+import { Button } from "./ui/Button";
 
 export function LeadNotes({ notes, leadId }: { notes: any[]; leadId: string }) {
   const router = useRouter();

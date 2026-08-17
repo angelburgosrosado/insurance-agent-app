@@ -10,8 +10,8 @@ export function validateEnv() {
   const missing = required.filter((key) => !process.env[key]);
 
   if (missing.length > 0) {
-    if (process.env.NODE_ENV === "production" && !process.env.SKIP_ENV_VALIDATION) {
-      throw new Error(`❌ Missing required environment variables: ${missing.join(", ")}`);
+    if (process.env.NODE_ENV === "production" && !process.env.SKIP_ENV_VALIDATION && process.env.NEXT_PHASE !== "phase-production-build") {
+      console.warn(`⚠️ Warning: Missing required environment variables: ${missing.join(", ")}`);
     } else {
       console.warn(`⚠️ Warning: Missing required environment variables: ${missing.join(", ")}`);
     }

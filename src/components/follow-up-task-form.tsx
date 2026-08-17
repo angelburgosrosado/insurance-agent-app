@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import { Button } from "./ui/Button";
+import { Input } from "./ui/Input";
 
 export function FollowUpTaskForm({ tasks, leadId }: { tasks: any[]; leadId: string }) {
   const router = useRouter();

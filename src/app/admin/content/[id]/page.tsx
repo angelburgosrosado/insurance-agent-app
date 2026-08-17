@@ -7,6 +7,9 @@ import type { ContentEntry } from "@prisma/client";
 type ContentType = "article" | "resource" | "service";
 type Status = "draft" | "published" | "archived";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function EditContentPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const prisma = getPrismaClient();

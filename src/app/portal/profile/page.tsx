@@ -5,6 +5,9 @@ import { getPrismaClient } from "@/lib/server/db";
 import { Save } from "lucide-react";
 import { redirect } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function PortalProfilePage() {
   const cookieStore = await cookies();
   const config = getSupabaseConfig();
@@ -102,7 +105,7 @@ export default async function PortalProfilePage() {
             
             {lead?.consentVersion && (
               <p className="text-xs text-[var(--ink-soft)] font-mono">
-                Consent Version: {lead.consentVersion} | Last Updated: {lead.consentTimestamp?.toLocaleDateString()}
+                Consent Version: {lead.consentVersion} | Last Updated: {lead.consentAt?.toLocaleDateString()}
               </p>
             )}
           </div>

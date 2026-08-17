@@ -1,3 +1,6 @@
+"use client";
+
+import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { ComplianceDisclosure } from "@/components/ui/ComplianceDisclosure";
@@ -7,8 +10,13 @@ import { Navbar } from "@/components/Navbar";
 import { LeadMagnetSection } from "@/components/LeadMagnetSection";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { FloatingMobileBar } from "@/components/FloatingMobileBar";
+import { useLanguage } from "@/context/LanguageContext";
+import { dictionary } from "@/lib/i18n/translations";
 
 export default function Home() {
+  const { lang } = useLanguage();
+  const t = dictionary[lang];
+
   return (
     <main className="min-h-screen bg-background text-slate-900">
       {/* Universal Global Header */}
@@ -23,40 +31,41 @@ export default function Home() {
           <div className="flex flex-col gap-6 reveal">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-secondary/15 border border-secondary/30 rounded-full w-fit">
               <span className="text-secondary text-xs md:text-sm font-bold uppercase tracking-wider">
-                State Licensed 0215 Practitioner • Agent F6D9U
+                {t.hero_badge}
               </span>
             </div>
             
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.1] text-white tracking-tight">
-              Engineering Certainty for Your Financial Future
+              {t.hero_title_1} <br />
+              <span className="text-secondary">{t.hero_title_2}</span>
             </h1>
             
             <p className="text-base sm:text-lg text-white/85 max-w-xl leading-relaxed">
-              Preserving family legacies through data-backed Life Insurance, Variable Annuities, Health Solutions, and Everest Funeral Concierge planning. Independent, analytical guidance with zero sales pressure.
+              {t.hero_desc}
             </p>
 
             <div className="flex flex-wrap gap-4 pt-2">
               <Link href="/#consultation">
                 <Button variant="secondary" className="!bg-secondary !text-white !border-secondary hover:!bg-secondary/90 shadow-xl px-8 py-4 text-sm md:text-base font-bold">
-                  Schedule Free Consultation
+                  {t.hero_cta_consultation}
                 </Button>
               </Link>
-              <Link href="/#interactive-tools">
+              <Link href="/tools/iul-calculator">
                 <Button variant="secondary" className="!text-white !border-white/30 hover:!bg-white/10 px-6 py-4 text-sm md:text-base font-medium">
-                  Try Interactive Simulators ↓
+                  {t.hero_cta_calculator}
                 </Button>
               </Link>
             </div>
 
             <div className="flex items-center gap-6 pt-3 text-xs text-white/70">
               <span className="flex items-center gap-1.5">
-                <span className="text-emerald-400 font-bold">✓</span> 100% Independent Brokerage
+                <span className="text-emerald-400 font-bold">✓</span> {lang === "es" ? "Correduría 100% Independiente" : "100% Independent Brokerage"}
               </span>
               <span className="flex items-center gap-1.5">
-                <span className="text-emerald-400 font-bold">✓</span> Bilingual (English / Español)
+                <span className="text-emerald-400 font-bold">✓</span> {lang === "es" ? "Atención Bilingüe (Español / Inglés)" : "Bilingual (English / Español)"}
               </span>
               <span className="flex items-center gap-1.5">
-                <span className="text-emerald-400 font-bold">✓</span> FL License #G328926
+                <span className="text-emerald-400 font-bold">✓</span> FL Lic #G328926
               </span>
             </div>
           </div>
@@ -70,8 +79,8 @@ export default function Home() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#001c38]/80 via-transparent to-transparent"></div>
               <div className="absolute bottom-6 left-6 right-6 p-4 bg-white/15 backdrop-blur-md rounded-2xl border border-white/20 text-white text-xs space-y-0.5">
-                <p className="font-bold text-sm">Strategic Family Protection & Wealth Preservation</p>
-                <p className="text-white/80">Tailored 0215 Life, Health & Variable Annuity Solutions</p>
+                <p className="font-bold text-sm">{lang === "es" ? "Protección Familiar Estratégica y Preservación de Patrimonio" : "Strategic Family Protection & Wealth Preservation"}</p>
+                <p className="text-white/80">{lang === "es" ? "Soluciones Personalizadas 0215 en Vida, Salud y Anualidades" : "Tailored 0215 Life, Health & Variable Annuity Solutions"}</p>
               </div>
             </div>
           </div>
@@ -83,7 +92,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-semibold text-slate-600">
           <span className="text-slate-900 font-bold uppercase tracking-wider flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-secondary"></span>
-            Authorized Carrier Network & Partnerships:
+            {t.partners_title}
           </span>
           <div className="flex flex-wrap items-center gap-3 md:gap-6 text-slate-800">
             <span className="px-3.5 py-1.5 bg-white rounded-lg shadow-sm border border-slate-200">Nationwide Financial</span>
@@ -95,23 +104,23 @@ export default function Home() {
         </div>
       </section>
 
-      {/* NEW SECTION: Interactive Financial Mini-Apps Showcase */}
+      {/* Interactive Financial Mini-Apps Showcase */}
       <section className="py-20 px-6 lg:px-10 bg-slate-50 border-b border-slate-200" id="interactive-tools">
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 border border-secondary/20 rounded-full text-secondary text-xs font-bold uppercase tracking-wider mb-2">
-                Exportable Client Tools
+                {t.tools_section_badge}
               </div>
               <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
-                Interactive Financial Simulators
+                {t.tools_section_title}
               </h2>
               <p className="text-slate-600 text-sm md:text-base max-w-2xl mt-1">
-                Explore real-time data models and export customized scenarios via SMS, Email, or personalized links.
+                {t.tools_section_desc}
               </p>
             </div>
             <span className="text-xs font-bold text-slate-500 bg-white px-3 py-1.5 rounded-lg border border-slate-200">
-              Live Mathematical Projections
+              {lang === "es" ? "Proyecciones Matemáticas en Vivo" : "Live Mathematical Projections"}
             </span>
           </div>
 
@@ -123,29 +132,29 @@ export default function Home() {
                   📊
                 </div>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-[11px] uppercase tracking-wider font-bold text-secondary">Life & Retirement</span>
-                  <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">Shareable</span>
+                  <span className="text-[11px] uppercase tracking-wider font-bold text-secondary">{lang === "es" ? "Vida y Retiro" : "Life & Retirement"}</span>
+                  <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">{lang === "es" ? "Exportable" : "Shareable"}</span>
                 </div>
                 <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-secondary transition-colors">
-                  IUL Wealth & 0% Floor Engine
+                  {t.tool_iul_title}
                 </h3>
                 <p className="text-xs text-slate-600 leading-relaxed mb-6">
-                  Simulate compounding index upside, test the 0% market crash protection floor, and estimate tax-free retirement loan payouts.
+                  {t.tool_iul_desc}
                 </p>
                 <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-1 mb-6">
                   <div className="flex justify-between">
-                    <span className="text-slate-500">Tax-Free Income:</span>
-                    <strong className="text-slate-900">IRS Section 7702</strong>
+                    <span className="text-slate-500">{lang === "es" ? "Ingreso Libre de Impuestos:" : "Tax-Free Income:"}</span>
+                    <strong className="text-slate-900">IRS Sec 7702</strong>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-500">Downside Risk:</span>
-                    <strong className="text-emerald-600 font-bold">Guaranteed 0% Floor</strong>
+                    <span className="text-slate-500">{lang === "es" ? "Riesgo de Pérdida:" : "Downside Risk:"}</span>
+                    <strong className="text-emerald-600 font-bold">{lang === "es" ? "Piso Garantizado 0%" : "Guaranteed 0% Floor"}</strong>
                   </div>
                 </div>
               </div>
               <Link href="/tools/iul-calculator" className="block w-full">
                 <Button variant="primary" className="w-full !bg-slate-900 hover:!bg-secondary text-xs font-bold py-3 transition-colors">
-                  Launch IUL Simulator →
+                  {t.tool_cta_open}
                 </Button>
               </Link>
             </div>
@@ -157,29 +166,29 @@ export default function Home() {
                   📈
                 </div>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-[11px] uppercase tracking-wider font-bold text-secondary">Private Pension</span>
-                  <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">Shareable</span>
+                  <span className="text-[11px] uppercase tracking-wider font-bold text-secondary">{lang === "es" ? "Pensión Privada" : "Private Pension"}</span>
+                  <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">{lang === "es" ? "Exportable" : "Shareable"}</span>
                 </div>
                 <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-secondary transition-colors">
-                  Guaranteed Annuity Paycheck Tool
+                  {t.tool_annuity_title}
                 </h3>
                 <p className="text-xs text-slate-600 leading-relaxed mb-6">
-                  Calculate guaranteed lifetime monthly paychecks from 401(k) / IRA rollovers and eliminate longevity risk.
+                  {t.tool_annuity_desc}
                 </p>
                 <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-1 mb-6">
                   <div className="flex justify-between">
-                    <span className="text-slate-500">Paycheck Guarantee:</span>
-                    <strong className="text-slate-900">Lifetime Paycheck</strong>
+                    <span className="text-slate-500">{lang === "es" ? "Garantía de Ingreso:" : "Paycheck Guarantee:"}</span>
+                    <strong className="text-slate-900">{lang === "es" ? "Cheque de Por Vida" : "Lifetime Paycheck"}</strong>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-500">Rollover Tax Status:</span>
-                    <strong className="text-emerald-600 font-bold">100% Tax-Deferred</strong>
+                    <span className="text-slate-500">{lang === "es" ? "Transferencia 401k/IRA:" : "Rollover Tax Status:"}</span>
+                    <strong className="text-emerald-600 font-bold">{lang === "es" ? "100% Diferida" : "100% Tax-Deferred"}</strong>
                   </div>
                 </div>
               </div>
               <Link href="/tools/annuity-estimator" className="block w-full">
                 <Button variant="primary" className="w-full !bg-slate-900 hover:!bg-secondary text-xs font-bold py-3 transition-colors">
-                  Launch Annuity Estimator →
+                  {t.tool_cta_open}
                 </Button>
               </Link>
             </div>
@@ -191,29 +200,29 @@ export default function Home() {
                   🕊️
                 </div>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-[11px] uppercase tracking-wider font-bold text-secondary">Everest / WSG Concierge</span>
-                  <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">Shareable</span>
+                  <span className="text-[11px] uppercase tracking-wider font-bold text-secondary">Everest Concierge</span>
+                  <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">{lang === "es" ? "Exportable" : "Shareable"}</span>
                 </div>
                 <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-secondary transition-colors">
-                  Funeral Concierge Savings Calculator
+                  {t.tool_funeral_title}
                 </h3>
                 <p className="text-xs text-slate-600 leading-relaxed mb-6">
-                  Compare retail mortuary prices against Everest negotiated rates and review 24-48 hour expedited claim funding.
+                  {t.tool_funeral_desc}
                 </p>
                 <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-1 mb-6">
                   <div className="flex justify-between">
-                    <span className="text-slate-500">Average Savings:</span>
-                    <strong className="text-emerald-600 font-bold">$3,500+ / family</strong>
+                    <span className="text-slate-500">{lang === "es" ? "Ahorro Promedio:" : "Average Savings:"}</span>
+                    <strong className="text-emerald-600 font-bold">$3,500+ / {lang === "es" ? "familia" : "family"}</strong>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-500">Claim Payout:</span>
-                    <strong className="text-slate-900">24 to 48 Hours</strong>
+                    <span className="text-slate-500">{lang === "es" ? "Desembolso Rápido:" : "Claim Payout:"}</span>
+                    <strong className="text-slate-900">24 {lang === "es" ? "a" : "to"} 48 {lang === "es" ? "Horas" : "Hours"}</strong>
                   </div>
                 </div>
               </div>
               <Link href="/tools/funeral-cost-savings" className="block w-full">
                 <Button variant="primary" className="w-full !bg-slate-900 hover:!bg-secondary text-xs font-bold py-3 transition-colors">
-                  Launch Funeral Calculator →
+                  {t.tool_cta_open}
                 </Button>
               </Link>
             </div>
@@ -226,18 +235,20 @@ export default function Home() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-14 gap-6 reveal">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 border border-secondary/20 rounded-full text-secondary text-xs font-bold uppercase tracking-wider mb-2">
-              Comprehensive Portfolio
+              {t.pillars_badge}
             </div>
             <h2 className="text-3xl md:text-4xl font-extrabold text-primary tracking-tight">
-              Strategic Protection Pillars
+              {t.pillars_title}
             </h2>
             <p className="text-base text-slate-600 max-w-2xl mt-1">
-              Every plan is built using institutional-grade carriers tailored to Florida regulatory frameworks and individual financial goals.
+              {lang === "es" 
+                ? "Cada estrategia se construye utilizando aseguradoras institucionales de primer nivel adaptadas a las metas específicas de su familia."
+                : "Every plan is built using institutional-grade carriers tailored to Florida and Puerto Rico regulatory frameworks and individual financial goals."}
             </p>
           </div>
           <div className="flex gap-2">
             <span className="px-4 py-2 bg-slate-100 rounded-full text-xs font-bold text-primary border border-slate-200">
-              0215 Certified Advisory
+              {lang === "es" ? "Asesoría Licenciada 0215" : "0215 Certified Advisory"}
             </span>
           </div>
         </div>
@@ -251,50 +262,45 @@ export default function Home() {
                   🛡️
                 </div>
                 <span className="text-xs font-bold text-secondary uppercase tracking-widest bg-secondary/10 px-3 py-1 rounded-full">
-                  Wealth & Protection
+                  {lang === "es" ? "Retiro Libre de Impuestos" : "Tax-Free Wealth"}
                 </span>
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-2">Life Insurance & Indexed Universal Life (IUL)</h3>
+              <h3 className="text-2xl font-bold text-slate-900 mb-2">{t.pillar_1_title}</h3>
               <p className="text-slate-600 mb-6 leading-relaxed text-sm">
-                Permanent insurance structured with market index growth, guaranteed 0% downside protection, accelerated living benefits, and tax-free policy loans.
+                {t.pillar_1_desc}
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
-                <Link href="/services/life-insurance" className="p-4 bg-slate-50 rounded-2xl border border-slate-200 hover:border-secondary transition-colors block">
-                  <p className="font-bold text-sm text-slate-900 mb-1">Nationwide Heritage®</p>
-                  <p className="text-xs text-slate-500">Legacy-focused permanent protection with cash accumulation.</p>
-                </Link>
-                <Link href="/services/life-insurance" className="p-4 bg-slate-50 rounded-2xl border border-slate-200 hover:border-secondary transition-colors block">
-                  <p className="font-bold text-sm text-slate-900 mb-1">Effortless Life</p>
-                  <p className="text-xs text-slate-500">Fast digital underwriting without invasive exams.</p>
-                </Link>
-              </div>
             </div>
-            <Link className="inline-flex items-center gap-2 font-bold text-secondary hover:underline text-sm" href="/services/life-insurance">
-              Explore Life Insurance & IUL Solutions &rarr;
-            </Link>
-          </div>
-
-          {/* 2. Variable Annuities */}
-          <div className="md:col-span-5 bg-[#001c38] text-white p-8 rounded-3xl shadow-sm flex flex-col justify-between reveal">
             <div>
-              <div className="h-12 w-12 rounded-2xl bg-white/10 flex items-center justify-center text-white text-xl mb-6">
-                📈
-              </div>
-              <h3 className="text-2xl font-bold mb-2">Variable & Indexed Annuities</h3>
-              <p className="text-white/80 mb-6 leading-relaxed text-sm">
-                Contractually guaranteed lifetime paychecks and 401(k) / IRA rollovers to eliminate longevity and sequence-of-returns risks.
-              </p>
-              <div className="p-4 bg-white/10 rounded-2xl border border-white/20 mb-6 space-y-1">
-                <p className="text-xs uppercase font-bold text-secondary">Lifetime Income Rider (GLWB)</p>
-                <p className="text-xs text-white/70">Pacific Life & Transamerica Principal Optimizer</p>
-              </div>
+              <Link className="font-bold text-secondary hover:underline text-sm inline-flex items-center gap-1" href="/services/life-insurance">
+                {lang === "es" ? "Ver Detalles de Seguros de Vida e IUL →" : "Explore Life & IUL Strategies →"}
+              </Link>
             </div>
-            <Link className="inline-flex items-center gap-2 font-bold text-secondary hover:text-white transition-colors text-sm" href="/services/variable-annuities">
-              Review Annuity Strategies &rarr;
-            </Link>
           </div>
 
-          {/* 3. Final Expense & Everest Concierge */}
+          {/* 2. Variable & Indexed Annuities */}
+          <div className="md:col-span-5 bg-white border border-slate-200 p-8 rounded-3xl shadow-sm hover:shadow-md transition-all reveal flex flex-col justify-between">
+            <div>
+              <div className="flex justify-between items-start mb-6">
+                <div className="h-12 w-12 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary text-xl">
+                  🏛️
+                </div>
+                <span className="text-xs font-bold text-secondary uppercase tracking-widest bg-secondary/10 px-3 py-1 rounded-full">
+                  {lang === "es" ? "Ingreso Vitalicio" : "Guaranteed Income"}
+                </span>
+              </div>
+              <h3 className="text-2xl font-bold text-slate-900 mb-2">{t.pillar_2_title}</h3>
+              <p className="text-slate-600 mb-6 leading-relaxed text-sm">
+                {t.pillar_2_desc}
+              </p>
+            </div>
+            <div>
+              <Link className="font-bold text-secondary hover:underline text-sm inline-flex items-center gap-1" href="/services/variable-annuities">
+                {lang === "es" ? "Ver Opciones de Anualidades →" : "Explore Annuity Solutions →"}
+              </Link>
+            </div>
+          </div>
+
+          {/* 3. Final Expense & Everest Funeral Concierge */}
           <div className="md:col-span-6 bg-white border border-slate-200 p-8 rounded-3xl shadow-sm hover:shadow-md transition-all reveal flex flex-col justify-between">
             <div>
               <div className="flex justify-between items-start mb-6">
@@ -302,20 +308,22 @@ export default function Home() {
                   🕊️
                 </div>
                 <span className="text-xs font-bold text-secondary uppercase tracking-widest bg-secondary/10 px-3 py-1 rounded-full">
-                  Everest / WSG Partner
+                  {lang === "es" ? "Alivio y Ahorro Familiar" : "Everest Concierge"}
                 </span>
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-2">Final Expense & Everest Concierge</h3>
+              <h3 className="text-2xl font-bold text-slate-900 mb-2">{t.pillar_3_title}</h3>
               <p className="text-slate-600 mb-6 leading-relaxed text-sm">
-                Shield your family from sudden funeral costs with expedited 24-48 hour payouts and 24/7 Everest Concierge price negotiation.
+                {t.pillar_3_desc}
               </p>
             </div>
-            <Link className="inline-flex items-center gap-2 font-bold text-secondary hover:underline text-sm" href="/services/final-expense">
-              Learn About Funeral Concierge Services &rarr;
-            </Link>
+            <div>
+              <Link className="font-bold text-secondary hover:underline text-sm inline-flex items-center gap-1" href="/services/final-expense">
+                {lang === "es" ? "Ver Detalles de Gastos Finales y Everest →" : "Explore Everest Concierge & Final Expense →"}
+              </Link>
+            </div>
           </div>
 
-          {/* 4. Health & Medicare & LTC */}
+          {/* 4 & 5. Health & Long-Term Care */}
           <div className="md:col-span-6 bg-white border border-slate-200 p-8 rounded-3xl shadow-sm hover:shadow-md transition-all reveal flex flex-col justify-between">
             <div>
               <div className="flex justify-between items-start mb-6">
@@ -323,21 +331,21 @@ export default function Home() {
                   🏥
                 </div>
                 <span className="text-xs font-bold text-secondary uppercase tracking-widest bg-secondary/10 px-3 py-1 rounded-full">
-                  Healthcare & LTC
+                  {lang === "es" ? "Salud y Cuidado Prolongado" : "Healthcare & LTC"}
                 </span>
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-2">Health Coverage & LTC Asset Shield</h3>
+              <h3 className="text-2xl font-bold text-slate-900 mb-2">{t.pillar_4_title}</h3>
               <p className="text-slate-600 mb-6 leading-relaxed text-sm">
-                Navigating Medicare Supplements (Medigap Plan G/N), ACA subsidies, and Nationwide CareMatters Together Cash-Indemnity Long-Term Care.
+                {t.pillar_4_desc}
               </p>
             </div>
             <div className="flex flex-wrap gap-4">
               <Link className="font-bold text-secondary hover:underline text-sm" href="/services/health-insurance">
-                Health & Medicare &rarr;
+                {lang === "es" ? "Salud y Medicare →" : "Health & Medicare →"}
               </Link>
               <span className="text-slate-300">•</span>
               <Link className="font-bold text-secondary hover:underline text-sm" href="/services/long-term-care">
-                Long-Term Care Planning &rarr;
+                {lang === "es" ? "Cuidado a Largo Plazo →" : "Long-Term Care Planning →"}
               </Link>
             </div>
           </div>
@@ -349,64 +357,66 @@ export default function Home() {
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="text-center max-w-3xl mx-auto space-y-3">
             <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">
-              Why Families & Professionals Choose AB Global
+              {t.why_title}
             </h2>
             <p className="text-white/75 text-sm md:text-base leading-relaxed">
-              We reject high-pressure sales and proprietary quotas. Our process is rooted in engineering logic, transparency, and fiduciary-grade care.
+              {t.why_desc}
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="p-6 bg-white/5 border border-white/10 rounded-2xl space-y-3">
-              <span className="text-secondary text-2xl font-bold">01</span>
-              <h3 className="text-lg font-bold text-white">Independent Brokerage</h3>
+              <span className="text-2xl">📐</span>
+              <h4 className="font-bold text-base text-white">{t.why_1_title}</h4>
               <p className="text-xs text-white/70 leading-relaxed">
-                Direct access to multiple tier-1 carriers, allowing us to find the most favorable underwriting and lowest cost.
+                {t.why_1_desc}
               </p>
             </div>
 
             <div className="p-6 bg-white/5 border border-white/10 rounded-2xl space-y-3">
-              <span className="text-secondary text-2xl font-bold">02</span>
-              <h3 className="text-lg font-bold text-white">Engineering Precision</h3>
+              <span className="text-2xl">🏢</span>
+              <h4 className="font-bold text-base text-white">{t.why_2_title}</h4>
               <p className="text-xs text-white/70 leading-relaxed">
-                Clear cash value illustrations, guaranteed floor models, and stress-tested market simulations.
+                {t.why_2_desc}
               </p>
             </div>
 
             <div className="p-6 bg-white/5 border border-white/10 rounded-2xl space-y-3">
-              <span className="text-secondary text-2xl font-bold">03</span>
-              <h3 className="text-lg font-bold text-white">Bilingual Advisory</h3>
+              <span className="text-2xl">🗣️</span>
+              <h4 className="font-bold text-base text-white">{t.why_3_title}</h4>
               <p className="text-xs text-white/70 leading-relaxed">
-                Complete advisory provided fluently in English and Spanish across Florida and beyond.
+                {t.why_3_desc}
               </p>
             </div>
 
             <div className="p-6 bg-white/5 border border-white/10 rounded-2xl space-y-3">
-              <span className="text-secondary text-2xl font-bold">04</span>
-              <h3 className="text-lg font-bold text-white">Lifelong Support</h3>
+              <span className="text-2xl">🤝</span>
+              <h4 className="font-bold text-base text-white">{t.why_4_title}</h4>
               <p className="text-xs text-white/70 leading-relaxed">
-                Dedicated claims assistance, policy reviews, and beneficiary updates over the life of your contract.
+                {t.why_4_desc}
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section with Agent Profile and Lead Form */}
-      <section className="py-24 bg-slate-50 border-t border-slate-200" id="consultation">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            {/* Left Column: Agent Profile and Pitch */}
+      {/* Consultation Request Section */}
+      <section className="bg-slate-50 border-t border-slate-200 py-24 px-6 lg:px-10" id="consultation">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+            {/* Left Column: Advisor Credentials Card */}
             <div className="flex flex-col reveal space-y-8">
               <div>
                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 border border-secondary/20 rounded-full text-secondary text-xs font-bold uppercase tracking-wider mb-3">
-                  Direct Advisor Access
+                  {t.form_badge}
                 </div>
                 <h2 className="text-3xl md:text-4xl font-extrabold text-primary tracking-tight mb-4">
-                  Anchor Your Legacy with AB Global
+                  {lang === "es" ? "Proteja Su Legado Familiar con AB Global" : "Anchor Your Legacy with AB Global"}
                 </h2>
                 <p className="text-base text-slate-600 leading-relaxed">
-                  Bilingual independent advisory across Florida. Licensed agent Angel Burgos (G328926 / WFG F6D9U) provides transparent, analytical guidance.
+                  {lang === "es"
+                    ? "Asesoría independiente bilingüe en toda Florida y Puerto Rico. El agente licenciado Angel Burgos (G328926 / WFG F6D9U) brinda orientación analítica y transparente."
+                    : "Bilingual independent advisory across Florida and Puerto Rico. Licensed agent Angel Burgos (G328926 / WFG F6D9U) provides transparent, analytical guidance."}
                 </p>
               </div>
               
@@ -419,8 +429,8 @@ export default function Home() {
               </div>
 
               <div className="p-5 bg-white rounded-2xl border border-slate-200 text-xs text-slate-600 space-y-2 shadow-sm">
-                <p className="font-bold text-slate-900 text-sm">Direct Office Contact Details:</p>
-                <p>📍 <strong>Orlando Office:</strong> 9501 Satellite Blvd, Suite 105, Orlando, FL 32837</p>
+                <p className="font-bold text-slate-900 text-sm">{lang === "es" ? "Contacto Directo de Oficina:" : "Direct Office Contact Details:"}</p>
+                <p>📍 <strong>{lang === "es" ? "Oficina Central:" : "Orlando Office:"}</strong> 9501 Satellite Blvd, Suite 105, Orlando, FL 32837</p>
                 <p>📱 <strong>Mobile / Text:</strong> <a href="tel:3863331482" className="text-secondary font-bold hover:underline">(386) 333-1482</a></p>
                 <p>📞 <strong>Office Phone:</strong> <a href="tel:4079306226" className="text-secondary font-bold hover:underline">(407) 930-6226</a></p>
               </div>
@@ -429,8 +439,8 @@ export default function Home() {
             {/* Right Column: Lead Form */}
             <div className="bg-white p-8 md:p-10 rounded-3xl shadow-xl border border-slate-200 reveal reveal-delay">
               <div className="mb-8">
-                <h3 className="text-2xl font-bold text-primary mb-2">Request a Personalized Consultation</h3>
-                <p className="text-slate-600 text-sm">Tell us what you are evaluating. Angel Burgos and the AB Global Consulting team will follow up promptly.</p>
+                <h3 className="text-2xl font-bold text-primary mb-2">{t.form_title}</h3>
+                <p className="text-slate-600 text-sm">{t.form_desc}</p>
               </div>
               <ConsultationForm />
             </div>

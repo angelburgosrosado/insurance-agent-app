@@ -36,6 +36,7 @@ export const metadata: Metadata = {
 
 import { getOrganizationSchema } from "@/lib/seo/schema";
 import { missingEnvVars } from "@/lib/server/env";
+import { LanguageProvider } from "@/context/LanguageContext";
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   const isDev = process.env.NODE_ENV === "development";
@@ -53,9 +54,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             Welcome to development! Some environment variables are missing. <a href="/setup" className="underline font-bold hover:text-[#eef1ef]">Go to Setup Wizard</a>
           </div>
         )}
-        <AnalyticsProvider>
-          {children}
-        </AnalyticsProvider>
+        <LanguageProvider>
+          <AnalyticsProvider>
+            {children}
+          </AnalyticsProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

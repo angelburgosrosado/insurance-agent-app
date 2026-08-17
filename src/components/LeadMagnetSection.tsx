@@ -2,8 +2,13 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/Button";
+import { useLanguage } from "@/context/LanguageContext";
+import { dictionary } from "@/lib/i18n/translations";
 
 export function LeadMagnetSection() {
+  const { lang } = useLanguage();
+  const t = dictionary[lang];
+
   const [selectedGuide, setSelectedGuide] = useState<"iul" | "funeral">("iul");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -26,7 +31,7 @@ export function LeadMagnetSection() {
           email,
           phone,
           service: selectedGuide === "iul" ? "IUL Guide Download" : "Funeral Pre-Planning Checklist",
-          message: `Requested downloadable guide: ${selectedGuide === "iul" ? "Florida 2026 IUL Retirement Guide" : "Everest Funeral Pre-Planning Checklist"}`,
+          message: `Requested downloadable guide: ${selectedGuide === "iul" ? "Florida 2026 IUL Retirement Guide" : "Everest Funeral Pre-Planning Checklist"} [Lang: ${lang}]`,
           consent: true,
           source: "lead_magnet_section",
         }),
@@ -46,13 +51,13 @@ export function LeadMagnetSection() {
         {/* Left info */}
         <div className="lg:col-span-7 space-y-6">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-secondary/20 border border-secondary/40 rounded-full text-secondary text-xs font-bold uppercase tracking-wider">
-            Free Educational Resources
+            {t.guides_badge}
           </div>
           <h2 className="text-3xl md:text-4xl font-black tracking-tight text-white leading-tight">
-            Download Our Complimentary Consumer Planning Guides
+            {t.guides_title}
           </h2>
           <p className="text-white/80 text-sm md:text-base leading-relaxed max-w-xl">
-            Get immediate access to institutional-grade research, carrier comparison checklists, and tax-advantaged retirement blueprints compiled by 0215 licensed practitioner Angel Burgos.
+            {t.guides_desc}
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
@@ -65,8 +70,8 @@ export function LeadMagnetSection() {
               }`}
             >
               <span className="text-2xl mb-2 block">📘</span>
-              <h4 className="font-bold text-sm text-white">Florida IUL & Retirement Blueprint</h4>
-              <p className="text-xs text-white/70 mt-1">IRS 7702 tax codes, 0% downside caps, and policy loan distribution mechanics.</p>
+              <h4 className="font-bold text-sm text-white">{t.guide_1_btn}</h4>
+              <p className="text-xs text-white/70 mt-1">{t.guide_1_desc}</p>
             </button>
 
             <button
@@ -78,8 +83,8 @@ export function LeadMagnetSection() {
               }`}
             >
               <span className="text-2xl mb-2 block">🕊️</span>
-              <h4 className="font-bold text-sm text-white">Everest Funeral Savings Checklist</h4>
-              <p className="text-xs text-white/70 mt-1">How 24/7 concierge negotiation saves $3,500+ and expedites 48-hr cash payouts.</p>
+              <h4 className="font-bold text-sm text-white">{t.guide_2_btn}</h4>
+              <p className="text-xs text-white/70 mt-1">{t.guide_2_desc}</p>
             </button>
           </div>
         </div>
@@ -91,30 +96,36 @@ export function LeadMagnetSection() {
               <div className="h-16 w-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto">
                 ✓
               </div>
-              <h3 className="text-2xl font-bold text-slate-900">Your Guide is On Its Way!</h3>
+              <h3 className="text-2xl font-bold text-slate-900">
+                {lang === "es" ? "¡Su Guía está en Camino!" : "Your Guide is On Its Way!"}
+              </h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                We have sent your download link to <strong>{email}</strong>. Angel Burgos is available if you have specific scenario questions.
+                {lang === "es" 
+                  ? <>Hemos enviado el enlace de descarga a <strong>{email}</strong>. El asesor Angel Burgos está a su disposición para cualquier escenario o pregunta.</>
+                  : <>We have sent your download link to <strong>{email}</strong>. Angel Burgos is available if you have specific scenario questions.</>}
               </p>
               <button
                 onClick={() => setSubmitted(false)}
                 className="text-xs font-bold text-secondary underline hover:text-slate-900"
               >
-                Request another guide
+                {lang === "es" ? "Solicitar otra guía" : "Request another guide"}
               </button>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="border-b border-slate-100 pb-4">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-secondary">
-                  Instant Download
+                  {lang === "es" ? "Descarga Inmediata" : "Instant Download"}
                 </span>
                 <h3 className="text-xl font-bold text-slate-900">
-                  {selectedGuide === "iul" ? "Get the Florida IUL Blueprint" : "Get the Funeral Savings Checklist"}
+                  {selectedGuide === "iul" ? t.guide_1_btn : t.guide_2_btn}
                 </h3>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Your Full Name</label>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
+                  {t.form_fname} & {t.form_lname}
+                </label>
                 <input
                   type="text"
                   required
@@ -126,7 +137,9 @@ export function LeadMagnetSection() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Email Address (To Receive PDF)</label>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
+                  {t.form_email} ({lang === "es" ? "Para recibir el PDF" : "To Receive PDF"})
+                </label>
                 <input
                   type="email"
                   required
@@ -138,7 +151,9 @@ export function LeadMagnetSection() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Mobile Phone (Optional for SMS copy)</label>
+                <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
+                  {t.form_phone} ({lang === "es" ? "Opcional para copia por SMS" : "Optional for SMS copy"})
+                </label>
                 <input
                   type="tel"
                   placeholder="e.g. (407) 555-0199"
@@ -155,12 +170,14 @@ export function LeadMagnetSection() {
                   disabled={loading}
                   className="w-full !bg-secondary !text-white !border-secondary hover:!bg-secondary/90 py-3.5 text-sm font-bold shadow-lg"
                 >
-                  {loading ? "Sending..." : "Download Free Guide (PDF) →"}
+                  {loading ? (lang === "es" ? "Enviando..." : "Sending...") : t.guide_download_btn}
                 </Button>
               </div>
 
               <p className="text-[10px] text-slate-400 text-center">
-                🔒 We respect your privacy. No spam. Unsubscribe at any time.
+                {lang === "es" 
+                  ? "🔒 Respetamos su privacidad. Sin spam. Cero compromisos."
+                  : "🔒 We respect your privacy. No spam. Unsubscribe at any time."}
               </p>
             </form>
           )}

@@ -2,9 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useLanguage } from "@/context/LanguageContext";
+import { dictionary } from "@/lib/i18n/translations";
 
 export function FloatingMobileBar() {
   const [visible, setVisible] = useState(false);
+  const { lang } = useLanguage();
+  const t = dictionary[lang];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,27 +35,35 @@ export function FloatingMobileBar() {
           className="flex flex-col items-center justify-center py-2 px-1 bg-slate-900 text-white rounded-xl font-bold text-[10px] shadow-sm active:scale-95 transition-transform"
         >
           <span className="text-base mb-0.5">📞</span>
-          <span>Call</span>
+          <span>{t.mobile_call}</span>
         </a>
 
         {/* WhatsApp Direct */}
         <a
-          href="https://wa.me/13863331482?text=Hello%20Angel,%20I%20visited%20AB%20Global%20Consulting%20and%20would%20like%20information."
+          href={
+            lang === "es"
+              ? "https://wa.me/13863331482?text=Hola%20Angel,%20visite%20su%20pagina%20web%20y%20deseo%20informacion%20sobre%20seguros/anualidades."
+              : "https://wa.me/13863331482?text=Hello%20Angel,%20I%20visited%20AB%20Global%20Consulting%20and%20would%20like%20information."
+          }
           target="_blank"
           rel="noopener noreferrer"
           className="flex flex-col items-center justify-center py-2 px-1 bg-emerald-600 text-white rounded-xl font-bold text-[10px] shadow-sm active:scale-95 transition-transform"
         >
           <span className="text-base mb-0.5">💬</span>
-          <span>WhatsApp</span>
+          <span>{t.mobile_whatsapp}</span>
         </a>
 
         {/* Text SMS */}
         <a
-          href="sms:3863331482?&body=Hello%20Angel,%20I%20visited%20your%20website%20and%20would%20like%20to%20request%20information%20regarding%20insurance/annuities."
+          href={
+            lang === "es"
+              ? "sms:3863331482?&body=Hola%20Angel,%20deseo%20solicitar%20informacion%20sobre%20seguros/retiro."
+              : "sms:3863331482?&body=Hello%20Angel,%20I%20would%20like%20to%20request%20information%20regarding%20insurance/annuities."
+          }
           className="flex flex-col items-center justify-center py-2 px-1 bg-slate-100 text-slate-800 border border-slate-200 rounded-xl font-bold text-[10px] shadow-sm active:scale-95 transition-transform"
         >
           <span className="text-base mb-0.5">📱</span>
-          <span>SMS Text</span>
+          <span>{t.mobile_sms}</span>
         </a>
 
         {/* Book Consultation */}
@@ -60,7 +72,7 @@ export function FloatingMobileBar() {
           className="flex flex-col items-center justify-center py-2 px-1 bg-secondary text-white rounded-xl font-bold text-[10px] shadow-sm active:scale-95 transition-transform"
         >
           <span className="text-base mb-0.5">📅</span>
-          <span>Quote</span>
+          <span>{t.mobile_quote}</span>
         </Link>
       </div>
     </div>

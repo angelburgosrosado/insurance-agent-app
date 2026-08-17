@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo, useTransition } from "react";
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid, Legend } from "recharts";
 import { Button } from "@/components/ui/Button";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface IulCalculatorProps {
   initialAge?: number;
@@ -19,6 +20,7 @@ export function IulCalculator({
   initialReturn = 7.0,
   isStandalone = false,
 }: IulCalculatorProps) {
+  const { lang } = useLanguage();
   const [currentAge, setCurrentAge] = useState(initialAge);
   const [retireAge, setRetireAge] = useState(initialRetireAge);
   const [monthlyContribution, setMonthlyContribution] = useState(initialMonthly);

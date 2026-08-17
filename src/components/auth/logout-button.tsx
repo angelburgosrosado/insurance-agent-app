@@ -12,11 +12,11 @@ interface LogoutButtonProps {
 export function LogoutButton({ children, className = "" }: LogoutButtonProps) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const supabase = createClient();
 
   const handleLogout = async () => {
     try {
       setLoading(true);
+      const supabase = createClient();
       await supabase.auth.signOut();
       router.push("/login");
       router.refresh();

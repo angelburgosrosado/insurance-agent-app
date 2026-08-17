@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase";
 
-export default function UnauthorizedPage() {
-  const supabase = createClient();
+export const dynamic = "force-dynamic";
 
+export default function UnauthorizedPage() {
   const handleLogout = async () => {
+    const supabase = createClient();
     await supabase.auth.signOut();
     window.location.href = "/";
   };

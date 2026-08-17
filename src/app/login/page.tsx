@@ -3,10 +3,11 @@
 import { createClient } from "@/lib/supabase";
 import { Button } from "@/components/ui/Button";
 
-export default function LoginPage() {
-  const supabase = createClient();
+export const dynamic = "force-dynamic";
 
+export default function LoginPage() {
   const handleLogin = async () => {
+    const supabase = createClient();
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {

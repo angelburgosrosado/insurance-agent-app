@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { services } from '@/lib/content/services';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://abglobalconsulting.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://abglco.com';
   const now = new Date();
 
   // Core static pages

@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://abglobalconsulting.com"),
+  metadataBase: new URL("https://abglco.com"),
   title: {
     default: "AB Global Consulting | Insurance guidance with clarity",
     template: "%s | AB Global Consulting",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     title: "Insurance guidance with clarity",
     description:
       "Clear insurance guidance for individuals, families, and businesses.",
-    url: "https://abglobalconsulting.com",
+    url: "https://abglco.com",
   },
   robots: {
     index: true,

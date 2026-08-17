@@ -28,7 +28,7 @@ export async function sendEmail(payload: EmailPayload) {
     },
     body: JSON.stringify({
       personalizations: [{ to: [{ email: payload.to }] }],
-      from: { email: "notifications@abglobalconsulting.com", name: "AB Global Consulting" },
+      from: { email: process.env.EMAIL_FROM || "notifications@abglco.com", name: "AB Global Consulting" },
       subject: payload.subject,
       content: [
         { type: "text/plain", value: payload.text },

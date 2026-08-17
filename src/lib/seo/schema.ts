@@ -1,4 +1,4 @@
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://abglobalconsulting.com";
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://abglco.com";
 
 export const businessDetails = {
   name: "AB Global Consulting",

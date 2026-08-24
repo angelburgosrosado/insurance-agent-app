@@ -24,6 +24,47 @@ export type ResourceArticle = {
 
 export const resourceArticles: ResourceArticle[] = [
   {
+    slug: "protection-planning-checklist",
+    title: "The Protection Planning Checklist: Life, Health, Retirement & Legacy (4-Page PDF)",
+    titleEs: "Lista de Verificación de Planificación y Protección: Vida, Salud, Retiro y Legado (PDF de 4 Páginas)",
+    category: "Life Insurance",
+    categoryEs: "Planificación Integral",
+    readTime: "4-Page PDF Guide",
+    publishedAt: "2026-02-24",
+    icon: "📋",
+    summary: "A comprehensive 4-page client audit and printable blueprint covering 0% market loss floors, IRS 7702 tax-free loans, Living Benefits, pension maximization, and Everest funeral pre-planning.",
+    summaryEs: "Una guía de auditoría y manual imprimible de 4 páginas que cubre pisos garantizados del 0%, préstamos libres de impuestos IRS 7702, Beneficios en Vida, maximización de pensiones y concierge funerario Everest.",
+    keyTakeaways: [
+      "4-Pillar framework auditing Life Defense, Health/Medicare, Retirement Immunity, and Legacy Pre-Planning.",
+      "Printable Client Self-Audit Scorecard to identify high-risk financial vulnerabilities.",
+      "Living Benefits checklist covering Critical, Chronic, and Terminal medical emergencies.",
+      "Action blueprint with direct advisor illustrations and interactive simulator links."
+    ],
+    keyTakeawaysEs: [
+      "Marco de 4 Pilares que audita Defensa de Vida, Salud/Medicare, Inmunidad en Retiro y Planificación de Legado.",
+      "Tabla de autoevaluación imprimible para identificar brechas y vulnerabilidades financieras.",
+      "Lista de Beneficios en Vida para emergencias médicas Críticas, Crónicas y Terminales.",
+      "Plan de acción estratégico con ilustraciones oficiales y simuladores interactivos."
+    ],
+    sections: [
+      {
+        heading: "Pillar I & II: Modern Life Defense & Accelerated Living Benefits",
+        headingEs: "Pilar I y II: Defensa Moderna de Vida y Beneficios en Vida Acelerados",
+        body: "Evaluating modern Indexed Universal Life (IUL) with contractual 0% downside market loss floors, IRS Section 7702 tax-free policy loans, and built-in Living Benefits that allow accelerating up to 90% of death benefits tax-free during critical, chronic, or terminal health events.",
+        bodyEs: "Evaluación del Seguro Indexado Universal (IUL) con piso garantizado del 0%, préstamos libres de impuestos bajo el Código IRS 7702 y Beneficios en Vida para adelantar hasta el 90% del beneficio ante eventos críticos o crónicos."
+      },
+      {
+        heading: "Pillar III & IV: Retirement Longevity, Military Shield & Legacy",
+        headingEs: "Pilar III y IV: Inmunidad en el Retiro, Blindaje Militar y Legado",
+        body: "Mitigating 401(k)/IRA sequence-of-returns market crash risks with guaranteed lifetime annuities, bypassing the military SGLI-to-VGLI escalation cliff, maximizing military pensions (SBP), and saving $3,500+ with Everest Funeral Concierge 24/7 price negotiation.",
+        bodyEs: "Mitigación del riesgo de caídas bursátiles en 401(k)/IRA con anualidades vitalicias garantizadas, prevención de aumentos de VGLI en militares, maximización de pensión (SBP) y ahorro de $3,500+ con Everest Concierge."
+      }
+    ],
+    relatedToolUrl: "/guides/protection-planning-checklist",
+    relatedToolName: "Open & Print 4-Page PDF Guide",
+    relatedToolNameEs: "Abrir e Imprimir Guía PDF (4 Páginas)"
+  },
+  {
     slug: "florida-iul-retirement-blueprint",
     title: "Florida IUL & Tax-Free Retirement Blueprint",
     titleEs: "Guía de IUL y Jubilación Libre de Impuestos en Florida",

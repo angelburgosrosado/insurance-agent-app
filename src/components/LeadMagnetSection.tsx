@@ -9,7 +9,7 @@ export function LeadMagnetSection() {
   const { lang } = useLanguage();
   const t = dictionary[lang];
 
-  const [selectedGuide, setSelectedGuide] = useState<"iul" | "funeral">("iul");
+  const [selectedGuide, setSelectedGuide] = useState<"checklist" | "iul" | "funeral">("checklist");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -30,8 +30,18 @@ export function LeadMagnetSection() {
           lastName: name.split(" ").slice(1).join(" ") || "Prospect",
           email,
           phone,
-          service: selectedGuide === "iul" ? "IUL Guide Download" : "Funeral Pre-Planning Checklist",
-          message: `Requested downloadable guide: ${selectedGuide === "iul" ? "Florida 2026 IUL Retirement Guide" : "Everest Funeral Pre-Planning Checklist"} [Lang: ${lang}]`,
+          service: selectedGuide === "checklist" 
+            ? "Protection Planning Checklist (4-Page PDF)" 
+            : selectedGuide === "iul" 
+            ? "IUL Guide Download" 
+            : "Funeral Pre-Planning Checklist",
+          message: `Requested downloadable guide: ${
+            selectedGuide === "checklist"
+              ? "The Protection Planning Checklist: Life, Health, Retirement & Legacy (4-Page PDF)"
+              : selectedGuide === "iul"
+              ? "Florida 2026 IUL Retirement Guide"
+              : "Everest Funeral Pre-Planning Checklist"
+          } [Lang: ${lang}]`,
           consent: true,
           source: "lead_magnet_section",
         }),
@@ -60,31 +70,51 @@ export function LeadMagnetSection() {
             {t.guides_desc}
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+            <button
+              onClick={() => { setSelectedGuide("checklist"); setSubmitted(false); }}
+              className={`p-4 rounded-2xl border text-left transition-all ${
+                selectedGuide === "checklist"
+                  ? "bg-amber-500/20 border-amber-400 shadow-lg ring-2 ring-amber-400/50"
+                  : "bg-white/5 border-white/10 hover:bg-white/10"
+              }`}
+            >
+              <span className="text-xl mb-1.5 block">📋</span>
+              <span className="text-[10px] bg-amber-400 text-slate-950 font-black px-1.5 py-0.5 rounded uppercase">Featured PDF</span>
+              <h4 className="font-bold text-xs text-white mt-1.5">
+                {lang === "es" ? "Lista de Planificación y Protección (PDF)" : "Protection Planning Checklist (PDF)"}
+              </h4>
+              <p className="text-[11px] text-white/70 mt-1 leading-snug">
+                {lang === "es" ? "Guía de 4 páginas: Vida, Salud, Retiro y Legado." : "4-Page Guide: Life, Health, Retirement & Legacy."}
+              </p>
+            </button>
+
             <button
               onClick={() => { setSelectedGuide("iul"); setSubmitted(false); }}
-              className={`p-5 rounded-2xl border text-left transition-all ${
+              className={`p-4 rounded-2xl border text-left transition-all ${
                 selectedGuide === "iul"
                   ? "bg-secondary/20 border-secondary shadow-lg ring-2 ring-secondary/50"
                   : "bg-white/5 border-white/10 hover:bg-white/10"
               }`}
             >
-              <span className="text-2xl mb-2 block">📘</span>
-              <h4 className="font-bold text-sm text-white">{t.guide_1_btn}</h4>
-              <p className="text-xs text-white/70 mt-1">{t.guide_1_desc}</p>
+              <span className="text-xl mb-1.5 block">📊</span>
+              <span className="text-[10px] bg-secondary/20 text-amber-300 font-bold px-1.5 py-0.5 rounded uppercase">IUL Guide</span>
+              <h4 className="font-bold text-xs text-white mt-1.5">{t.guide_1_btn}</h4>
+              <p className="text-[11px] text-white/70 mt-1 leading-snug">{t.guide_1_desc}</p>
             </button>
 
             <button
               onClick={() => { setSelectedGuide("funeral"); setSubmitted(false); }}
-              className={`p-5 rounded-2xl border text-left transition-all ${
+              className={`p-4 rounded-2xl border text-left transition-all ${
                 selectedGuide === "funeral"
                   ? "bg-secondary/20 border-secondary shadow-lg ring-2 ring-secondary/50"
                   : "bg-white/5 border-white/10 hover:bg-white/10"
               }`}
             >
-              <span className="text-2xl mb-2 block">🕊️</span>
-              <h4 className="font-bold text-sm text-white">{t.guide_2_btn}</h4>
-              <p className="text-xs text-white/70 mt-1">{t.guide_2_desc}</p>
+              <span className="text-xl mb-1.5 block">🕊️</span>
+              <span className="text-[10px] bg-secondary/20 text-amber-300 font-bold px-1.5 py-0.5 rounded uppercase">Everest</span>
+              <h4 className="font-bold text-xs text-white mt-1.5">{t.guide_2_btn}</h4>
+              <p className="text-[11px] text-white/70 mt-1 leading-snug">{t.guide_2_desc}</p>
             </button>
           </div>
         </div>
@@ -101,15 +131,16 @@ export function LeadMagnetSection() {
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed">
                 {lang === "es" 
-                  ? <>Hemos enviado el enlace de descarga a <strong>{email}</strong>. El asesor Angel Burgos está a su disposición para cualquier escenario o pregunta.</>
-                  : <>We have sent your download link to <strong>{email}</strong>. Angel Burgos is available if you have specific scenario questions.</>}
+                  ? <>Hemos enviado su copia a <strong>{email}</strong>. También puede ver e imprimir la versión digital ahora mismo.</>
+                  : <>We have sent your copy to <strong>{email}</strong>. You can also view and print the digital PDF version immediately.</>}
               </p>
-              <button
-                onClick={() => setSubmitted(false)}
-                className="text-xs font-bold text-secondary underline hover:text-slate-900"
+              
+              <Link
+                href="/guides/protection-planning-checklist"
+                className="inline-block px-5 py-2.5 bg-slate-900 text-white rounded-xl text-xs font-bold shadow-md hover:bg-secondary transition-all"
               >
-                {lang === "es" ? "Solicitar otra guía" : "Request another guide"}
-              </button>
+                📄 {lang === "es" ? "Abrir / Imprimir Guía PDF (4 Páginas) →" : "Open / Print 4-Page PDF Guide →"}
+              </Link>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -117,8 +148,12 @@ export function LeadMagnetSection() {
                 <span className="text-[11px] font-bold uppercase tracking-wider text-secondary">
                   {lang === "es" ? "Descarga Inmediata" : "Instant Download"}
                 </span>
-                <h3 className="text-xl font-bold text-slate-900">
-                  {selectedGuide === "iul" ? t.guide_1_btn : t.guide_2_btn}
+                <h3 className="text-lg font-bold text-slate-900">
+                  {selectedGuide === "checklist"
+                    ? (lang === "es" ? "The Protection Planning Checklist (PDF 4 Páginas)" : "The Protection Planning Checklist (4-Page PDF)")
+                    : selectedGuide === "iul"
+                    ? t.guide_1_btn
+                    : t.guide_2_btn}
                 </h3>
               </div>
 

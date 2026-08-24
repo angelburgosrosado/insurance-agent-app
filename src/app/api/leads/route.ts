@@ -5,6 +5,7 @@ import { validateLeadRequest } from "@/lib/server/lead-validation";
 import { leadRateLimiter, rateLimitResponse, requestClientKey } from "@/lib/server/rate-limit";
 import { sendEmail, buildCustomerAutoReplyHtml } from "@/lib/integrations/email";
 import { dispatchToCRM } from "@/lib/integrations/crm";
+import { syncLeadToHubSpot } from "@/lib/integrations/hubspot";
 
 export async function POST(request: Request) {
   const rateLimit = leadRateLimiter.check(requestClientKey(request));
@@ -42,7 +43,20 @@ export async function POST(request: Request) {
       html: customerReply.html,
     }),
 
-    // 3. Webhook CRM Integration
+    // 3. Native HubSpot CRM Sync
+    syncLeadToHubSpot({
+      firstName: lead.firstName,
+      lastName: lead.lastName,
+      email: lead.email,
+      phone: lead.phone,
+      service: lead.service,
+      message: lead.message,
+      source: lead.source,
+      medium: lead.medium,
+      campaign: lead.campaign,
+    }),
+
+    // 4. Webhook CRM Integration
     dispatchToCRM({
       event: "lead.created",
       data: lead,

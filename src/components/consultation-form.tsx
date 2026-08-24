@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { useAnalytics } from "./analytics-provider";
 import { useLanguage } from "@/context/LanguageContext";
 import { dictionary } from "@/lib/i18n/translations";
+import { getStoredAttribution } from "@/lib/analytics/attribution";
 
 const initialForm = {
   firstName: "",
@@ -44,15 +45,17 @@ export function ConsultationForm() {
     setState("submitting");
     setError("");
 
-    const params = new URLSearchParams(window.location.search);
+    const currentParams = new URLSearchParams(window.location.search);
+    const stored = getStoredAttribution();
+
     const response = await fetch("/api/leads", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         ...form,
-        source: params.get("utm_source") ?? "",
-        medium: params.get("utm_medium") ?? "",
-        campaign: params.get("utm_campaign") ?? "",
+        source: currentParams.get("utm_source") || stored.source || "direct",
+        medium: currentParams.get("utm_medium") || stored.medium || "web",
+        campaign: currentParams.get("utm_campaign") || stored.campaign || "consultation_form",
       }),
     });
 

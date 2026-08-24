@@ -1,6 +1,7 @@
 import { getCampaignMetrics } from "@/lib/server/campaign-metrics";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { SocialContentStudio } from "@/components/admin/SocialContentStudio";
 
 export default async function CampaignsDashboardPage() {
   const data = await getCampaignMetrics();
@@ -13,14 +14,27 @@ export default async function CampaignsDashboardPage() {
             <ArrowLeft size={20} />
           </Link>
           <div>
-            <h1 className="text-xl font-bold tracking-tight">Campaign Tracking</h1>
-            <p className="text-xs text-[var(--ink-soft)]">UTM-attributed lead generation</p>
+            <h1 className="text-xl font-bold tracking-tight">Campaign & Social Lead Studio</h1>
+            <p className="text-xs text-[var(--ink-soft)]">AI Content Generator & UTM-attributed lead tracking</p>
           </div>
         </div>
       </header>
       
-      <div className="p-5 lg:p-10 max-w-[1400px] mx-auto space-y-6">
-        <div className="bg-white border border-[var(--line)] shadow-sm overflow-hidden">
+      <div className="p-5 lg:p-10 max-w-[1400px] mx-auto space-y-8">
+        {/* AI Social Content & Tracked Link Generator */}
+        <SocialContentStudio />
+
+        {/* Live UTM Attribution Analytics Table */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <h3 className="text-base font-bold text-slate-900">
+              Live Inbound UTM Lead Attribution
+            </h3>
+            <span className="text-xs text-slate-500">
+              Auto-tracked from LinkedIn, TikTok, Instagram & Facebook
+            </span>
+          </div>
+          <div className="bg-white border border-[var(--line)] shadow-sm overflow-hidden rounded-2xl">
           <table className="w-full text-left text-sm">
             <thead className="bg-[#fcfdfd] border-b border-[var(--line)] text-[var(--ink-soft)]">
               <tr>
@@ -79,6 +93,7 @@ export default async function CampaignsDashboardPage() {
           </table>
         </div>
       </div>
+    </div>
     </main>
   );
 }

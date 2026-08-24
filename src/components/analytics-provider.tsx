@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { dispatchEvent } from "@/lib/analytics/dispatcher";
 import { createEvent, EventName } from "@/lib/analytics/events";
+import { captureAttribution } from "@/lib/analytics/attribution";
 
 interface AnalyticsContextType {
   track: (name: EventName, properties?: Record<string, any>) => void;
@@ -14,8 +15,9 @@ const AnalyticsContext = createContext<AnalyticsContextType | undefined>(undefin
 export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
-  // Automatically track page views when the route changes
+  // Automatically track page views and capture UTM attribution when the route loads
   useEffect(() => {
+    captureAttribution();
     if (pathname) {
       dispatchEvent(createEvent("page_view", { path: pathname }));
     }

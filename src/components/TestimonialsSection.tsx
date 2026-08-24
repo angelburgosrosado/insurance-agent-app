@@ -92,7 +92,7 @@ export function TestimonialsSection() {
                 </div>
 
                 <p className="text-sm text-slate-700 italic leading-relaxed">
-                  "{item.quote}"
+                  &ldquo;{item.quote}&rdquo;
                 </p>
               </div>
 

@@ -25,7 +25,7 @@ export default async function PortalProfilePage() {
   if (!user) redirect("/login");
 
   const prisma = getPrismaClient();
-  let lead = await prisma.lead.findFirst({
+  const lead = await prisma.lead.findFirst({
     where: { email: user.email! }
   });
 

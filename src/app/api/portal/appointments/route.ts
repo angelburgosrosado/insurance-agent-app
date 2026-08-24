@@ -34,7 +34,7 @@ export async function POST(request: Request) {
 
     const prisma = getPrismaClient();
 
-    let lead = await prisma.lead.findFirst({
+    const lead = await prisma.lead.findFirst({
       where: { email: user.email }
     });
 

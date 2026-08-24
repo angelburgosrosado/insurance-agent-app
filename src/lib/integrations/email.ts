@@ -9,7 +9,7 @@ export interface EmailPayload {
 export async function sendEmail(payload: EmailPayload): Promise<{ success: boolean; provider?: string; error?: string; mock?: boolean }> {
   const sendgridKey = process.env.SENDGRID_API_KEY;
   const resendKey = process.env.RESEND_API_KEY;
-  const fromEmail = payload.from || process.env.EMAIL_FROM || "notifications@abglco.com";
+  const fromEmail = payload.from || process.env.EMAIL_FROM || "onboarding@resend.dev";
   const fromName = process.env.EMAIL_FROM_NAME || "Angel Burgos • AB Global Consulting";
 
   // 1. Try Resend if configured
@@ -31,6 +31,8 @@ export async function sendEmail(payload: EmailPayload): Promise<{ success: boole
       });
 
       if (res.ok) {
+        const data = await res.json();
+        console.log("[Resend Success] Sent email ID:", data.id, "to:", payload.to);
         return { success: true, provider: "resend" };
       }
       const err = await res.json().catch(() => null);

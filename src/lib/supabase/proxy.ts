@@ -20,6 +20,6 @@ export async function updateSession(request: NextRequest) {
     },
   });
 
-  await supabase.auth.getClaims();
+  await supabase.auth.getUser();
   return response;
 }

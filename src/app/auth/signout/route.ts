@@ -8,7 +8,12 @@ async function signOut(request: Request) {
   } catch {
     // Keep logout idempotent when local Supabase configuration is incomplete.
   }
-  return NextResponse.redirect(new URL("/login", request.url));
+  const response = NextResponse.redirect(new URL("/login", request.url));
+  response.cookies.set("ab_staff_session", "", {
+    maxAge: 0,
+    path: "/",
+  });
+  return response;
 }
 
 export async function GET(request: Request) {

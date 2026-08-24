@@ -27,18 +27,33 @@ export function hasStaffAccess(identity: AuthenticatedIdentity | null): boolean 
 }
 
 export async function resolveStaffAuthorization(
-  identity: { id: string } | null,
+  identity: { id: string; email?: string; role?: unknown } | null,
   repository: StaffUserRepository,
 ): Promise<StaffAuthorization> {
   if (!identity) return { authenticated: false, authorized: false, reason: "anonymous" };
 
-  const staffUser = await repository.user.findUnique({
-    where: { id: identity.id },
-    select: { role: true },
-  });
-  if (!staffUser) return { authenticated: true, authorized: false, reason: "staff_record_missing" };
-  if (!isStaffRole(staffUser.role)) return { authenticated: true, authorized: false, reason: "invalid_staff_role" };
-  return { authenticated: true, authorized: true, role: staffUser.role };
+  // 1. Direct Master Admin bypass for Angel Burgos & Staff Session
+  if (
+    identity.id === "admin_angel_burgos" ||
+    identity.email?.toLowerCase() === "angelburgosrosado@gmail.com" ||
+    identity.email?.toLowerCase() === "admin@abglco.com" ||
+    identity.role === "superadmin" ||
+    identity.role === "admin"
+  ) {
+    return { authenticated: true, authorized: true, role: "superadmin" };
+  }
+
+  try {
+    const staffUser = await repository.user.findUnique({
+      where: { id: identity.id },
+      select: { role: true },
+    });
+    if (!staffUser) return { authenticated: true, authorized: false, reason: "staff_record_missing" };
+    if (!isStaffRole(staffUser.role)) return { authenticated: true, authorized: false, reason: "invalid_staff_role" };
+    return { authenticated: true, authorized: true, role: staffUser.role };
+  } catch {
+    return { authenticated: true, authorized: false, reason: "staff_record_missing" };
+  }
 }
 
 export function isAuthenticatedIdentity(value: unknown): value is { id: string } {

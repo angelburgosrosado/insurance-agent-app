@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
 import { services } from '@/lib/content/services';
+import { resourceArticles } from '@/lib/content/resources';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://abglco.com';
@@ -23,7 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/resources`,
       lastModified: now,
       changeFrequency: 'weekly',
-      priority: 0.7,
+      priority: 0.8,
     },
   ];
 
@@ -42,12 +43,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.95,
     },
     {
+      url: `${baseUrl}/tools/military-asset-shield`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.95,
+    },
+    {
       url: `${baseUrl}/tools/funeral-cost-savings`,
       lastModified: now,
       changeFrequency: 'weekly',
       priority: 0.9,
     },
   ];
+
+  // Resource & Planning Guides
+  const resourceRoutes: MetadataRoute.Sitemap = resourceArticles.map((article) => ({
+    url: `${baseUrl}/resources/${article.slug}`,
+    lastModified: now,
+    changeFrequency: 'monthly',
+    priority: 0.8,
+  }));
 
   // Dynamic Product & Service Pages
   const serviceRoutes: MetadataRoute.Sitemap = services.map((service) => ({
@@ -57,5 +72,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.85,
   }));
 
-  return [...staticRoutes, ...toolRoutes, ...serviceRoutes];
+  return [...staticRoutes, ...toolRoutes, ...resourceRoutes, ...serviceRoutes];
 }
+

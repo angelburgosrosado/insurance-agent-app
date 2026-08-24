@@ -1,77 +1,157 @@
-import { getPrismaClient } from "@/lib/server/db";
+import React from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import { resourceArticles } from "@/lib/content/resources";
+import { Navbar } from "@/components/Navbar";
+import { Button } from "@/components/ui/Button";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
 
-export async function generateMetadata(
-  { params }: Props
-): Promise<Metadata> {
+export async function generateStaticParams() {
+  return resourceArticles.map((article) => ({
+    slug: article.slug,
+  }));
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const prisma = getPrismaClient();
-  const resource = await prisma.contentEntry.findUnique({
-    where: { slug }
-  });
-  
-  if (!resource || resource.status !== "published") {
-    return { title: "Resource Not Found" };
+  const article = resourceArticles.find((a) => a.slug === slug);
+
+  if (!article) {
+    return { title: "Resource Not Found | AB Global Consulting" };
   }
 
   return {
-    title: `${resource.title} | AB Global Consulting`,
-    // Use the first 160 chars of the body if there isn't a dedicated summary field,
-    // though the DB schema might just use the body for now.
-    description: resource.body.substring(0, 160),
+    title: `${article.title} | AB Global Consulting`,
+    description: article.summary,
     alternates: {
       canonical: `/resources/${slug}`,
-    }
+    },
   };
 }
 
 export default async function ResourceDetailPage({ params }: Props) {
   const { slug } = await params;
-  const prisma = getPrismaClient();
-  
-  const resource = await prisma.contentEntry.findUnique({
-    where: { slug }
-  });
+  const article = resourceArticles.find((a) => a.slug === slug);
 
-  if (!resource || resource.status !== "published") {
+  if (!article) {
     notFound();
   }
 
   return (
-    <main className="min-h-[100dvh] bg-[#eef1ef] text-[var(--ink)]">
-      <header className="border-b border-[var(--line)] bg-white">
-        <div className="mx-auto flex max-w-[1400px] items-center justify-between px-5 py-5 lg:px-8">
-          <div>
-            <Link href="/" className="text-sm font-semibold hover:underline">AB Global Consulting</Link>
-            <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--ink-soft)]">Resource Center</p>
+    <main className="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
+      <Navbar />
+
+      {/* Top Header */}
+      <section className="bg-[#001c38] text-white py-12 md:py-16 px-6 lg:px-10 border-b border-slate-800">
+        <div className="max-w-4xl mx-auto space-y-4">
+          <Link
+            href="/resources"
+            className="inline-flex items-center gap-1.5 text-xs text-amber-300 hover:text-white font-bold transition-colors mb-2"
+          >
+            ← Back to Resources & Planning Guides
+          </Link>
+
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">{article.icon}</span>
+            <span className="px-3 py-1 bg-secondary/20 border border-secondary/40 rounded-full text-amber-300 text-xs font-bold uppercase tracking-wider">
+              {article.category}
+            </span>
+            <span className="text-xs text-slate-400">⏱️ {article.readTime}</span>
           </div>
-          <Link href="/resources" className="text-sm text-[var(--accent-deep)] hover:underline">&larr; Back to Resources</Link>
+
+          <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
+            {article.title}
+          </h1>
+
+          <p className="text-sm md:text-base text-slate-300 leading-relaxed">
+            {article.summary}
+          </p>
+
+          <div className="pt-2 flex items-center gap-4 text-xs text-slate-400">
+            <span>Author: <strong>Angel Burgos (0215 / G328926)</strong></span>
+            <span>•</span>
+            <span>Orlando, FL & Puerto Rico</span>
+          </div>
         </div>
-      </header>
-      
-      <article className="mx-auto max-w-3xl p-5 lg:p-10 my-10 bg-white border border-[var(--line)]">
-        <header className="mb-8 border-b border-[var(--line)] pb-8">
-          <h1 className="text-3xl md:text-4xl font-semibold tracking-[-0.04em] leading-tight mb-4">{resource.title}</h1>
-          {resource.publishedAt && (
-            <time className="text-xs text-[var(--ink-soft)] uppercase tracking-wider font-mono">
-              Published on {resource.publishedAt.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-            </time>
-          )}
-        </header>
-        
-        <div className="prose max-w-none text-[var(--ink-soft)] leading-relaxed">
-          {/* In a real app we'd parse markdown or HTML safely. For now we output text with basic formatting. */}
-          {resource.body.split('\n').map((paragraph, idx) => (
-            <p key={idx} className="mb-4">{paragraph}</p>
+      </section>
+
+      {/* Article Content */}
+      <div className="max-w-4xl mx-auto px-6 py-12 w-full space-y-10">
+        {/* Key Takeaways Card */}
+        <div className="bg-amber-50/70 border border-amber-200/80 rounded-3xl p-6 md:p-8 shadow-sm">
+          <h3 className="text-sm font-bold uppercase tracking-wider text-amber-900 mb-3 flex items-center gap-2">
+            <span>⚡</span> Executive Summary & Key Takeaways
+          </h3>
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-amber-950 font-medium">
+            {article.keyTakeaways.map((pt, idx) => (
+              <li key={idx} className="flex items-start gap-2 bg-white/80 p-3 rounded-xl border border-amber-100">
+                <span className="text-emerald-600 font-bold text-sm">✓</span>
+                <span className="leading-relaxed">{pt}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Detailed Sections */}
+        <div className="space-y-8">
+          {article.sections.map((section, idx) => (
+            <section key={idx} className="bg-white rounded-3xl p-6 md:p-8 border border-slate-200 shadow-sm space-y-4">
+              <h2 className="text-xl md:text-2xl font-bold text-slate-900">
+                {section.heading}
+              </h2>
+              <p className="text-xs md:text-sm text-slate-700 leading-relaxed">
+                {section.body}
+              </p>
+            </section>
           ))}
         </div>
-      </article>
+
+        {/* Related Interactive Tool Banner */}
+        {article.relatedToolUrl && (
+          <div className="bg-[#001c38] rounded-3xl p-6 md:p-8 text-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-lg">
+            <div className="space-y-1 text-center sm:text-left">
+              <span className="text-[10px] uppercase font-bold tracking-widest text-amber-300">
+                Interactive Companion Tool
+              </span>
+              <h3 className="text-lg md:text-xl font-bold text-white">
+                {article.relatedToolName}
+              </h3>
+              <p className="text-xs text-slate-300 max-w-md">
+                Model your personalized numbers with our interactive simulator and share your scenario.
+              </p>
+            </div>
+            <Link href={article.relatedToolUrl} className="shrink-0">
+              <Button variant="primary" className="!bg-secondary !text-white !border-secondary hover:!bg-secondary/90 text-xs font-bold px-5 py-3 shadow-md">
+                Launch Simulator →
+              </Button>
+            </Link>
+          </div>
+        )}
+
+        {/* Consultation Callout */}
+        <div className="bg-slate-100 rounded-3xl p-8 border border-slate-200 text-center space-y-4">
+          <h3 className="text-xl font-bold text-slate-900">
+            Request an Official Carrier Illustration
+          </h3>
+          <p className="text-xs text-slate-600 max-w-lg mx-auto leading-relaxed">
+            Get personalized rate comparisons, IRS Section 7702 modeling, or military pension maximization illustrations tailored to your age, state, and retirement goals.
+          </p>
+          <div className="pt-2 flex justify-center gap-4">
+            <a href="/#consultation">
+              <Button variant="primary" className="!bg-secondary !text-white !border-secondary hover:!bg-secondary/90 text-xs font-bold px-6 py-3 shadow-md">
+                Book Free Consultation →
+              </Button>
+            </a>
+            <a href="tel:3863331482" className="px-5 py-3 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-800 hover:bg-slate-50 transition-colors">
+              📞 (386) 333-1482
+            </a>
+          </div>
+        </div>
+      </div>
     </main>
   );
 }

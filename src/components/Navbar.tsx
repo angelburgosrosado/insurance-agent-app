@@ -188,6 +188,18 @@ export function Navbar() {
                   <p className="text-[11px] text-slate-500 mt-0.5">{lang === "es" ? "Calcule su cheque garantizado de 401k/IRA" : "Estimate lifetime guaranteed income from 401k/IRA rollovers"}</p>
                 </Link>
 
+                 <Link 
+                  href="/tools/military-asset-shield" 
+                  className="p-2.5 rounded-xl hover:bg-slate-50 transition-colors block border border-amber-200/60 bg-amber-50/40"
+                  onClick={() => setToolsDropdownOpen(false)}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-base">🎖️</span>
+                    <p className="font-bold text-slate-900 text-xs">{t.tool_military_title}</p>
+                  </div>
+                  <p className="text-[11px] text-slate-500 mt-0.5">{lang === "es" ? "Transición SGLI/VGLI, maximización de pensión y TSP" : "SGLI/VGLI transition, SBP pension max & TSP shield"}</p>
+                </Link>
+
                 <Link 
                   href="/tools/funeral-cost-savings" 
                   className="p-2.5 rounded-xl hover:bg-slate-50 transition-colors block"
@@ -222,7 +234,7 @@ export function Navbar() {
         </div>
 
         {/* Mobile Hamburger Toggle */}
-        <div className="flex lg:hidden items-center gap-2">
+        <div className="flex items-center gap-2 lg:hidden">
           <LanguageToggle className="scale-90" />
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -273,6 +285,9 @@ export function Navbar() {
             </Link>
             <Link href="/tools/annuity-estimator" onClick={() => setMobileMenuOpen(false)} className="block py-1 text-slate-700 hover:text-secondary text-sm">
               📈 {t.tool_annuity_title}
+            </Link>
+            <Link href="/tools/military-asset-shield" onClick={() => setMobileMenuOpen(false)} className="block py-1 text-slate-700 hover:text-secondary text-sm font-semibold text-amber-900">
+              🎖️ {t.tool_military_title}
             </Link>
             <Link href="/tools/funeral-cost-savings" onClick={() => setMobileMenuOpen(false)} className="block py-1 text-slate-700 hover:text-secondary text-sm">
               🕊️ {t.tool_funeral_title}

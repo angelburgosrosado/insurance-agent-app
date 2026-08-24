@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useTransition } from "react";
-import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid, Legend } from "recharts";
+import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 import { Button } from "@/components/ui/Button";
 import { useLanguage } from "@/context/LanguageContext";
+import { dictionary } from "@/lib/i18n/translations";
 
 interface IulCalculatorProps {
   initialAge?: number;
@@ -21,6 +22,8 @@ export function IulCalculator({
   isStandalone = false,
 }: IulCalculatorProps) {
   const { lang } = useLanguage();
+  const t = dictionary[lang];
+
   const [currentAge, setCurrentAge] = useState(initialAge);
   const [retireAge, setRetireAge] = useState(initialRetireAge);
   const [monthlyContribution, setMonthlyContribution] = useState(initialMonthly);
@@ -144,21 +147,25 @@ export function IulCalculator({
   };
 
   const smsText = encodeURIComponent(
-    `Hi! Here is an interactive illustration showing how an IUL can generate ~$${calculationData.estimatedAnnualIncome.toLocaleString()}/yr in tax-free retirement income: ${shareUrl}`
+    t.iul_sms_text
+      .replace("{amount}", calculationData.estimatedAnnualIncome.toLocaleString())
+      .replace("{url}", shareUrl)
   );
 
-  const emailSubject = encodeURIComponent("Your Personalized IUL Growth & Retirement Illustration");
+  const emailSubject = encodeURIComponent(t.iul_email_subject);
   const emailBody = encodeURIComponent(
-    `Hello,\n\nHere is your custom Indexed Universal Life (IUL) wealth and tax-free retirement illustration:\n\n` +
-      `• Current Age: ${currentAge}\n` +
-      `• Target Retirement Age: ${retireAge}\n` +
-      `• Monthly Contribution: $${monthlyContribution}/month\n` +
-      `• Projected Tax-Free Annual Retirement Income: $${calculationData.estimatedAnnualIncome.toLocaleString()}/year\n` +
-      `• Projected Lifetime Retirement Cash Flow: $${calculationData.totalLifetimeIncome.toLocaleString()}\n` +
-      `• 0% Downside Market Protection Floor: Active\n\n` +
-      `Interact with your full live model here:\n${shareUrl}\n\n` +
-      `Best regards,\nAngel Burgos - State Licensed Financial Advisor\n(386) 333-1482 | Orlando, FL`
+    t.iul_email_salutation +
+      `${t.iul_email_age}: ${currentAge}\n` +
+      `${t.iul_email_retire}: ${retireAge}\n` +
+      `${t.iul_email_monthly}: $${monthlyContribution}/${lang === "es" ? "mes" : "month"}\n` +
+      `${t.iul_email_annual_income}: $${calculationData.estimatedAnnualIncome.toLocaleString()}/${lang === "es" ? "año" : "year"}\n` +
+      `${t.iul_email_lifetime_flow}: $${calculationData.totalLifetimeIncome.toLocaleString()}\n` +
+      `${t.iul_email_floor}\n\n` +
+      t.iul_email_interact.replace("{url}", shareUrl) +
+      t.iul_email_closing
   );
+
+  const ageUnit = t.iul_age_unit;
 
   return (
     <div className={`bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden ${isStandalone ? "max-w-5xl mx-auto my-8" : "w-full"}`}>
@@ -166,22 +173,24 @@ export function IulCalculator({
       <div className="bg-[#001c38] text-white p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-secondary/20 border border-secondary/40 rounded-full text-secondary text-xs font-bold uppercase tracking-wider mb-2">
-            Interactive Retirement & Wealth Simulator
+            {t.iul_badge}
           </div>
           <h3 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white">
-            Indexed Universal Life (IUL) Growth Engine
+            {t.iul_title}
           </h3>
           <p className="text-white/80 text-sm mt-1 max-w-xl">
-            Simulate how market index participation, the guaranteed 0% floor, and IRS Section 7702 tax-free loans compound your retirement nest egg.
+            {t.iul_desc}
           </p>
         </div>
         <div className="text-left md:text-right shrink-0 bg-white/10 p-4 rounded-xl border border-white/15">
-          <p className="text-xs text-secondary uppercase font-bold tracking-wider">Projected Tax-Free Income</p>
+          <p className="text-xs text-secondary uppercase font-bold tracking-wider">{t.iul_proj_income_label}</p>
           <p className="text-3xl md:text-4xl font-extrabold text-white">
             ${calculationData.estimatedAnnualIncome.toLocaleString()}
-            <span className="text-sm font-normal text-white/70"> / yr</span>
+            <span className="text-sm font-normal text-white/70">{t.iul_per_yr}</span>
           </p>
-          <p className="text-[11px] text-white/60 mt-0.5">from age {retireAge} to 90+</p>
+          <p className="text-[11px] text-white/60 mt-0.5">
+            {t.iul_from_age_to_90.replace("{retireAge}", String(retireAge))}
+          </p>
         </div>
       </div>
 
@@ -190,14 +199,14 @@ export function IulCalculator({
         {/* Sliders / Inputs Column */}
         <div className="lg:col-span-4 space-y-6">
           <div className="bg-slate-50 p-5 rounded-2xl border border-slate-200/80 space-y-5">
-            <h4 className="text-xs uppercase tracking-wider font-bold text-slate-500">Your Plan Inputs</h4>
+            <h4 className="text-xs uppercase tracking-wider font-bold text-slate-500">{t.iul_inputs_title}</h4>
 
             {/* Current Age */}
             <div>
               <div className="flex justify-between items-center text-sm font-semibold text-slate-800 mb-1.5">
-                <label>Current Age</label>
+                <label>{t.iul_current_age}</label>
                 <span className="text-secondary font-bold text-base px-2 py-0.5 bg-white border border-slate-200 rounded-md">
-                  {currentAge} yrs
+                  {currentAge} {ageUnit}
                 </span>
               </div>
               <input
@@ -220,9 +229,9 @@ export function IulCalculator({
             {/* Retirement Age */}
             <div>
               <div className="flex justify-between items-center text-sm font-semibold text-slate-800 mb-1.5">
-                <label>Target Retirement Age</label>
+                <label>{t.iul_target_retire_age}</label>
                 <span className="text-secondary font-bold text-base px-2 py-0.5 bg-white border border-slate-200 rounded-md">
-                  {retireAge} yrs
+                  {retireAge} {ageUnit}
                 </span>
               </div>
               <input
@@ -239,9 +248,9 @@ export function IulCalculator({
             {/* Monthly Contribution */}
             <div>
               <div className="flex justify-between items-center text-sm font-semibold text-slate-800 mb-1.5">
-                <label>Monthly Contribution</label>
+                <label>{t.iul_monthly_contrib}</label>
                 <span className="text-secondary font-bold text-base px-2 py-0.5 bg-white border border-slate-200 rounded-md">
-                  ${monthlyContribution.toLocaleString()}/mo
+                  ${monthlyContribution.toLocaleString()}{t.iul_per_mo}
                 </span>
               </div>
               <input
@@ -253,13 +262,15 @@ export function IulCalculator({
                 onChange={(e) => startTransition(() => setMonthlyContribution(Number(e.target.value)))}
                 className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-secondary"
               />
-              <p className="text-[11px] text-slate-500 mt-1">Annual: ${(monthlyContribution * 12).toLocaleString()}/year</p>
+              <p className="text-[11px] text-slate-500 mt-1">
+                {t.iul_annual_prefix}: ${(monthlyContribution * 12).toLocaleString()}{t.iul_per_year}
+              </p>
             </div>
 
             {/* Assumed Interest Return */}
             <div>
               <div className="flex justify-between items-center text-sm font-semibold text-slate-800 mb-1.5">
-                <label>Assumed Index Return</label>
+                <label>{t.iul_assumed_return}</label>
                 <span className="text-secondary font-bold text-base px-2 py-0.5 bg-white border border-slate-200 rounded-md">
                   {assumedReturn.toFixed(1)}%
                 </span>
@@ -273,7 +284,7 @@ export function IulCalculator({
                 onChange={(e) => startTransition(() => setAssumedReturn(Number(e.target.value)))}
                 className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-secondary"
               />
-              <p className="text-[11px] text-slate-500 mt-1">Based on historical S&P 500 index segments with cap & 0% floor.</p>
+              <p className="text-[11px] text-slate-500 mt-1">{t.iul_assumed_return_sub}</p>
             </div>
 
             {/* Crash Simulation Toggle */}
@@ -287,11 +298,11 @@ export function IulCalculator({
                 />
                 <div>
                   <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
-                    Simulate -30% Market Crash
-                    <span className="px-1.5 py-0.5 bg-amber-100 text-amber-800 rounded text-[10px] font-bold">0% Floor Test</span>
+                    {t.iul_simulate_crash}
+                    <span className="px-1.5 py-0.5 bg-amber-100 text-amber-800 rounded text-[10px] font-bold">{t.iul_floor_test}</span>
                   </span>
                   <p className="text-[11px] text-slate-500 mt-0.5">
-                    See how the IUL guaranteed 0% floor locks in wealth while the taxable brokerage drops.
+                    {t.iul_crash_sub}
                   </p>
                 </div>
               </label>
@@ -304,15 +315,15 @@ export function IulCalculator({
           <div className="bg-slate-50/50 p-4 md:p-6 rounded-2xl border border-slate-200">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
               <div>
-                <h4 className="text-sm font-bold text-slate-900">Projected Cash Value Accumulation</h4>
-                <p className="text-xs text-slate-500">Comparing IUL with 0% Downside Floor vs. Volatile Taxable Brokerage</p>
+                <h4 className="text-sm font-bold text-slate-900">{t.iul_chart_title}</h4>
+                <p className="text-xs text-slate-500">{t.iul_chart_desc}</p>
               </div>
               <div className="flex items-center gap-4 text-xs font-medium">
                 <span className="flex items-center gap-1.5 text-secondary font-bold">
-                  <span className="h-3 w-3 rounded-full bg-secondary inline-block"></span> IUL Cash Value
+                  <span className="h-3 w-3 rounded-full bg-secondary inline-block"></span> {t.iul_legend_iul}
                 </span>
                 <span className="flex items-center gap-1.5 text-slate-400">
-                  <span className="h-3 w-3 rounded-full bg-slate-400 inline-block"></span> Taxable Account
+                  <span className="h-3 w-3 rounded-full bg-slate-400 inline-block"></span> {t.iul_legend_taxable}
                 </span>
               </div>
             </div>
@@ -331,7 +342,7 @@ export function IulCalculator({
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                  <XAxis dataKey="age" tickLine={false} tick={{ fontSize: 11, fill: "#64748b" }} unit=" yrs" />
+                  <XAxis dataKey="age" tickLine={false} tick={{ fontSize: 11, fill: "#64748b" }} unit={` ${ageUnit}`} />
                   <YAxis
                     tickLine={false}
                     tick={{ fontSize: 11, fill: "#64748b" }}
@@ -340,9 +351,9 @@ export function IulCalculator({
                   <Tooltip
                     formatter={(val: any, name: any) => [
                       `$${Number(val).toLocaleString()}`,
-                      name === "iulCashValue" ? "IUL Cash Value (Tax-Free)" : "Taxable Brokerage Account",
+                      name === "iulCashValue" ? t.iul_tooltip_iul : t.iul_tooltip_taxable,
                     ]}
-                    labelFormatter={(label) => `Age: ${label} years old`}
+                    labelFormatter={(label) => `${t.iul_age_label}: ${label} ${t.iul_years_old}`}
                     contentStyle={{ backgroundColor: "#001c38", color: "#fff", borderRadius: "12px", border: "none", fontSize: "12px" }}
                   />
                   <Area
@@ -369,21 +380,25 @@ export function IulCalculator({
           {/* 3 Outcome Metric Badges */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-sm">
-              <p className="text-xs text-slate-500 uppercase font-semibold">Total Invested</p>
+              <p className="text-xs text-slate-500 uppercase font-semibold">{t.iul_metric_invested}</p>
               <p className="text-xl font-bold text-slate-900 mt-1">${calculationData.totalInvested.toLocaleString()}</p>
-              <p className="text-[11px] text-slate-400">over {retireAge - currentAge} years</p>
+              <p className="text-[11px] text-slate-400">
+                {t.iul_metric_invested_sub.replace("{years}", String(retireAge - currentAge))}
+              </p>
             </div>
 
             <div className="p-4 bg-secondary/10 rounded-xl border border-secondary/20 shadow-sm">
-              <p className="text-xs text-secondary uppercase font-bold">Lifetime Tax-Free Income</p>
+              <p className="text-xs text-secondary uppercase font-bold">{t.iul_metric_lifetime}</p>
               <p className="text-xl font-bold text-secondary mt-1">${calculationData.totalLifetimeIncome.toLocaleString()}</p>
-              <p className="text-[11px] text-secondary/80">From age {retireAge} to 90</p>
+              <p className="text-[11px] text-secondary/80">
+                {t.iul_metric_lifetime_sub.replace("{retireAge}", String(retireAge))}
+              </p>
             </div>
 
             <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-sm">
-              <p className="text-xs text-slate-500 uppercase font-semibold">Family Death & Living Benefit</p>
+              <p className="text-xs text-slate-500 uppercase font-semibold">{t.iul_metric_death}</p>
               <p className="text-xl font-bold text-slate-900 mt-1">${calculationData.peakDeathBenefit.toLocaleString()}</p>
-              <p className="text-[11px] text-slate-400">Tax-free inheritance protection</p>
+              <p className="text-[11px] text-slate-400">{t.iul_metric_death_sub}</p>
             </div>
           </div>
         </div>
@@ -393,10 +408,10 @@ export function IulCalculator({
       <div className="bg-slate-100 border-t border-slate-200 p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="flex flex-col gap-1 text-center md:text-left">
           <h5 className="font-bold text-sm text-slate-900 flex items-center justify-center md:justify-start gap-2">
-            <span>🚀</span> Export & Share This Interactive Model
+            <span>🚀</span> {t.tool_share_header}
           </h5>
           <p className="text-xs text-slate-600">
-            Share this exact scenario with your spouse, business partner, or save it for your consultation with Angel Burgos.
+            {t.tool_share_desc}
           </p>
         </div>
 
@@ -408,11 +423,11 @@ export function IulCalculator({
           >
             {copied ? (
               <>
-                <span className="text-emerald-600 font-bold">✓ Copied!</span>
+                <span className="text-emerald-600 font-bold">✓ {t.tool_share_copied}</span>
               </>
             ) : (
               <>
-                <span>🔗</span> Copy Scenario Link
+                <span>🔗</span> {t.tool_share_copy}
               </>
             )}
           </button>
@@ -422,17 +437,17 @@ export function IulCalculator({
             href={`sms:?&body=${smsText}`}
             className="px-4 py-2 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 shadow-sm transition-all flex items-center gap-2"
           >
-            <span>📱</span> Text Link (SMS)
+            <span>📱</span> {t.tool_share_sms}
           </a>
 
           {/* Send via WhatsApp */}
           <a
-            href={`https://wa.me/?text=${encodeURIComponent(smsText)}`}
+            href={`https://wa.me/?text=${encodeURIComponent(t.iul_sms_text.replace("{amount}", calculationData.estimatedAnnualIncome.toLocaleString()).replace("{url}", shareUrl))}`}
             target="_blank"
             rel="noopener noreferrer"
             className="px-4 py-2 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-lg text-xs font-semibold text-emerald-800 shadow-sm transition-all flex items-center gap-2"
           >
-            <span>💬</span> Share on WhatsApp
+            <span>💬</span> {t.tool_share_whatsapp}
           </a>
 
           {/* Send via Email */}
@@ -440,7 +455,7 @@ export function IulCalculator({
             href={`mailto:?subject=${emailSubject}&body=${emailBody}`}
             className="px-4 py-2 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 shadow-sm transition-all flex items-center gap-2"
           >
-            <span>✉️</span> Email Illustration
+            <span>✉️</span> {t.tool_share_email}
           </a>
 
           {/* Print / Save PDF */}
@@ -448,13 +463,13 @@ export function IulCalculator({
             onClick={() => window.print()}
             className="px-4 py-2 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 shadow-sm transition-all flex items-center gap-2"
           >
-            <span>🖨️</span> Save as PDF / Print
+            <span>🖨️</span> {t.tool_share_pdf}
           </button>
 
           {/* Request Official Illustration */}
           <a href="/#consultation" className="inline-block">
             <Button variant="primary" className="!bg-secondary !text-white !border-secondary hover:!bg-secondary/90 text-xs font-bold px-5 py-2.5 shadow-md">
-              Request Official Carrier Illustration →
+              {t.iul_cta_quote}
             </Button>
           </a>
         </div>

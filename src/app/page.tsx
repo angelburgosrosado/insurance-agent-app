@@ -120,24 +120,24 @@ export default function Home() {
             </span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Tool Card 1: IUL Wealth Simulator */}
-            <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+            <div className="bg-white p-7 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
               <div>
-                <div className="h-12 w-12 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary text-2xl mb-6">
+                <div className="h-12 w-12 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary text-2xl mb-5">
                   📊
                 </div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-[11px] uppercase tracking-wider font-bold text-secondary">{lang === "es" ? "Vida y Retiro" : "Life & Retirement"}</span>
                   <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">{lang === "es" ? "Exportable" : "Shareable"}</span>
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-secondary transition-colors">
+                <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-secondary transition-colors">
                   {t.tool_iul_title}
                 </h3>
-                <p className="text-xs text-slate-600 leading-relaxed mb-6">
+                <p className="text-xs text-slate-600 leading-relaxed mb-5">
                   {t.tool_iul_desc}
                 </p>
-                <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-1 mb-6">
+                <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-1 mb-5">
                   <div className="flex justify-between">
                     <span className="text-slate-500">{lang === "es" ? "Ingreso Libre de Impuestos:" : "Tax-Free Income:"}</span>
                     <strong className="text-slate-900">IRS Sec 7702</strong>
@@ -149,32 +149,32 @@ export default function Home() {
                 </div>
               </div>
               <Link href="/tools/iul-calculator" className="block w-full">
-                <Button variant="primary" className="w-full !bg-slate-900 hover:!bg-secondary text-xs font-bold py-3 transition-colors">
+                <Button variant="primary" className="w-full !bg-slate-900 hover:!bg-secondary text-xs font-bold py-2.5 transition-colors">
                   {t.tool_cta_open}
                 </Button>
               </Link>
             </div>
 
             {/* Tool Card 2: Annuity Paycheck Estimator */}
-            <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+            <div className="bg-white p-7 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
               <div>
-                <div className="h-12 w-12 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary text-2xl mb-6">
+                <div className="h-12 w-12 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary text-2xl mb-5">
                   📈
                 </div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-[11px] uppercase tracking-wider font-bold text-secondary">{lang === "es" ? "Pensión Privada" : "Private Pension"}</span>
                   <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">{lang === "es" ? "Exportable" : "Shareable"}</span>
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-secondary transition-colors">
+                <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-secondary transition-colors">
                   {t.tool_annuity_title}
                 </h3>
-                <p className="text-xs text-slate-600 leading-relaxed mb-6">
+                <p className="text-xs text-slate-600 leading-relaxed mb-5">
                   {t.tool_annuity_desc}
                 </p>
-                <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-1 mb-6">
+                <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-1 mb-5">
                   <div className="flex justify-between">
                     <span className="text-slate-500">{lang === "es" ? "Garantía de Ingreso:" : "Paycheck Guarantee:"}</span>
-                    <strong className="text-slate-900">{lang === "es" ? "Cheque de Por Vida" : "Lifetime Paycheck"}</strong>
+                    <strong className="text-slate-900">{lang === "es" ? "Cheque Vitalicio" : "Lifetime Paycheck"}</strong>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-500">{lang === "es" ? "Transferencia 401k/IRA:" : "Rollover Tax Status:"}</span>
@@ -183,29 +183,66 @@ export default function Home() {
                 </div>
               </div>
               <Link href="/tools/annuity-estimator" className="block w-full">
-                <Button variant="primary" className="w-full !bg-slate-900 hover:!bg-secondary text-xs font-bold py-3 transition-colors">
+                <Button variant="primary" className="w-full !bg-slate-900 hover:!bg-secondary text-xs font-bold py-2.5 transition-colors">
                   {t.tool_cta_open}
                 </Button>
               </Link>
             </div>
 
-            {/* Tool Card 3: Everest Funeral Concierge Savings */}
-            <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+            {/* Tool Card 3: Military & Veteran Asset Shield */}
+            <div className="bg-white p-7 rounded-3xl border border-amber-300/80 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group relative overflow-hidden">
+              <div className="absolute top-0 right-0 bg-amber-500 text-slate-950 text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-bl-xl shadow-sm">
+                🎖️ {lang === "es" ? "Militar / Veterano" : "Military / Veteran"}
+              </div>
               <div>
-                <div className="h-12 w-12 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary text-2xl mb-6">
+                <div className="h-12 w-12 rounded-2xl bg-amber-500/15 flex items-center justify-center text-amber-800 text-2xl mb-5">
+                  🛡️
+                </div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[11px] uppercase tracking-wider font-bold text-amber-800">{lang === "es" ? "Fuerzas Armadas" : "Armed Forces"}</span>
+                  <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">{lang === "es" ? "Exportable" : "Shareable"}</span>
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-amber-800 transition-colors">
+                  {t.tool_military_title}
+                </h3>
+                <p className="text-xs text-slate-600 leading-relaxed mb-5">
+                  {t.tool_military_desc}
+                </p>
+                <div className="p-3.5 bg-amber-50/60 rounded-xl border border-amber-200/60 text-xs space-y-1 mb-5">
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">{lang === "es" ? "Alternativa VGLI:" : "VGLI Rate Escalation:"}</span>
+                    <strong className="text-amber-900 font-bold">{lang === "es" ? "IUL con Préstamos 7702" : "IUL 7702 Shield"}</strong>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">{lang === "es" ? "Pensión Militar (SBP):" : "Pension Max:"}</span>
+                    <strong className="text-emerald-600 font-bold">{lang === "es" ? "100% de Pensión" : "100% Full Pension"}</strong>
+                  </div>
+                </div>
+              </div>
+              <Link href="/tools/military-asset-shield" className="block w-full">
+                <Button variant="primary" className="w-full !bg-slate-900 hover:!bg-amber-800 text-xs font-bold py-2.5 transition-colors">
+                  {t.tool_cta_open}
+                </Button>
+              </Link>
+            </div>
+
+            {/* Tool Card 4: Everest Funeral Concierge Savings */}
+            <div className="bg-white p-7 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+              <div>
+                <div className="h-12 w-12 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary text-2xl mb-5">
                   🕊️
                 </div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-[11px] uppercase tracking-wider font-bold text-secondary">Everest Concierge</span>
                   <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">{lang === "es" ? "Exportable" : "Shareable"}</span>
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-secondary transition-colors">
+                <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-secondary transition-colors">
                   {t.tool_funeral_title}
                 </h3>
-                <p className="text-xs text-slate-600 leading-relaxed mb-6">
+                <p className="text-xs text-slate-600 leading-relaxed mb-5">
                   {t.tool_funeral_desc}
                 </p>
-                <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-1 mb-6">
+                <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-1 mb-5">
                   <div className="flex justify-between">
                     <span className="text-slate-500">{lang === "es" ? "Ahorro Promedio:" : "Average Savings:"}</span>
                     <strong className="text-emerald-600 font-bold">$3,500+ / {lang === "es" ? "familia" : "family"}</strong>
@@ -217,7 +254,7 @@ export default function Home() {
                 </div>
               </div>
               <Link href="/tools/funeral-cost-savings" className="block w-full">
-                <Button variant="primary" className="w-full !bg-slate-900 hover:!bg-secondary text-xs font-bold py-3 transition-colors">
+                <Button variant="primary" className="w-full !bg-slate-900 hover:!bg-secondary text-xs font-bold py-2.5 transition-colors">
                   {t.tool_cta_open}
                 </Button>
               </Link>

@@ -57,4 +57,4 @@ node_modules/**
 *.log
 coverage
 .DS_Store
-insurance-agent-app/
+insurance-agent-app/hubspot.config.yml

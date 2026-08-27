@@ -621,3 +621,4 @@ export const dictionary = {
     footer_rights: "Todos los derechos reservados. 9501 Satellite Blvd, Suite 105, Orlando, FL 32837.",
   }
 };
+ 

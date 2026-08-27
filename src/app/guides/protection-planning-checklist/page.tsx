@@ -23,18 +23,22 @@ export default function ProtectionPlanningChecklistGuidePage() {
 
   const handleLeadCapture = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !name) return;
+    if (!email.trim() || !name.trim()) return;
 
     try {
       setLoading(true);
+      const parts = name.trim().split(/\s+/);
+      const firstName = parts[0] || "Client";
+      const lastName = parts.slice(1).join(" ") || "Prospect";
+
       await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          firstName: name.split(" ")[0] || name,
-          lastName: name.split(" ").slice(1).join(" ") || "Client",
-          email,
-          phone,
+          firstName,
+          lastName,
+          email: email.trim(),
+          phone: phone.trim() || "Provided upon request",
           service: "Protection Planning Checklist Download",
           message: `Downloaded 4-Page PDF: The Protection Planning Checklist (Life, Health, Retirement & Legacy) [Lang: ${lang}]`,
           consent: true,

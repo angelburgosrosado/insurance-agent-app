@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { useLanguage } from "@/context/LanguageContext";
 import { dictionary } from "@/lib/i18n/translations";
+import { AlertCircle } from "lucide-react";
 
 export function LeadMagnetSection() {
   const { lang } = useLanguage();
@@ -16,21 +17,32 @@ export function LeadMagnetSection() {
   const [phone, setPhone] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !name) return;
+    if (!email.trim() || !name.trim()) {
+      setError(lang === "es" ? "Por favor ingrese su nombre y correo electrónico" : "Please enter your name and email");
+      return;
+    }
 
     try {
       setLoading(true);
-      await fetch("/api/leads", {
+      setError("");
+
+      const trimmedName = name.trim();
+      const parts = trimmedName.split(/\s+/);
+      const firstName = parts[0] || "Prospect";
+      const lastName = parts.slice(1).join(" ") || "Client";
+
+      const response = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          firstName: name.split(" ")[0] || name,
-          lastName: name.split(" ").slice(1).join(" ") || "Prospect",
-          email,
-          phone,
+          firstName,
+          lastName,
+          email: email.trim(),
+          phone: phone.trim() || "Provided upon request",
           service: selectedGuide === "checklist" 
             ? "Protection Planning Checklist (4-Page PDF)" 
             : selectedGuide === "iul" 
@@ -48,9 +60,19 @@ export function LeadMagnetSection() {
         }),
       });
 
+      if (!response.ok) {
+        const payload = await response.json().catch(() => null);
+        throw new Error(payload?.error || "Error sending request");
+      }
+
       setSubmitted(true);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
+      setError(
+        lang === "es"
+          ? "No se pudo procesar la solicitud. Por favor verifique sus datos e intente de nuevo."
+          : "Could not process your request. Please check your information and try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -73,7 +95,7 @@ export function LeadMagnetSection() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
             <button
-              onClick={() => { setSelectedGuide("checklist"); setSubmitted(false); }}
+              onClick={() => { setSelectedGuide("checklist"); setSubmitted(false); setError(""); }}
               className={`p-4 rounded-2xl border text-left transition-all ${
                 selectedGuide === "checklist"
                   ? "bg-amber-500/20 border-amber-400 shadow-lg ring-2 ring-amber-400/50"
@@ -91,7 +113,7 @@ export function LeadMagnetSection() {
             </button>
 
             <button
-              onClick={() => { setSelectedGuide("iul"); setSubmitted(false); }}
+              onClick={() => { setSelectedGuide("iul"); setSubmitted(false); setError(""); }}
               className={`p-4 rounded-2xl border text-left transition-all ${
                 selectedGuide === "iul"
                   ? "bg-secondary/20 border-secondary shadow-lg ring-2 ring-secondary/50"
@@ -105,7 +127,7 @@ export function LeadMagnetSection() {
             </button>
 
             <button
-              onClick={() => { setSelectedGuide("funeral"); setSubmitted(false); }}
+              onClick={() => { setSelectedGuide("funeral"); setSubmitted(false); setError(""); }}
               className={`p-4 rounded-2xl border text-left transition-all ${
                 selectedGuide === "funeral"
                   ? "bg-secondary/20 border-secondary shadow-lg ring-2 ring-secondary/50"
@@ -145,6 +167,13 @@ export function LeadMagnetSection() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
+              {error && (
+                <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-xs font-semibold flex items-center gap-2">
+                  <AlertCircle size={15} className="shrink-0 text-red-600" />
+                  <span>{error}</span>
+                </div>
+              )}
+
               <div className="border-b border-slate-100 pb-4">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-secondary">
                   {lang === "es" ? "Descarga Inmediata" : "Instant Download"}
@@ -160,35 +189,35 @@ export function LeadMagnetSection() {
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
-                  {t.form_fname} & {t.form_lname}
+                  {t.form_fname} & {t.form_lname} <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Maria Rodriguez"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => { setName(e.target.value); setError(""); }}
                   className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-secondary"
                 />
               </div>
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
-                  {t.form_email} ({lang === "es" ? "Para recibir el PDF" : "To Receive PDF"})
+                  {t.form_email} ({lang === "es" ? "Para recibir el PDF" : "To Receive PDF"}) <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="email"
                   required
                   placeholder="e.g. maria@example.com"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => { setEmail(e.target.value); setError(""); }}
                   className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-secondary"
                 />
               </div>
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
-                  {t.form_phone} ({lang === "es" ? "Opcional para copia por SMS" : "Optional for SMS copy"})
+                  {t.form_phone} <span className="font-normal text-slate-400 text-[11px]">({lang === "es" ? "opcional para copia por SMS" : "optional for SMS copy"})</span>
                 </label>
                 <input
                   type="tel"

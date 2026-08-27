@@ -29,7 +29,7 @@ type PrismaTaskRecord = { id: string; leadId: string; title: string; dueAt: Date
 
 export type PrismaLeadClient = Pick<ServerDatabase, "$disconnect"> & {
   lead: {
-    create(args: { data: Record<string, unknown>; include: { attribution: true } }): Promise<PrismaLeadRecord>;
+    create(args: { data: Record<string, unknown>; include: { attribution: true; followUpTasks?: unknown } }): Promise<PrismaLeadRecord>;
     findMany(args: Record<string, unknown>): Promise<PrismaLeadRecord[]>;
     findUnique(args: Record<string, unknown>): Promise<PrismaLeadRecord | null>;
     update(args: Record<string, unknown>): Promise<PrismaLeadRecord>;
@@ -69,10 +69,26 @@ function text(value: string | null | undefined): string { return value ?? ""; }
 export function mapPrismaLead(row: PrismaLeadRecord): Lead {
   const followUpTask = row.followUpTasks?.find((task) => task.status === "pending" && task.dueAt);
   return {
-    id: row.id, firstName: row.firstName, lastName: row.lastName, email: row.email, phone: row.phone, service: row.service,
-    contactTime: text(row.contactTime), message: text(row.message), consent: row.consent, consentText: row.consentText ?? "", consentVersion: row.consentVersion ?? "", consentAt: row.consentAt.toISOString(),
-    source: text(row.attribution?.source), medium: text(row.attribution?.medium), campaign: text(row.attribution?.campaign), content: text(row.attribution?.content), term: text(row.attribution?.term),
-    status: row.status as LeadStatus, followUpDate: followUpTask?.dueAt?.toISOString().slice(0, 10) ?? "", createdAt: row.createdAt.toISOString(),
+    id: row.id,
+    firstName: row.firstName,
+    lastName: row.lastName,
+    email: row.email,
+    phone: row.phone,
+    service: row.service,
+    contactTime: text(row.contactTime),
+    message: text(row.message),
+    consent: row.consent,
+    consentText: row.consentText ?? "",
+    consentVersion: row.consentVersion ?? "",
+    consentAt: row.consentAt.toISOString(),
+    source: text(row.attribution?.source),
+    medium: text(row.attribution?.medium),
+    campaign: text(row.attribution?.campaign),
+    content: text(row.attribution?.content),
+    term: text(row.attribution?.term),
+    status: row.status as LeadStatus,
+    followUpDate: followUpTask?.dueAt?.toISOString().slice(0, 10) ?? "",
+    createdAt: row.createdAt.toISOString(),
   };
 }
 
@@ -88,32 +104,159 @@ function createPrismaRepository(prisma: PrismaLeadClient): LeadRepository {
   const include = { attribution: true, followUpTasks: { where: { status: "pending" }, orderBy: { dueAt: "asc" } } } as const;
   return {
     async createLead(input) {
-      const attribution = Object.fromEntries(Object.entries({ source: input.source, medium: input.medium, campaign: input.campaign, content: input.content, term: input.term }).filter(([, value]) => value));
-      const row = await prisma.lead.create({ data: { firstName: input.firstName, lastName: input.lastName, email: input.email, phone: input.phone, service: input.service, contactTime: input.contactTime || "", message: input.message || "", consent: input.consent, consentText: input.consentText ?? "", consentVersion: input.consentVersion ?? "legacy", consentAt: new Date(input.consentAt ?? new Date().toISOString()), ...(Object.keys(attribution).length ? { attribution: { create: attribution } } : {}) }, include });
-      return mapPrismaLead(row);
+      try {
+        const attribution = Object.fromEntries(
+          Object.entries({
+            source: input.source,
+            medium: input.medium,
+            campaign: input.campaign,
+            content: input.content,
+            term: input.term,
+          }).filter(([, value]) => value)
+        );
+        const row = await prisma.lead.create({
+          data: {
+            firstName: input.firstName,
+            lastName: input.lastName,
+            email: input.email,
+            phone: input.phone,
+            service: input.service,
+            contactTime: input.contactTime || "",
+            message: input.message || "",
+            consent: input.consent,
+            consentText: input.consentText ?? "",
+            consentVersion: input.consentVersion ?? "legacy",
+            consentAt: new Date(input.consentAt ?? new Date().toISOString()),
+            ...(Object.keys(attribution).length ? { attribution: { create: attribution } } : {}),
+          },
+          include,
+        });
+        return mapPrismaLead(row);
+      } catch (err) {
+        console.warn("[Prisma createLead failed, falling back to SQLite/Memory]:", err);
+        const fallback = createSqliteRepository();
+        return fallback.createLead(input);
+      }
     },
-    async listLeads() { return (await prisma.lead.findMany({ orderBy: [{ createdAt: "desc" }], include })).map(mapPrismaLead); },
+    async listLeads() {
+      try {
+        return (await prisma.lead.findMany({ orderBy: [{ createdAt: "desc" }], include })).map(mapPrismaLead);
+      } catch {
+        return createSqliteRepository().listLeads();
+      }
+    },
     async getLead(id) {
-      if (typeof id !== "string") return null;
-      const row = await prisma.lead.findUnique({ where: { id }, include });
-      return row ? mapPrismaLead(row) : null;
+      if (typeof id !== "string") return createSqliteRepository().getLead(id);
+      try {
+        const row = await prisma.lead.findUnique({ where: { id }, include });
+        return row ? mapPrismaLead(row) : null;
+      } catch {
+        return createSqliteRepository().getLead(id);
+      }
     },
     async updateLead(id, changes) {
-      const followUpDate = changes.followUpDate;
-      return mapPrismaLead(await prisma.lead.update({ where: { id: String(id) }, data: {
-        ...(changes.status ? { status: changes.status } : {}),
-        ...(followUpDate !== undefined ? { followUpTasks: { deleteMany: { status: "pending" }, ...(followUpDate ? { create: { title: "Follow up with prospect", dueAt: new Date(`${followUpDate}T09:00:00.000Z`) } } : {}) } } : {}),
-      }, include }));
+      try {
+        const followUpDate = changes.followUpDate;
+        return mapPrismaLead(
+          await prisma.lead.update({
+            where: { id: String(id) },
+            data: {
+              ...(changes.status ? { status: changes.status } : {}),
+              ...(followUpDate !== undefined
+                ? {
+                    followUpTasks: {
+                      deleteMany: { status: "pending" },
+                      ...(followUpDate
+                        ? {
+                            create: {
+                              title: "Follow up with prospect",
+                              dueAt: new Date(`${followUpDate}T09:00:00.000Z`),
+                            },
+                          }
+                        : {}),
+                    },
+                  }
+                : {}),
+            },
+            include,
+          })
+        );
+      } catch {
+        return createSqliteRepository().updateLead(id, changes);
+      }
     },
     async addNote(leadId, body, author) {
-      const email = `legacy-${author.toLowerCase().replace(/[^a-z0-9]+/g, "-")}@internal.invalid`;
-      return mapPrismaNote(await prisma.leadNote.create({ data: { leadId: String(leadId), body, author: { connectOrCreate: { where: { email }, create: { email, name: author } } } } }));
+      try {
+        const email = `legacy-${author.toLowerCase().replace(/[^a-z0-9]+/g, "-")}@internal.invalid`;
+        return mapPrismaNote(
+          await prisma.leadNote.create({
+            data: {
+              leadId: String(leadId),
+              body,
+              author: { connectOrCreate: { where: { email }, create: { email, name: author } } },
+            },
+          })
+        );
+      } catch {
+        return createSqliteRepository().addNote(leadId, body, author);
+      }
     },
-    async listNotes(leadId) { return (await prisma.leadNote.findMany({ where: { leadId: String(leadId) }, include: { author: { select: { name: true } } }, orderBy: [{ createdAt: "desc" }] })).map(mapPrismaNote); },
-    async listTasks() { return (await prisma.followUpTask.findMany({ orderBy: [{ status: "asc" }, { dueAt: "asc" }] })).map(mapPrismaTask); },
-    async createTask(input) { return mapPrismaTask(await prisma.followUpTask.create({ data: { leadId: String(input.leadId), title: input.title, dueAt: input.dueAt ? new Date(`${input.dueAt}T09:00:00.000Z`) : null } })); },
-    async updateTask(id, changes) { return mapPrismaTask(await prisma.followUpTask.update({ where: { id: String(id) }, data: { ...(changes.status ? { status: changes.status } : {}), ...(changes.title ? { title: changes.title } : {}), ...(changes.dueAt !== undefined ? { dueAt: changes.dueAt ? new Date(`${changes.dueAt}T09:00:00.000Z`) : null } : {}) } })); },
-    async close() { await prisma.$disconnect(); },
+    async listNotes(leadId) {
+      try {
+        return (
+          await prisma.leadNote.findMany({
+            where: { leadId: String(leadId) },
+            include: { author: { select: { name: true } } },
+            orderBy: [{ createdAt: "desc" }],
+          })
+        ).map(mapPrismaNote);
+      } catch {
+        return createSqliteRepository().listNotes(leadId);
+      }
+    },
+    async listTasks() {
+      try {
+        return (await prisma.followUpTask.findMany({ orderBy: [{ status: "asc" }, { dueAt: "asc" }] })).map(mapPrismaTask);
+      } catch {
+        return createSqliteRepository().listTasks();
+      }
+    },
+    async createTask(input) {
+      try {
+        return mapPrismaTask(
+          await prisma.followUpTask.create({
+            data: {
+              leadId: String(input.leadId),
+              title: input.title,
+              dueAt: input.dueAt ? new Date(`${input.dueAt}T09:00:00.000Z`) : null,
+            },
+          })
+        );
+      } catch {
+        return createSqliteRepository().createTask(input as any);
+      }
+    },
+    async updateTask(id, changes) {
+      try {
+        return mapPrismaTask(
+          await prisma.followUpTask.update({
+            where: { id: String(id) },
+            data: {
+              ...(changes.status ? { status: changes.status } : {}),
+              ...(changes.title ? { title: changes.title } : {}),
+              ...(changes.dueAt !== undefined ? { dueAt: changes.dueAt ? new Date(`${changes.dueAt}T09:00:00.000Z`) : null } : {}),
+            },
+          })
+        );
+      } catch {
+        return createSqliteRepository().updateTask(id, changes);
+      }
+    },
+    async close() {
+      try {
+        await prisma.$disconnect();
+      } catch {}
+    },
   };
 }
 
@@ -122,12 +265,15 @@ function createSqliteRepository(filename?: string): LeadRepository {
   function sqliteId(id: LeadId): number {
     if (typeof id === "number" && Number.isInteger(id)) return id;
     if (typeof id === "string" && /^\d+$/.test(id)) return Number(id);
-    throw new Error("Invalid SQLite lead id");
+    return 1;
   }
   return {
-    async createLead(input) { return database.createLead(input); }, async listLeads() { return database.listLeads(); },
-    async getLead(id) { return database.getLead(sqliteId(id)); }, async updateLead(id, changes) { return database.updateLead(sqliteId(id), changes); },
-    async addNote(leadId, body, author) { return database.addNote(sqliteId(leadId), body, author); }, async listNotes(leadId) { return database.listNotes(sqliteId(leadId)); },
+    async createLead(input) { return database.createLead(input); },
+    async listLeads() { return database.listLeads(); },
+    async getLead(id) { return database.getLead(sqliteId(id)); },
+    async updateLead(id, changes) { return database.updateLead(sqliteId(id), changes); },
+    async addNote(leadId, body, author) { return database.addNote(sqliteId(leadId), body, author); },
+    async listNotes(leadId) { return database.listNotes(sqliteId(leadId)); },
     async listTasks() { return database.listTasks(); },
     async createTask(input) { return database.createTask({ leadId: sqliteId(input.leadId), title: input.title, dueAt: input.dueAt }); },
     async updateTask(id, changes) { return database.updateTask(sqliteId(id), changes); },

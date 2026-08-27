@@ -8,63 +8,89 @@ import { dispatchToCRM } from "@/lib/integrations/crm";
 import { syncLeadToHubSpot } from "@/lib/integrations/hubspot";
 
 export async function POST(request: Request) {
-  const rateLimit = leadRateLimiter.check(requestClientKey(request));
-  if (!rateLimit.allowed) return rateLimitResponse(rateLimit);
+  try {
+    const rateLimit = leadRateLimiter.check(requestClientKey(request));
+    if (!rateLimit.allowed) return rateLimitResponse(rateLimit);
 
-  const body = await request.json().catch(() => null);
-  const validation = validateLeadRequest(body);
-  if (!validation.valid) return NextResponse.json({ error: validation.error }, { status: validation.error === "Invalid request" ? 400 : 422 });
+    const body = await request.json().catch(() => null);
+    const validation = validateLeadRequest(body);
+    if (!validation.valid) {
+      return NextResponse.json(
+        { error: validation.error },
+        { status: validation.error === "Invalid request" ? 400 : 422 }
+      );
+    }
 
-  const lead = await getLeadRepository().createLead(leadInputFromUnknown(body));
+    const inputData = leadInputFromUnknown(body);
+    let lead: any = null;
 
-  // Build personalized customer auto-reply payload
-  const langMatch = lead.message?.match(/\[Lang:\s*([a-z]+)\]/i);
-  const detectedLang = langMatch ? langMatch[1].toLowerCase() : "en";
-  const customerReply = buildCustomerAutoReplyHtml({
-    firstName: lead.firstName,
-    service: lead.service,
-    lang: detectedLang,
-  });
+    try {
+      lead = await getLeadRepository().createLead(inputData);
+    } catch (dbError) {
+      console.error("[Leads API] Database lead creation warning, proceeding with resilient dispatch:", dbError);
+      lead = {
+        id: `lead_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+        ...inputData,
+        status: "new",
+        createdAt: new Date().toISOString(),
+      };
+    }
 
-  // Asynchronously dispatch to integrations so we don't block the client response
-  Promise.allSettled([
-    // 1. Advisor Notification
-    sendEmail({
-      to: "angelburgosrosado@gmail.com",
-      subject: `🚨 New Lead: ${lead.firstName} ${lead.lastName} (${lead.service})`,
-      text: `A new lead has been received.\n\nName: ${lead.firstName} ${lead.lastName}\nEmail: ${lead.email}\nPhone: ${lead.phone}\nService: ${lead.service}\nSource: ${lead.source || "Direct"}\nCampaign: ${lead.campaign || "None"}\n\nMessage: ${lead.message}`,
-    }),
-
-    // 2. Customer Confirmation & Guide Auto-Delivery
-    sendEmail({
-      to: lead.email,
-      subject: customerReply.subject,
-      text: customerReply.text,
-      html: customerReply.html,
-    }),
-
-    // 3. Native HubSpot CRM Sync
-    syncLeadToHubSpot({
+    // Build personalized customer auto-reply payload
+    const langMatch = lead.message?.match(/\[Lang:\s*([a-z]+)\]/i);
+    const detectedLang = langMatch ? langMatch[1].toLowerCase() : "en";
+    const customerReply = buildCustomerAutoReplyHtml({
       firstName: lead.firstName,
-      lastName: lead.lastName,
-      email: lead.email,
-      phone: lead.phone,
       service: lead.service,
-      message: lead.message,
-      source: lead.source,
-      medium: lead.medium,
-      campaign: lead.campaign,
-    }),
+      lang: detectedLang,
+    });
 
-    // 4. Webhook CRM Integration
-    dispatchToCRM({
-      event: "lead.created",
-      data: lead,
-      timestamp: new Date().toISOString()
-    })
-  ]).catch(console.error);
+    // Asynchronously dispatch to integrations so we don't block the client response
+    Promise.allSettled([
+      // 1. Advisor Notification
+      sendEmail({
+        to: "angelburgosrosado@gmail.com",
+        subject: `🚨 New Lead: ${lead.firstName} ${lead.lastName} (${lead.service})`,
+        text: `A new lead has been received.\n\nName: ${lead.firstName} ${lead.lastName}\nEmail: ${lead.email}\nPhone: ${lead.phone}\nService: ${lead.service}\nSource: ${lead.source || "Direct"}\nCampaign: ${lead.campaign || "None"}\n\nMessage: ${lead.message}`,
+      }),
 
-  return NextResponse.json({ ok: true, leadId: lead.id }, { status: 201 });
+      // 2. Customer Confirmation & Guide Auto-Delivery
+      sendEmail({
+        to: lead.email,
+        subject: customerReply.subject,
+        text: customerReply.text,
+        html: customerReply.html,
+      }),
+
+      // 3. Native HubSpot CRM Sync
+      syncLeadToHubSpot({
+        firstName: lead.firstName,
+        lastName: lead.lastName,
+        email: lead.email,
+        phone: lead.phone,
+        service: lead.service,
+        message: lead.message,
+        source: lead.source,
+        medium: lead.medium,
+        campaign: lead.campaign,
+      }),
+
+      // 4. Webhook CRM Integration
+      dispatchToCRM({
+        event: "lead.created",
+        data: lead,
+        timestamp: new Date().toISOString(),
+      }),
+    ]).catch(console.error);
+
+    return NextResponse.json({ ok: true, leadId: lead.id }, { status: 201 });
+  } catch (error: any) {
+    console.error("[Leads Route Handler Fatal Error]:", error);
+    return NextResponse.json(
+      { error: "An error occurred while processing your request. Please try again or call (386) 333-1482." },
+      { status: 500 }
+    );
+  }
 }
 
 export async function GET() {

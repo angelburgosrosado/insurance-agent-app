@@ -38,7 +38,11 @@ import { getOrganizationSchema } from "@/lib/seo/schema";
 import { missingEnvVars } from "@/lib/server/env";
 import { LanguageProvider } from "@/context/LanguageContext";
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   const isDev = process.env.NODE_ENV === "development";
   const needsSetup = isDev && missingEnvVars && missingEnvVars.length > 0;
 

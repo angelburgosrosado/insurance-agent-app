@@ -8,48 +8,10 @@ import { Button } from "@/components/ui/Button";
 
 export default function ProtectionPlanningChecklistGuidePage() {
   const { lang, setLang } = useLanguage();
-  const [downloadModalOpen, setDownloadModalOpen] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const handlePrint = () => {
     if (typeof window !== "undefined") {
       window.print();
-    }
-  };
-
-  const handleLeadCapture = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email.trim() || !name.trim()) return;
-
-    try {
-      setLoading(true);
-      const parts = name.trim().split(/\s+/);
-      const firstName = parts[0] || "Client";
-      const lastName = parts.slice(1).join(" ") || "Prospect";
-
-      await fetch("/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          email: email.trim(),
-          phone: phone.trim() || "Provided upon request",
-          service: "Protection Planning Checklist Download",
-          message: `Downloaded 4-Page PDF: The Protection Planning Checklist (Life, Health, Retirement & Legacy) [Lang: ${lang}]`,
-          consent: true,
-          source: "protection_planning_checklist_pdf",
-        }),
-      });
-      setSubmitted(true);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
     }
   };
 

@@ -1,5 +1,4 @@
 import { getDashboardMetrics } from "@/lib/server/admin-metrics";
-import { type LeadStatus } from "@/lib/db";
 
 const statusLabels: Record<string, string> = {
   new: "New", reviewing: "Reviewing", assigned: "Assigned", contacted: "Contacted", qualified: "Qualified", closed: "Closed",

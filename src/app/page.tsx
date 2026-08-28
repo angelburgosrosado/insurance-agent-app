@@ -10,6 +10,7 @@ import { Navbar } from "@/components/Navbar";
 import { LeadMagnetSection } from "@/components/LeadMagnetSection";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { FloatingMobileBar } from "@/components/FloatingMobileBar";
+import { StrategyMatcherQuiz } from "@/components/StrategyMatcherQuiz";
 import { useLanguage } from "@/context/LanguageContext";
 import { dictionary } from "@/lib/i18n/translations";
 
@@ -479,6 +480,11 @@ export default function Home() {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* Interactive 3-Step Strategy Matcher Quiz */}
+      <section className="bg-white py-16 px-6 lg:px-10 border-t border-slate-200">
+        <StrategyMatcherQuiz />
       </section>
 
       {/* Verified Client Testimonials & Case Studies */}

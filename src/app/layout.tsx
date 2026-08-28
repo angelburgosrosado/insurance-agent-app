@@ -38,6 +38,8 @@ import { getOrganizationSchema } from "@/lib/seo/schema";
 import { missingEnvVars } from "@/lib/server/env";
 import { LanguageProvider } from "@/context/LanguageContext";
 
+import { SpeedDialConcierge } from "@/components/SpeedDialConcierge";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -61,6 +63,7 @@ export default function RootLayout({
         <LanguageProvider>
           <AnalyticsProvider>
             {children}
+            <SpeedDialConcierge />
           </AnalyticsProvider>
         </LanguageProvider>
       </body>

@@ -26,7 +26,6 @@ export async function syncLeadToHubSpot(lead: HubSpotLeadPayload): Promise<{ suc
       hs_lead_status: "NEW",
     };
 
-    // Custom or standard notes
     const noteContent = `Lead Service: ${lead.service || "General Inquiry"}\nSource: ${lead.source || "Direct"}\nCampaign: ${lead.campaign || "None"}\nMessage: ${lead.message || "None"}`;
 
     const response = await fetch("https://api.hubapi.com/crm/v3/objects/contacts", {
@@ -38,7 +37,7 @@ export async function syncLeadToHubSpot(lead: HubSpotLeadPayload): Promise<{ suc
       body: JSON.stringify({
         properties: {
           ...properties,
-          message: lead.message || "",
+          message: noteContent,
         },
       }),
     });

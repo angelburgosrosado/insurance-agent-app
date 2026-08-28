@@ -1,5 +1,3 @@
-import { getPrismaClient } from "./db";
-
 export type AuditAction = "lead_viewed" | "lead_updated" | "lead_deleted" | "note_added" | "task_created" | "task_updated";
 
 export async function logAudit(
@@ -9,7 +7,6 @@ export async function logAudit(
   details?: Record<string, unknown>
 ) {
   try {
-    const prisma = getPrismaClient();
     
     // We can just console.log for now if there isn't an AuditLog table in the schema
     // Let's create an entry in the database if AuditLog exists.

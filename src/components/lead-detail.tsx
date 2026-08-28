@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { MessageCircle, Phone, Mail, MessageSquare, ExternalLink, Check, Copy } from "lucide-react";
+import { MessageCircle, Phone, Mail, MessageSquare, Check, Copy } from "lucide-react";
 
 export function LeadDetail({ lead }: { lead: any }) {
   const router = useRouter();

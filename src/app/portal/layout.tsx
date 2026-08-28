@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { User, LogOut, Settings, Calendar } from "lucide-react";
+import { User, LogOut, Calendar } from "lucide-react";
 import { LogoutButton } from "@/components/auth/logout-button";
 
 export default function PortalLayout({ children }: { children: React.ReactNode }) {

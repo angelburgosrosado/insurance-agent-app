@@ -1,5 +1,4 @@
 import { getPrismaClient } from "@/lib/server/db";
-import { Prisma } from "@prisma/client";
 
 export type DailyLeadCount = {
   date: string;

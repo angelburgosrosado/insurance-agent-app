@@ -4,13 +4,16 @@ import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase";
 
+import { useRouter } from "next/navigation";
+
 export const dynamic = "force-dynamic";
 
 export default function UnauthorizedPage() {
+  const router = useRouter();
   const handleLogout = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
-    window.location.href = "/";
+    router.push("/");
   };
 
   return (

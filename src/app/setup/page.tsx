@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { saveEnvironmentVariables } from "./actions";
 import { Button } from "@/components/ui/Button";
 
@@ -183,12 +184,12 @@ export default function SetupWizard() {
             </div>
 
             <div className="flex justify-end pt-4">
-              <Button 
-                onClick={() => window.location.href = "/"}
-                className="bg-black text-white hover:bg-black/90"
+              <Link 
+                href="/"
+                className="inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-200 px-6 py-2.5 bg-black text-white hover:bg-black/90"
               >
                 Go to Home
-              </Button>
+              </Link>
             </div>
           </div>
         )}

@@ -41,9 +41,9 @@ export default function LoginPage() {
 
       setSuccessMsg("Authenticated! Redirecting to Admin Dashboard...");
       setTimeout(() => {
-        window.location.href = "/admin";
+        router.push("/admin");
       }, 500);
-    } catch (err) {
+    } catch {
       setError("Network error connecting to login service.");
     } finally {
       setLoading(false);
@@ -72,7 +72,7 @@ export default function LoginPage() {
 
       setOtpSent(true);
       setSuccessMsg("6-Digit code sent to your email!");
-    } catch (err) {
+    } catch {
       setError("Failed to send verification email.");
     } finally {
       setLoading(false);
@@ -101,9 +101,9 @@ export default function LoginPage() {
 
       setSuccessMsg("Verification successful! Opening Admin Dashboard...");
       setTimeout(() => {
-        window.location.href = "/admin";
+        router.push("/admin");
       }, 500);
-    } catch (err) {
+    } catch {
       setError("Verification failed. Please try again.");
     } finally {
       setLoading(false);
@@ -126,7 +126,7 @@ export default function LoginPage() {
         setError(`Google OAuth Error: ${error.message}`);
         setLoading(false);
       }
-    } catch (err) {
+    } catch {
       setError("Google sign-in could not be initiated.");
       setLoading(false);
     }

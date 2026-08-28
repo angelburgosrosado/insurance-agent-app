@@ -20,9 +20,8 @@ export function LogoutButton({ children, className = "" }: LogoutButtonProps) {
       await supabase.auth.signOut();
       router.push("/login");
       router.refresh();
-    } catch (error) {
-      console.error("Error signing out:", error);
-      window.location.href = "/login";
+    } catch {
+      router.push("/login");
     } finally {
       setLoading(false);
     }

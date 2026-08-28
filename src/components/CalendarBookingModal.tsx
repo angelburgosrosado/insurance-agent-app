@@ -10,7 +10,7 @@ interface CalendarBookingProps {
 }
 
 export function CalendarBookingModal({
-  calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/angelburgosrosado/15min",
+  calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/abglobalconsulting/15-min-consultation-abglobalceo",
   className = "",
 }: CalendarBookingProps) {
   const { lang } = useLanguage();

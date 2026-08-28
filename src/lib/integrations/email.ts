@@ -184,7 +184,7 @@ AB Global Consulting LLC • Orlando, FL & Puerto Rico`;
               <p style="font-size: 13px; color: #475569; margin-bottom: 10px;">
                 ${isSpanish ? "¿Desea revisar su escenario con un asesor licenciado?" : "Ready to review your custom numbers with an advisor?"}
               </p>
-              <a href="${baseUrl}/#consultation" class="button">
+              <a href="https://calendly.com/abglobalconsulting/15-min-consultation-abglobalceo" class="button">
                 ${isSpanish ? "Agendar Consulta Gratuita (15 Min)" : "Book Free 15-Min Consultation"}
               </a>
             </div>

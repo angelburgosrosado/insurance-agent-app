@@ -233,5 +233,49 @@ export const resourceArticles: ResourceArticle[] = [
     relatedToolUrl: "/tools/funeral-cost-savings",
     relatedToolName: "Funeral Savings Calculator",
     relatedToolNameEs: "Calculadora de Ahorro Funerario"
+  },
+  {
+    slug: "dime-method-life-insurance",
+    title: "The D.I.M.E. Method: How to Calculate Exact Life Insurance Needs (Debt, Income, Mortgage, Education)",
+    titleEs: "El Método D.I.M.E.: Cómo Calcular la Cobertura Exacta de Seguro de Vida (Deudas, Ingresos, Hipoteca y Educación)",
+    category: "Life Insurance",
+    categoryEs: "Seguros de Vida",
+    readTime: "6 min read",
+    publishedAt: "2026-02-28",
+    icon: "🛡️",
+    summary: "Eliminate guesswork with the industry-standard D.I.M.E. formula. Learn how to calculate coverage for Debt obligations, Income replacement, Mortgage balance payoff, and children's Education funding.",
+    summaryEs: "Elimine las dudas con la fórmula estándar de la industria D.I.M.E. Aprenda a calcular la protección para Deudas, Reemplazo de Ingresos, Saldo de Hipoteca y Fondos de Educación para sus hijos.",
+    keyTakeaways: [
+      "D - Debt & Final Expenses: Eliminates high-interest credit cards, auto loans, and medical bills.",
+      "I - Income Replacement: Replaces 10–15 years of annual income to preserve your family's standard of living.",
+      "M - Mortgage Payoff: Ensures your spouse and children never face foreclosure or displacement.",
+      "E - Education Fund: Locks in $50,000–$100,000+ per child for college tuition and trade school.",
+      "Net Shortfall Formula: Gross D.I.M.E. Need minus Existing Work/Private Coverage = Exact Target Policy."
+    ],
+    keyTakeawaysEs: [
+      "D - Deudas y Gastos Finales: Liquida tarjetas de crédito, préstamos de autos y deudas médicas.",
+      "I - Reemplazo de Ingresos: Sustituye de 10 a 15 años de ingresos para mantener el nivel de vida familiar.",
+      "M - Saldo de Hipoteca: Garantiza que su familia nunca enfrente desalojos ni ejecuciones hipotecarias.",
+      "E - Fondo de Educación: Asegura entre $50,000 y $100,000+ por hijo para la universidad.",
+      "Fórmula de Brecha Neta: Necesidad Bruta D.I.M.E. menos Cobertura Existente = Cobertura Exacta a Contratar."
+    ],
+    sections: [
+      {
+        heading: "1. The 4 Pillars of the D.I.M.E. Framework",
+        headingEs: "1. Los 4 Pilares de la Metodología D.I.M.E.",
+        body: "Rather than picking an arbitrary round number (like $250k or $500k), the D.I.M.E. method calculates your real financial obligations across four distinct categories:\n\n• Debt (D): All non-mortgage liabilities including consumer debt, car loans, and medical expenses.\n• Income (I): Annual gross salary multiplied by the number of years your family needs support (typically 10 to 15 years until children become self-sufficient).\n• Mortgage (M): The exact principal balance remaining on your primary home.\n• Education (E): Estimated college, university, or trade school funding per dependent child ($50k to $100k per child in Florida).",
+        bodyEs: "En lugar de elegir una cifra al azar (como $250k o $500k), el método D.I.M.E. calcula sus obligaciones financieras reales en cuatro categorías clave:\n\n• Deudas (D): Tarjetas de crédito, préstamos personales, vehículos y gastos finales.\n• Ingresos (I): Salario anual multiplicado por los años necesarios de sustento (típicamente de 10 a 15 años).\n• Hipoteca (M): El saldo restante del préstamo de su vivienda principal para dejar la casa pagada.\n• Educación (E): Presupuesto universitario o técnico por cada hijo ($50,000 a $100,000 por hijo)."
+      },
+      {
+        heading: "2. Calculating Your Net Coverage Shortfall",
+        headingEs: "2. Cómo Calcular su Brecha Neta de Cobertura",
+        body: "Many individuals assume their employer-provided group life insurance (usually 1x annual salary) is sufficient. However, when evaluating the total D.I.M.E. sum, most working families in Central Florida and South Florida face a net shortfall between $500,000 and $1,250,000. Furthermore, group life insurance terminates immediately upon changing employers. A private Indexed Universal Life (IUL) or term policy guarantees permanent, portable protection.",
+        bodyEs: "Muchas personas creen que el seguro de vida del trabajo (usualmente 1 año de sueldo) es suficiente. Sin embargo, al sumar el total D.I.M.E., la mayoría de las familias en Florida enfrentan una brecha desprotegida de entre $500,000 y $1,250,000. Además, el seguro del trabajo se pierde al cambiar de empleo. Una póliza privada (IUL o a término) garantiza protección permanente e intransferible."
+      }
+    ],
+    relatedToolUrl: "/tools/life-needs",
+    relatedToolName: "D.I.M.E. Needs Calculator",
+    relatedToolNameEs: "Calculadora de Necesidades D.I.M.E."
   }
 ];
+

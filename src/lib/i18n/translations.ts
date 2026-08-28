@@ -13,10 +13,11 @@ export const dictionary = {
     nav_office: "Orlando, FL & Puerto Rico",
 
     // Hero Section
-    hero_badge: "Florida 0215 Licensed Life, Health & Variable Annuity Advisory",
+    hero_badge: "Strategic Financial Advisor | PE • Florida 0215 License #G328926",
+    hero_tagline: "Clear guidance beyond the policy.",
     hero_title_1: "Financial Protection & Retirement Strategies",
     hero_title_2: "Engineered with Institutional Clarity.",
-    hero_desc: "We analyze your portfolio and family protection needs with mathematical rigor. Specializing in Indexed Universal Life (IUL), Guaranteed Lifetime Annuities, and Everest 24/7 Funeral Concierge across Florida and Puerto Rico.",
+    hero_desc: "Clear guidance beyond the policy. We analyze your portfolio and family protection needs with engineering-grade mathematical rigor—specializing in Indexed Universal Life (IUL), Guaranteed Lifetime Annuities, and Everest 24/7 Funeral Concierge across Florida and Puerto Rico.",
     hero_cta_consultation: "Schedule 1-on-1 Consultation",
     hero_cta_calculator: "Launch IUL Wealth Simulator →",
     hero_stat_1_val: "0% Floor",
@@ -332,10 +333,11 @@ export const dictionary = {
     nav_office: "Orlando, FL y Puerto Rico",
 
     // Hero Section
-    hero_badge: "Asesoría Licenciada 0215 en Seguros de Vida, Salud y Anualidades Variables",
+    hero_badge: "Asesor Financiero Estratégico | PE • Licencia FL 0215 #G328926",
+    hero_tagline: "Orientación clara más allá de la póliza.",
     hero_title_1: "Protección Financiera y Estrategias de Retiro",
     hero_title_2: "Diseñadas con Claridad Institucional.",
-    hero_desc: "Analizamos su protección familiar y patrimonio con rigor matemático. Especialistas en Seguros de Vida Indexados (IUL), Anualidades con Ingreso Vitalicio Garantizado y Servicio Funerario Concierge Everest 24/7 en Florida y Puerto Rico.",
+    hero_desc: "Orientación clara más allá de la póliza. Analizamos su protección familiar y patrimonio con rigor matemático e ingeniería financiera—especialistas en Seguros de Vida Indexados (IUL), Anualidades Vitalicias Garantizadas y Servicio Concierge Everest 24/7 en Florida y Puerto Rico.",
     hero_cta_consultation: "Agendar Consulta Personalizada",
     hero_cta_calculator: "Abrir Simulador IUL Libre de Impuestos →",
     hero_stat_1_val: "Piso 0%",

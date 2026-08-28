@@ -41,18 +41,21 @@ export default function AboutPage() {
       <section className="bg-[#001c38] text-white py-16 md:py-24 px-6 lg:px-10 relative overflow-hidden">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-8 flex flex-col gap-6">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-secondary/15 border border-secondary/30 rounded-full w-fit">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-secondary/15 border border-secondary/30 rounded-full w-fit">
               <span className="text-secondary text-xs md:text-sm font-bold tracking-wide uppercase">
-                {lang === "es" ? "Fundador y Asesor Financiero Estratégico" : "Founder & Strategic Financial Advisor"}
+                {lang === "es" ? "Asesor Financiero Estratégico | PE" : "Strategic Financial Advisor | PE"}
               </span>
             </div>
             <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
               Angel Burgos
             </h1>
+            <p className="text-sm font-bold uppercase tracking-widest text-amber-300">
+              {lang === "es" ? "Orientación clara más allá de la póliza" : "Clear guidance beyond the policy"}
+            </p>
             <p className="text-lg md:text-xl text-white/85 max-w-3xl leading-relaxed">
               {lang === "es"
-                ? "Combinando una mentalidad analítica orientada a la ingeniería con acceso a las mejores aseguradoras independientes para proteger lo que más importa: su familia, su salud y su retiro."
-                : "Combining an analytical, engineering-driven mindset with premier independent brokerage access to protect what matters most—your family, your health, and your retirement."}
+                ? "Combinando una formación de ingeniería profesional (PE) y mentalidad analítica con licencias de seguros independientes (Florida 0215) para estructurar soluciones patrimoniales con certeza matemática: IUL con piso 0%, anualidades vitalicias y protección familiar."
+                : "Combining a Professional Engineer (PE) analytical foundation with independent fiduciary-focused advisory (Florida 0215) to structure wealth strategies with mathematical certainty: 0% loss floor IULs, guaranteed annuities, and comprehensive legacy defense."}
             </p>
             <div className="flex flex-wrap gap-4 pt-2">
               <Button href="/#consultation" variant="secondary" className="!bg-secondary !text-white !border-secondary hover:!bg-secondary/90 shadow-lg px-8 py-3.5 font-bold">

@@ -17,6 +17,9 @@ import {
   UserCheck,
   ListChecks,
   SlidersHorizontal,
+  Send,
+  MessageCircle,
+  Radio,
 } from "lucide-react";
 import {
   generateCampaignPack,
@@ -38,6 +41,31 @@ export function SocialContentStudio() {
   const [activeSection, setActiveSection] = useState<"studio" | "bios" | "launchpad">("studio");
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
+
+  // Direct Social Dispatch State
+  const [isDispatchModalOpen, setIsDispatchModalOpen] = useState<boolean>(false);
+  const [isDispatching, setIsDispatching] = useState<boolean>(false);
+  const [dispatchStatus, setDispatchStatus] = useState<{
+    success: boolean;
+    message: string;
+    mode: "live" | "simulated";
+    dispatchedAt: string;
+  } | null>(null);
+  const [selectedChannels, setSelectedChannels] = useState<{
+    linkedin: boolean;
+    facebook: boolean;
+    instagram: boolean;
+    twitter: boolean;
+    whatsapp: boolean;
+    webhook: boolean;
+  }>({
+    linkedin: true,
+    facebook: true,
+    instagram: true,
+    twitter: true,
+    whatsapp: false,
+    webhook: true,
+  });
 
   // 30-Day Launchpad Milestones
   const [launchMilestones, setLaunchMilestones] = useState<Record<string, boolean>>({
@@ -79,7 +107,6 @@ export function SocialContentStudio() {
     }, 200);
   }, [product, persona, trigger, tone, lang, seed, customNotes]);
 
-  // Click on "✨ Regenerate AI Pack" increments seed and updates immediately
   const handleRegenerateClick = () => {
     setSeed((prev) => prev + 1);
   };
@@ -96,6 +123,77 @@ export function SocialContentStudio() {
 
   const toggleMilestone = (id: string) => {
     setLaunchMilestones((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  // Direct Social Share Intent Launchers
+  const openDirectLinkedIn = (text: string) => {
+    const url = `https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(text)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  const openDirectWhatsApp = (text: string) => {
+    const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  const openDirectTwitter = (text: string) => {
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  const openDirectFacebook = (urlToShare: string, quoteText: string) => {
+    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(urlToShare)}&quote=${encodeURIComponent(quoteText)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  const openDirectEmail = (subject: string, body: string) => {
+    const url = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = url;
+  };
+
+  // Direct Webhook / API Dispatcher
+  const handleSocialDispatch = async () => {
+    setIsDispatching(true);
+    setDispatchStatus(null);
+
+    const activeChannels = Object.entries(selectedChannels)
+      .filter(([, isSelected]) => isSelected)
+      .map(([channel]) => channel as any);
+
+    try {
+      const res = await fetch("/api/admin/social/publish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          channels: activeChannels,
+          payload: {
+            productName: campaignData.product,
+            title: campaignData.videoScript.title,
+            caption: campaignData.linkedInPost,
+            trackedUrl: campaignData.trackedUrl,
+            disclosure: campaignData.complianceDisclosure,
+            mediaCue: campaignData.carouselSlides[0]?.visualCue,
+          },
+        }),
+      });
+
+      const data = await res.json();
+      setDispatchStatus({
+        success: data.success ?? true,
+        message: data.message || "Dispatched successfully",
+        mode: data.mode || "simulated",
+        dispatchedAt: data.dispatchedAt || new Date().toLocaleTimeString(),
+      });
+    } catch (err: any) {
+      setDispatchStatus({
+        success: false,
+        message: err?.message || "Failed to dispatch campaign",
+        mode: "live",
+        dispatchedAt: new Date().toLocaleTimeString(),
+      });
+    } finally {
+      setIsDispatching(false);
+    }
   };
 
   return (
@@ -121,6 +219,14 @@ export function SocialContentStudio() {
           </div>
 
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsDispatchModalOpen(true)}
+              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-md transition-all flex items-center gap-1.5 cursor-pointer active:scale-95 border border-emerald-500/30"
+            >
+              <Send size={13} />
+              <span>🚀 Post Directly</span>
+            </button>
+
             <button
               onClick={() => setLang((prev) => (prev === "es" ? "en" : "es"))}
               className="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold border border-slate-700 transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
@@ -389,18 +495,28 @@ export function SocialContentStudio() {
             {/* TAB 1: Short Video Script */}
             {activeTab === "video" && (
               <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
-                <div className="flex justify-between items-center">
+                <div className="flex flex-wrap justify-between items-center gap-3">
                   <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
                     <Video size={16} className="text-blue-600" />
                     <span>{campaignData.videoScript.title}</span>
                   </h3>
-                  <button
-                    onClick={() => copyToClipboard(campaignData.videoScript.fullText, "video")}
-                    className="px-3.5 py-1.5 bg-white hover:bg-slate-100 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 shadow-sm flex items-center gap-1.5 transition-all cursor-pointer"
-                  >
-                    {copiedKey === "video" ? <Check size={13} className="text-emerald-600" /> : <Copy size={13} />}
-                    <span>{copiedKey === "video" ? "Copied Script!" : "Copy Full Script"}</span>
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => openDirectWhatsApp(campaignData.videoScript.fullText)}
+                      className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-sm flex items-center gap-1.5 transition-all cursor-pointer"
+                    >
+                      <MessageCircle size={13} />
+                      <span>Send via WhatsApp</span>
+                    </button>
+
+                    <button
+                      onClick={() => copyToClipboard(campaignData.videoScript.fullText, "video")}
+                      className="px-3.5 py-1.5 bg-white hover:bg-slate-100 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 shadow-sm flex items-center gap-1.5 transition-all cursor-pointer"
+                    >
+                      {copiedKey === "video" ? <Check size={13} className="text-emerald-600" /> : <Copy size={13} />}
+                      <span>{copiedKey === "video" ? "Copied!" : "Copy Full Script"}</span>
+                    </button>
+                  </div>
                 </div>
 
                 <div className="space-y-3 text-xs">
@@ -430,7 +546,7 @@ export function SocialContentStudio() {
             {/* TAB 2: YouTube Long-Form Masterclass */}
             {activeTab === "youtube" && (
               <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-5">
-                <div className="flex justify-between items-center">
+                <div className="flex flex-wrap justify-between items-center gap-3">
                   <div>
                     <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
                       <PlaySquare size={18} className="text-red-600" />
@@ -438,18 +554,29 @@ export function SocialContentStudio() {
                     </h3>
                     <p className="text-xs text-slate-500 mt-0.5">{campaignData.youtubeVideo.concept}</p>
                   </div>
-                  <button
-                    onClick={() =>
-                      copyToClipboard(
-                        `TITLE:\n${campaignData.youtubeVideo.title}\n\nDESCRIPTION:\n${campaignData.youtubeVideo.description}`,
-                        "yt"
-                      )
-                    }
-                    className="px-3.5 py-1.5 bg-white hover:bg-slate-100 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 shadow-sm flex items-center gap-1.5 transition-all cursor-pointer"
-                  >
-                    {copiedKey === "yt" ? <Check size={13} className="text-emerald-600" /> : <Copy size={13} />}
-                    <span>{copiedKey === "yt" ? "Copied!" : "Copy Description & Outline"}</span>
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <a
+                      href="https://studio.youtube.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3.5 py-1.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold shadow-sm flex items-center gap-1.5 transition-all"
+                    >
+                      <ExternalLink size={13} />
+                      <span>Open YouTube Studio</span>
+                    </a>
+                    <button
+                      onClick={() =>
+                        copyToClipboard(
+                          `TITLE:\n${campaignData.youtubeVideo.title}\n\nDESCRIPTION:\n${campaignData.youtubeVideo.description}`,
+                          "yt"
+                        )
+                      }
+                      className="px-3.5 py-1.5 bg-white hover:bg-slate-100 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 shadow-sm flex items-center gap-1.5 transition-all cursor-pointer"
+                    >
+                      {copiedKey === "yt" ? <Check size={13} className="text-emerald-600" /> : <Copy size={13} />}
+                      <span>{copiedKey === "yt" ? "Copied!" : "Copy Description & Outline"}</span>
+                    </button>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 text-xs">
@@ -503,18 +630,28 @@ export function SocialContentStudio() {
             {/* TAB 3: LinkedIn Post */}
             {activeTab === "linkedin" && (
               <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
-                <div className="flex justify-between items-center">
+                <div className="flex flex-wrap justify-between items-center gap-3">
                   <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
                     <Share2 size={16} className="text-blue-700" />
                     <span>LinkedIn Executive Thought Leadership Post</span>
                   </h3>
-                  <button
-                    onClick={() => copyToClipboard(campaignData.linkedInPost, "linkedin")}
-                    className="px-3.5 py-1.5 bg-white hover:bg-slate-100 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 shadow-sm flex items-center gap-1.5 transition-all cursor-pointer"
-                  >
-                    {copiedKey === "linkedin" ? <Check size={13} className="text-emerald-600" /> : <Copy size={13} />}
-                    <span>{copiedKey === "linkedin" ? "Copied!" : "Copy Post"}</span>
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => openDirectLinkedIn(campaignData.linkedInPost)}
+                      className="px-3.5 py-1.5 bg-[#0077b5] hover:bg-[#005f93] text-white rounded-xl text-xs font-bold shadow-sm flex items-center gap-1.5 transition-all cursor-pointer active:scale-95"
+                    >
+                      <ExternalLink size={13} />
+                      <span>🚀 Post to LinkedIn (Direct)</span>
+                    </button>
+
+                    <button
+                      onClick={() => copyToClipboard(campaignData.linkedInPost, "linkedin")}
+                      className="px-3.5 py-1.5 bg-white hover:bg-slate-100 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 shadow-sm flex items-center gap-1.5 transition-all cursor-pointer"
+                    >
+                      {copiedKey === "linkedin" ? <Check size={13} className="text-emerald-600" /> : <Copy size={13} />}
+                      <span>{copiedKey === "linkedin" ? "Copied!" : "Copy Post"}</span>
+                    </button>
+                  </div>
                 </div>
 
                 <div className="bg-white p-5 rounded-xl border border-slate-200 font-sans text-xs text-slate-800 whitespace-pre-wrap leading-relaxed">
@@ -526,23 +663,45 @@ export function SocialContentStudio() {
             {/* TAB 4: Paid Ad */}
             {activeTab === "ad" && (
               <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
-                <div className="flex justify-between items-center">
+                <div className="flex flex-wrap justify-between items-center gap-3">
                   <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
                     <Megaphone size={16} className="text-amber-600" />
                     <span>Meta (FB/IG) & TikTok Paid Direct-Response Ad Package</span>
                   </h3>
-                  <button
-                    onClick={() =>
-                      copyToClipboard(
-                        `HEADLINE:\n${campaignData.paidAd.headline}\n\nPRIMARY TEXT:\n${campaignData.paidAd.primaryText}\n\nDESCRIPTION:\n${campaignData.paidAd.description}\n\nLINK:\n${campaignData.trackedUrl}`,
-                        "ad"
-                      )
-                    }
-                    className="px-3.5 py-1.5 bg-white hover:bg-slate-100 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 shadow-sm flex items-center gap-1.5 transition-all cursor-pointer"
-                  >
-                    {copiedKey === "ad" ? <Check size={13} className="text-emerald-600" /> : <Copy size={13} />}
-                    <span>{copiedKey === "ad" ? "Copied Ad!" : "Copy Full Ad Package"}</span>
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => openDirectFacebook(campaignData.trackedUrl, campaignData.paidAd.primaryText)}
+                      className="px-3 py-1.5 bg-[#1877f2] hover:bg-[#0c63d4] text-white rounded-xl text-xs font-bold shadow-sm flex items-center gap-1.5 transition-all cursor-pointer"
+                    >
+                      <ExternalLink size={12} />
+                      <span>Share to Facebook</span>
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        openDirectTwitter(
+                          `${campaignData.paidAd.headline}\n\n${campaignData.paidAd.hooks[0]}\n\n${campaignData.trackedUrl}`
+                        )
+                      }
+                      className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold shadow-sm flex items-center gap-1.5 transition-all cursor-pointer"
+                    >
+                      <ExternalLink size={12} />
+                      <span>Post to X</span>
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        copyToClipboard(
+                          `HEADLINE:\n${campaignData.paidAd.headline}\n\nPRIMARY TEXT:\n${campaignData.paidAd.primaryText}\n\nDESCRIPTION:\n${campaignData.paidAd.description}\n\nLINK:\n${campaignData.trackedUrl}`,
+                          "ad"
+                        )
+                      }
+                      className="px-3.5 py-1.5 bg-white hover:bg-slate-100 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 shadow-sm flex items-center gap-1.5 transition-all cursor-pointer"
+                    >
+                      {copiedKey === "ad" ? <Check size={13} className="text-emerald-600" /> : <Copy size={13} />}
+                      <span>{copiedKey === "ad" ? "Copied!" : "Copy Ad Package"}</span>
+                    </button>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
@@ -574,23 +733,38 @@ export function SocialContentStudio() {
             {/* TAB 5: Email Broadcast */}
             {activeTab === "email" && (
               <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
-                <div className="flex justify-between items-center">
+                <div className="flex flex-wrap justify-between items-center gap-3">
                   <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
                     <Mail size={16} className="text-emerald-600" />
                     <span>Email Broadcast & Newsletter Follow-Up</span>
                   </h3>
-                  <button
-                    onClick={() =>
-                      copyToClipboard(
-                        `SUBJECT A: ${campaignData.emailBroadcast.subjectA}\nSUBJECT B: ${campaignData.emailBroadcast.subjectB}\n\nPREVIEW: ${campaignData.emailBroadcast.previewText}\n\nBODY:\n${campaignData.emailBroadcast.body}`,
-                        "email"
-                      )
-                    }
-                    className="px-3.5 py-1.5 bg-white hover:bg-slate-100 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 shadow-sm flex items-center gap-1.5 transition-all cursor-pointer"
-                  >
-                    {copiedKey === "email" ? <Check size={13} className="text-emerald-600" /> : <Copy size={13} />}
-                    <span>{copiedKey === "email" ? "Copied Email!" : "Copy Email"}</span>
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() =>
+                        openDirectEmail(
+                          campaignData.emailBroadcast.subjectA,
+                          campaignData.emailBroadcast.body
+                        )
+                      }
+                      className="px-3.5 py-1.5 bg-emerald-700 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold shadow-sm flex items-center gap-1.5 transition-all cursor-pointer active:scale-95"
+                    >
+                      <Send size={13} />
+                      <span>Open in Email App</span>
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        copyToClipboard(
+                          `SUBJECT A: ${campaignData.emailBroadcast.subjectA}\nSUBJECT B: ${campaignData.emailBroadcast.subjectB}\n\nPREVIEW: ${campaignData.emailBroadcast.previewText}\n\nBODY:\n${campaignData.emailBroadcast.body}`,
+                          "email"
+                        )
+                      }
+                      className="px-3.5 py-1.5 bg-white hover:bg-slate-100 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 shadow-sm flex items-center gap-1.5 transition-all cursor-pointer"
+                    >
+                      {copiedKey === "email" ? <Check size={13} className="text-emerald-600" /> : <Copy size={13} />}
+                      <span>{copiedKey === "email" ? "Copied!" : "Copy Email"}</span>
+                    </button>
+                  </div>
                 </div>
 
                 <div className="space-y-3 text-xs">
@@ -632,7 +806,7 @@ export function SocialContentStudio() {
                     className="px-3.5 py-1.5 bg-white hover:bg-slate-100 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 shadow-sm flex items-center gap-1.5 transition-all cursor-pointer"
                   >
                     {copiedKey === "carousel" ? <Check size={13} className="text-emerald-600" /> : <Copy size={13} />}
-                    <span>{copiedKey === "carousel" ? "Copied Carousel!" : "Copy Carousel"}</span>
+                    <span>{copiedKey === "carousel" ? "Copied!" : "Copy Carousel"}</span>
                   </button>
                 </div>
 
@@ -739,18 +913,27 @@ export function SocialContentStudio() {
                   <Share2 size={14} className="text-blue-700" />
                   <span>LinkedIn Headline & About Section</span>
                 </h4>
-                <button
-                  onClick={() =>
-                    copyToClipboard(
-                      `HEADLINE:\n${UNIVERSAL_SOCIAL_BIOS.linkedin.headline}\n\nABOUT:\n${UNIVERSAL_SOCIAL_BIOS.linkedin.about}`,
-                      "bio_li"
-                    )
-                  }
-                  className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-slate-800 font-bold flex items-center gap-1 cursor-pointer"
-                >
-                  {copiedKey === "bio_li" ? <Check size={12} className="text-emerald-600" /> : <Copy size={12} />}
-                  <span>{copiedKey === "bio_li" ? "Copied!" : "Copy"}</span>
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => openDirectLinkedIn(UNIVERSAL_SOCIAL_BIOS.linkedin.about)}
+                    className="px-2.5 py-1 bg-[#0077b5] hover:bg-[#005f93] text-white rounded-lg font-bold flex items-center gap-1 cursor-pointer"
+                  >
+                    <ExternalLink size={11} />
+                    <span>Open LinkedIn</span>
+                  </button>
+                  <button
+                    onClick={() =>
+                      copyToClipboard(
+                        `HEADLINE:\n${UNIVERSAL_SOCIAL_BIOS.linkedin.headline}\n\nABOUT:\n${UNIVERSAL_SOCIAL_BIOS.linkedin.about}`,
+                        "bio_li"
+                      )
+                    }
+                    className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-slate-800 font-bold flex items-center gap-1 cursor-pointer"
+                  >
+                    {copiedKey === "bio_li" ? <Check size={12} className="text-emerald-600" /> : <Copy size={12} />}
+                    <span>{copiedKey === "bio_li" ? "Copied!" : "Copy"}</span>
+                  </button>
+                </div>
               </div>
               <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 text-[11px] space-y-2 text-slate-800">
                 <p><strong>Headline:</strong> {UNIVERSAL_SOCIAL_BIOS.linkedin.headline}</p>
@@ -895,6 +1078,126 @@ export function SocialContentStudio() {
                 </div>
               );
             })}
+          </div>
+        </div>
+      )}
+
+      {/* DIRECT SOCIAL DISPATCH MODAL */}
+      {isDispatchModalOpen && (
+        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-lg w-full border border-slate-200 shadow-2xl overflow-hidden space-y-5 animate-in fade-in zoom-in-95 duration-150">
+            {/* Modal Header */}
+            <div className="bg-[#001c38] text-white p-6 flex justify-between items-start">
+              <div>
+                <div className="flex items-center gap-2">
+                  <Send size={18} className="text-amber-400" />
+                  <h3 className="text-base font-bold">Direct Multi-Channel Dispatch</h3>
+                </div>
+                <p className="text-xs text-slate-300 mt-1">
+                  Publish or route this campaign directly to your connected social channels and automation webhooks.
+                </p>
+              </div>
+              <button
+                onClick={() => setIsDispatchModalOpen(false)}
+                className="text-slate-400 hover:text-white text-lg font-bold cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="p-6 space-y-5">
+              {/* Channel Selector */}
+              <div className="space-y-2.5">
+                <label className="text-xs font-bold text-slate-800 uppercase tracking-wider block">
+                  Select Target Channels:
+                </label>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  {[
+                    { key: "linkedin", label: "💼 LinkedIn Feed" },
+                    { key: "facebook", label: "📘 Facebook Page" },
+                    { key: "instagram", label: "📸 Instagram Feed" },
+                    { key: "twitter", label: "🐦 X / Twitter" },
+                    { key: "whatsapp", label: "💬 WhatsApp Broadcast" },
+                    { key: "webhook", label: "🤖 Zapier / Make / Buffer" },
+                  ].map((ch) => (
+                    <label
+                      key={ch.key}
+                      className={`p-3 rounded-xl border flex items-center gap-2 cursor-pointer transition-all ${
+                        (selectedChannels as any)[ch.key]
+                          ? "bg-amber-50/70 border-amber-300 text-slate-900 font-bold"
+                          : "bg-slate-50 border-slate-200 text-slate-600"
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={(selectedChannels as any)[ch.key]}
+                        onChange={(e) =>
+                          setSelectedChannels((prev) => ({
+                            ...prev,
+                            [ch.key]: e.target.checked,
+                          }))
+                        }
+                        className="rounded text-amber-600 focus:ring-amber-500"
+                      />
+                      <span>{ch.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Campaign Payload Preview */}
+              <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1">
+                <span className="font-bold text-slate-500 uppercase text-[10px] block">Payload to Dispatch:</span>
+                <p className="font-bold text-slate-900">{campaignData.videoScript.title}</p>
+                <p className="text-slate-600 line-clamp-2">{campaignData.linkedInPost}</p>
+                <code className="text-[10px] text-amber-800 block truncate font-mono pt-1">
+                  {campaignData.trackedUrl}
+                </code>
+              </div>
+
+              {/* Status Alert */}
+              {dispatchStatus && (
+                <div
+                  className={`p-4 rounded-xl border text-xs flex items-start gap-2.5 ${
+                    dispatchStatus.success
+                      ? "bg-emerald-50 border-emerald-200 text-emerald-900"
+                      : "bg-red-50 border-red-200 text-red-900"
+                  }`}
+                >
+                  <Radio size={16} className={dispatchStatus.success ? "text-emerald-600 mt-0.5" : "text-red-600 mt-0.5"} />
+                  <div className="space-y-0.5">
+                    <strong>
+                      {dispatchStatus.success
+                        ? `✅ Dispatched (${dispatchStatus.mode === "live" ? "Live Webhook" : "Simulated Mode"})`
+                        : "❌ Dispatch Issue"}
+                    </strong>
+                    <p>{dispatchStatus.message}</p>
+                    <span className="text-[10px] text-slate-500 block">
+                      Dispatched at: {dispatchStatus.dispatchedAt}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex items-center justify-end gap-3 pt-2">
+                <button
+                  onClick={() => setIsDispatchModalOpen(false)}
+                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all cursor-pointer"
+                >
+                  Close
+                </button>
+
+                <button
+                  onClick={handleSocialDispatch}
+                  disabled={isDispatching}
+                  className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-md transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50 active:scale-95"
+                >
+                  <Send size={13} className={isDispatching ? "animate-spin" : ""} />
+                  <span>{isDispatching ? "Publishing..." : "Publish Live to Channels"}</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}

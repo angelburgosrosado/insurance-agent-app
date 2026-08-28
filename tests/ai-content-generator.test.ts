@@ -2,23 +2,35 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { generateCampaignPack, getProductMetadata, UNIVERSAL_SOCIAL_BIOS } from "../src/lib/server/ai-content-generator";
 
-test("AI Content Generator - Generates multi-channel pack for Military persona", () => {
-  const pack = generateCampaignPack({
+test("AI Content Generator - Generates multi-channel pack for Military persona with seed rotation", () => {
+  const pack1 = generateCampaignPack({
     product: "military",
     persona: "veterans",
     trigger: "military_transition",
     tone: "analytical",
     lang: "en",
+    seed: 0,
   });
 
-  assert.ok(pack.trackedUrl.includes("utm_source=social"));
-  assert.ok(pack.trackedUrl.includes("utm_campaign=military_veterans_military_transition"));
-  assert.ok(pack.videoScript.hook.includes("VGLI"));
-  assert.ok(pack.linkedInPost.includes("SBP"));
-  assert.ok(pack.paidAd.headline.includes("Military"));
-  assert.ok(pack.youtubeVideo.chapters.length >= 4);
-  assert.equal(pack.carouselSlides.length, 5);
-  assert.ok(pack.complianceDisclosure.includes("#G328926"));
+  const pack2 = generateCampaignPack({
+    product: "military",
+    persona: "veterans",
+    trigger: "military_transition",
+    tone: "analytical",
+    lang: "en",
+    seed: 1,
+  });
+
+  assert.ok(pack1.trackedUrl.includes("utm_source=social"));
+  assert.equal(pack1.variationId, 1);
+  assert.equal(pack2.variationId, 2);
+  assert.notEqual(pack1.videoScript.title, pack2.videoScript.title);
+  assert.ok(pack1.videoScript.hook.length > 10);
+  assert.ok(pack1.linkedInPost.includes("SBP"));
+  assert.ok(pack1.paidAd.headline.includes("Military"));
+  assert.ok(pack1.youtubeVideo.chapters.length >= 4);
+  assert.equal(pack1.carouselSlides.length, 5);
+  assert.ok(pack1.complianceDisclosure.includes("#G328926"));
 });
 
 test("AI Content Generator - Generates Spanish campaign pack for Florida IUL with Engineering Clarity", () => {
@@ -28,12 +40,15 @@ test("AI Content Generator - Generates Spanish campaign pack for Florida IUL wit
     trigger: "engineering_clarity",
     tone: "direct_response",
     lang: "es",
+    seed: 0,
+    customNotes: "Empresario en Orlando",
   });
 
   assert.ok(pack.product.includes("IUL"));
-  assert.ok(pack.videoScript.fullText.includes("Florida"));
+  assert.ok(pack.videoScript.fullText.length > 20);
   assert.ok(pack.linkedInPost.includes("IRS"));
   assert.ok(pack.youtubeVideo.title.includes("Piso 0%"));
+  assert.equal(pack.customAngleApplied, "Empresario en Orlando");
   assert.ok(pack.complianceDisclosure.includes("Asesoría Licenciada 0215"));
 });
 

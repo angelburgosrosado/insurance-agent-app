@@ -23,6 +23,9 @@ export interface GeneratedCampaignPack {
   persona: string;
   trackedUrl: string;
   themeCategory: string;
+  variationId: number;
+  generatedAt: string;
+  customAngleApplied?: string;
   videoScript: {
     title: string;
     hook: string;
@@ -142,76 +145,119 @@ export function getProductMetadata(productId: CampaignRequest["product"], lang: 
 }
 
 /**
- * Autonomous AI Content Synthesis Engine with Financial Direct-Response Frameworks
+ * Autonomous AI Content Synthesis Engine with Multi-Angle Variation Rotations
  */
 export function generateCampaignPack(req: CampaignRequest): GeneratedCampaignPack {
   const isSpanish = req.lang === "es";
   const meta = getProductMetadata(req.product, req.lang);
+  const seed = req.seed ?? Math.floor(Math.random() * 1000);
+  const varIndex = Math.abs(seed) % 3; // 0, 1, or 2
 
-  const campaignSlug = `${req.product}_${req.persona}_${req.trigger}`;
+  const now = new Date();
+  const timeString = now.toLocaleTimeString(isSpanish ? "es-ES" : "en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+
+  const campaignSlug = `${req.product}_${req.persona}_${req.trigger}_v${varIndex + 1}`;
   const trackedUrl = `https://abglco.com${meta.path}?utm_source=social&utm_medium=ai_campaign&utm_campaign=${campaignSlug}`;
 
   const compliance = isSpanish
     ? "Asesoría Licenciada 0215 de Florida #G328926 • Código WFG: F6D9U • Angel Burgos, PE • AB Global Consulting • 9501 Satellite Blvd, Suite 105, Orlando, FL 32837. No representa una garantía de rendimientos futuros. Sujeto a lineamientos de suscripción de la aseguradora. Distribuciones bajo Código IRS 7702."
     : "Florida State Licensed 0215 Life, Health & Variable Annuities #G328926 • WFG Agent Code: F6D9U • Angel Burgos, PE • AB Global Consulting. Payouts and guarantees subject to carrier claims-paying ability. Non-taxable loan distributions adhere to IRS Section 7702 guidelines.";
 
+  const customContextEn = req.customNotes ? ` (Focus: ${req.customNotes})` : "";
+  const customContextEs = req.customNotes ? ` (Enfoque Especial: ${req.customNotes})` : "";
+
+  // 1. MILITARY VARIATIONS
   if (req.product === "military") {
+    const videoHooks = [
+      {
+        hook: isSpanish
+          ? "[0-3s]: (Señalar a la pantalla con el simulador abierto) 'Si estás en servicio activo o saliendo de las Fuerzas Armadas, no aceptes el VGLI hasta ver estos números.'"
+          : "[0-3s]: (Point camera at laptop running the Military Asset Shield slider) 'If you are active duty or separating from service, DO NOT blindly sign up for VGLI.'",
+        demo: isSpanish
+          ? "[4-20s]: (Mover la barra de edad en pantalla de 30 a 65 años) 'Mira esto: el SGLI es barato en servicio activo, pero al salir, el VGLI sube cada 5 años. A los 65 años pagas más de $750 al mes por la misma cobertura. Eso son $180,000 perdidos con $0 en efectivo acumulado.'"
+          : "[4-20s]: (Drag the slider from age 30 to 65 on screen) 'Look at this math: SGLI is cheap in uniform. But when you transition to VGLI, the rates spike every 5 years. By age 65, you're paying $750/month. That's over $180k paid with zero equity.'",
+        sol: isSpanish
+          ? "[21-35s]: 'La alternativa institucional es asegurar un IUL privado antes de salir. Tu tarifa queda fija de por vida, obtienes Beneficios en Vida por lesiones de servicio y cobras el 100% de tu pensión con la estrategia Pension Max.'"
+          : "[21-35s]: 'Smart soldiers and veterans lock in a private IUL before separation. Your premium is level for life, you get Living Benefits for service-related illness, and under Pension Max, you keep 100% of your military pension.'",
+      },
+      {
+        hook: isSpanish
+          ? "[0-3s]: '¿Por qué el 90% de los oficiales y sargentos que eligen SBP pierden el 6.5% de su pensión para siempre?'"
+          : "[0-3s]: 'Why are 90% of retiring military members blindly giving up 6.5% of their pension forever to SBP?'",
+        demo: isSpanish
+          ? "[4-20s]: 'El plan SBP le descuenta miles cada año de su retiro. Y si su cónyuge fallece antes que usted, el gobierno no le devuelve ni un solo centavo.'"
+          : "[4-20s]: 'SBP automatically deducts thousands from your gross retired pay. And if your spouse passes away first, the government keeps 100% of those deductions with zero refund.'",
+        sol: isSpanish
+          ? "[21-35s]: 'Con la estrategia Pension Max, usted toma el 100% de su pensión completa y protege a su cónyuge con una póliza privada IUL libre de impuestos.'"
+          : "[21-35s]: 'With the Pension Max strategy, you elect full 100% retirement pay and protect your spouse with a private, tax-free cash-value life asset.'",
+      },
+      {
+        hook: isSpanish
+          ? "[0-3s]: 'Veteranos de Florida y Puerto Rico: si tienen 120 días o menos para salir del servicio activo, miren esto.'"
+          : "[0-3s]: 'Active duty service members: If you are within 120 days of ETS or military retirement, stop scrolling.'",
+        demo: isSpanish
+          ? "[4-20s]: 'Durante esos 120 días pueden calificar para seguros privados con tarifas de salud preferenciales antes de que sus evaluaciones de discapacidad del VA aumenten el costo.'"
+          : "[4-20s]: 'During this 120-day window, you can lock in civilian preferred underwriting before VA disability claims complicate approval.'",
+        sol: isSpanish
+          ? "[21-35s]: 'Esto les da protección nivelada de por vida, acumulación bajo el Código IRS 7702 y Beneficios en Vida por enfermedades de servicio.'"
+          : "[21-35s]: 'This guarantees lifetime level rates, tax-free accumulation under IRS 7702, and Living Benefits for service-connected illness.'",
+      },
+    ];
+
+    const currentHook = videoHooks[varIndex];
+
     return {
       product: meta.name,
       persona: req.persona,
       themeCategory: meta.theme,
+      variationId: varIndex + 1,
+      generatedAt: timeString,
+      customAngleApplied: req.customNotes,
       trackedUrl,
       complianceDisclosure: compliance,
       videoScript: {
-        title: isSpanish ? "Guión de 45s: La Trampa de Costo de VGLI" : "45-Sec Reel: The $180,000 VGLI Rate Cliff",
-        hook: isSpanish
-          ? "[0-3s]: (Señalar a la pantalla con el simulador abierto) 'Si estás en servicio activo o saliendo de las Fuerzas Armadas, no aceptes el VGLI hasta ver estos números.'"
-          : "[0-3s]: (Point camera at laptop running the Military Asset Shield slider) 'If you are active duty or separating from service, DO NOT blindly sign up for VGLI.'",
-        demonstration: isSpanish
-          ? "[4-20s]: (Mover la barra de edad en pantalla de 30 a 65 años) 'Mira esto: el SGLI es barato en servicio activo, pero al salir, el VGLI sube cada 5 años. A los 65 años pagas más de $750 al mes por la misma cobertura. Eso son $180,000 perdidos con $0 en efectivo acumulado.'"
-          : "[4-20s]: (Drag the slider from age 30 to 65 on screen) 'Look at this math: SGLI is cheap in uniform. But when you transition to VGLI, the rates spike every 5 years. By age 65, you're paying $750/month. That's over $180k paid with zero equity.'",
-        solution: isSpanish
-          ? "[21-35s]: 'La alternativa institucional es asegurar un IUL privado antes de salir. Tu tarifa queda fija de por vida, obtienes Beneficios en Vida por lesiones de servicio y cobras el 100% de tu pensión con la estrategia Pension Max.'"
-          : "[21-35s]: 'Smart soldiers and veterans lock in a private IUL before separation. Your premium is level for life, you get Living Benefits for service-related illness, and under Pension Max, you keep 100% of your military pension.'",
+        title: isSpanish
+          ? `Guión #${varIndex + 1}: ${varIndex === 0 ? "La Trampa de VGLI" : varIndex === 1 ? "Estrategia Pension Max" : "La Ventana de 120 Días"}${customContextEs}`
+          : `Video Reel #${varIndex + 1}: ${varIndex === 0 ? "The $180k VGLI Rate Cliff" : varIndex === 1 ? "The SBP Pension Max Strategy" : "The 120-Day Separation Window"}${customContextEn}`,
+        hook: currentHook.hook,
+        demonstration: currentHook.demo,
+        solution: currentHook.sol,
         cta: isSpanish
-          ? "[36-45s]: 'Diseñé este simulador interactivo gratuito. Haz clic en el enlace de mi perfil para calcular tus números exactos de retiro.'"
-          : "[36-45s]: 'I built this free interactive military simulator. Hit the link in my bio to calculate your rank and retirement numbers right now.'",
-        fullText: isSpanish
-          ? `[0-3s GANCHO]: "Si estás en servicio activo o saliendo de las Fuerzas Armadas, no aceptes el VGLI hasta ver estos números."\n\n[4-20s DEMOSTRACIÓN]: (Mover la barra en pantalla) "Mira esto: a los 65 años el VGLI supera los $750/mes. Son más de $180,000 en primas con $0 de valor acumulado."\n\n[21-35s SOLUCIÓN]: "Con un IUL privado, fijas tu tarifa de por vida, recibes Beneficios en Vida y cobras el 100% de tu pensión militar sin perder el 6.5% mensual."\n\n[36-45s LLAMADO A LA ACCIÓN]: "Entra a ${trackedUrl} y calcula tu escenario exacto gratis."`
-          : `[0-3s HOOK]: "If you are active duty or separating from service, DO NOT blindly sign up for VGLI."\n\n[4-20s DEMONSTRATION]: (Drag the slider on screen) "Look at this: by age 65, VGLI spikes to $750/month. That's $180k lost with zero cash back."\n\n[21-35s SOLUTION]: "With a private IUL, you lock in a lifetime level rate, get Living Benefits, and keep 100% of your military pension with Pension Max."\n\n[36-45s CTA]: "Go to ${trackedUrl} to run your exact transition numbers for free."`,
+          ? `[36-45s]: 'Diseñé este simulador interactivo gratuito. Ingrese a ${trackedUrl} para calcular sus números.'`
+          : `[36-45s]: 'I built this free military transition calculator. Hit the link in bio or visit ${trackedUrl} to run your scenario.'`,
+        fullText: `${currentHook.hook}\n\n${currentHook.demo}\n\n${currentHook.sol}\n\n[CTA]: ${trackedUrl}`,
       },
       youtubeVideo: {
         title: isSpanish
-          ? "SGLI vs VGLI Explicado: Por Qué los Veteranos Pierden $180,000 en su Transición Militar"
-          : "SGLI vs VGLI Explained: Why Veterans Waste Over $180,000 After Leaving the Military",
+          ? `[Guía #${varIndex + 1}] SGLI vs VGLI vs Pension Max: Análisis de Ingeniería Financiera para Militares y Veteranos`
+          : `[Masterclass #${varIndex + 1}] Military Transition Breakdown: SGLI, VGLI Rate Spikes, and Pension Max Explained`,
         concept: isSpanish
-          ? "Desglose matemático de 8 minutos comparando los aumentos exponenciales de tarifa del VGLI contra pólizas IUL privadas con Beneficios en Vida y estrategia Pension Max."
-          : "8-minute deep-dive analyzing the VGLI 5-year rate hike schedule vs. private IUL with Living Benefits and SBP Pension Max strategies.",
+          ? `Desglose matemático de 8 minutos con Angel Burgos, PE, evaluando curvas de costo de VGLI vs IUL nivelado y maximización de pensión militar.`
+          : `8-minute mathematical breakdown with Angel Burgos, PE, analyzing VGLI cost curves vs level private IUL and pension optimization.`,
         chapters: [
           {
             timestamp: "0:00",
-            title: isSpanish ? "Introducción: La Trampa de los 120 Días" : "Introduction: The 120-Day Transition Window",
-            talkingPoints: isSpanish ? "El error común de convertir automáticamente a VGLI al retirarse." : "Why automatic VGLI conversions create long-term financial leaks.",
+            title: isSpanish ? "Introducción y la Ventana Crítica de 120 Días" : "Introduction: The 120-Day Transition Window",
+            talkingPoints: isSpanish ? "Por qué el cambio de SGLI a VGLI se convierte en un pozo sin fondo." : "Why converting SGLI to VGLI is one of the costliest veteran mistakes.",
           },
           {
-            timestamp: "1:45",
-            title: isSpanish ? "El Cuadro Matemático de Costos de VGLI" : "The VGLI Rate Schedule Breakdown",
-            talkingPoints: isSpanish ? "Comparación de primas desde los 30 hasta los 75 años ($180,000 en costos)." : "Side-by-side cost curve: $50/mo at 30 vs $750/mo at 65.",
+            timestamp: "2:05",
+            title: isSpanish ? "Curva de Costos de VGLI de los 30 a los 75 Años" : "The Mathematical VGLI Cost Curve",
+            talkingPoints: isSpanish ? "Los aumentos de $50/mes a $750/mes y $180,000 en primas no recuperables." : "Rate progression from $50/mo to $750/mo ($180k cumulative).",
           },
           {
-            timestamp: "3:50",
-            title: isSpanish ? "El Descuento del 6.5% en la Pensión (SBP)" : "The SBP 6.5% Pension Deduction Dilemma",
-            talkingPoints: isSpanish ? "Cómo funciona el Survivor Benefit Plan y por qué no tiene reembolso." : "Why SBP permanently reduces gross retired pay with zero refund.",
+            timestamp: "4:30",
+            title: isSpanish ? "El Dilema del 6.5% del Plan SBP" : "The 6.5% SBP Deduction Dilemma",
+            talkingPoints: isSpanish ? "Cómo conservar el 100% de la pensión militar con la estrategia Pension Max." : "How to keep 100% full retired pay using private tax-free protection.",
           },
           {
-            timestamp: "5:30",
-            title: isSpanish ? "La Solución Pension Max + IUL" : "The Pension Max + Private IUL Solution",
-            talkingPoints: isSpanish ? "Piso del 0%, Beneficios en Vida por lesiones y retiros bajo IRS 7702." : "Contractual 0% floor, service disability living benefits, tax-free loans.",
-          },
-          {
-            timestamp: "7:15",
-            title: isSpanish ? "Demostración del Simulador Interactivo y Conclusión" : "Interactive Simulator Walkthrough & Next Steps",
-            talkingPoints: isSpanish ? "Cómo usar el simulador de abglco.com y agendar una consulta." : "How to test your exact rank and retirement scenario at abglco.com.",
+            timestamp: "6:45",
+            title: isSpanish ? "Demostración en Vivo del Simulador Interactivo" : "Live Simulator Demonstration & Next Steps",
+            talkingPoints: isSpanish ? "Cómo calcular su escenario exacto en abglco.com y descargar el reporte." : "Running custom rank and retirement scenarios at abglco.com.",
           },
         ],
         visualAids: [
@@ -220,19 +266,19 @@ export function generateCampaignPack(req: CampaignRequest): GeneratedCampaignPac
           "Diagrama de flujo de decisión Pension Max",
         ],
         description: isSpanish
-          ? `🎖️ ¿Estás en servicio activo o cerca de tu retiro militar? En este video analizamos la realidad matemática entre SGLI, VGLI y las estrategias institucionales de pensión militar (Pension Max).\n\n📌 CAPÍTULOS DEL VIDEO:\n0:00 - Introducción: La Trampa de los 120 Días\n1:45 - El Cuadro Matemático de Costos de VGLI\n3:50 - El Descuento del 6.5% en la Pensión (SBP)\n5:30 - La Solución Pension Max + IUL\n7:15 - Demostración del Simulador y Conclusión\n\n👉 CALCULA TU ESCENARIO EN VIVO:\n${trackedUrl}\n\n📞 Agenda una Consulta Estratégica con Angel Burgos, PE (Lic. FL 0215 #G328926):\nhttps://abglco.com/#consultation`
-          : `🎖️ Are you transitioning out of active duty or planning military retirement? In this video, we break down the math behind SGLI, VGLI rate spikes, and private Pension Max alternatives.\n\n📌 VIDEO CHAPTERS:\n0:00 - Introduction: The 120-Day Transition Window\n1:45 - The VGLI Rate Schedule Breakdown\n3:50 - The SBP 6.5% Pension Deduction Dilemma\n5:30 - The Pension Max + Private IUL Solution\n7:15 - Interactive Simulator Walkthrough & Next Steps\n\n👉 TEST YOUR EXACT RANK AND RETIREMENT NUMBERS:\n${trackedUrl}\n\n📞 Schedule a Strategic Consultation with Angel Burgos, PE (FL Lic. #G328926):\nhttps://abglco.com/#consultation`,
+          ? `🎖️ En esta entrega (#${varIndex + 1}), Angel Burgos, PE (Asesor Financiero Estratégico, Lic. FL 0215 #G328926) desglosa la estrategia matemática de protección militar.\n\n📌 CAPÍTULOS:\n0:00 - Introducción y Ventana de 120 Días\n2:05 - Curva de Costos de VGLI\n4:30 - El Dilema del 6.5% de SBP\n6:45 - Demostración en Vivo del Simulador\n\n👉 CALCULA TU ESCENARIO EN VIVO:\n${trackedUrl}\n\n🌐 Agenda una Consulta con Angel Burgos, PE: https://abglco.com/#consultation`
+          : `🎖️ In this masterclass edition (#${varIndex + 1}), Angel Burgos, PE (Strategic Financial Advisor, FL Lic. #G328926) breaks down the mathematical truth behind military benefits.\n\n📌 CHAPTERS:\n0:00 - Introduction: The 120-Day Transition Window\n2:05 - The Mathematical VGLI Cost Curve\n4:30 - The 6.5% SBP Deduction Dilemma\n6:45 - Live Simulator Walkthrough\n\n👉 TEST YOUR EXACT RANK AND RETIREMENT NUMBERS:\n${trackedUrl}\n\n🌐 Book a 1-on-1 Strategy Session: https://abglco.com/#consultation`,
       },
       linkedInPost: isSpanish
-        ? `🎖️ El Dilema de $180,000 que la Mayoría de los Militares y Veteranos Desconocen\n\nAl separarse del servicio activo, muchos soldados y oficiales convierten automáticamente su SGLI de $500k a VGLI.\n\nLa realidad matemática:\n• A los 30 años: VGLI cuesta ~$50/mes.\n• A los 50 años: Salta a ~$180/mes.\n• A los 65 años: Supera los $750/mes ($9,000/año).\n• Costo acumulado a los 75 años: Más de $180,000.\n• Valor en efectivo recuperable: EXACTAMENTE $0.\n\nAl mismo tiempo, el plan SBP descuenta el 6.5% de su pensión militar de por vida. Si su cónyuge fallece primero, el gobierno retiene todo sin reembolso.\n\n💡 La Solución Institucional (Pension Max + IUL bajo Código IRS 7702):\n1. Asegurar un IUL con tarifa fija de por vida antes o durante la transición.\n2. Beneficios en Vida por enfermedades o lesiones de servicio.\n3. Acumulación de valor en efectivo libre de impuestos bajo IRS Sec 7702.\n4. Cobrar el 100% de su pensión de retiro militar.\n\n👉 Simule su rango y años de servicio en nuestro simulador interactivo:\n${trackedUrl}\n\n#Militares #Veteranos #PensionMax #RetiroMilitar #FloridaVeterans #PuertoRico`
-        : `🎖️ The $180,000 Transition Dilemma Most Military Veterans Miss\n\nWhen transitioning from active service, members are told to convert their $500,000 SGLI to VGLI.\n\nHere is the financial reality:\n• Age 30: VGLI costs ~$50/mo.\n• Age 50: Jumps to ~$180/mo.\n• Age 65: Exceeds $750/mo ($9,000/year).\n• Cumulative cost by age 75: Over $180,000.\n• Cash equity returned: EXACTLY $0.\n\nMeanwhile, military retirees electing Survivor Benefit Plan (SBP) forfeit 6.5% of their gross retired pay forever with zero refund if their spouse predeceases them.\n\n💡 The Institutional Alternative (Pension Max + Private IUL):\n1. Lock in private IUL coverage with level lifetime premiums.\n2. Maintain Living Benefits for service-related medical conditions.\n3. Build hundreds of thousands in accessible, tax-free cash reserves under IRS Section 7702.\n4. Keep 100% of your gross military pension.\n\n👉 Run your exact rank and years of service on our interactive simulator:\n${trackedUrl}\n\n#MilitaryFinance #Veterans #RetirementPlanning #AssetProtection #PensionMax`,
+        ? `🎖️ [Análisis #${varIndex + 1}] El Dilema Financiero de $180,000 en la Transición Militar\n\nAl separarse del servicio activo, muchos soldados y oficiales convierten automáticamente su SGLI de $500k a VGLI.\n\nLa realidad matemática:\n• A los 30 años: VGLI cuesta ~$50/mes.\n• A los 50 años: Salta a ~$180/mes.\n• A los 65 años: Supera los $750/mes ($9,000/año).\n• Costo acumulado a los 75 años: Más de $180,000.\n• Valor en efectivo recuperable: EXACTAMENTE $0.\n\n💡 La Solución Institucional (Pension Max + IUL bajo Código IRS 7702):\n1. Asegurar un IUL con tarifa fija de por vida antes o durante la transición.\n2. Beneficios en Vida por enfermedades o lesiones de servicio.\n3. Acumulación de valor en efectivo libre de impuestos bajo IRS Sec 7702.\n4. Cobrar el 100% de su pensión militar completa.\n\n👉 Simule su rango y años de servicio en nuestro simulador interactivo:\n${trackedUrl}\n\n#Militares #Veteranos #PensionMax #RetiroMilitar #FloridaVeterans #PuertoRico`
+        : `🎖️ [Strategic Breakdown #${varIndex + 1}] The $180,000 Transition Dilemma Most Military Veterans Miss\n\nWhen transitioning from active service, members are told to convert their $500,000 SGLI to VGLI.\n\nHere is the financial reality:\n• Age 30: VGLI costs ~$50/mo.\n• Age 50: Jumps to ~$180/mo.\n• Age 65: Exceeds $750/mo ($9,000/year).\n• Cumulative cost by age 75: Over $180,000.\n• Cash equity returned: EXACTLY $0.\n\n💡 The Institutional Alternative (Pension Max + Private IUL):\n1. Lock in private IUL coverage with level lifetime premiums.\n2. Maintain Living Benefits for service-related medical conditions.\n3. Build hundreds of thousands in accessible, tax-free cash reserves under IRS Section 7702.\n4. Keep 100% of your gross military pension instead of forfeiting 6.5% to SBP.\n\n👉 Run your exact rank and years of service on our interactive simulator:\n${trackedUrl}\n\n#MilitaryFinance #Veterans #RetirementPlanning #AssetProtection #PensionMax #SBP`,
       paidAd: {
-        headline: isSpanish ? "Veteranos de Florida y PR: ¿SGLI vs VGLI?" : "Military Veterans: Beware the VGLI Rate Cliff",
+        headline: isSpanish ? `[Opción #${varIndex + 1}] Veteranos de Florida y PR: ¿SGLI vs VGLI?` : `[Ad #${varIndex + 1}] Military Veterans: Beware the VGLI Rate Cliff`,
         hooks: isSpanish
           ? [
-              "Antes de aceptar el VGLI, compare el costo a 20 años.",
+              "Antes de aceptar el VGLI, compare el costo real a 20 años.",
               "¿Sabía que el plan SBP le cuesta 6.5% de su pensión de por vida?",
-              "Protección patrimonial fija para militares activos y veteranos.",
+              "Protección patrimonial fija con Beneficios en Vida para veteranos.",
             ]
           : [
               "Do not convert your SGLI to VGLI before seeing this chart.",
@@ -246,8 +292,8 @@ export function generateCampaignPack(req: CampaignRequest): GeneratedCampaignPac
         ctaButton: isSpanish ? "Abrir Simulador Militar" : "Calculate My Numbers",
       },
       emailBroadcast: {
-        subjectA: isSpanish ? "🎖️ La trampa de $180k del VGLI que nadie te explica" : "🎖️ The $180,000 VGLI rate cliff you need to know",
-        subjectB: isSpanish ? "Cómo conservar el 100% de tu pensión militar (Pension Max)" : "How to keep 100% of your military pension (Pension Max)",
+        subjectA: isSpanish ? `🎖️ [Variación #${varIndex + 1}] La trampa de $180k del VGLI que nadie te explica` : `🎖️ [Variation #${varIndex + 1}] The $180,000 VGLI rate cliff you need to know`,
+        subjectB: isSpanish ? `Cómo conservar el 100% de tu pensión militar (Pension Max)` : `How to keep 100% of your military pension (Pension Max)`,
         previewText: isSpanish ? "Calcula tu costo de transición militar en tiempo real." : "Calculate your exact transition costs in real time.",
         body: isSpanish
           ? `Hola,\n\nSi has servido en las Fuerzas Armadas o estás cerca de tu transición al mundo civil, hay un detalle crítico sobre el seguro de vida que con frecuencia se pasa por alto.\n\nEl SGLI de $500k termina al salir del servicio. Al pasar a VGLI, la prima aumenta de manera exponencial cada 5 años. Para los 65 años, estás pagando más de $750 cada mes por la misma cobertura—acumulando más de $180,000 en primas perdidas sin acumular un solo centavo de valor en efectivo.\n\nAdicionalmente, el plan SBP del gobierno descuenta el 6.5% de tu pensión bruta de por vida.\n\nExiste una alternativa matemática:\n1. Fijar una prima nivelada privada mediante un Seguro Indexado Universal (IUL).\n2. Obtener Beneficios en Vida por enfermedades o lesiones de servicio.\n3. Acumular capital libre de impuestos bajo el Código IRS Sec 7702.\n4. Cobrar el 100% de tu pensión militar completa mediante la estrategia Pension Max.\n\nHemos preparado un simulador interactivo donde puedes ingresar tu rango y años de servicio:\n\n👉 Accede al Simulador Militar Aquí:\n${trackedUrl}\n\nCordialmente,\nAngel Burgos, PE • Asesor Licenciado 0215 #G328926\nAB Global Consulting\n(386) 333-1482`
@@ -256,7 +302,7 @@ export function generateCampaignPack(req: CampaignRequest): GeneratedCampaignPac
       carouselSlides: [
         {
           slideNumber: 1,
-          title: isSpanish ? "El Dilema de $180,000 del VGLI Militar" : "The $180,000 VGLI Rate Cliff",
+          title: isSpanish ? `[Ángulo #${varIndex + 1}] El Dilema de $180k del VGLI` : `[Angle #${varIndex + 1}] The $180k VGLI Rate Cliff`,
           visualCue: "Icono de advertencia militar + gráfico de costo ascendente",
           content: isSpanish
             ? "¿Por qué el 90% de los veteranos pagan de más por su seguro tras dejar el servicio activo? Desliza para ver los números."
@@ -298,35 +344,70 @@ export function generateCampaignPack(req: CampaignRequest): GeneratedCampaignPac
     };
   }
 
-  // Generic fallback for IUL, Annuity, Funeral, DIME, LTC
+  // 2. GENERAL PRODUCTS (IUL, Annuity, Funeral, DIME, LTC) MULTI-VARIATION ROTATION
+  const generalHooks = [
+    {
+      hook: isSpanish
+        ? `[0-3s]: "Si vive en Florida o Puerto Rico y desea proteger su patrimonio familiar, debe conocer esta estrategia antes de tomar una decisión."`
+        : `[0-3s]: "If you are planning your retirement in Florida, here is what top financial advisors do to protect capital from market drops."`,
+      demo: isSpanish
+        ? `[4-20s]: "La mayoría de las personas arriesgan sus ahorros en la bolsa o dependen de pólizas que expiran sin dejar nada. Con nuestra metodología, blindamos su capital con un piso garantizado del 0%."`
+        : `[4-20s]: "Most people either take too much market risk or buy term policies that expire with zero equity. Our strategy guarantees a contractual 0% floor against market crashes."`,
+      sol: isSpanish
+        ? `[21-35s]: "Esto le permite acumular capital libre de impuestos bajo el Código IRS Sec 7702 y proteger a su familia con Beneficios en Vida ante enfermedades graves."`
+        : `[21-35s]: "This enables tax-free distributions under IRS Section 7702 while shielding your family with accelerated Living Benefits."`,
+    },
+    {
+      hook: isSpanish
+        ? `[0-3s]: "¿Qué pasaría si la bolsa de valores cae un 30% justo el año en que usted decide retirarse?"`
+        : `[0-3s]: "What happens to your retirement if the stock market drops 30% right before you start withdrawing?"`,
+      demo: isSpanish
+        ? `[4-20s]: "Ese fenómeno se llama Riesgo de Secuencia de Retornos, y puede destruir el 50% del poder de compra de su 401(k) o IRA en menos de 3 años."`
+        : `[4-20s]: "That is the Sequence of Returns Risk—it can drain 50% of your 401(k) purchasing power in just 3 years."`,
+      sol: isSpanish
+        ? `[21-35s]: "Estructuramos un piso garantizado donde su dinero captura el crecimiento de los índices, pero sus ganancias quedan bloqueadas para siempre."`
+        : `[21-35s]: "We structure a contractual floor where your gains lock in annually and your principal never drops below zero."`,
+    },
+    {
+      hook: isSpanish
+        ? `[0-3s]: "La mayoría de las personas cometen el error de elegir una cifra al azar para su seguro de vida."`
+        : `[0-3s]: "Most people make the mistake of guessing a random round number for their life insurance policy."`,
+      demo: isSpanish
+        ? `[4-20s]: "El seguro del trabajo solo cubre 1 año de salario. Si algo le sucede, su familia queda expuesta a la hipoteca, deudas y gastos de educación."`
+        : `[4-20s]: "Employer life insurance only covers 1x salary. When you leave or pass, your family faces mortgage debt and education shortfalls."`,
+      sol: isSpanish
+        ? `[21-35s]: "Aplicamos el método D.I.M.E. para calcular la brecha matemática exacta y proteger su legado sin pagar primas de más."`
+        : `[21-35s]: "We apply the D.I.M.E. framework to calculate your exact mathematical shortfall so you never overpay."`,
+    },
+  ];
+
+  const currentGenHook = generalHooks[varIndex];
+
   return {
     product: meta.name,
     persona: req.persona,
     themeCategory: meta.theme,
+    variationId: varIndex + 1,
+    generatedAt: timeString,
+    customAngleApplied: req.customNotes,
     trackedUrl,
     complianceDisclosure: compliance,
     videoScript: {
-      title: isSpanish ? `Guión de 45s: ${meta.name}` : `45-Sec Video: ${meta.name}`,
-      hook: isSpanish
-        ? `[0-3s]: "Si vive en Florida o Puerto Rico y desea proteger su patrimonio familiar, debe conocer esta estrategia antes de tomar una decisión."`
-        : `[0-3s]: "If you are planning your retirement in Florida, here is what top financial advisors do to protect capital from market drops."`,
-      demonstration: isSpanish
-        ? `[4-20s]: "La mayoría de las personas arriesgan sus ahorros en la bolsa o dependen de pólizas que expiran sin dejar nada. Con nuestra metodología, blindamos su capital con un piso garantizado del 0%."`
-        : `[4-20s]: "Most people either take too much market risk or buy term policies that expire with zero equity. Our strategy guarantees a contractual 0% floor against market crashes."`,
-      solution: isSpanish
-        ? `[21-35s]: "Esto le permite acumular capital libre de impuestos bajo el Código IRS Sec 7702 y proteger a su familia con Beneficios en Vida ante enfermedades graves."`
-        : `[21-35s]: "This enables tax-free distributions under IRS Section 7702 while shielding your family with accelerated Living Benefits."`,
+      title: isSpanish
+        ? `Guión #${varIndex + 1}: ${meta.name}${customContextEs}`
+        : `45-Sec Video #${varIndex + 1}: ${meta.name}${customContextEn}`,
+      hook: currentGenHook.hook,
+      demonstration: currentGenHook.demo,
+      solution: currentGenHook.sol,
       cta: isSpanish
         ? `[36-45s]: "Diseñé un simulador interactivo gratuito. Ingrese a ${trackedUrl} para calcular sus números."`
         : `[36-45s]: "I built a free interactive simulator for you. Visit ${trackedUrl} to calculate your scenario."`,
-      fullText: isSpanish
-        ? `[0-3s GANCHO]: "Si vive en Florida o Puerto Rico, debe conocer esta estrategia para proteger su patrimonio."\n\n[4-20s DEMO]: "Con un piso del 0%, su dinero nunca pierde ante caídas de bolsa."\n\n[21-35s SOLUCIÓN]: "Retiros libres de impuestos bajo IRS 7702 y Beneficios en Vida."\n\n[36-45s CTA]: "Calcule su caso en ${trackedUrl}."`
-        : `[0-3s HOOK]: "Protect your family and retirement capital from market downturns."\n\n[4-20s DEMO]: "0% Downside floor guarantees you never lose principal in a crash."\n\n[21-35s SOLUTION]: "Tax-free policy loans under IRS 7702."\n\n[36-45s CTA]: "Run your numbers at ${trackedUrl}."`,
+      fullText: `${currentGenHook.hook}\n\n${currentGenHook.demo}\n\n${currentGenHook.sol}\n\n[CTA]: ${trackedUrl}`,
     },
     youtubeVideo: {
       title: isSpanish
-        ? `${meta.name}: Cómo Proteger su Patrimonio con Certeza Matemática y Piso 0%`
-        : `${meta.name}: How to Protect Your Family Wealth with Mathematical Certainty & 0% Floor`,
+        ? `[Masterclass #${varIndex + 1}] ${meta.name}: Cómo Proteger su Patrimonio con Certeza Matemática y Piso 0%`
+        : `[Masterclass #${varIndex + 1}] ${meta.name}: How to Protect Your Family Wealth with Mathematical Certainty & 0% Floor`,
       concept: isSpanish
         ? `Guía educativa completa de 7 a 10 minutos explicando la mecánica detrás de ${meta.name} con modelos de ingeniería financiera.`
         : `Comprehensive 7-10 minute educational masterclass breaking down the mechanics of ${meta.name} using engineering financial models.`,
@@ -358,14 +439,14 @@ export function generateCampaignPack(req: CampaignRequest): GeneratedCampaignPac
         "Lista de verificación descargable (Protection Planning Checklist)",
       ],
       description: isSpanish
-        ? `📊 En esta guía educativa, Angel Burgos, PE (Asesor Financiero Estratégico, Lic. FL 0215 #G328926) desglosa la estrategia de ${meta.name}.\n\n📌 CAPÍTULOS:\n0:00 - El Problema de la Planificación Tradicional\n2:10 - La Mecánica del Piso Garantizado del 0%\n4:40 - Ventajas Fiscales bajo Código IRS Sección 7702\n6:50 - Beneficios en Vida y Plan de Acción\n\n👉 PRUEBE NUESTRO SIMULADOR INTERACTIVO:\n${trackedUrl}\n\n🌐 Agenda una Consulta Personalizada: https://abglco.com/#consultation`
-        : `📊 In this educational video, Angel Burgos, PE (Strategic Financial Advisor, Florida 0215 Lic. #G328926) breaks down the institutional strategy for ${meta.name}.\n\n📌 CHAPTERS:\n0:00 - The Core Flaw in Traditional Planning\n2:10 - The Mechanics of the 0% Contractual Floor\n4:40 - IRS Section 7702 Tax-Free Loan Mechanics\n6:50 - Accelerated Living Benefits & Execution Blueprint\n\n👉 LAUNCH THE INTERACTIVE SIMULATOR:\n${trackedUrl}\n\n🌐 Book a 1-on-1 Consultation: https://abglco.com/#consultation`,
+        ? `📊 En esta guía educativa (#${varIndex + 1}), Angel Burgos, PE (Asesor Financiero Estratégico, Lic. FL 0215 #G328926) desglosa la estrategia de ${meta.name}.\n\n📌 CAPÍTULOS:\n0:00 - El Problema de la Planificación Tradicional\n2:10 - La Mecánica del Piso Garantizado del 0%\n4:40 - Ventajas Fiscales bajo Código IRS Sección 7702\n6:50 - Beneficios en Vida y Plan de Acción\n\n👉 PRUEBE NUESTRO SIMULADOR INTERACTIVO:\n${trackedUrl}\n\n🌐 Agenda una Consulta Personalizada: https://abglco.com/#consultation`
+        : `📊 In this educational video (#${varIndex + 1}), Angel Burgos, PE (Strategic Financial Advisor, Florida 0215 Lic. #G328926) breaks down the institutional strategy for ${meta.name}.\n\n📌 CHAPTERS:\n0:00 - The Core Flaw in Traditional Planning\n2:10 - The Mechanics of the 0% Contractual Floor\n4:40 - IRS Section 7702 Tax-Free Loan Mechanics\n6:50 - Accelerated Living Benefits & Execution Blueprint\n\n👉 LAUNCH THE INTERACTIVE SIMULATOR:\n${trackedUrl}\n\n🌐 Book a 1-on-1 Consultation: https://abglco.com/#consultation`,
     },
     linkedInPost: isSpanish
-      ? `📊 Estrategia Financiera Institucional: ${meta.name}\n\nEn un entorno de volatilidad e inflación, las familias y empresarios en Florida y Puerto Rico buscan certidumbre matemática.\n\nAspectos clave:\n• Piso garantizado del 0% contra caídas bursátiles.\n• Ventajas fiscales bajo el Código IRS Sección 7702.\n• Cobertura de Beneficios en Vida ante enfermedades críticas o crónicas.\n\n👉 Pruebe nuestro simulador interactivo en:\n${trackedUrl}\n\n#Finanzas #SegurosDeVida #RetiroSeguro #Florida #PuertoRico`
-      : `📊 Institutional Financial Strategy: ${meta.name}\n\nIn an unpredictable market environment, families and business owners require mathematical certainty rather than speculation.\n\nCore anchors:\n• Contractual 0% downside market loss floor.\n• Tax-favored accumulation and distributions under IRS Section 7702.\n• Accelerated Living Benefits for chronic, critical, or terminal illnesses.\n\n👉 Test your numbers on our interactive simulator:\n${trackedUrl}\n\n#FinancialPlanning #WealthPreservation #IUL #Annuities`,
+      ? `📊 [Publicación #${varIndex + 1}] Estrategia Financiera Institucional: ${meta.name}\n\nEn un entorno de volatilidad e inflación, las familias y empresarios en Florida y Puerto Rico buscan certidumbre matemática.\n\nAspectos clave:\n• Piso garantizado del 0% contra caídas bursátiles.\n• Ventajas fiscales bajo el Código IRS Sección 7702.\n• Cobertura de Beneficios en Vida ante enfermedades críticas o crónicas.\n\n👉 Pruebe nuestro simulador interactivo en:\n${trackedUrl}\n\n#Finanzas #SegurosDeVida #RetiroSeguro #Florida #PuertoRico`
+      : `📊 [Strategic Post #${varIndex + 1}] Institutional Financial Strategy: ${meta.name}\n\nIn an unpredictable market environment, families and business owners require mathematical certainty rather than speculation.\n\nCore anchors:\n• Contractual 0% downside market loss floor.\n• Tax-favored accumulation and distributions under IRS Section 7702.\n• Accelerated Living Benefits for chronic, critical, or terminal illnesses.\n\n👉 Test your numbers on our interactive simulator:\n${trackedUrl}\n\n#FinancialPlanning #WealthPreservation #IUL #Annuities`,
     paidAd: {
-      headline: isSpanish ? `Protección Financiera en Florida: ${meta.name}` : `Florida Retirement & Wealth: ${meta.name}`,
+      headline: isSpanish ? `[Opción #${varIndex + 1}] Protección Financiera en Florida: ${meta.name}` : `[Ad #${varIndex + 1}] Florida Retirement & Wealth: ${meta.name}`,
       hooks: isSpanish
         ? [
             "¿Su plan de retiro está protegido ante caídas de la bolsa?",
@@ -384,7 +465,7 @@ export function generateCampaignPack(req: CampaignRequest): GeneratedCampaignPac
       ctaButton: isSpanish ? "Abrir Simulador" : "Calculate My Plan",
     },
     emailBroadcast: {
-      subjectA: isSpanish ? `📊 Análisis Financiero: ${meta.name}` : `📊 Financial Blueprint: ${meta.name}`,
+      subjectA: isSpanish ? `📊 [Boletín #${varIndex + 1}] Análisis Financiero: ${meta.name}` : `📊 [Newsletter #${varIndex + 1}] Financial Blueprint: ${meta.name}`,
       subjectB: isSpanish ? `Cómo proteger su patrimonio con piso del 0%` : `How to shield your wealth with a 0% floor`,
       previewText: isSpanish ? "Calcule su proyección en tiempo real." : "Run your interactive scenario in real time.",
       body: isSpanish
@@ -394,7 +475,7 @@ export function generateCampaignPack(req: CampaignRequest): GeneratedCampaignPac
     carouselSlides: [
       {
         slideNumber: 1,
-        title: isSpanish ? `Protección Financiera: ${meta.name}` : `Financial Defense: ${meta.name}`,
+        title: isSpanish ? `[Ángulo #${varIndex + 1}] Protección: ${meta.name}` : `[Angle #${varIndex + 1}] Defense: ${meta.name}`,
         visualCue: "Portada con titular llamativo y logotipo AB Global",
         content: isSpanish ? "Descubra cómo blindar su patrimonio familiar ante cualquier crisis de mercado." : "Discover how to insulate your retirement nest egg from market corrections.",
       },

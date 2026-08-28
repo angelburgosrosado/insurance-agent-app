@@ -16,6 +16,7 @@ import {
   PlaySquare,
   UserCheck,
   ListChecks,
+  SlidersHorizontal,
 } from "lucide-react";
 import {
   generateCampaignPack,
@@ -30,6 +31,8 @@ export function SocialContentStudio() {
   const [trigger, setTrigger] = useState<CampaignRequest["trigger"]>("engineering_clarity");
   const [tone, setTone] = useState<CampaignRequest["tone"]>("analytical");
   const [lang, setLang] = useState<"es" | "en">("es");
+  const [seed, setSeed] = useState<number>(0);
+  const [customNotes, setCustomNotes] = useState<string>("");
 
   const [activeTab, setActiveTab] = useState<"video" | "youtube" | "linkedin" | "ad" | "email" | "carousel">("video");
   const [activeSection, setActiveSection] = useState<"studio" | "bios" | "launchpad">("studio");
@@ -38,13 +41,13 @@ export function SocialContentStudio() {
 
   // 30-Day Launchpad Milestones
   const [launchMilestones, setLaunchMilestones] = useState<Record<string, boolean>>({
-    m1: true, // LinkedIn headline & About updated
-    m2: false, // Banners & logo aligned across LinkedIn, FB, IG, YT
-    m3: true, // abglco.com and intro video added to Featured section
-    m4: false, // Introduction post announcing AB Global mission
-    m5: false, // 2 weekly posts scheduled (Protection/Health & Retirement/Legacy)
-    m6: true, // Protection Planning Checklist PDF pinned
-    m7: true, // Call to Action unified to abglco.com
+    m1: true,
+    m2: false,
+    m3: true,
+    m4: false,
+    m5: false,
+    m6: true,
+    m7: true,
   });
 
   const [campaignData, setCampaignData] = useState<GeneratedCampaignPack>(() =>
@@ -54,6 +57,8 @@ export function SocialContentStudio() {
       trigger: "engineering_clarity",
       tone: "analytical",
       lang: "es",
+      seed: 0,
+      customNotes: "",
     })
   );
 
@@ -66,11 +71,18 @@ export function SocialContentStudio() {
         trigger,
         tone,
         lang,
+        seed,
+        customNotes,
       });
       setCampaignData(pack);
       setIsGenerating(false);
-    }, 250);
-  }, [product, persona, trigger, tone, lang]);
+    }, 200);
+  }, [product, persona, trigger, tone, lang, seed, customNotes]);
+
+  // Click on "✨ Regenerate AI Pack" increments seed and updates immediately
+  const handleRegenerateClick = () => {
+    setSeed((prev) => prev + 1);
+  };
 
   useEffect(() => {
     handleGenerate();
@@ -117,9 +129,9 @@ export function SocialContentStudio() {
             </button>
 
             <button
-              onClick={handleGenerate}
+              onClick={handleRegenerateClick}
               disabled={isGenerating}
-              className="px-5 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 rounded-xl text-xs font-black uppercase tracking-wider shadow-lg transition-all flex items-center gap-2 disabled:opacity-50 cursor-pointer"
+              className="px-5 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 rounded-xl text-xs font-black uppercase tracking-wider shadow-lg transition-all flex items-center gap-2 disabled:opacity-50 cursor-pointer active:scale-95"
             >
               <RefreshCw size={14} className={isGenerating ? "animate-spin" : ""} />
               <span>{isGenerating ? "Synthesizing..." : "✨ Regenerate AI Pack"}</span>
@@ -171,86 +183,108 @@ export function SocialContentStudio() {
       {activeSection === "studio" && (
         <div className="p-6 lg:p-8 space-y-6">
           {/* Strategic Controls */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
-            {/* 1. Product */}
-            <div>
-              <label className="text-[11px] font-bold text-slate-700 uppercase block mb-1.5">
-                1. Target Solution / Mini-App:
-              </label>
-              <select
-                value={product}
-                onChange={(e) => setProduct(e.target.value as any)}
-                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 shadow-sm cursor-pointer"
-              >
-                <option value="military">🎖️ Military Asset Shield (VGLI / SBP)</option>
-                <option value="iul">📊 Florida IUL (0% Floor / IRS 7702)</option>
-                <option value="annuity">📈 Guaranteed Lifetime Annuity</option>
-                <option value="funeral">🕊️ Everest Funeral Concierge 24/7</option>
-                <option value="dime">🛡️ D.I.M.E. Life Needs Framework</option>
-                <option value="ltc">🏥 CareMatters LTC Cash Indemnity</option>
-              </select>
+          <div className="space-y-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* 1. Product */}
+              <div>
+                <label className="text-[11px] font-bold text-slate-700 uppercase block mb-1.5">
+                  1. Target Solution / Mini-App:
+                </label>
+                <select
+                  value={product}
+                  onChange={(e) => setProduct(e.target.value as any)}
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 shadow-sm cursor-pointer"
+                >
+                  <option value="military">🎖️ Military Asset Shield (VGLI / SBP)</option>
+                  <option value="iul">📊 Florida IUL (0% Floor / IRS 7702)</option>
+                  <option value="annuity">📈 Guaranteed Lifetime Annuity</option>
+                  <option value="funeral">🕊️ Everest Funeral Concierge 24/7</option>
+                  <option value="dime">🛡️ D.I.M.E. Life Needs Framework</option>
+                  <option value="ltc">🏥 CareMatters LTC Cash Indemnity</option>
+                </select>
+              </div>
+
+              {/* 2. Persona */}
+              <div>
+                <label className="text-[11px] font-bold text-slate-700 uppercase block mb-1.5">
+                  2. Target Audience Persona:
+                </label>
+                <select
+                  value={persona}
+                  onChange={(e) => setPersona(e.target.value as any)}
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 shadow-sm cursor-pointer"
+                >
+                  <option value="veterans">🎖️ Active Duty & Veterans</option>
+                  <option value="hispanic_families">🌴 Hispanic & Puerto Rico Families</option>
+                  <option value="business_owners">💼 Florida LLC & 1099 Business Owners</option>
+                  <option value="pre_retirees">📈 Pre-Retirees (Age 50–65)</option>
+                  <option value="young_families">🛡️ Young Families & Parents</option>
+                </select>
+              </div>
+
+              {/* 3. 5 Core Themes */}
+              <div>
+                <label className="text-[11px] font-bold text-slate-700 uppercase block mb-1.5">
+                  3. Repeatable Content Theme:
+                </label>
+                <select
+                  value={trigger}
+                  onChange={(e) => setTrigger(e.target.value as any)}
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 shadow-sm cursor-pointer"
+                >
+                  <option value="engineering_clarity">📐 5. Engineering Clarity (Math & Decision Trees)</option>
+                  <option value="protection">🛡️ 1. Protection (D.I.M.E. & Family Readiness)</option>
+                  <option value="retirement_income">📈 2. Retirement Income (IUL 0% Floor & Annuities)</option>
+                  <option value="health_medicare">🏥 3. Health & LTC (Medicare & Cash Care)</option>
+                  <option value="legacy_planning">🕊️ 4. Legacy (Everest Funeral Concierge)</option>
+                  <option value="military_transition">🎖️ Military Transition & Pension Max</option>
+                </select>
+              </div>
+
+              {/* 4. Tone */}
+              <div>
+                <label className="text-[11px] font-bold text-slate-700 uppercase block mb-1.5">
+                  4. Copy Tone & Framing:
+                </label>
+                <select
+                  value={tone}
+                  onChange={(e) => setTone(e.target.value as any)}
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 shadow-sm cursor-pointer"
+                >
+                  <option value="analytical">📊 Analytical & Math-Driven (PE Style)</option>
+                  <option value="direct_response">⚡ Urgent Direct-Response (AIDA)</option>
+                  <option value="executive">💼 Executive Authority</option>
+                  <option value="empathetic">🤝 Empathetic & Family-Centered</option>
+                </select>
+              </div>
             </div>
 
-            {/* 2. Persona */}
-            <div>
-              <label className="text-[11px] font-bold text-slate-700 uppercase block mb-1.5">
-                2. Target Audience Persona:
+            {/* Custom Case Study / Scenario Input */}
+            <div className="pt-2 border-t border-slate-200">
+              <label className="text-[11px] font-bold text-slate-700 uppercase flex items-center gap-1.5 mb-1.5">
+                <SlidersHorizontal size={13} className="text-amber-600" />
+                <span>Custom Angle / Specific Case Study (Optional):</span>
               </label>
-              <select
-                value={persona}
-                onChange={(e) => setPersona(e.target.value as any)}
-                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 shadow-sm cursor-pointer"
-              >
-                <option value="veterans">🎖️ Active Duty & Veterans</option>
-                <option value="hispanic_families">🌴 Hispanic & Puerto Rico Families</option>
-                <option value="business_owners">💼 Florida LLC & 1099 Business Owners</option>
-                <option value="pre_retirees">📈 Pre-Retirees (Age 50–65)</option>
-                <option value="young_families">🛡️ Young Families & Parents</option>
-              </select>
-            </div>
-
-            {/* 3. 5 Core Themes */}
-            <div>
-              <label className="text-[11px] font-bold text-slate-700 uppercase block mb-1.5">
-                3. Repeatable Content Theme:
-              </label>
-              <select
-                value={trigger}
-                onChange={(e) => setTrigger(e.target.value as any)}
-                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 shadow-sm cursor-pointer"
-              >
-                <option value="engineering_clarity">📐 5. Engineering Clarity (Math & Decision Trees)</option>
-                <option value="protection">🛡️ 1. Protection (D.I.M.E. & Family Readiness)</option>
-                <option value="retirement_income">📈 2. Retirement Income (IUL 0% Floor & Annuities)</option>
-                <option value="health_medicare">🏥 3. Health & LTC (Medicare & Cash Care)</option>
-                <option value="legacy_planning">🕊️ 4. Legacy (Everest Funeral Concierge)</option>
-                <option value="military_transition">🎖️ Military Transition & Pension Max</option>
-              </select>
-            </div>
-
-            {/* 4. Tone */}
-            <div>
-              <label className="text-[11px] font-bold text-slate-700 uppercase block mb-1.5">
-                4. Copy Tone & Framing:
-              </label>
-              <select
-                value={tone}
-                onChange={(e) => setTone(e.target.value as any)}
-                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 shadow-sm cursor-pointer"
-              >
-                <option value="analytical">📊 Analytical & Math-Driven (PE Style)</option>
-                <option value="direct_response">⚡ Urgent Direct-Response (AIDA)</option>
-                <option value="executive">💼 Executive Authority</option>
-                <option value="empathetic">🤝 Empathetic & Family-Centered</option>
-              </select>
+              <input
+                type="text"
+                value={customNotes}
+                onChange={(e) => setCustomNotes(e.target.value)}
+                placeholder="e.g., Retiring Army E-7 after 20 years, Orlando small business owner, 2026 tax bracket changes..."
+                className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-inner font-medium"
+              />
             </div>
           </div>
 
-          {/* Dynamic Tracked URL Bar */}
+          {/* Dynamic Status & Tracked Link Bar */}
           <div className="flex flex-wrap items-center justify-between p-3.5 bg-amber-50/60 rounded-2xl border border-amber-200/80 text-xs gap-3">
-            <div className="flex items-center gap-2 overflow-hidden">
-              <span className="font-bold text-amber-900 shrink-0">📍 Auto-Tracked Link:</span>
-              <code className="text-[11px] text-amber-800 truncate font-mono bg-white px-2 py-0.5 rounded border border-amber-200">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="font-bold text-amber-950 px-2 py-0.5 bg-amber-200/70 rounded-md border border-amber-300">
+                ✨ Variation #{campaignData.variationId} of 3
+              </span>
+              <span className="text-[11px] text-slate-500 font-medium">
+                Generated at {campaignData.generatedAt}
+              </span>
+              <code className="text-[11px] text-amber-800 truncate max-w-xs sm:max-w-md font-mono bg-white px-2 py-0.5 rounded border border-amber-200">
                 {campaignData.trackedUrl}
               </code>
             </div>

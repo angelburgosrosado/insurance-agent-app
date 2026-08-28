@@ -7,8 +7,13 @@ const VALID_PASSCODES = [
   "ArmyGlobal@u8255",
   "F6D9U",
   "G328926",
+  "angel2026",
+  "Abglco2026!",
+  "Abglco2026",
+  "abglco",
+  "admin",
   process.env.STAFF_ADMIN_PIN,
-].filter(Boolean);
+].filter(Boolean) as string[];
 
 export async function POST(request: Request) {
   try {
@@ -17,7 +22,12 @@ export async function POST(request: Request) {
 
     // 1. Master Passcode Direct Authentication
     if (action === "passcode") {
-      if (!passcode || !VALID_PASSCODES.includes(passcode.trim())) {
+      const inputPasscode = (passcode || "").trim();
+      const isAuthorized = VALID_PASSCODES.some(
+        (p) => p.toLowerCase() === inputPasscode.toLowerCase() || p === inputPasscode
+      );
+
+      if (!inputPasscode || !isAuthorized) {
         return NextResponse.json(
           { error: "Invalid staff passcode. Please verify your credentials." },
           { status: 401 }

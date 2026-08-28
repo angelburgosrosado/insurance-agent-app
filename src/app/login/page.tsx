@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-location-assign-relative-destination */
 "use client";
 
 import React, { useState } from "react";
@@ -41,8 +42,8 @@ export default function LoginPage() {
 
       setSuccessMsg("Authenticated! Redirecting to Admin Dashboard...");
       setTimeout(() => {
-        router.push("/admin");
-      }, 500);
+        window.location.href = "/admin";
+      }, 400);
     } catch {
       setError("Network error connecting to login service.");
     } finally {
@@ -101,8 +102,8 @@ export default function LoginPage() {
 
       setSuccessMsg("Verification successful! Opening Admin Dashboard...");
       setTimeout(() => {
-        router.push("/admin");
-      }, 500);
+        window.location.href = "/admin";
+      }, 400);
     } catch {
       setError("Verification failed. Please try again.");
     } finally {

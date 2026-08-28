@@ -124,6 +124,10 @@ export const ComplianceDisclosure: React.FC = () => {
               <Link href="/disclosures" className="text-slate-600 hover:text-secondary underline transition-colors">
                 {lang === "es" ? "Divulgaciones Legales" : "Disclosures"}
               </Link>
+              <span>•</span>
+              <Link href="/login" className="text-amber-800 font-bold hover:text-amber-900 underline transition-colors flex items-center gap-1">
+                <span>🔐</span> {lang === "es" ? "Portal de Asesor / Staff" : "Staff Portal Login"}
+              </Link>
             </div>
             <p className="text-[10px] text-slate-400">Direct / WhatsApp: (386) 333-1482 • Office: (407) 930-6226</p>
           </div>

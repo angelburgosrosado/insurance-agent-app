@@ -60,7 +60,12 @@ export function Navbar() {
               </a>
             </div>
 
-            <LanguageToggle />
+            <Link 
+              href="/login" 
+              className="text-amber-400 hover:text-amber-300 font-bold text-xs flex items-center gap-1 bg-white/10 hover:bg-white/20 px-2 py-0.5 rounded transition-all"
+            >
+              🔐 Staff Login
+            </Link>
 
             <a href="tel:3863331482" className="text-white hover:text-secondary font-bold transition-colors">
               📞 (386) 333-1482

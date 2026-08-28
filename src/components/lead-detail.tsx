@@ -119,7 +119,7 @@ export function LeadDetail({ lead }: { lead: any }) {
               className="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-bold shadow-sm transition-all flex items-center gap-1.5"
             >
               <MessageSquare size={15} />
-              Send SMS Text
+              Open Phone App SMS
             </a>
           )}
 
@@ -133,6 +133,51 @@ export function LeadDetail({ lead }: { lead: any }) {
             </a>
           )}
         </div>
+
+        {/* Cloud SMS Auto-Sender */}
+        {lead.phone && (
+          <div className="mt-4 pt-4 border-t border-slate-200">
+            <div className="flex flex-col sm:flex-row gap-2">
+              <input
+                type="text"
+                placeholder={`Type direct SMS to ${lead.firstName}...`}
+                id="cloud-sms-input"
+                className="flex-1 px-3.5 py-2 text-xs border border-slate-300 rounded-lg bg-white text-slate-900 focus:outline-none focus:border-amber-500 shadow-inner"
+              />
+              <button
+                type="button"
+                onClick={async () => {
+                  const input = document.getElementById("cloud-sms-input") as HTMLInputElement;
+                  if (!input || !input.value.trim()) return;
+                  const text = input.value.trim();
+                  input.disabled = true;
+                  try {
+                    const res = await fetch(`/api/admin/leads/${lead.id}/sms`, {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ message: text }),
+                    });
+                    if (res.ok) {
+                      input.value = "";
+                      alert("✅ SMS dispatched successfully and logged to client notes!");
+                      router.refresh();
+                    } else {
+                      const err = await res.json().catch(() => ({}));
+                      alert(`❌ Error: ${err.error || "Failed to dispatch SMS"}`);
+                    }
+                  } catch {
+                    alert("❌ Network error dispatching SMS.");
+                  } finally {
+                    input.disabled = false;
+                  }
+                }}
+                className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-lg shadow transition-all shrink-0 flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <span>📲</span> Send Cloud SMS
+              </button>
+            </div>
+          </div>
+        )}
       </div>
       
       {/* Information Columns */}

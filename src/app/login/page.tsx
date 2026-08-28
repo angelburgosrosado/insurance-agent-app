@@ -2,7 +2,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 import { Button } from "@/components/ui/Button";
 import { Lock, Mail, Key, ShieldCheck, ArrowRight, AlertCircle, CheckCircle2 } from "lucide-react";
@@ -10,7 +9,6 @@ import { Lock, Mail, Key, ShieldCheck, ArrowRight, AlertCircle, CheckCircle2 } f
 export const dynamic = "force-dynamic";
 
 export default function LoginPage() {
-  const router = useRouter();
   const [tab, setTab] = useState<"passcode" | "otp" | "google">("passcode");
   const [passcode, setPasscode] = useState("");
   const [email, setEmail] = useState("angelburgosrosado@gmail.com");

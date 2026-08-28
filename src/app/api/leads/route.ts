@@ -4,6 +4,7 @@ import { getLeadRepository } from "@/lib/server/leads";
 import { validateLeadRequest } from "@/lib/server/lead-validation";
 import { leadRateLimiter, rateLimitResponse, requestClientKey } from "@/lib/server/rate-limit";
 import { sendEmail, buildCustomerAutoReplyHtml } from "@/lib/integrations/email";
+import { sendSMS, buildWelcomeSMS } from "@/lib/integrations/sms";
 import { dispatchToCRM } from "@/lib/integrations/crm";
 import { syncLeadToHubSpot } from "@/lib/integrations/hubspot";
 
@@ -81,6 +82,20 @@ export async function POST(request: Request) {
         data: lead,
         timestamp: new Date().toISOString(),
       }),
+
+      // 5. Automated Welcome SMS (if valid phone provided and affirmative consent granted)
+      ...(lead.phone && lead.consent && !lead.phone.toLowerCase().includes("request")
+        ? [
+            sendSMS({
+              to: lead.phone,
+              body: buildWelcomeSMS({
+                firstName: lead.firstName,
+                service: lead.service,
+                lang: detectedLang,
+              }),
+            }),
+          ]
+        : []),
     ]).catch(console.error);
 
     return NextResponse.json({ ok: true, leadId: lead.id }, { status: 201 });

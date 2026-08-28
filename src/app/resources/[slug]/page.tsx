@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { resourceArticles } from "@/lib/content/resources";
+import { getContentBySlug } from "@/lib/server/content-service";
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/Button";
 
@@ -18,15 +19,15 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const article = resourceArticles.find((a) => a.slug === slug);
+  const content = await getContentBySlug(slug, "resource");
 
-  if (!article) {
+  if (!content) {
     return { title: "Resource Not Found | AB Global Consulting" };
   }
 
   return {
-    title: `${article.title} | AB Global Consulting`,
-    description: article.summary,
+    title: `${content.title} | AB Global Consulting`,
+    description: content.summary || undefined,
     alternates: {
       canonical: `/resources/${slug}`,
     },
@@ -35,11 +36,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ResourceDetailPage({ params }: Props) {
   const { slug } = await params;
-  const article = resourceArticles.find((a) => a.slug === slug);
+  const content = await getContentBySlug(slug, "resource");
+  const staticArticle = resourceArticles.find((a) => a.slug === slug);
 
-  if (!article) {
+  if (!content && !staticArticle) {
     notFound();
   }
+
+  const title = content?.title || staticArticle?.title || "";
+  const summary = content?.summary || staticArticle?.summary || "";
+  const icon = staticArticle?.icon || "📄";
+  const category = staticArticle?.category || "Planning Guide";
+  const readTime = staticArticle?.readTime || "5 Min Read";
+  const keyTakeaways = staticArticle?.keyTakeaways || [
+    "Comprehensive institutional analysis and mathematical breakdown.",
+    "Strategic implementation roadmap for Florida and Puerto Rico clients.",
+    "Contractual downside protection and tax-favored distribution options.",
+  ];
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
@@ -56,23 +69,25 @@ export default async function ResourceDetailPage({ params }: Props) {
           </Link>
 
           <div className="flex items-center gap-3">
-            <span className="text-2xl">{article.icon}</span>
+            <span className="text-2xl">{icon}</span>
             <span className="px-3 py-1 bg-secondary/20 border border-secondary/40 rounded-full text-amber-300 text-xs font-bold uppercase tracking-wider">
-              {article.category}
+              {category}
             </span>
-            <span className="text-xs text-slate-400">⏱️ {article.readTime}</span>
+            <span className="text-xs text-slate-400">⏱️ {readTime}</span>
           </div>
 
           <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
-            {article.title}
+            {title}
           </h1>
 
           <p className="text-sm md:text-base text-slate-300 leading-relaxed">
-            {article.summary}
+            {summary}
           </p>
 
           <div className="pt-2 flex items-center gap-4 text-xs text-slate-400">
-            <span>Author: <strong>Angel Burgos (0215 / G328926)</strong></span>
+            <span>
+              Author: <strong>Angel Burgos, PE (0215 / #G328926)</strong>
+            </span>
             <span>•</span>
             <span>Orlando, FL & Puerto Rico</span>
           </div>
@@ -87,7 +102,7 @@ export default async function ResourceDetailPage({ params }: Props) {
             <span>⚡</span> Executive Summary & Key Takeaways
           </h3>
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-amber-950 font-medium">
-            {article.keyTakeaways.map((pt, idx) => (
+            {keyTakeaways.map((pt, idx) => (
               <li key={idx} className="flex items-start gap-2 bg-white/80 p-3 rounded-xl border border-amber-100">
                 <span className="text-emerald-600 font-bold text-sm">✓</span>
                 <span className="leading-relaxed">{pt}</span>
@@ -96,35 +111,41 @@ export default async function ResourceDetailPage({ params }: Props) {
           </ul>
         </div>
 
-        {/* Detailed Sections */}
-        <div className="space-y-8">
-          {article.sections.map((section, idx) => (
-            <section key={idx} className="bg-white rounded-3xl p-6 md:p-8 border border-slate-200 shadow-sm space-y-4">
-              <h2 className="text-xl md:text-2xl font-bold text-slate-900">
-                {section.heading}
-              </h2>
-              <p className="text-xs md:text-sm text-slate-700 leading-relaxed">
-                {section.body}
-              </p>
-            </section>
-          ))}
-        </div>
+        {/* Detailed Body or Sections */}
+        {staticArticle?.sections && staticArticle.sections.length > 0 ? (
+          <div className="space-y-8">
+            {staticArticle.sections.map((section, idx) => (
+              <section key={idx} className="bg-white rounded-3xl p-6 md:p-8 border border-slate-200 shadow-sm space-y-4">
+                <h2 className="text-xl md:text-2xl font-bold text-slate-900">
+                  {section.heading}
+                </h2>
+                <p className="text-xs md:text-sm text-slate-700 leading-relaxed">
+                  {section.body}
+                </p>
+              </section>
+            ))}
+          </div>
+        ) : (
+          <div className="bg-white rounded-3xl p-6 md:p-8 border border-slate-200 shadow-sm text-slate-800 text-sm whitespace-pre-wrap leading-relaxed">
+            {content?.body}
+          </div>
+        )}
 
         {/* Related Interactive Tool Banner */}
-        {article.relatedToolUrl && (
+        {staticArticle?.relatedToolUrl && (
           <div className="bg-[#001c38] rounded-3xl p-6 md:p-8 text-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-lg">
             <div className="space-y-1 text-center sm:text-left">
               <span className="text-[10px] uppercase font-bold tracking-widest text-amber-300">
                 Interactive Companion Tool
               </span>
               <h3 className="text-lg md:text-xl font-bold text-white">
-                {article.relatedToolName}
+                {staticArticle.relatedToolName}
               </h3>
               <p className="text-xs text-slate-300 max-w-md">
                 Model your personalized numbers with our interactive simulator and share your scenario.
               </p>
             </div>
-            <Link href={article.relatedToolUrl} className="shrink-0">
+            <Link href={staticArticle.relatedToolUrl} className="shrink-0">
               <Button variant="primary" className="!bg-secondary !text-white !border-secondary hover:!bg-secondary/90 text-xs font-bold px-5 py-3 shadow-md">
                 Launch Simulator →
               </Button>

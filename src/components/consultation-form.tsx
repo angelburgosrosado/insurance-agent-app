@@ -2,13 +2,14 @@
 
 import { FormEvent, useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { useAnalytics } from "./analytics-provider";
 import { useLanguage } from "@/context/LanguageContext";
 import { dictionary } from "@/lib/i18n/translations";
 import { getStoredAttribution } from "@/lib/analytics/attribution";
-import { AlertCircle, CheckCircle2 } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 
 const initialForm = {
   firstName: "",

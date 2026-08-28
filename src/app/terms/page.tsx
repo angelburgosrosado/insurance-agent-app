@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { ComplianceDisclosure } from "@/components/ui/ComplianceDisclosure";
 import { useLanguage } from "@/context/LanguageContext";
-import { FileText, ShieldCheck, Scale, AlertCircle } from "lucide-react";
+import { Scale, AlertCircle } from "lucide-react";
 
 export default function TermsPage() {
   const { lang, setLang } = useLanguage();

@@ -110,9 +110,22 @@ export const ComplianceDisclosure: React.FC = () => {
           <p>
             <strong>{t.footer_compliance_title}</strong> {t.footer_compliance_text}
           </p>
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-2 pt-4 border-t border-slate-200/80 text-[10px] text-slate-400">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-3 pt-4 border-t border-slate-200/80 text-[11px] text-slate-500">
             <p>© {new Date().getFullYear()} AB Global Consulting LLC. {t.footer_rights}</p>
-            <p>Direct / WhatsApp: (386) 333-1482 • Office: (407) 930-6226</p>
+            <div className="flex items-center gap-4 text-xs font-semibold">
+              <Link href="/privacy" className="text-slate-600 hover:text-secondary underline transition-colors">
+                {lang === "es" ? "Política de Privacidad" : "Privacy Policy"}
+              </Link>
+              <span>•</span>
+              <Link href="/terms" className="text-slate-600 hover:text-secondary underline transition-colors">
+                {lang === "es" ? "Términos de Uso" : "Terms of Service"}
+              </Link>
+              <span>•</span>
+              <Link href="/disclosures" className="text-slate-600 hover:text-secondary underline transition-colors">
+                {lang === "es" ? "Divulgaciones Legales" : "Disclosures"}
+              </Link>
+            </div>
+            <p className="text-[10px] text-slate-400">Direct / WhatsApp: (386) 333-1482 • Office: (407) 930-6226</p>
           </div>
         </div>
       </div>

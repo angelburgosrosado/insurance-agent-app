@@ -241,8 +241,8 @@ export function LeadMagnetSection() {
 
               <p className="text-[10px] text-slate-400 text-center">
                 {lang === "es" 
-                  ? "🔒 Respetamos su privacidad. Sin spam. Cero compromisos."
-                  : "🔒 We respect your privacy. No spam. Unsubscribe at any time."}
+                  ? <span>🔒 Respetamos su privacidad. Consulte nuestra <Link href="/privacy" className="underline hover:text-white">Política de Privacidad</Link>. Sin spam.</span>
+                  : <span>🔒 We respect your privacy. See our <Link href="/privacy" className="underline hover:text-white">Privacy Policy</Link>. Zero spam.</span>}
               </p>
             </form>
           )}

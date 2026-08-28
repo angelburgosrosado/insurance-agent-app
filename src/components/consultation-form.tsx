@@ -302,7 +302,16 @@ export function ConsultationForm() {
             onChange={(e) => update("consent", e.target.checked)} 
             className="mt-1 h-4 w-4 rounded border-slate-300 text-secondary focus:ring-secondary cursor-pointer" 
           />
-          <span>{t.form_consent}</span>
+          <span>
+            {t.form_consent}{" "}
+            <Link href="/privacy" className="text-secondary font-semibold underline hover:text-secondary/80">
+              {lang === "es" ? "Política de Privacidad" : "Privacy Policy"}
+            </Link>{" "}
+            &{" "}
+            <Link href="/terms" className="text-secondary font-semibold underline hover:text-secondary/80">
+              {lang === "es" ? "Términos" : "Terms"}
+            </Link>.
+          </span>
         </label>
         {fieldErrors.consent && (
           <p className="text-[11px] text-red-600 font-semibold pl-7">{fieldErrors.consent}</p>
@@ -321,8 +330,8 @@ export function ConsultationForm() {
       
       <p className="text-[11px] leading-relaxed text-slate-400 text-center">
         {lang === "es" 
-          ? "🔒 Respetamos su privacidad. Asesoría confidencial con el Licenciado Angel Burgos. Sin spam ni compromiso."
-          : "🔒 We respect your privacy. Confidential consultation with licensed advisor Angel Burgos. Zero spam."}
+          ? <span>🔒 Respetamos su privacidad. Asesoría confidencial con el Licenciado Angel Burgos. Consulte nuestra <Link href="/privacy" className="underline hover:text-secondary">Política de Privacidad</Link>.</span>
+          : <span>🔒 We respect your privacy. Confidential consultation with licensed advisor Angel Burgos. See our <Link href="/privacy" className="underline hover:text-secondary">Privacy Policy</Link>.</span>}
       </p>
     </form>
   );

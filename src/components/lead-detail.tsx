@@ -2,13 +2,19 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { MessageCircle, Phone, Mail, MessageSquare, Check, Copy } from "lucide-react";
+import { MessageCircle, Phone, Mail, MessageSquare, Check, Copy, UserCheck, MapPin } from "lucide-react";
+import { detectTerritoryFromPhone, detectSpecialization } from "@/lib/lead-routing";
 
 export function LeadDetail({ lead }: { lead: any }) {
   const router = useRouter();
   const [status, setStatus] = useState(lead.status);
+  const [assignedAgent, setAssignedAgent] = useState(lead.assignedTo?.email || "angelburgosrosado@gmail.com");
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isAssigning, setIsAssigning] = useState(false);
   const [copied, setCopied] = useState(false);
+
+  const territoryInfo = detectTerritoryFromPhone(lead.phone);
+  const specInfo = detectSpecialization(lead.service, lead.message);
 
   const updateStatus = async (newStatus: string) => {
     setIsUpdating(true);
@@ -21,12 +27,38 @@ export function LeadDetail({ lead }: { lead: any }) {
       });
       if (!res.ok) {
         console.error("Failed to update status");
-        setStatus(lead.status); // revert on failure
+        setStatus(lead.status);
       } else {
         router.refresh();
       }
     } finally {
       setIsUpdating(false);
+    }
+  };
+
+  const handleAssignAgent = async (agentEmail: string) => {
+    setIsAssigning(true);
+    setAssignedAgent(agentEmail);
+    try {
+      const res = await fetch(`/api/admin/leads/${lead.id}/assign`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          agentEmail: agentEmail === "none" ? null : agentEmail,
+          agentName: agentEmail === "angelburgosrosado@gmail.com" ? "Angel Burgos (Principal 0215)" : agentEmail.split("@")[0],
+          notes: `Assigned based on ${territoryInfo.label} / ${specInfo.label}`,
+        }),
+      });
+      if (res.ok) {
+        alert("✅ Lead successfully assigned and agent notified!");
+        router.refresh();
+      } else {
+        alert("❌ Failed to update agent assignment.");
+      }
+    } catch {
+      alert("❌ Network error updating assignment.");
+    } finally {
+      setIsAssigning(false);
     }
   };
 
@@ -38,7 +70,7 @@ export function LeadDetail({ lead }: { lead: any }) {
   const encodedMessage = encodeURIComponent(defaultGreeting);
 
   const handleCopyDetails = () => {
-    const text = `Lead: ${lead.firstName} ${lead.lastName}\nPhone: ${lead.phone}\nEmail: ${lead.email}\nService: ${lead.service}\nSource: ${lead.attribution?.source || "Direct"}\nMessage: ${lead.message || "N/A"}`;
+    const text = `Lead: ${lead.firstName} ${lead.lastName}\nPhone: ${lead.phone}\nEmail: ${lead.email}\nService: ${lead.service}\nTerritory: ${territoryInfo.label}\nSource: ${lead.attribution?.source || "Direct"}\nMessage: ${lead.message || "N/A"}`;
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -65,23 +97,57 @@ export function LeadDetail({ lead }: { lead: any }) {
           <p className="text-sm text-slate-600 mt-1">
             <strong>{lead.email}</strong> &bull; <strong>{lead.phone}</strong>
           </p>
+
+          {/* Territory & Specialization Badges */}
+          <div className="flex flex-wrap gap-2 mt-2.5">
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200">
+              <MapPin size={12} />
+              <span>{territoryInfo.flag} {territoryInfo.label}</span>
+            </span>
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-800 border border-blue-200">
+              <span>{specInfo.icon}</span>
+              <span>{specInfo.label}</span>
+            </span>
+          </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <label className="text-xs font-bold text-slate-500 uppercase">Status:</label>
-          <select 
-            className="border border-slate-300 rounded-xl px-3 py-2 text-sm bg-white font-semibold cursor-pointer disabled:opacity-50 shadow-sm focus:outline-none focus:border-amber-500"
-            value={status}
-            onChange={(e) => updateStatus(e.target.value)}
-            disabled={isUpdating}
-          >
-            <option value="new">🟢 New Lead</option>
-            <option value="reviewing">🟡 Reviewing</option>
-            <option value="assigned">🔵 Assigned</option>
-            <option value="contacted">🟣 Contacted</option>
-            <option value="qualified">⭐ Qualified</option>
-            <option value="closed">✔️ Closed / Bound</option>
-          </select>
+        <div className="flex flex-wrap items-center gap-4">
+          {/* Assigned Advisor Selector */}
+          <div className="flex items-center gap-2">
+            <label className="text-xs font-bold text-slate-500 uppercase flex items-center gap-1">
+              <UserCheck size={13} />
+              Advisor:
+            </label>
+            <select
+              className="border border-slate-300 rounded-xl px-3 py-2 text-xs bg-white font-semibold cursor-pointer disabled:opacity-50 shadow-sm focus:outline-none focus:border-amber-500"
+              value={assignedAgent}
+              onChange={(e) => handleAssignAgent(e.target.value)}
+              disabled={isAssigning}
+            >
+              <option value="angelburgosrosado@gmail.com">⭐ Angel Burgos (Principal 0215)</option>
+              <option value="florida.agent@abglco.com">🌴 Florida Field Agent</option>
+              <option value="puertorico.agent@abglco.com">🇵🇷 Puerto Rico Specialist</option>
+              <option value="none">⚪ Unassigned</option>
+            </select>
+          </div>
+
+          {/* Status Selector */}
+          <div className="flex items-center gap-2">
+            <label className="text-xs font-bold text-slate-500 uppercase">Status:</label>
+            <select 
+              className="border border-slate-300 rounded-xl px-3 py-2 text-xs bg-white font-semibold cursor-pointer disabled:opacity-50 shadow-sm focus:outline-none focus:border-amber-500"
+              value={status}
+              onChange={(e) => updateStatus(e.target.value)}
+              disabled={isUpdating}
+            >
+              <option value="new">🟢 New Lead</option>
+              <option value="reviewing">🟡 Reviewing</option>
+              <option value="assigned">🔵 Assigned</option>
+              <option value="contacted">🟣 Contacted</option>
+              <option value="qualified">⭐ Qualified</option>
+              <option value="closed">✔️ Closed / Bound</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -190,6 +256,12 @@ export function LeadDetail({ lead }: { lead: any }) {
              <div>
                <dt className="text-xs text-slate-500">Service Requested</dt>
                <dd className="font-bold text-slate-900 mt-0.5">{lead.service}</dd>
+             </div>
+             <div>
+               <dt className="text-xs text-slate-500">Detected Territory & Route</dt>
+               <dd className="font-semibold text-slate-900 mt-0.5">
+                 {territoryInfo.flag} {territoryInfo.label} ({specInfo.label})
+               </dd>
              </div>
              <div>
                <dt className="text-xs text-slate-500">Best Time to Contact</dt>

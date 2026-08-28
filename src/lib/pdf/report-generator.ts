@@ -22,6 +22,7 @@ export function generateExecutiveReportHtml(data: ReportData): string {
     day: "numeric",
   });
 
+  // 1. Military & Veteran Asset Shield Report
   if (data.reportType === "military") {
     return `
 <!DOCTYPE html>
@@ -101,6 +102,143 @@ export function generateExecutiveReportHtml(data: ReportData): string {
       <li>${isSpanish ? "Solicitar cotización institucional antes de la fecha límite de separación de 240 días." : "Request custom institutional illustration before the 240-day separation window."}</li>
       <li>${isSpanish ? "Revisar opciones de transferencia de TSP a un índice con piso de 0%." : "Review TSP rollover options into a guaranteed 0% downside floor index."}</li>
     </ol>
+  </div>
+
+  <div class="footer">
+    AB Global Consulting LLC &bull; 9501 Satellite Blvd, Suite 105, Orlando, FL 32837 &bull; (386) 333-1482 &bull; abglco.com
+  </div>
+</body>
+</html>
+    `;
+  }
+
+  // 2. 401(k) / Annuity Lifetime Paycheck Blueprint
+  if (data.reportType === "annuity") {
+    return `
+<!DOCTYPE html>
+<html lang="${isSpanish ? "es" : "en"}">
+<head>
+  <meta charset="utf-8">
+  <title>Annuity Lifetime Income Blueprint</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #0f172a; line-height: 1.5; padding: 40px; background: #fff; }
+    .header { border-bottom: 3px solid #10b981; padding-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
+    .badge { display: inline-block; padding: 4px 10px; background: #d1fae5; color: #065f46; font-size: 11px; font-weight: bold; text-transform: uppercase; border-radius: 4px; }
+    h1 { font-size: 24px; font-weight: 800; margin: 10px 0 0 0; color: #001c38; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 24px 0; }
+    .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
+    th { background: #001c38; color: #fff; padding: 10px 12px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; }
+    td { padding: 10px 12px; border-bottom: 1px solid #e2e8f0; }
+    .highlight { background: #d1fae5; font-weight: bold; color: #065f46; }
+    .footer { margin-top: 40px; padding-top: 15px; border-top: 1px solid #e2e8f0; font-size: 11px; color: #64748b; text-align: center; }
+    @media print { body { padding: 0; } }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <span class="badge">AB Global Annuity Wealth Blueprint</span>
+      <h1>${isSpanish ? "Reporte Ejecutivo: Pensión Personal y Transferencia de 401(k)/IRA" : "Executive Report: 401(k)/IRA Rollover & Guaranteed Lifetime Paycheck"}</h1>
+      <p style="margin: 4px 0 0 0; font-size: 13px; color: #64748b;">${isSpanish ? "Preparado para:" : "Prepared for:"} <strong>${name}</strong> &bull; ${date}</p>
+    </div>
+    <div style="text-align: right; font-size: 12px; color: #475569;">
+      <strong>Angel Burgos</strong> • Lic. 0215<br/>FL Lic. #G328926 / WFG Code: F6D9U<br/>📞 (386) 333-1482
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #001c38;">🛡️ ${isSpanish ? "Eliminación del Riesgo de Caída" : "Zero Market Loss Guarantee"}</h3>
+      <p style="font-size: 12px; color: #475569; margin: 0;">
+        ${isSpanish
+          ? "Al transferir su 401(k) o IRA a una Anualidad Indexada Fija (FIA), su saldo principal queda 100% blindado contra colapsos bursátiles con piso garantizado del 0%."
+          : "Rolling pre-tax 401(k) or IRA balances into a Fixed Indexed Annuity guarantees principal protection against stock market drawdowns with a 0% contractual floor."}
+      </p>
+    </div>
+    <div class="card">
+      <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #001c38;">📈 ${isSpanish ? "Cheque Mensual Vitalicio" : "Guaranteed Lifetime Paycheck"}</h3>
+      <p style="font-size: 12px; color: #475569; margin: 0;">
+        ${isSpanish
+          ? "Garantiza un ingreso mensual predecible que nunca se agota, sin importar cuántos años viva ni cómo se comporte la economía."
+          : "Contractually guarantees predictable monthly income you can never outlive, regardless of lifespan or economic conditions."}
+      </p>
+    </div>
+  </div>
+
+  <h3 style="font-size: 15px; margin-top: 30px;">📊 ${isSpanish ? "Ventajas de la Anualidad vs. Cuenta Bursátil Tradicional" : "Annuity vs. Traditional Market Volatility"}</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>${isSpanish ? "Concepto" : "Category"}</th>
+        <th>${isSpanish ? "Cartera 401(k) Tradicional" : "Traditional 401(k) / Brokerage"}</th>
+        <th>${isSpanish ? "Anualidad Indexada AB Global" : "AB Global Indexed Annuity"}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>${isSpanish ? "Riesgo de Agotar el Dinero" : "Longevity Risk"}</td><td>Alto (Riesgo de Secuencia)</td><td class="highlight">Garantizado de por Vida (0% Riesgo)</td></tr>
+      <tr><td>${isSpanish ? "Impacto de Crash de Bolsa" : "Stock Market Crash Impact"}</td><td>Pérdida Directa (-20% a -50%)</td><td class="highlight">0% Piso Contractual Garantizado</td></tr>
+      <tr><td>${isSpanish ? "Bonificación de Entrada" : "Upfront Rollover Bonus"}</td><td>0%</td><td class="highlight">Hasta 10% - 20% Inmediato</td></tr>
+    </tbody>
+  </table>
+
+  <div class="footer">
+    AB Global Consulting LLC &bull; 9501 Satellite Blvd, Suite 105, Orlando, FL 32837 &bull; (386) 333-1482 &bull; abglco.com
+  </div>
+</body>
+</html>
+    `;
+  }
+
+  // 3. Everest Funeral Concierge Report
+  if (data.reportType === "funeral") {
+    return `
+<!DOCTYPE html>
+<html lang="${isSpanish ? "es" : "en"}">
+<head>
+  <meta charset="utf-8">
+  <title>Everest Funeral Concierge Savings Report</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #0f172a; line-height: 1.5; padding: 40px; background: #fff; }
+    .header { border-bottom: 3px solid #6366f1; padding-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
+    .badge { display: inline-block; padding: 4px 10px; background: #e0e7ff; color: #3730a3; font-size: 11px; font-weight: bold; text-transform: uppercase; border-radius: 4px; }
+    h1 { font-size: 24px; font-weight: 800; margin: 10px 0 0 0; color: #001c38; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 24px 0; }
+    .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; }
+    .highlight { background: #e0e7ff; font-weight: bold; color: #3730a3; }
+    .footer { margin-top: 40px; padding-top: 15px; border-top: 1px solid #e2e8f0; font-size: 11px; color: #64748b; text-align: center; }
+    @media print { body { padding: 0; } }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <span class="badge">Everest Funeral Concierge &bull; AB Global</span>
+      <h1>${isSpanish ? "Reporte de Ahorro y Concierge Funerario Everest" : "Everest Funeral Concierge & Family Protection Report"}</h1>
+      <p style="margin: 4px 0 0 0; font-size: 13px; color: #64748b;">${isSpanish ? "Preparado para:" : "Prepared for:"} <strong>${name}</strong> &bull; ${date}</p>
+    </div>
+    <div style="text-align: right; font-size: 12px; color: #475569;">
+      <strong>Angel Burgos</strong> • Lic. 0215<br/>FL Lic. #G328926 / WFG Code: F6D9U<br/>📞 (386) 333-1482
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #001c38;">💰 ${isSpanish ? "Ahorro Promedio de $3,500+" : "Average $3,500+ Price Negotiation Savings"}</h3>
+      <p style="font-size: 12px; color: #475569; margin: 0;">
+        ${isSpanish
+          ? "Everest negocia directamente con cualquier funeraria para eliminar sobrecostos y paquetes innecesarios en momentos difíciles."
+          : "Everest negotiates directly with any funeral home nationwide to eliminate inflated markups and unfair bundling during grieving periods."}
+      </p>
+    </div>
+    <div class="card">
+      <h3 style="margin: 0 0 8px 0; font-size: 14px; color: #001c38;">⚡ ${isSpanish ? "Desembolso Exprés en 24-48 Horas" : "Expedited 24-48 Hr Payouts"}</h3>
+      <p style="font-size: 12px; color: #475569; margin: 0;">
+        ${isSpanish
+          ? "Entrega de fondos garantizada en 48 horas para evitar que la familia tenga que pagar de su bolsillo o endeudarse."
+          : "Policy proceeds disbursed within 48 hours directly to the funeral home or family, eliminating out-of-pocket financial emergencies."}
+      </p>
+    </div>
   </div>
 
   <div class="footer">

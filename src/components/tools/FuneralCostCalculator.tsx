@@ -258,12 +258,15 @@ export function FuneralCostCalculator({ isStandalone = false }: FuneralCostCalcu
           <a href={`mailto:?subject=${emailSubject}&body=${emailBody}`} className="px-4 py-2 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 shadow-sm transition-all flex items-center gap-2">
             <span>✉️</span> {t.tool_share_email}
           </a>
-          <button
-            onClick={() => window.print()}
-            className="px-4 py-2 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 shadow-sm transition-all flex items-center gap-2"
+          {/* Download Official Branded Report */}
+          <a
+            href={`/api/reports/download?type=funeral&lang=${lang}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 bg-amber-50 hover:bg-amber-100 border border-amber-300 rounded-lg text-xs font-bold text-amber-900 shadow-sm transition-all flex items-center gap-1.5"
           >
-            <span>🖨️</span> {t.tool_share_pdf}
-          </button>
+            <span>📄</span> {lang === "es" ? "Descargar Reporte PDF" : "Download PDF Report"}
+          </a>
           <a href="/#consultation">
             <Button variant="primary" className="!bg-secondary !text-white !border-secondary hover:!bg-secondary/90 text-xs font-bold px-5 py-2.5 shadow-md">
               {t.funeral_cta_quote}

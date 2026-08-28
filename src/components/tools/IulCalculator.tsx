@@ -458,13 +458,15 @@ export function IulCalculator({
             <span>✉️</span> {t.tool_share_email}
           </a>
 
-          {/* Print / Save PDF */}
-          <button
-            onClick={() => window.print()}
-            className="px-4 py-2 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 shadow-sm transition-all flex items-center gap-2"
+          {/* Download Official Branded Report */}
+          <a
+            href={`/api/reports/download?type=iul&lang=${lang}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 bg-amber-50 hover:bg-amber-100 border border-amber-300 rounded-lg text-xs font-bold text-amber-900 shadow-sm transition-all flex items-center gap-1.5"
           >
-            <span>🖨️</span> {t.tool_share_pdf}
-          </button>
+            <span>📄</span> {lang === "es" ? "Descargar Reporte PDF" : "Download PDF Report"}
+          </a>
 
           {/* Request Official Illustration */}
           <a href="/#consultation" className="inline-block">

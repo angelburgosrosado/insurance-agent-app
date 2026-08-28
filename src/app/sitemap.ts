@@ -78,6 +78,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.9,
     },
+    {
+      url: `${baseUrl}/tools/life-needs`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/tools/term-vs-iul`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/tools/ltc-calculator`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.95,
+    },
   ];
 
   // Resource & Planning Guides

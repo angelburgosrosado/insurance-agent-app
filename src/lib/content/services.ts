@@ -100,6 +100,50 @@ export const services: ServiceInfo[] = [
     ]
   },
   {
+    slug: "military-asset-shield",
+    title: "Military & Veteran Wealth Shield",
+    titleEs: "Escudo Patrimonial para Militares y Veteranos",
+    category: "Insurance",
+    categoryEs: "Seguros",
+    tagline: "SGLI/VGLI Transition, SBP Pension Max & TSP Rollover Protection",
+    taglineEs: "Transición SGLI/VGLI, Maximización de Pensión SBP y Protección de Fondos TSP",
+    shortDescription: "Specialized financial defense for active duty, Guard, Reserve, and Veterans. Bypass the escalating VGLI rate cliff, maximize 100% of your military pension, and shield TSP rollovers from market crashes.",
+    shortDescriptionEs: "Protección financiera especializada para militares activos, Guardia Nacional, Reservistas y Veteranos. Evite la trampa de costos de VGLI, cobre el 100% de su pensión militar (Pension Max) y proteja sus fondos del TSP.",
+    featuredCarriers: [
+      { name: "Nationwide Financial", highlight: "Heritage IUL & Living Benefits", highlightEs: "Heritage IUL y Beneficios en Vida" },
+      { name: "Pacific Life", highlight: "Pacific Indexed Accumulator", highlightEs: "Pacific Indexed Accumulator" },
+      { name: "Transamerica", highlight: "Financial Foundation IUL", highlightEs: "Financial Foundation IUL" }
+    ],
+    keyBenefits: [
+      "Bypass the VGLI Rate Cliff: SGLI ends after service; VGLI escalates every 5 years to over $750/mo. Lock in a permanent, level-premium private shield.",
+      "SBP Pension Max Strategy: Keep 100% of your gross military retirement pay without sacrificing 6.5% to SBP, leaving a larger tax-free lump sum to your family.",
+      "TSP Rollover Defense: Roll over traditional TSP funds into guaranteed 0% floor annuities to prevent market losses during civilian retirement.",
+      "Accelerated Living Benefits: Access your death benefit tax-free if diagnosed with a service-connected illness, stroke, or disability."
+    ],
+    keyBenefitsEs: [
+      "Evite el Aumento Exponencial de VGLI: Al separarse del servicio, VGLI sube de precio drásticamente cada 5 años. Fije una prima nivelada y permanente de por vida.",
+      "Estrategia Pension Max: Cobre el 100% de su pensión militar sin perder el 6.5% mensual de SBP, dejando un patrimonio libre de impuestos superior para su familia.",
+      "Protección de Fondos TSP: Transfiera sus fondos del TSP a anualidades con piso del 0% para eliminar pérdidas de bolsa en su retiro civil.",
+      "Beneficios en Vida Acelerados: Acceda a su beneficio libre de impuestos en caso de enfermedad grave o incapacidad."
+    ],
+    detailedSections: [
+      {
+        heading: "The SGLI-to-VGLI Transition Trap Explained",
+        headingEs: "La Trampa de Costos de la Transición SGLI a VGLI",
+        content: "While active duty service members enjoy low-cost SGLI ($31/mo for $500k), this coverage expires 120 days after separation. Veterans who convert to VGLI face exponential 5-year rate hikes—costing over $750/month by age 65 and accumulating over $180,000 in lost premiums with zero cash value. A private Indexed Universal Life shield locks in a fixed rate for life while building tax-free cash equity under IRS Sec 7702.",
+        contentEs: "Mientras está en servicio activo, el SGLI cuesta solo $31/mes por $500k. Sin embargo, termina 120 días después del licenciamiento. Al pasar a VGLI, el costo sube cada 5 años superando los $750/mes a los 65 años. Un IUL privado fija su prima de por vida y acumula valor en efectivo libre de impuestos bajo el Código IRS 7702."
+      }
+    ],
+    faqs: [
+      {
+        question: "Can I replace military SBP with an IUL policy?",
+        questionEs: "¿Puedo reemplazar el plan SBP militar con una póliza IUL (Pension Max)?",
+        answer: "Yes. By opting out of the 6.5% monthly SBP pension reduction and using those dollars to fund a permanent IUL, you keep 100% of your pension while guaranteeing a tax-free legacy to your family that never expires.",
+        answerEs: "Sí. Al no ceder el 6.5% de su pensión a SBP y usar ese dinero para financiar un IUL, usted cobra su pensión completa y garantiza un beneficio libre de impuestos para sus herederos."
+      }
+    ]
+  },
+  {
     slug: "variable-annuities",
     title: "Variable & Fixed Indexed Annuities",
     titleEs: "Anualidades Indexadas y Variables",

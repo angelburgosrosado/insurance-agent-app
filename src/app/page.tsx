@@ -260,6 +260,108 @@ export default function Home() {
                 </Button>
               </Link>
             </div>
+
+            {/* Tool Card 5: D.I.M.E. Family Life Needs */}
+            <div className="bg-white p-7 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+              <div>
+                <div className="h-12 w-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-600 text-2xl mb-5">
+                  🛡️
+                </div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[11px] uppercase tracking-wider font-bold text-blue-700">{lang === "es" ? "Cálculo Científico" : "Scientific D.I.M.E."}</span>
+                  <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">{lang === "es" ? "Exportable" : "Shareable"}</span>
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
+                  {t.tool_dime_title}
+                </h3>
+                <p className="text-xs text-slate-600 leading-relaxed mb-5">
+                  {t.tool_dime_desc}
+                </p>
+                <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-1 mb-5">
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">{lang === "es" ? "Pilar Evaluado:" : "Evaluated Pillars:"}</span>
+                    <strong className="text-slate-900">Deuda + Ingreso + Hipoteca</strong>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">{lang === "es" ? "Educación Infantil:" : "College Funding:"}</span>
+                    <strong className="text-emerald-600 font-bold">{lang === "es" ? "Fondo Integrado" : "Integrated Target"}</strong>
+                  </div>
+                </div>
+              </div>
+              <Link href="/tools/life-needs" className="block w-full">
+                <Button variant="primary" className="w-full !bg-slate-900 hover:!bg-blue-600 text-xs font-bold py-2.5 transition-colors">
+                  {t.tool_cta_open}
+                </Button>
+              </Link>
+            </div>
+
+            {/* Tool Card 6: Buy Term vs IUL Head-to-Head */}
+            <div className="bg-white p-7 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+              <div>
+                <div className="h-12 w-12 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-600 text-2xl mb-5">
+                  ⚖️
+                </div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[11px] uppercase tracking-wider font-bold text-amber-700">{lang === "es" ? "Comparativa Tributaria" : "Tax Comparison"}</span>
+                  <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">{lang === "es" ? "Exportable" : "Shareable"}</span>
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-amber-600 transition-colors">
+                  {t.tool_term_vs_iul_title}
+                </h3>
+                <p className="text-xs text-slate-600 leading-relaxed mb-5">
+                  {t.tool_term_vs_iul_desc}
+                </p>
+                <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-1 mb-5">
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">{lang === "es" ? "Ventaja IUL:" : "IUL Edge:"}</span>
+                    <strong className="text-emerald-600 font-bold">{lang === "es" ? "Piso 0% + IRS 7702" : "0% Floor + IRS 7702"}</strong>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">{lang === "es" ? "Riesgo Término:" : "Term Risk:"}</span>
+                    <strong className="text-slate-900">{lang === "es" ? "Expira sin Valor" : "Expires with $0 Equity"}</strong>
+                  </div>
+                </div>
+              </div>
+              <Link href="/tools/term-vs-iul" className="block w-full">
+                <Button variant="primary" className="w-full !bg-slate-900 hover:!bg-amber-600 text-xs font-bold py-2.5 transition-colors">
+                  {t.tool_cta_open}
+                </Button>
+              </Link>
+            </div>
+
+            {/* Tool Card 7: Nationwide CareMatters LTC Estimator */}
+            <div className="bg-white p-7 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+              <div>
+                <div className="h-12 w-12 rounded-2xl bg-purple-500/10 flex items-center justify-center text-purple-600 text-2xl mb-5">
+                  🏥
+                </div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[11px] uppercase tracking-wider font-bold text-purple-700">{lang === "es" ? "Cuidado Prolongado" : "Long-Term Care"}</span>
+                  <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">{lang === "es" ? "Exportable" : "Shareable"}</span>
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-purple-600 transition-colors">
+                  {t.tool_ltc_title}
+                </h3>
+                <p className="text-xs text-slate-600 leading-relaxed mb-5">
+                  {t.tool_ltc_desc}
+                </p>
+                <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-1 mb-5">
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">{lang === "es" ? "Desembolso:" : "Care Payout:"}</span>
+                    <strong className="text-emerald-600 font-bold">{lang === "es" ? "100% Efectivo Directo" : "100% Cash-Indemnity"}</strong>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">{lang === "es" ? "Fondo Pareja:" : "Couples Pool:"}</span>
+                    <strong className="text-slate-900">{lang === "es" ? "Fondo Compartido" : "Shared Benefit Pool"}</strong>
+                  </div>
+                </div>
+              </div>
+              <Link href="/tools/ltc-calculator" className="block w-full">
+                <Button variant="primary" className="w-full !bg-slate-900 hover:!bg-purple-600 text-xs font-bold py-2.5 transition-colors">
+                  {t.tool_cta_open}
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>

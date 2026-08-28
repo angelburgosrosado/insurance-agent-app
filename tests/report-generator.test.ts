@@ -33,3 +33,30 @@ test("Report Generator - Generates Florida IUL report", () => {
   assert.match(iulReport, /IRS 7702/);
   assert.match(iulReport, /Maria Rodriguez/);
 });
+
+test("Report Generator - Generates D.I.M.E., Term vs IUL, and LTC reports", () => {
+  const dimeReport = generateExecutiveReportHtml({
+    reportType: "dime",
+    clientName: "Roberto Gomez",
+    lang: "es",
+  });
+  assert.match(dimeReport, /D\.I\.M\.E\./);
+  assert.match(dimeReport, /Roberto Gomez/);
+
+  const termReport = generateExecutiveReportHtml({
+    reportType: "term_vs_iul",
+    clientName: "Alex Rivera",
+    lang: "en",
+  });
+  assert.match(termReport, /Buy Term vs\. IUL/);
+  assert.match(termReport, /Alex Rivera/);
+
+  const ltcReport = generateExecutiveReportHtml({
+    reportType: "ltc",
+    clientName: "David & Carmen Diaz",
+    lang: "es",
+  });
+  assert.match(ltcReport, /Nationwide CareMatters/);
+  assert.match(ltcReport, /David & Carmen Diaz/);
+});
+

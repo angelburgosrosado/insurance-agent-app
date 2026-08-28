@@ -39,6 +39,12 @@ export const dictionary = {
     tool_annuity_desc: "Calculate your guaranteed monthly income stream from 401(k) / IRA rollovers that you cannot outlive.",
     tool_funeral_title: "Everest Funeral Concierge Savings Calculator",
     tool_funeral_desc: "See how 24/7 professional pricing negotiation and price-matching saves families over $3,500 on final expenses.",
+    tool_dime_title: "D.I.M.E. Family Protection Needs Calculator",
+    tool_dime_desc: "Calculate your exact life insurance target using the scientific Debt, Income, Mortgage, and Education (D.I.M.E.) framework.",
+    tool_term_vs_iul_title: "Buy Term vs. IUL Head-to-Head Simulator",
+    tool_term_vs_iul_desc: "Model how the 0% floor and IRS 7702 tax-free policy loans outperform taxable brokerage accounts during market crashes.",
+    tool_ltc_title: "Nationwide CareMatters LTC Cash Estimator",
+    tool_ltc_desc: "Calculate tax-free monthly cash benefits ($4k–$10k/mo) and couples shared pool protection without receipt hassles.",
     tool_cta_open: "Open Standalone Mini-App →",
 
     // Bento Grid Pillars
@@ -46,6 +52,8 @@ export const dictionary = {
     pillars_title: "Complete Advisory Spectrum",
     pillar_1_title: "Life Insurance & Indexed Universal Life (IUL)",
     pillar_1_desc: "Tax-free death benefits, living benefit riders for chronic illness, and cash value accumulation linked to index performance with a 0% floor.",
+    pillar_mil_title: "Military & Veteran Wealth Shield",
+    pillar_mil_desc: "Bypass the SGLI-to-VGLI escalating rate cliff, maximize 100% of military retirement (SBP Pension Max), and protect TSP rollovers.",
     pillar_2_title: "Variable & Fixed Indexed Annuities",
     pillar_2_desc: "Contractually guaranteed lifetime income streams designed for 401(k) and IRA rollovers to eliminate sequence of returns risk.",
     pillar_3_title: "Final Expense & Everest Funeral Concierge",
@@ -350,6 +358,12 @@ export const dictionary = {
     tool_annuity_desc: "Calcule su flujo de ingresos mensuales garantizados de por vida mediante transferencias de 401(k) / Cuentas IRA.",
     tool_funeral_title: "Calculadora de Ahorro con Everest Funeral Concierge",
     tool_funeral_desc: "Descubra cómo la negociación profesional 24/7 y la comparación de precios ahorra a las familias más de $3,500 en gastos finales.",
+    tool_dime_title: "Calculadora de Necesidades de Protección D.I.M.E.",
+    tool_dime_desc: "Calcule su cobertura exacta de seguro de vida utilizando la metodología científica: Deudas, Ingresos, Hipoteca y Educación.",
+    tool_term_vs_iul_title: "Simulador Comparativo: Seguro a Término vs. IUL",
+    tool_term_vs_iul_desc: "Compare cómo el piso del 0% y los préstamos libres de impuestos IRS 7702 superan a las cuentas tributables durante caídas de bolsa.",
+    tool_ltc_title: "Estimador de Cuidado Prolongado Nationwide CareMatters",
+    tool_ltc_desc: "Calcule beneficios mensuales en efectivo ($4k–$10k/mes) y protección compartida para parejas sin la molestia de comprobantes.",
     tool_cta_open: "Abrir Herramienta Interactiva →",
 
     // Bento Grid Pillars
@@ -357,6 +371,8 @@ export const dictionary = {
     pillars_title: "Espectro Completo de Asesoría Financiera",
     pillar_1_title: "Seguro de Vida e Indexado Universal (IUL)",
     pillar_1_desc: "Beneficios por fallecimiento libres de impuestos, cláusulas de beneficios en vida por enfermedades y acumulación de valor en efectivo con piso garantizado del 0%.",
+    pillar_mil_title: "Escudo Patrimonial para Militares y Veteranos",
+    pillar_mil_desc: "Evite el incremento excesivo de tarifas de VGLI, maximice el 100% de su pensión militar (Pension Max) y proteja sus fondos del TSP.",
     pillar_2_title: "Anualidades Indexadas y Variables",
     pillar_2_desc: "Flujos de ingresos garantizados por contrato para toda la vida, diseñados para transferencias de 401(k) e IRA eliminando el riesgo de mercado.",
     pillar_3_title: "Gastos Finales y Concierge Funerario Everest",

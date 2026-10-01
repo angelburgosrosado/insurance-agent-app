@@ -50,11 +50,11 @@ export function MyIADNavbar() {
           {/* Right Action Cluster */}
           <div className="hidden sm:flex items-center gap-4">
             <a
-              href="tel:3863331482"
+              href="tel:18888873585"
               className="flex items-center gap-2 text-xs font-bold text-slate-200 hover:text-white px-3 py-2 rounded-lg hover:bg-white/5 transition-all"
             >
               <Phone className="w-3.5 h-3.5 text-[#14B8A6]" />
-              <span>(386) 333-1482</span>
+              <span>(888) 887-3585</span>
             </a>
             <a
               href="#lead-intake"
@@ -120,11 +120,11 @@ export function MyIADNavbar() {
           </div>
           <div className="pt-4 border-t border-slate-800 flex flex-col gap-3">
             <a
-              href="tel:3863331482"
+              href="tel:18888873585"
               className="flex items-center justify-center gap-2 py-3 rounded-xl bg-slate-800/80 text-white font-bold text-sm"
             >
               <Phone className="w-4 h-4 text-[#14B8A6]" />
-              <span>Call Licensed Advisor: (386) 333-1482</span>
+              <span>Toll-Free: (888) 887-3585</span>
             </a>
             <a
               href="#lead-intake"

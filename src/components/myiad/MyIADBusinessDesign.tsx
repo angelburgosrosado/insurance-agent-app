@@ -165,7 +165,7 @@ export function MyIADBusinessDesign() {
                 Deploy MyIAD Across Your Agency or Practice
               </h3>
               <p className="text-sm text-slate-300 leading-relaxed">
-                Connect your brokerage with our bilingual AI quoting architecture, compliant disclosures, and instant CRM pipeline. Request a private technology walkthrough with founder Angel Burgos.
+                Connect your brokerage with our bilingual AI quoting architecture, compliant disclosures, and instant CRM pipeline. Request a private technology walkthrough with our enterprise platform team.
               </p>
               <div className="space-y-2 pt-2 text-xs text-slate-300">
                 <div className="flex items-center gap-2">
@@ -288,7 +288,7 @@ export function MyIADBusinessDesign() {
                   </div>
                   <h4 className="text-base font-bold text-white">Agency Inquiry Transmitted</h4>
                   <p className="text-xs text-slate-300 leading-relaxed">
-                    Your request has been routed to our enterprise team. Founder Angel Burgos will contact you directly with agency onboarding specifications.
+                    Your request has been routed to our enterprise team. A MyIAD enterprise onboarding specialist will contact you directly with platform integration specifications.
                   </p>
                 </div>
               )}

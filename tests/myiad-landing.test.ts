@@ -14,7 +14,8 @@ test("MyIAD brand tokens match design specifications", () => {
   assert.equal(MYIAD_TOKENS.colors.cleanBg, "#F8FAFC");
   assert.equal(MYIAD_TOKENS.colors.contrastCharcoal, "#111827");
   assert.match(MYIAD_TOKENS.typography.headline, /MyIAD - Intelligent Insurance Advisory & Protection/i);
-  assert.match(MYIAD_TOKENS.licensing.license, /FL Lic #G328926/i);
+  assert.match(MYIAD_TOKENS.licensing.service, /Nationwide Insurance Services/i);
+  assert.equal(MYIAD_TOKENS.licensing.tollFree, "1-888-887-3585");
 });
 
 test("MyIAD implements the Three Core Offerings architecture", () => {

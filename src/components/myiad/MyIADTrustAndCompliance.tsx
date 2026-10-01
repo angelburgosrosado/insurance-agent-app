@@ -28,9 +28,9 @@ export function MyIADTrustAndCompliance() {
             <div className="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center">
               <Award className="w-5 h-5" />
             </div>
-            <h4 className="text-base font-bold text-white">State 0215 Licensing</h4>
+            <h4 className="text-base font-bold text-white">50-State Network Licensing</h4>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Supervised under Florida License <strong>#G328926</strong> (Life, Health & Variable Annuities) and active reciprocal territories.
+              Supervised network of licensed insurance professionals operating across all 50 US states and approved jurisdictions.
             </p>
           </div>
 

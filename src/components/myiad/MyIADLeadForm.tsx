@@ -35,7 +35,7 @@ export function MyIADLeadForm({ initialService = "life-insurance" }: MyIADLeadFo
             Request a Quote or Schedule Your Consultation
           </h2>
           <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
-            Choose your preferred approach: submit a structured quote inquiry through our 4-step progressive intake questionnaire, or lock in a live 15-minute diagnostic session directly with Angel Burgos.
+            Choose your preferred approach: submit a quick quote inquiry through our progressive intake flow, or call our toll-free advisory line at <strong>(888) 887-3585</strong> to speak directly with a licensed insurance specialist in your state.
           </p>
 
           {/* Mode Switcher Tabs */}

@@ -342,7 +342,7 @@ export function MyIADAiAssessment() {
               {!submitted ? (
                 <form onSubmit={handleSubmit} className="space-y-3.5 pt-2">
                   <p className="text-xs text-slate-300 font-medium leading-relaxed">
-                    Unlock your personalized, confidential <strong>AI Protection Blueprint</strong> and receive direct advisor routing with licensed practitioner Angel Burgos:
+                    Unlock your personalized, confidential <strong>AI Protection Blueprint</strong> and receive direct carrier-matched quotes across your state:
                   </p>
 
                   {errorMessage && (
@@ -402,7 +402,7 @@ export function MyIADAiAssessment() {
                       className="mt-0.5 rounded border-slate-700 text-[#14B8A6] focus:ring-0 accent-[#14B8A6]"
                     />
                     <span>
-                      I authorize licensed advisor Angel Burgos (FL #G328926) to contact me via phone, email, or SMS regarding my personalized blueprint. Consent is not a condition of purchase.
+                      I authorize MyIAD Insurance Services and its network of licensed insurance professionals to contact me via phone, email, or SMS regarding my personalized blueprint and coverage options. Consent is not a condition of purchase.
                     </span>
                   </label>
 
@@ -428,7 +428,7 @@ export function MyIADAiAssessment() {
                   </div>
                   <h4 className="text-base font-bold text-white">Assessment Parameters Logged</h4>
                   <p className="text-xs text-slate-300 leading-relaxed">
-                    Your parameters have been logged into our secure advisory pipeline. A licensed advisor is reviewing your case file.
+                    Your parameters have been logged into our secure nationwide underwriting pipeline. A licensed insurance specialist has been matched to your state.
                   </p>
                   <button
                     type="button"

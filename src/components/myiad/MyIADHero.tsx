@@ -21,9 +21,9 @@ export function MyIADHero({ onScheduleClick }: MyIADHeroProps) {
             {/* Trust Pill */}
             <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-800/80 border border-slate-700 text-xs font-semibold text-slate-200">
               <span className="w-2 h-2 rounded-full bg-[#14B8A6] animate-pulse" />
-              <span>Independent 0215 Advisory &bull; Institutional Protection</span>
+              <span>Nationwide 50-State Coverage &bull; Top-Rated Carriers</span>
               <span className="hidden sm:inline text-slate-400">|</span>
-              <span className="hidden sm:inline text-amber-300 font-bold">FL Lic #G328926</span>
+              <span className="hidden sm:inline text-[#14B8A6] font-bold">Toll-Free (888) 887-3585</span>
             </div>
 
             {/* Core Headline */}
@@ -169,8 +169,8 @@ export function MyIADHero({ onScheduleClick }: MyIADHeroProps) {
               {/* Direct Advisor Callout */}
               <div className="mt-6 pt-5 border-t border-slate-800 flex items-center justify-between text-xs text-slate-300">
                 <div>
-                  <p className="font-bold text-white">Angel Burgos, 0215 Broker</p>
-                  <p className="text-slate-400">FL Lic #G328926 &bull; AB Global Consulting</p>
+                  <p className="font-bold text-white">MyIAD National Insurance Solutions</p>
+                  <p className="text-slate-400">Direct Carrier Access Across All 50 US States</p>
                 </div>
                 <a
                   href="#lead-intake"

@@ -15,8 +15,8 @@ export const metadata: Metadata = {
   description:
     "MyIAD delivers precision financial protection: responsive AI insurance need assessment, 0% floor Indexed Universal Life (IUL), comprehensive Health & Medicare solutions, and FINRA Rule 2330 compliant variable annuities.",
   applicationName: "MyIAD",
-  authors: [{ name: "Angel Burgos", url: "https://myiad.com" }],
-  creator: "MyIAD & AB Global Consulting LLC",
+  authors: [{ name: "MyIAD National Insurance Solutions", url: "https://myiad.com" }],
+  creator: "MyIAD National Insurance Solutions",
   keywords: [
     "MyIAD",
     "AI insurance assessment",
@@ -54,21 +54,14 @@ export default function MyIADLandingPage() {
     "@type": "FinancialService",
     name: "MyIAD - Intelligent Insurance Advisory & Protection",
     description:
-      "Licensed insurance advisory and wealth preservation firm specializing in AI Insurance Need Assessment, Life Insurance (IUL, Term), Health Insurance, and FINRA Rule 2330 Variable Annuity solutions.",
+      "Dependable nationwide insurance advisory firm specializing in AI Insurance Need Assessment, Life Insurance (IUL, Term, Living Benefits), Health Insurance, and FINRA Rule 2330 Variable Annuities across all 50 US states.",
     url: "https://myiad.com",
-    telephone: "+1-386-333-1482",
+    telephone: "+1-888-887-3585",
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Orlando",
-      addressRegion: "FL",
       addressCountry: "US",
     },
-    founder: {
-      "@type": "Person",
-      name: "Angel Burgos",
-      jobTitle: "Principal Advisor & Broker (0215)",
-    },
-    areaServed: ["Florida", "Puerto Rico", "United States"],
+    areaServed: ["All 50 US States", "Puerto Rico", "United States"],
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "Insurance & Advisory Solutions",

@@ -20,11 +20,11 @@ export function MyIADFooter() {
               </span>
             </div>
             <p className="text-slate-400 leading-relaxed">
-              Intelligent Insurance Advisory & Protection platform engineered for consumers, producers, and brokerage leadership.
+              Intelligent Insurance Advisory & Protection platform engineered for consumers, producers, and brokerage leadership across all 50 US states.
             </p>
             <div className="pt-2 text-slate-300 font-semibold space-y-1">
-              <p>Angel Burgos, Principal Advisor</p>
-              <p className="text-amber-400 font-mono text-[11px]">FL Lic #G328926 (0215 Life, Health & VA)</p>
+              <p>MyIAD National Insurance Solutions</p>
+              <p className="text-[#14B8A6] font-mono text-[11px]">Licensed Nationwide 50-State Network</p>
             </div>
           </div>
 
@@ -70,30 +70,29 @@ export function MyIADFooter() {
             </h4>
             <ul className="space-y-2">
               <li>
-                <a href="#producers" className="hover:text-white transition-colors">
-                  Independent High-Performing Producers
+                <a href="#ai-assessment" className="hover:text-white transition-colors">
+                  Interactive AI Needs Calculator
+                </a>
+              </li>
+              <li>
+                <a href="#business-design" className="hover:text-white transition-colors">
+                  The MyIAD Business Design
                 </a>
               </li>
               <li>
                 <a href="#producers" className="hover:text-white transition-colors">
-                  Agency Principals & IMO Leaders
+                  Agency Principals & IMO Distribution
                 </a>
               </li>
               <li>
                 <a href="#veterans" className="hover:text-white transition-colors">
-                  Veteran Asset Shield (SGLI/SBP)
+                  Veteran Asset Shield
                 </a>
               </li>
               <li>
                 <a href="#compliance" className="hover:text-white transition-colors">
-                  FINRA Rule 2330 Supervisory Reviews
+                  FINRA Rule 2330 Supervisory Protocols
                 </a>
-              </li>
-              <li>
-                <Link href="/portal" className="hover:text-white transition-colors flex items-center gap-1">
-                  <span>Client & Advisor Portal</span>
-                  <ExternalLink className="w-3 h-3 text-slate-500" />
-                </Link>
               </li>
             </ul>
           </div>
@@ -101,28 +100,28 @@ export function MyIADFooter() {
           {/* Col 4: Contact & Territory */}
           <div className="space-y-3">
             <h4 className="text-sm font-bold text-white uppercase tracking-wider">
-              Direct Contact & Office
+              Direct Contact & Toll-Free
             </h4>
             <div className="space-y-2.5 text-slate-300">
-              <a href="tel:3863331482" className="flex items-center gap-2 hover:text-[#14B8A6] transition-colors">
+              <a href="tel:18888873585" className="flex items-center gap-2 hover:text-[#14B8A6] transition-colors">
                 <Phone className="w-4 h-4 text-[#14B8A6] shrink-0" />
-                <span>(386) 333-1482</span>
+                <span className="font-bold text-white">Toll-Free: (888) 887-3585</span>
               </a>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-[#14B8A6] shrink-0" />
-                <span>angelburgosrosado@gmail.com</span>
+                <span>support@myiad.com</span>
               </div>
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-[#14B8A6] shrink-0 mt-0.5" />
-                <span>Central Florida (Orlando / Sanford) & Puerto Rico Statewide</span>
+                <span>Nationwide Coverage Across All 50 US States & Territories</span>
               </div>
             </div>
             <div className="pt-2">
               <a
-                href="#lead-intake"
+                href="#ai-assessment"
                 className="inline-block px-4 py-2 rounded-lg bg-slate-800 hover:bg-[#2563EB] text-white font-bold text-xs transition-colors"
               >
-                Schedule 15-Min Diagnostic
+                Launch AI Need Assessment
               </a>
             </div>
           </div>
@@ -131,14 +130,14 @@ export function MyIADFooter() {
         {/* Regulatory & FINRA 2330 Legal Text */}
         <div className="pt-8 border-t border-slate-800 space-y-4 text-[11px] leading-relaxed text-slate-400">
           <p>
-            <strong>Regulatory & Compliance Disclosure:</strong> MyIAD (myiad.com) is an insurance advisory, technology, and case modeling platform operated in conjunction with AB Global Consulting LLC. Insurance quotes, policy design, and consultative reviews are performed by licensed 0215 Life, Health & Variable Annuity agents (FL Lic #G328926). Not affiliated with or endorsed by the federal government, the Department of Veterans Affairs, CMS, or Medicare.
+            <strong>Regulatory & Compliance Disclosure:</strong> MyIAD (myiad.com) is an insurance advisory, technology, and case modeling platform. Insurance quotes, policy design, and consultative reviews are performed by licensed life, health, and annuity insurance professionals operating across all 50 US states. Not affiliated with or endorsed by the federal government, the Department of Veterans Affairs, CMS, or Medicare.
           </p>
           <p>
             <strong>Variable Annuity Risk Warning:</strong> Deferred variable annuities are long-term investment vehicles designed for retirement planning and are subject to market fluctuations and investment risk, including potential loss of principal. Guarantees are backed solely by the financial strength and claims-paying ability of the issuing life insurance company. Withdrawals prior to age 59½ may trigger a 10% IRS penalty tax and surrender charges. Contract fees, subaccount management fees, and mortality & expense (M&E) charges apply. Review full prospectus materials carefully prior to purchasing.
           </p>
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-400 border-t border-slate-800/80">
             <p>
-              &copy; {new Date().getFullYear()} MyIAD &bull; AB Global Consulting LLC. All rights reserved.
+              &copy; {new Date().getFullYear()} MyIAD National Insurance Solutions. All rights reserved.
             </p>
             <div className="flex flex-wrap items-center gap-6">
               <Link href="/privacy" className="hover:text-white transition-colors underline">

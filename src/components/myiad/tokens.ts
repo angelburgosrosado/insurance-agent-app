@@ -19,9 +19,11 @@ export const MYIAD_TOKENS = {
     tagline: "Institutional Precision. Fiduciary Clarity. Modern Protection Architecture.",
   },
   licensing: {
-    advisor: "Angel Burgos, Principal Advisor",
-    license: "FL Lic #G328926 (0215 Life, Health & Variable Annuities)",
-    territories: ["Florida (Central, South, Statewide)", "Puerto Rico", "Nationwide Advisory Network"],
+    provider: "MyIAD National Insurance Solutions",
+    service: "Dependable Nationwide Insurance Services",
+    tollFree: "1-888-887-3585",
+    phoneNumeric: "18888873585",
+    territories: ["Licensed Across All 50 US States", "Nationwide Advisory Network"],
   },
 } as const;
 

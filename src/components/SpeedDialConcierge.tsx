@@ -1,12 +1,19 @@
 "use client";
 
 import React, { useState } from "react";
+import { usePathname } from "next/navigation";
 import { Phone, MessageCircle, Calendar, MessageSquare, X, ShieldCheck } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
 export function SpeedDialConcierge() {
+  const pathname = usePathname();
   const { lang } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
+
+  // Do not render personal advisor concierge on dedicated MyIAD portal
+  if (pathname === "/myiad" || pathname?.startsWith("/myiad")) {
+    return null;
+  }
 
   const isSpanish = lang === "es";
   const whatsappMsg = encodeURIComponent(

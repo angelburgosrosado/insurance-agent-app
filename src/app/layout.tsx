@@ -46,27 +46,33 @@ export const metadata: Metadata = {
   },
 };
 
+import { headers } from "next/headers";
 import { getOrganizationSchema } from "@/lib/seo/schema";
 import { missingEnvVars } from "@/lib/server/env";
 import { LanguageProvider } from "@/context/LanguageContext";
 
 import { SpeedDialConcierge } from "@/components/SpeedDialConcierge";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const isDev = process.env.NODE_ENV === "development";
   const needsSetup = isDev && missingEnvVars && missingEnvVars.length > 0;
+  const headersList = await headers();
+  const host = (headersList.get("host") || "").toLowerCase();
+  const isMyIAD = host.includes("myiad.com") || host.includes("myiad.net");
 
   return (
     <html lang="en" className={inter.variable}>
       <body>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(getOrganizationSchema()) }}
-        />
+        {!isMyIAD && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(getOrganizationSchema()) }}
+          />
+        )}
         {needsSetup && (
           <div className="bg-[var(--accent)] text-white text-center py-2 text-sm font-medium sticky top-0 z-50">
             Welcome to development! Some environment variables are missing. <a href="/setup" className="underline font-bold hover:text-[#eef1ef]">Go to Setup Wizard</a>

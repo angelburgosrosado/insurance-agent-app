@@ -1,25 +1,102 @@
 "use client";
 
 import React, { useState } from "react";
-import { Calendar, Clock, Phone, CheckCircle2, ChevronRight } from "lucide-react";
+import { Calendar, Clock, Phone, CheckCircle2, ChevronRight, X } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
 interface CalendarBookingProps {
   calendlyUrl?: string;
+  schedulingUrl?: string;
+  provider?: "calendly" | "cal_com";
   className?: string;
+  isModal?: boolean;
+  isOpenModal?: boolean;
+  onCloseModal?: () => void;
+  prefillName?: string;
+  prefillEmail?: string;
 }
 
 export function CalendarBookingModal({
-  calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/abglobalconsulting/15-min-consultation-abglobalceo",
+  calendlyUrl,
+  schedulingUrl,
+  provider = "calendly",
   className = "",
+  isModal = false,
+  isOpenModal = false,
+  onCloseModal,
+  prefillName,
+  prefillEmail,
 }: CalendarBookingProps) {
   const { lang } = useLanguage();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenInline, setIsOpenInline] = useState(false);
+
+  const rawUrl =
+    schedulingUrl ||
+    calendlyUrl ||
+    process.env.NEXT_PUBLIC_CAL_COM_URL ||
+    process.env.NEXT_PUBLIC_CALENDLY_URL ||
+    "https://calendly.com/abglobalconsulting/15-min-consultation-abglobalceo";
+
+  const activeUrl = React.useMemo(() => {
+    if (!prefillName && !prefillEmail) return rawUrl;
+    try {
+      const parsed = new URL(rawUrl);
+      if (prefillName) parsed.searchParams.set("name", prefillName);
+      if (prefillEmail) parsed.searchParams.set("email", prefillEmail);
+      return parsed.toString();
+    } catch {
+      const delimiter = rawUrl.includes("?") ? "&" : "?";
+      const params = new URLSearchParams();
+      if (prefillName) params.set("name", prefillName);
+      if (prefillEmail) params.set("email", prefillEmail);
+      return `${rawUrl}${delimiter}${params.toString()}`;
+    }
+  }, [rawUrl, prefillName, prefillEmail]);
+
+  if (isModal) {
+    if (!isOpenModal) return null;
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm animate-in fade-in duration-200">
+        <div className="bg-white rounded-3xl max-w-4xl w-full max-h-[92vh] overflow-hidden flex flex-col shadow-2xl border border-slate-200">
+          <div className="bg-[#0B1F3A] text-white p-4 px-6 flex items-center justify-between border-b border-slate-800">
+            <div className="flex items-center gap-2.5">
+              <Calendar size={18} className="text-teal-400" />
+              <span className="font-bold text-sm">
+                {lang === "es"
+                  ? "Agendar Sesión con Asesor Licenciado Angel Burgos"
+                  : "Schedule Live Advisory Session &bull; Angel Burgos (Lic #G328926)"}
+              </span>
+            </div>
+            {onCloseModal && (
+              <button
+                type="button"
+                onClick={onCloseModal}
+                className="h-8 w-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-sm font-bold cursor-pointer transition-all"
+                aria-label="Close scheduling modal"
+              >
+                <X size={16} />
+              </button>
+            )}
+          </div>
+
+          <div className="flex-1 p-4 sm:p-6 bg-slate-50 overflow-y-auto">
+            <div className="w-full h-[620px] rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm">
+              <iframe
+                src={activeUrl}
+                className="w-full h-full border-0"
+                title={`Schedule a consultation with Angel Burgos via ${provider}`}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden ${className}`}>
       {/* Header Banner */}
-      <div className="bg-[#001c38] text-white p-6 md:p-8 space-y-3">
+      <div className="bg-[#0B1F3A] text-white p-6 md:p-8 space-y-3">
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/20 border border-amber-500/40 rounded-full text-amber-400 text-xs font-bold uppercase tracking-wider">
           <Calendar size={13} />
           {lang === "es" ? "Paso 2: Reserve Su Horario en Línea" : "Step 2: Lock In Your Consultation Time"}
@@ -52,7 +129,7 @@ export function CalendarBookingModal({
 
       {/* Embedded Calendar Container */}
       <div className="p-6 md:p-8">
-        {!isOpen ? (
+        {!isOpenInline ? (
           <div className="text-center py-8 space-y-5">
             <div className="h-16 w-16 bg-amber-500/10 border border-amber-500/20 text-amber-600 rounded-3xl flex items-center justify-center mx-auto text-2xl">
               📅
@@ -67,7 +144,7 @@ export function CalendarBookingModal({
             </div>
             <button
               type="button"
-              onClick={() => setIsOpen(true)}
+              onClick={() => setIsOpenInline(true)}
               className="px-8 py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-sm rounded-2xl shadow-lg transition-all inline-flex items-center gap-2 cursor-pointer"
             >
               <span>{lang === "es" ? "Abrir Calendario Interactivo" : "Open Live Booking Calendar"}</span>
@@ -77,9 +154,9 @@ export function CalendarBookingModal({
         ) : (
           <div className="w-full h-[650px] rounded-2xl border border-slate-200 overflow-hidden relative">
             <iframe
-              src={calendlyUrl}
+              src={activeUrl}
               className="w-full h-full border-0"
-              title="Schedule a consultation with Angel Burgos"
+              title={`Schedule a consultation with Angel Burgos via ${provider}`}
             />
           </div>
         )}

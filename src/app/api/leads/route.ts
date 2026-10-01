@@ -4,7 +4,7 @@ import { getLeadRepository } from "@/lib/server/leads";
 import { validateLeadRequest } from "@/lib/server/lead-validation";
 import { leadRateLimiter, rateLimitResponse, requestClientKey } from "@/lib/server/rate-limit";
 import { sendEmail, buildCustomerAutoReplyHtml } from "@/lib/integrations/email";
-import { sendSMS, buildWelcomeSMS } from "@/lib/integrations/sms";
+import { sendSMS, buildWelcomeSMS, dispatchAdvisorAlertSMS } from "@/lib/integrations/sms";
 import { dispatchToCRM } from "@/lib/integrations/crm";
 import { syncLeadToHubSpot } from "@/lib/integrations/hubspot";
 
@@ -48,11 +48,21 @@ export async function POST(request: Request) {
 
     // Asynchronously dispatch to integrations so we don't block the client response
     Promise.allSettled([
-      // 1. Advisor Notification
+      // 1. Advisor Notification (Email)
       sendEmail({
         to: "angelburgosrosado@gmail.com",
         subject: `🚨 New Lead: ${lead.firstName} ${lead.lastName} (${lead.service})`,
         text: `A new lead has been received.\n\nName: ${lead.firstName} ${lead.lastName}\nEmail: ${lead.email}\nPhone: ${lead.phone}\nService: ${lead.service}\nSource: ${lead.source || "Direct"}\nCampaign: ${lead.campaign || "None"}\n\nMessage: ${lead.message}`,
+      }),
+
+      // 1b. Advisor Real-Time SMS Dispatch Alert
+      dispatchAdvisorAlertSMS({
+        applicantName: `${lead.firstName} ${lead.lastName}`,
+        serviceOrProduct: lead.service,
+        applicantPhone: lead.phone,
+        applicantEmail: lead.email,
+        source: lead.source || "Intake Form",
+        notes: lead.message,
       }),
 
       // 2. Customer Confirmation & Guide Auto-Delivery

@@ -3,6 +3,14 @@ import { createServerClient } from "@supabase/ssr";
 import { getSupabaseConfig } from "@/lib/supabase/env";
 
 export async function proxy(request: NextRequest) {
+  // Check for custom host rewrite (myiad.com, myiad.net, or subdomains)
+  const host = (request.headers.get("host") || "").toLowerCase();
+  if ((host.includes("myiad.com") || host.includes("myiad.net")) && request.nextUrl.pathname === "/") {
+    const url = request.nextUrl.clone();
+    url.pathname = "/myiad";
+    return NextResponse.rewrite(url);
+  }
+
   // 1. Check for Direct Staff Admin Session Cookie
   const staffCookie = request.cookies.get("ab_staff_session")?.value;
   const isStaffSession = staffCookie === "authorized_superadmin" || (staffCookie && staffCookie.startsWith("staff_"));

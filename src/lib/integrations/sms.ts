@@ -110,3 +110,49 @@ export function buildWelcomeSMS(params: {
 
   return `Hi ${params.firstName}, this is Angel Burgos with AB Global Consulting. I received your request regarding ${params.service || "insurance planning"}. What's the best time today for a quick 10-min review? (Reply STOP to cancel)`;
 }
+
+export interface AdvisorDispatchParams {
+  applicantName: string;
+  serviceOrProduct: string;
+  applicantPhone?: string;
+  applicantEmail?: string;
+  territory?: string;
+  amount?: string;
+  notes?: string;
+  source?: string;
+}
+
+/**
+ * Builds automated real-time advisor notification SMS text
+ */
+export function buildAdvisorDispatchSMS(params: AdvisorDispatchParams): string {
+  const lines = [
+    `🎯 Advisor Dispatch Alert: ${params.applicantName}`,
+    `Service/Product: ${params.serviceOrProduct}`,
+  ];
+  if (params.territory) lines.push(`Territory: ${params.territory}`);
+  if (params.amount) lines.push(`Amount/Coverage: ${params.amount}`);
+  if (params.applicantPhone) lines.push(`Phone: ${params.applicantPhone}`);
+  if (params.applicantEmail) lines.push(`Email: ${params.applicantEmail}`);
+  if (params.source) lines.push(`Source: ${params.source}`);
+  if (params.notes && params.notes !== "None") lines.push(`Notes: ${params.notes}`);
+  return lines.join("\n");
+}
+
+/**
+ * Dispatches an automated real-time SMS alert to the designated advisor phone number
+ */
+export async function dispatchAdvisorAlertSMS(
+  params: AdvisorDispatchParams & { to?: string }
+): Promise<SMSResult> {
+  const advisorPhone =
+    params.to ||
+    process.env.ADVISOR_NOTIFICATION_PHONE ||
+    "+13863331482";
+
+  const body = buildAdvisorDispatchSMS(params);
+  return sendSMS({
+    to: advisorPhone,
+    body,
+  });
+}

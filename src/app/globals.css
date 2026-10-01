@@ -19,6 +19,12 @@
   --color-primary: var(--sentinel-navy);
   --color-secondary: var(--professional-gold);
   --color-tertiary: var(--trust-teal);
+
+  --color-myiad-navy: #0B1F3A;
+  --color-myiad-blue: #2563EB;
+  --color-myiad-teal: #14B8A6;
+  --color-myiad-bg: #F8FAFC;
+  --color-myiad-charcoal: #111827;
   
   --font-sans: var(--font-inter), sans-serif;
 }

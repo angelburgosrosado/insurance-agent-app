@@ -39,6 +39,7 @@ export function MyIADAiAssessment() {
   const [submitted, setSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [blueprintUrl, setBlueprintUrl] = useState<string>("");
 
   // Dynamic calculations based on D.I.M.E. & institutional IUL math
   const incomeReplacement = annualIncome * Math.min(10, Math.max(5, 65 - age));
@@ -98,8 +99,17 @@ export function MyIADAiAssessment() {
         body: JSON.stringify(payload),
       });
 
+      const data = await res.json().catch(() => null);
       if (!res.ok) {
-        throw new Error("Unable to submit assessment. Please try again.");
+        throw new Error(data?.error || "Unable to submit assessment. Please try again.");
+      }
+
+      if (data?.blueprintUrl) {
+        setBlueprintUrl(data.blueprintUrl);
+      } else {
+        setBlueprintUrl(
+          `/api/reports/download?type=myiad_blueprint&name=${encodeURIComponent(name)}&coverage=${calculatedCoverageNeed}&income=${annualIncome}&debt=${debt}&age=${age}&dependents=${dependents}&taxFreeIncome=${estimatedAnnualTaxFreeIncome}`
+        );
       }
 
       setSubmitted(true);
@@ -426,18 +436,38 @@ export function MyIADAiAssessment() {
                   <div className="h-12 w-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
                     <CheckCircle2 size={24} />
                   </div>
-                  <h4 className="text-base font-bold text-white">Assessment Parameters Logged</h4>
+                  <h4 className="text-base font-bold text-white">AI Protection Blueprint Generated</h4>
                   <p className="text-xs text-slate-300 leading-relaxed">
-                    Your parameters have been logged into our secure nationwide underwriting pipeline. A licensed insurance specialist has been matched to your state.
+                    Your parameters have been logged into our secure nationwide underwriting pipeline. A licensed specialist has been matched to your state.
                   </p>
-                  <button
-                    type="button"
-                    onClick={() => setIsBookingOpen(true)}
-                    className="w-full py-3 rounded-xl bg-[#14B8A6] hover:bg-teal-500 text-slate-950 font-black text-xs transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer"
-                  >
-                    <Calendar size={14} />
-                    <span>Lock in Diagnostic Call Now</span>
-                  </button>
+                  <div className="space-y-2.5 pt-2">
+                    {blueprintUrl && (
+                      <a
+                        href={blueprintUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-3 rounded-xl bg-gradient-to-r from-[#2563EB] to-[#14B8A6] hover:opacity-95 text-white font-bold text-xs transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer"
+                      >
+                        <TrendingUp size={14} />
+                        <span>View / Download AI Blueprint (PDF)</span>
+                      </a>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => setIsBookingOpen(true)}
+                      className="w-full py-3 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-bold text-xs transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+                    >
+                      <Calendar size={14} />
+                      <span>Lock in 15-Minute Diagnostic Call</span>
+                    </button>
+                    <a
+                      href="tel:18888873585"
+                      className="w-full py-2.5 rounded-xl border border-teal-500/40 text-teal-300 hover:bg-teal-500/10 font-bold text-xs transition-all flex items-center justify-center gap-2"
+                    >
+                      <Phone size={14} />
+                      <span>Call Toll-Free: (888) 887-3585</span>
+                    </a>
+                  </div>
                 </div>
               )}
             </div>

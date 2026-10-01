@@ -1,6 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { generateExecutiveReportHtml } from "../src/lib/pdf/report-generator";
+import {
+  generateExecutiveReportHtml,
+  generateMyIADBlueprintHtml,
+} from "../src/lib/pdf/report-generator";
 
 test("Report Generator - Generates Military Asset Shield report in EN and ES", () => {
   const enReport = generateExecutiveReportHtml({
@@ -58,5 +61,24 @@ test("Report Generator - Generates D.I.M.E., Term vs IUL, and LTC reports", () =
   });
   assert.match(ltcReport, /Nationwide CareMatters/);
   assert.match(ltcReport, /David & Carmen Diaz/);
+});
+
+test("Report Generator - Generates MyIAD AI Protection Blueprint without personal credentials", () => {
+  const blueprint = generateMyIADBlueprintHtml({
+    clientName: "Sarah Jenkins",
+    age: 42,
+    annualIncome: 125000,
+    dependents: 3,
+    debt: 350000,
+    lang: "en",
+  });
+
+  assert.match(blueprint, /MyIAD AI Protection Engine/);
+  assert.match(blueprint, /Sarah Jenkins/);
+  assert.match(blueprint, /1-888-887-3585/);
+  assert.match(blueprint, /D\.I\.M\.E\. Mathematical Breakdown/);
+  assert.match(blueprint, /IRS Section 7702/);
+  assert.doesNotMatch(blueprint, /Angel Burgos/);
+  assert.doesNotMatch(blueprint, /G328926/);
 });
 

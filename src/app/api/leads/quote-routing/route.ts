@@ -134,7 +134,7 @@ Client Notes: ${payload.quoteParameters.notes || "None"}`,
         ? [
             sendSMS({
               to: payload.applicantPhone,
-              body: `Hello ${payload.applicantFirstName}, thank you for requesting a ${payload.productInterest} quote with MyIAD / AB Global. Your licensed advisor Angel Burgos will review your personalized scenario shortly. Call/text: (386) 333-1482.`,
+              body: `Hello ${payload.applicantFirstName}, thank you for requesting your personalized blueprint with MyIAD National Insurance Solutions. A licensed specialist will review your scenario shortly. View your blueprint: https://myiad.com/api/reports/download?type=myiad_blueprint&name=${encodeURIComponent(payload.applicantName)}&coverage=${payload.quoteParameters.coverageOrInvestmentAmount || 0} or call toll-free (888) 887-3585.`,
             }),
           ]
         : []),
@@ -147,6 +147,7 @@ Client Notes: ${payload.quoteParameters.notes || "None"}`,
         ok: true,
         success: true,
         leadId: storedLead.id,
+        blueprintUrl: `/api/reports/download?type=myiad_blueprint&name=${encodeURIComponent(payload.applicantName)}&coverage=${payload.quoteParameters.coverageOrInvestmentAmount || 0}`,
         crmPipeline: {
           dispatched: crmResult.success,
           crmLeadId: crmResult.leadId,
@@ -168,7 +169,7 @@ Client Notes: ${payload.quoteParameters.notes || "None"}`,
     console.error("[Quote Routing API Fatal Error]:", redactPiiFromText(error?.message || ""));
     return NextResponse.json(
       {
-        error: "An unexpected error occurred while processing your quote request. Please call (386) 333-1482.",
+        error: "An unexpected error occurred while processing your quote request. Please call toll-free (888) 887-3585.",
       },
       { status: 500 }
     );

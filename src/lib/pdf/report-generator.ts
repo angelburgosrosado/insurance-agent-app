@@ -186,3 +186,166 @@ export function generateExecutiveReportHtml(data: ReportData): string {
     <div class="footer"><p>AB Global Consulting &bull; Angel Burgos (FL Lic. #G328926) &bull; https://abglco.com &bull; (386) 333-1482</p></div>
   </body></html>`;
 }
+
+export interface MyIADBlueprintData {
+  clientName?: string;
+  age?: number;
+  annualIncome?: number;
+  dependents?: number;
+  debt?: number;
+  goal?: string;
+  coverageNeed?: number;
+  taxFreeIncome?: number;
+  lang?: "en" | "es";
+}
+
+/**
+ * Generates an executive, institutional MyIAD AI Protection Blueprint report (PDF/HTML).
+ * Strictly isolated from personal agent licenses. Formatted for nationwide 50-state distribution.
+ */
+export function generateMyIADBlueprintHtml(data: MyIADBlueprintData): string {
+  const isSpanish = data.lang === "es";
+  const name = data.clientName || (isSpanish ? "Cliente Estimado" : "Valued Client");
+  const age = data.age || 38;
+  const annualIncome = data.annualIncome || 110000;
+  const dependents = data.dependents ?? 2;
+  const debt = data.debt || 250000;
+
+  // D.I.M.E. mathematical formulas
+  const incomeYears = Math.min(10, Math.max(5, 65 - age));
+  const incomeReplacement = annualIncome * incomeYears;
+  const educationFund = dependents * 75000;
+  const finalExpense = 25000;
+  const coverageFloor = data.coverageNeed || (debt + incomeReplacement + educationFund + finalExpense);
+
+  // IUL / Annuity Retirement trajectory
+  const yearsToRetirement = Math.max(5, 65 - age);
+  const estMonthlySavings = Math.round((annualIncome * 0.12) / 12);
+  const projectedCashValue = Math.round(
+    estMonthlySavings * 12 * ((Math.pow(1 + 0.068, yearsToRetirement) - 1) / 0.068)
+  );
+  const taxFreeIncome = data.taxFreeIncome || Math.round(projectedCashValue * 0.075);
+
+  const date = new Date().toLocaleDateString(isSpanish ? "es-US" : "en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  return `<!DOCTYPE html>
+<html lang="${isSpanish ? "es" : "en"}">
+<head>
+  <meta charset="utf-8">
+  <title>MyIAD AI Protection Blueprint - ${name}</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #0B1F3A; line-height: 1.5; padding: 40px; background: #F8FAFC; margin: 0; }
+    .blueprint-container { max-width: 800px; margin: 0 auto; background: #fff; border: 1px solid #E2E8F0; border-radius: 20px; padding: 36px; box-shadow: 0 20px 40px -15px rgba(11,31,58,0.08); }
+    .header { border-bottom: 2px solid #E2E8F0; padding-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
+    .badge { display: inline-block; padding: 5px 12px; background: #E0F2FE; color: #0369A1; font-size: 11px; font-weight: 800; text-transform: uppercase; border-radius: 9999px; letter-spacing: 0.05em; margin-bottom: 8px; }
+    h1 { font-size: 24px; font-weight: 900; margin: 6px 0; color: #0B1F3A; letter-spacing: -0.02em; }
+    .hero-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+    .stat-card { background: #0B1F3A; color: #fff; border-radius: 16px; padding: 20px; }
+    .stat-card.teal { background: #0D9488; }
+    .stat-card .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.85; margin-bottom: 6px; font-weight: 700; }
+    .stat-card .value { font-size: 28px; font-weight: 900; font-family: monospace; }
+    .stat-card .sub { font-size: 11px; margin-top: 6px; opacity: 0.85; }
+    .section-title { font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: #0B1F3A; margin: 28px 0 12px 0; display: flex; align-items: center; gap: 8px; }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0 20px 0; font-size: 13px; }
+    th { background: #0B1F3A; color: #fff; padding: 10px 14px; text-align: left; font-weight: 700; font-size: 11px; text-transform: uppercase; }
+    td { padding: 10px 14px; border-bottom: 1px solid #E2E8F0; }
+    tr:last-child td { border-bottom: none; font-weight: bold; background: #F1F5F9; }
+    .callout { background: #F0FDFA; border: 1px solid #99F6E4; border-radius: 12px; padding: 16px; margin: 20px 0; font-size: 12px; color: #0F766E; line-height: 1.6; }
+    .footer { margin-top: 36px; padding-top: 20px; border-top: 1px solid #E2E8F0; font-size: 11px; color: #64748B; text-align: center; }
+    .cta-box { background: #0B1F3A; color: #fff; border-radius: 16px; padding: 20px; text-align: center; margin-top: 24px; }
+    .cta-box a { color: #14B8A6; font-weight: bold; text-decoration: none; font-size: 14px; }
+    @media print { body { padding: 0; background: #fff; } .blueprint-container { box-shadow: none; border: none; padding: 0; } }
+  </style>
+</head>
+<body>
+  <div class="blueprint-container">
+    <div class="header">
+      <div>
+        <span class="badge">MyIAD AI Protection Engine</span>
+        <h1>Institutional Needs Assessment Blueprint</h1>
+        <p style="margin: 0; font-size: 12px; color: #64748B;">
+          Prepared for: <strong>${name}</strong> &bull; Age ${age} &bull; Generated: ${date}
+        </p>
+      </div>
+      <div style="text-align: right; font-size: 11px; color: #475569;">
+        <strong style="color: #0B1F3A; font-size: 13px;">MyIAD National Insurance Solutions</strong><br>
+        Direct Nationwide Carrier Underwriting<br>
+        Toll-Free: <strong>1-888-887-3585</strong>
+      </div>
+    </div>
+
+    <div class="hero-stat-grid">
+      <div class="stat-card">
+        <div class="label">Recommended Protection Floor (D.I.M.E.)</div>
+        <div class="value">$${(coverageFloor / 1000).toFixed(0)},000</div>
+        <div class="sub">Debt + ${incomeYears} Yrs Income + Dependents Education</div>
+      </div>
+      <div class="stat-card teal">
+        <div class="label">Est. Tax-Free Retirement at 65 (IRS §7702)</div>
+        <div class="value">$${taxFreeIncome.toLocaleString()}/yr</div>
+        <div class="sub">Contractual 0% Downside Annual Floor Guarantee</div>
+      </div>
+    </div>
+
+    <div class="section-title">📊 1. D.I.M.E. Mathematical Breakdown</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Pillar</th>
+          <th>Assessment Parameter</th>
+          <th>Calculated Allocation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Debt (D)</strong></td>
+          <td>Mortgage balance, loans, and personal liabilities</td>
+          <td>$${debt.toLocaleString()}</td>
+        </tr>
+        <tr>
+          <td><strong>Income (I)</strong></td>
+          <td>${incomeYears} years of family living income replacement ($${annualIncome.toLocaleString()}/yr)</td>
+          <td>$${incomeReplacement.toLocaleString()}</td>
+        </tr>
+        <tr>
+          <td><strong>Mortgage/Education (M/E)</strong></td>
+          <td>College & dependent education reserve (${dependents} children @ $75k)</td>
+          <td>$${educationFund.toLocaleString()}</td>
+        </tr>
+        <tr>
+          <td><strong>Estate Clearance</strong></td>
+          <td>Immediate liquidity & final settlement expense</td>
+          <td>$${finalExpense.toLocaleString()}</td>
+        </tr>
+        <tr>
+          <td><strong>Total Protection Floor</strong></td>
+          <td>Recommended Institutional Capital Need</td>
+          <td><strong>$${coverageFloor.toLocaleString()}</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="section-title">🛡️ 2. Institutional Contract Features</div>
+    <div class="callout">
+      <strong>Guaranteed 0% Floor Indexing:</strong> Cash accumulation is linked to top-tier benchmark indices (S&P 500) with a contractual 0% annual floor. In negative market years, your principal is completely shielded from market crashes.<br>
+      <strong>IRS Section 7702 Tax Status:</strong> Cash value growth compounds 100% tax-deferred, and policy loan distributions are exempt from federal income taxation under current statutory codes.
+    </div>
+
+    <div class="cta-box">
+      <p style="margin: 0 0 8px 0; font-size: 13px;">Ready to review your custom carrier illustration across your state?</p>
+      <a href="tel:18888873585">📞 Call Toll-Free: 1-888-887-3585</a> &bull; 
+      <a href="https://myiad.com/#ai-assessment">Schedule 15-Minute Diagnostic &rarr;</a>
+    </div>
+
+    <div class="footer">
+      <p>MyIAD (myiad.com) &bull; Licensed Nationwide 50-State Network &bull; Toll-Free: 1-888-887-3585</p>
+      <p style="font-size: 10px; color: #94A3B8;">Notice: Illustrative mathematical projection. Policy guarantees are backed by the financial strength of the issuing insurance carriers. Not individual legal or tax advice.</p>
+    </div>
+  </div>
+</body>
+</html>`;
+}

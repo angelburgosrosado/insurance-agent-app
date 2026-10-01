@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { MyIADNavbar } from "@/components/myiad/MyIADNavbar";
 import { MyIADHero } from "@/components/myiad/MyIADHero";
+import { MyIADAiAssessment } from "@/components/myiad/MyIADAiAssessment";
 import { MyIADOfferings } from "@/components/myiad/MyIADOfferings";
+import { MyIADBusinessDesign } from "@/components/myiad/MyIADBusinessDesign";
 import { MyIADProducerModules } from "@/components/myiad/MyIADProducerModules";
 import { MyIADLeadForm } from "@/components/myiad/MyIADLeadForm";
 import { MyIADTrustAndCompliance } from "@/components/myiad/MyIADTrustAndCompliance";
@@ -9,15 +11,17 @@ import { MyIADFooter } from "@/components/myiad/MyIADFooter";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://myiad.com"),
-  title: "MyIAD - Intelligent Insurance Advisory & Protection | Life, Health & Variable Annuities",
+  title: "MyIAD - Intelligent Insurance Advisory & Protection | AI Needs Assessment",
   description:
-    "MyIAD delivers precision financial protection: 0% floor Indexed Universal Life (IUL), comprehensive Health & Medicare solutions, and FINRA Rule 2330 compliant variable annuities.",
+    "MyIAD delivers precision financial protection: responsive AI insurance need assessment, 0% floor Indexed Universal Life (IUL), comprehensive Health & Medicare solutions, and FINRA Rule 2330 compliant variable annuities.",
   applicationName: "MyIAD",
   authors: [{ name: "Angel Burgos", url: "https://myiad.com" }],
   creator: "MyIAD & AB Global Consulting LLC",
   keywords: [
     "MyIAD",
+    "AI insurance assessment",
     "intelligent insurance advisory",
+    "insurance need calculator",
     "life insurance",
     "indexed universal life",
     "IUL",
@@ -27,15 +31,14 @@ export const metadata: Metadata = {
     "FINRA Rule 2330",
     "guaranteed lifetime withdrawal benefit",
     "veteran asset shield",
-    "Florida insurance broker",
-    "Puerto Rico insurance broker",
+    "agency distribution engine",
   ],
   openGraph: {
     type: "website",
     siteName: "MyIAD",
     title: "MyIAD - Intelligent Insurance Advisory & Protection",
     description:
-      "Institutional life insurance, comprehensive health coverage, and FINRA-supervised variable annuity solutions with licensed advisor consultation.",
+      "Interactive AI insurance need assessment, institutional wealth preservation, and modern agency distribution design.",
     url: "https://myiad.com",
     locale: "en_US",
   },
@@ -51,7 +54,7 @@ export default function MyIADLandingPage() {
     "@type": "FinancialService",
     name: "MyIAD - Intelligent Insurance Advisory & Protection",
     description:
-      "Licensed insurance advisory and wealth preservation firm specializing in Life Insurance (IUL, Term), Health Insurance, and FINRA Rule 2330 Variable Annuity solutions.",
+      "Licensed insurance advisory and wealth preservation firm specializing in AI Insurance Need Assessment, Life Insurance (IUL, Term), Health Insurance, and FINRA Rule 2330 Variable Annuity solutions.",
     url: "https://myiad.com",
     telephone: "+1-386-333-1482",
     address: {
@@ -74,7 +77,14 @@ export default function MyIADLandingPage() {
           "@type": "Offer",
           itemOffered: {
             "@type": "Service",
-            name: "Indexed Universal Life & Permanent Life Protection",
+            name: "Interactive AI Insurance Need Assessment & Gap Analysis",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Indexed Universal Life & Permanent Life Protection (0% Floor)",
           },
         },
         {
@@ -106,20 +116,27 @@ export default function MyIADLandingPage() {
       {/* Global Navigation */}
       <MyIADNavbar />
 
-      {/* Hero Section */}
+      {/* Main Content Sections */}
       <main className="flex-1">
+        {/* Hero Section */}
         <MyIADHero />
+
+        {/* Interactive AI Insurance Need Assessment Wizard (Web & Mobile) */}
+        <MyIADAiAssessment />
 
         {/* Three Core Offerings Architecture */}
         <MyIADOfferings />
 
-        {/* Producer & Audience Modules (ABGA-3) */}
+        {/* The MyIAD Business Design: Agency Distribution Engine */}
+        <MyIADBusinessDesign />
+
+        {/* Producer & Audience Modules */}
         <MyIADProducerModules />
 
-        {/* Streamlined Quote & Consultation Lead Routing Form (ABGA-5) */}
+        {/* Streamlined Quote & Consultation Lead Routing Form */}
         <MyIADLeadForm />
 
-        {/* FINRA Rule 2330 Compliance Protocol & Trust Signals (ABGA-4) */}
+        {/* FINRA Rule 2330 Compliance Protocol & Trust Signals */}
         <MyIADTrustAndCompliance />
       </main>
 

@@ -19,8 +19,18 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               <Link href="/admin" className="hover:text-secondary transition-colors">
                 Overview
               </Link>
+              <Link href="/admin/system" className="hover:text-secondary transition-colors font-bold text-emerald-800 flex items-center gap-1.5 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Operations</span>
+              </Link>
+              <Link href="/admin/verbiage" className="hover:text-secondary transition-colors">
+                Scripts &amp; Verbiage
+              </Link>
               <Link href="/admin/leads" className="hover:text-secondary transition-colors">
                 Leads
+              </Link>
+              <Link href="/admin/tasks" className="hover:text-secondary transition-colors">
+                Tasks
               </Link>
               <Link href="/admin/content" className="hover:text-secondary transition-colors">
                 Content

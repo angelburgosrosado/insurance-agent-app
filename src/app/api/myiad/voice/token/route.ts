@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { createRateLimiter, rateLimitResponse, requestClientKey } from "@/lib/server/rate-limit";
 
+import { resolveDeepgramApiKey, getDeepgramEnvKeys } from "@/lib/server/deepgram-env";
+
 const tokenRateLimiter = createRateLimiter({
   maxRequests: 30,
   windowMs: 60_000,
@@ -14,16 +16,14 @@ export async function POST(request: Request) {
       return rateLimitResponse(rateLimit);
     }
 
-    const apiKey =
-      process.env.DEEPGRAM_API_KEY ||
-      process.env.DEEPGRAM_KEY ||
-      process.env.NEXT_PUBLIC_DEEPGRAM_API_KEY;
+    const apiKey = resolveDeepgramApiKey();
     if (!apiKey) {
       return NextResponse.json(
         {
           ok: false,
           error: "DEEPGRAM_API_KEY is not configured on the server.",
           mode: "fallback",
+          detectedKeys: getDeepgramEnvKeys(),
         },
         { status: 503 }
       );

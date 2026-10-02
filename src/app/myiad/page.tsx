@@ -8,6 +8,7 @@ import { MyIADProducerModules } from "@/components/myiad/MyIADProducerModules";
 import { MyIADLeadForm } from "@/components/myiad/MyIADLeadForm";
 import { MyIADTrustAndCompliance } from "@/components/myiad/MyIADTrustAndCompliance";
 import { MyIADFooter } from "@/components/myiad/MyIADFooter";
+import { MyIADCopilot } from "@/components/myiad/MyIADCopilot";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://myiad.com"),
@@ -135,6 +136,9 @@ export default function MyIADLandingPage() {
 
       {/* Site Footer & Mandatory Disclosures */}
       <MyIADFooter />
+
+      {/* Floating Interactive AI Advisory Copilot */}
+      <MyIADCopilot />
     </div>
   );
 }

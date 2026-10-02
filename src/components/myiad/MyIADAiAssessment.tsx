@@ -13,9 +13,11 @@ import {
   Calendar,
   AlertCircle,
   Zap,
+  MessageSquare,
 } from "lucide-react";
 import { useQuoteAndLeadRouting } from "@/lib/hooks/useQuoteAndLeadRouting";
 import { CalendarBookingModal } from "@/components/CalendarBookingModal";
+import { generateScenarioDiagnostic, type AssessmentScenario } from "@/lib/myiad-ai-copilot";
 
 export function MyIADAiAssessment() {
   const goalId = useId();
@@ -54,6 +56,28 @@ export function MyIADAiAssessment() {
     estimatedMonthlySavings * 12 * ((Math.pow(1 + 0.068, yearsToRetirement) - 1) / 0.068)
   );
   const estimatedAnnualTaxFreeIncome = Math.round(projectedCashValueAt65 * 0.075);
+
+  const scenarioData: AssessmentScenario = {
+    goal,
+    age,
+    annualIncome,
+    dependents,
+    debt,
+    calculatedCoverageNeed,
+    projectedCashValueAt65,
+    estimatedAnnualTaxFreeIncome,
+  };
+  const diagnostic = generateScenarioDiagnostic(scenarioData, "en");
+
+  const handleAskCopilot = (customQuery?: string) => {
+    const event = new CustomEvent("open-myiad-copilot", {
+      detail: {
+        query: customQuery || diagnostic.suggestedPrompt,
+        scenario: scenarioData,
+      },
+    });
+    window.dispatchEvent(event);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -312,6 +336,83 @@ export function MyIADAiAssessment() {
                   />
                 </div>
               </div>
+
+              {/* Live AI Scenario Diagnostic Box */}
+              <div className="pt-6 border-t border-slate-800 space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-lg bg-teal-500/20 text-[#14B8A6] flex items-center justify-center">
+                      <Sparkles size={14} className="animate-pulse" />
+                    </div>
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-teal-400">
+                      AI Case Diagnostic & Vulnerability Audit
+                    </h4>
+                  </div>
+                  <span className="text-[10px] font-mono bg-blue-500/10 text-blue-300 border border-blue-500/30 px-2 py-0.5 rounded">
+                    IRC §7702 &bull; FINRA 2330
+                  </span>
+                </div>
+
+                {/* Executive Brief */}
+                <div className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700/80 text-xs text-slate-300 leading-relaxed space-y-2">
+                  <p className="font-bold text-white text-sm">{diagnostic.headline}</p>
+                  <p>{diagnostic.executiveSummary}</p>
+                </div>
+
+                {/* Identified Vulnerabilities */}
+                <div className="space-y-2">
+                  <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                    Identified Portfolio Vulnerabilities ({diagnostic.vulnerabilityGaps.length}):
+                  </p>
+                  <div className="grid grid-cols-1 gap-2">
+                    {diagnostic.vulnerabilityGaps.map((gap, i) => (
+                      <div
+                        key={i}
+                        className="p-3 rounded-xl bg-slate-950/60 border border-slate-800 flex items-start gap-2.5 text-xs text-slate-300"
+                      >
+                        <AlertCircle size={15} className="text-amber-400 shrink-0 mt-0.5" />
+                        <div>
+                          <span className="font-bold text-slate-100 block">{gap.title}</span>
+                          <span className="text-[11px] text-slate-400 mt-0.5 block">{gap.description}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Strategic Solution Pillars */}
+                <div className="space-y-2 pt-1">
+                  <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                    Recommended Protection Chassis:
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    {diagnostic.strategicPillars.map((pillar, i) => (
+                      <div
+                        key={i}
+                        className="p-2.5 rounded-xl bg-slate-800/50 border border-slate-700/70 text-[11px] text-slate-300"
+                      >
+                        <span className="text-[#14B8A6] font-bold block truncate">{pillar.name}</span>
+                        <span className="text-[10px] text-slate-400 font-mono block mt-0.5">
+                          {pillar.statutoryRef}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Ask Copilot Button Bridge */}
+                <button
+                  type="button"
+                  onClick={() => handleAskCopilot()}
+                  className="w-full py-3 px-4 rounded-xl bg-[#2563EB]/20 hover:bg-[#2563EB]/35 border border-blue-500/40 text-blue-200 hover:text-white text-xs font-bold transition-all flex items-center justify-between cursor-pointer group shadow"
+                >
+                  <div className="flex items-center gap-2">
+                    <MessageSquare size={14} className="text-[#14B8A6]" />
+                    <span>Discuss this scenario with MyIAD AI Copilot</span>
+                  </div>
+                  <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform text-[#14B8A6]" />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -346,6 +447,15 @@ export function MyIADAiAssessment() {
                   <span>Downside Volatility Risk:</span>
                   <strong className="text-emerald-400 font-bold">Guaranteed 0% Floor</strong>
                 </div>
+
+                <button
+                  type="button"
+                  onClick={() => handleAskCopilot(`How is the recommended $${(calculatedCoverageNeed / 1000).toFixed(0)},000 protection floor calculated for my age and debt?`)}
+                  className="w-full py-2 px-3 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 text-slate-300 hover:text-white text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <Sparkles size={12} className="text-[#14B8A6]" />
+                  <span>Explain this projection with AI Copilot &rarr;</span>
+                </button>
               </div>
 
               {/* Lead Unlock Form */}

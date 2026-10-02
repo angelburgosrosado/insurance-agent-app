@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ShieldCheck, Phone, Menu, X, ArrowRight } from "lucide-react";
+import { ShieldCheck, Phone, Menu, X, ArrowRight, Sparkles } from "lucide-react";
 
 export function MyIADNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -45,6 +45,16 @@ export function MyIADNavbar() {
             <a href="#compliance" className="hover:text-[#14B8A6] transition-colors">
               FINRA Rule 2330
             </a>
+            <button
+              type="button"
+              onClick={() => {
+                window.dispatchEvent(new CustomEvent("open-myiad-copilot", { detail: {} }));
+              }}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#14B8A6]/15 hover:bg-[#14B8A6]/25 border border-[#14B8A6]/40 text-[#14B8A6] hover:text-white transition-all text-xs font-bold cursor-pointer"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-[#14B8A6]" />
+              <span>AI Copilot</span>
+            </button>
           </nav>
 
           {/* Right Action Cluster */}
@@ -117,6 +127,17 @@ export function MyIADNavbar() {
             >
               FINRA Rule 2330 Compliance Protocol
             </a>
+            <button
+              type="button"
+              onClick={() => {
+                setMobileOpen(false);
+                window.dispatchEvent(new CustomEvent("open-myiad-copilot", { detail: {} }));
+              }}
+              className="w-full py-2.5 px-3 rounded-xl bg-[#14B8A6]/20 border border-[#14B8A6]/40 text-[#14B8A6] font-bold text-xs flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <Sparkles className="w-4 h-4 text-[#14B8A6]" />
+              <span>Launch MyIAD AI Copilot</span>
+            </button>
           </div>
           <div className="pt-4 border-t border-slate-800 flex flex-col gap-3">
             <a

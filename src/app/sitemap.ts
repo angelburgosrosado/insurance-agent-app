@@ -3,16 +3,40 @@ import { services } from '@/lib/content/services';
 import { resourceArticles } from '@/lib/content/resources';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://abglco.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://myiad.com';
   const now = new Date();
 
-  // Core static pages
+  // Core static & AI discovery routes
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: `${baseUrl}`,
       lastModified: now,
       changeFrequency: 'weekly',
       priority: 1.0,
+    },
+    {
+      url: `${baseUrl}/myiad`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 1.0,
+    },
+    {
+      url: 'https://myiad.com',
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 1.0,
+    },
+    {
+      url: 'https://myiad.com/llms.txt',
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: 'https://myiad.com/llms-full.txt',
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/about`,
@@ -116,4 +140,3 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [...staticRoutes, ...toolRoutes, ...resourceRoutes, ...serviceRoutes];
 }
-

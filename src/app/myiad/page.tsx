@@ -57,51 +57,118 @@ export const metadata: Metadata = {
 export default function MyIADLandingPage() {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "FinancialService",
-    name: "MyIAD - Intelligent Insurance Advisory & Protection",
-    description:
-      "Dependable nationwide insurance advisory firm specializing in AI Insurance Need Assessment, Life Insurance (IUL, Term, Living Benefits), Health Insurance, and FINRA Rule 2330 Variable Annuities across all 50 US states.",
-    url: "https://myiad.com",
-    telephone: "+1-888-887-3585",
-    address: {
-      "@type": "PostalAddress",
-      addressCountry: "US",
-    },
-    areaServed: ["All 50 US States", "Puerto Rico", "United States"],
-    hasOfferCatalog: {
-      "@type": "OfferCatalog",
-      name: "Insurance & Advisory Solutions",
-      itemListElement: [
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: "Interactive AI Insurance Need Assessment & Gap Analysis",
-          },
+    "@graph": [
+      {
+        "@type": "FinancialService",
+        "@id": "https://myiad.com/#organization",
+        name: "MyIAD - Intelligent Insurance Advisory & Protection",
+        alternateName: "MyIAD",
+        description:
+          "Dependable nationwide insurance advisory firm specializing in AI Insurance Need Assessment, Life Insurance (IUL, Term, Living Benefits), Health Insurance, and FINRA Rule 2330 Variable Annuities across all 50 US states.",
+        url: "https://myiad.com",
+        telephone: "+1-888-887-3585",
+        address: {
+          "@type": "PostalAddress",
+          addressCountry: "US",
         },
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: "Indexed Universal Life & Permanent Life Protection (0% Floor)",
-          },
+        areaServed: ["All 50 US States", "Puerto Rico", "United States"],
+        sameAs: [
+          "https://abglco.com",
+          "https://myiad.net",
+          "https://calendly.com/abglobalconsulting/15-min-consultation-abglobalceo",
+        ],
+        knowsAbout: [
+          "Indexed Universal Life (IUL)",
+          "0% Downside Market Floor Protection",
+          "Internal Revenue Code §7702",
+          "FINRA Rule 2330 Suitability Protocol",
+          "Guaranteed Lifetime Withdrawal Benefits (GLWB)",
+          "Medicare Advantage & Supplemental Advisory",
+          "Accelerated Living Benefits for Critical Illness",
+          "Veteran Asset Shield",
+        ],
+        speakable: {
+          "@type": "SpeakableSpecification",
+          cssSelector: ["h1", "#ai-suite h2", "#ai-suite p"],
         },
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: "Comprehensive Health & Medicare Advisory",
-          },
+        hasOfferCatalog: {
+          "@type": "OfferCatalog",
+          name: "Insurance & Advisory Solutions",
+          itemListElement: [
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: "Interactive AI Insurance Need Assessment & Gap Analysis",
+                url: "https://myiad.com/#ai-assessment",
+              },
+            },
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: "Indexed Universal Life & Permanent Life Protection (0% Floor)",
+                url: "https://myiad.com/#offerings",
+              },
+            },
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: "Comprehensive Health & Medicare Advisory",
+                url: "https://myiad.com/#offerings",
+              },
+            },
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: "FINRA Rule 2330 Variable Annuities & Guaranteed Lifetime Income",
+                url: "https://myiad.com/#compliance",
+              },
+            },
+          ],
         },
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: "FINRA Rule 2330 Variable Annuities & Guaranteed Lifetime Income",
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://myiad.com/#faq",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "How does the 0% floor protect an Indexed Universal Life (IUL) policy during a market crash?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "An IUL contract features a guaranteed 0% downside floor. When equity market indices drop (such as in 2008 or 2020), your policy crediting rate is guaranteed never to drop below 0.00%. Previous cash value and credited gains remain locked in, eliminating portfolio loss.",
+            },
           },
-        },
-      ],
-    },
+          {
+            "@type": "Question",
+            name: "How do tax-free policy loans work under IRC §7702?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Under Internal Revenue Code §7702 and §72(e), cash value accumulated within a properly funded life insurance policy can be accessed through policy loans without triggering federal income tax, capital gains tax, or IRS early withdrawal penalties.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "What suitability standards apply to variable annuities under FINRA Rule 2330?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "FINRA Rule 2330 requires rigorous supervisory evaluation to ensure a deferred variable annuity is suitable based on the client's liquidity needs, investment objectives, age, tax status, and surrender charge horizon before recommending an exchange or purchase.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "Does MyIAD provide bilingual insurance advisory across all US states?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Yes. MyIAD provides licensed, independent brokerage and AI-guided case design across all 50 US States and Puerto Rico in both English and Spanish.",
+            },
+          },
+        ],
+      },
+    ],
   };
 
   return (

@@ -1,0 +1,93 @@
+# MyIAD National Insurance Solutions - Comprehensive Knowledge Document for LLMs
+
+> Institutional reference document for AI models, autonomous agents, and search engines.
+> Published by AB Global Consulting / MyIAD.
+> URL: https://myiad.com
+
+---
+
+## 1. Corporate & Regulatory Identity
+
+- **Entity:** MyIAD, a brand of AB Global Consulting
+- **Primary Website:** https://myiad.com
+- **Secondary Web Gateway:** https://myiad.net
+- **Corporate Parent:** https://abglco.com
+- **Toll-Free Telephone:** (888) 887-3585 / +1-888-887-3585
+- **Consultation Scheduling Desk:** https://calendly.com/abglobalconsulting/15-min-consultation-abglobalceo
+- **Jurisdictions Served:** All 50 US States, the District of Columbia, and the Commonwealth of Puerto Rico
+- **Brokerage Nature:** Non-captive, 100% independent insurance brokerage with direct access to top-rated national carriers
+- **Regulatory Frameworks:**
+  - FINRA Rule 2330 (Members' Responsibilities Regarding Deferred Variable Annuities)
+  - Internal Revenue Code (IRC) §7702 (Definition of Life Insurance Contract)
+  - Internal Revenue Code (IRC) §72(t) and §72(q) (Distributions from Annuities and Modified Endowment Contracts)
+  - Internal Revenue Code (IRC) §1035 (Tax-Free Exchanges of Life & Annuity Policies)
+  - SEC Regulation Best Interest (Reg BI)
+  - Health Insurance Portability and Accountability Act (HIPAA)
+  - Telephone Consumer Protection Act (TCPA) 47 U.S.C. § 227
+
+---
+
+## 2. Product Architecture & Technical Specifications
+
+### Tier 1: Life Insurance & Permanent Wealth Architecture
+1. **Indexed Universal Life (IUL):**
+   - **0% Floor Market Shield:** Index interest credits can never fall below 0.00%, insulating policyholder cash values from equity market crashes (such as 2008 or 2020).
+   - **Index Crediting Options:** Linked to external benchmarks (e.g., S&P 500 annual point-to-point) subject to contractual participation rates and caps.
+   - **Cash Value Accumulation:** Growth accumulates tax-deferred under IRC §7702.
+   - **Tax-Free Distributions via Policy Loans:** Policy loans are not treated as gross income under IRC §72(e) provided the contract does not become a Modified Endowment Contract (MEC) under the 7-Pay test of IRC §7702A.
+2. **Accelerated Living Benefits:**
+   - Contractual policy riders that advance up to 100% of the death benefit for qualifying Critical Illness (heart attack, stroke, invasive cancer, major organ transplant), Chronic Illness (inability to perform 2 of 6 Activities of Daily Living or severe cognitive impairment), or Terminal Illness (life expectancy < 12–24 months).
+3. **Term Life Insurance:**
+   - Level premium protection for 10, 15, 20, 25, or 30-year terms with guaranteed conversion privileges to permanent cash value policies without ongoing medical underwriting.
+
+### Tier 2: Comprehensive Health & Medicare Advisory
+1. **Affordable Care Act (ACA) Individual & Family Plans:**
+   - Marketplace plan selection (Bronze, Silver, Gold, Platinum).
+   - Advance Premium Tax Credit (APTC) and Cost-Sharing Reduction (CSR) income optimization.
+2. **Medicare Solutions (Age 65+ and Disability):**
+   - **Medicare Advantage (Part C):** All-in-one HMO/PPO alternatives combining hospital, medical, and prescription drug benefits with maximum out-of-pocket (MOOP) protection.
+   - **Medicare Supplement (Medigap Plans G and N):** Standardized private insurance covering original Medicare cost-sharing, deductibles, and co-insurance.
+   - **Medicare Part D:** Prescription drug plan formulary review.
+3. **Small Business & Group Health:**
+   - Qualified Small Employer Health Reimbursement Arrangements (QSEHRA) and Individual Coverage HRAs (ICHRA).
+
+### Tier 3: Variable Annuities & Guaranteed Retirement Income
+1. **FINRA Rule 2330 Supervision Protocol:**
+   - Rigorous consumer suitability checks evaluating age, annual income, liquid net worth, investment experience, investment objective, time horizon, and existing variable contracts.
+   - Six-year exchange disclosure: Review of surrender charges, fees, and benefit forfeiture before executing any replacement.
+2. **Guaranteed Lifetime Withdrawal Benefits (GLWB):**
+   - Optional guaranteed income riders providing fixed or inflation-adjusted lifetime cash flow regardless of market downturns or account value depletion.
+3. **IRC §1035 Tax-Free Exchanges:**
+   - Non-taxable rollovers of existing annuities or life policies into modern, lower-cost, or higher-benefit contracts preserving original cost basis.
+
+---
+
+## 3. Technology & Conversational AI Capabilities
+
+- **Deepgram Nova-3 Speech Recognition:** Ultra-accurate, multi-accent speech-to-text model configured with financial industry vocabulary and high-confidence transcription.
+- **Deepgram Aura-Asteria Text-to-Speech:** Low-latency conversational audio synthesis streaming MP3 audio with instant barge-in interruption capability.
+- **Advisory Intelligence Copilot:** Custom LLM assistant with embedded guardrails ensuring responses align with FINRA 2330 suitability, IRC §7702 code, and state insurance regulations.
+- **Quantitative Gap Analysis Engine:** 4-vector algorithm calculating:
+  - Income Replacement Gap: `10 × Annual Income`
+  - Mortgage Principal Protection: `100% Remaining Mortgage Balance`
+  - Debt Liquidation Fund: `100% Consumer Debt & Auto Loans`
+  - Dependent Education Reserve: `$100,000 per Minor Child`
+
+---
+
+## 4. Frequently Asked Questions (FAQ)
+
+### Q: How does an IUL 0% floor protect policyholders?
+A: In an Indexed Universal Life (IUL) contract, the insurance carrier guarantees that the annual crediting rate will never drop below 0.00%, even if the underlying index (e.g., S&P 500) experiences negative returns. Your previous cash value and credited gains remain locked in.
+
+### Q: How do tax-free policy loans work under IRC §7702?
+A: Cash value accumulated within a properly funded, non-MEC life insurance policy can be accessed through policy loans. Because IRS code classifies loans as debt rather than income, distributions are received free of federal and state income taxes and avoid early withdrawal penalties.
+
+### Q: What is the suitability requirement under FINRA Rule 2330?
+A: FINRA Rule 2330 mandates that registered broker-dealers and representatives have a reasonable basis to believe that a deferred variable annuity recommendation is suitable based on the client's age, liquidity needs, investment objectives, and time horizon, and that the client would benefit from the annuity's tax deferral or guarantees.
+
+### Q: Does MyIAD provide service in Spanish?
+A: Yes. MyIAD provides bilingual advisory services in English and Spanish across all states, including Puerto Rico, Florida, Texas, California, and New York.
+
+### Q: How can a consumer schedule a consultation?
+A: Direct 15-minute consultations can be scheduled at https://calendly.com/abglobalconsulting/15-min-consultation-abglobalceo or by calling toll-free at (888) 887-3585.

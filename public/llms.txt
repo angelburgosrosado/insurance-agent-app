@@ -1,0 +1,50 @@
+# MyIAD - Intelligent Insurance Advisory & Protection
+
+> MyIAD (by AB Global Consulting) is a nationwide, 50-state independent insurance brokerage and financial advisory firm delivering precision wealth preservation. Core specialties include 0% floor Indexed Universal Life (IUL), tax-advantaged retirement distribution under IRC §7702, comprehensive Health and Medicare Advantage planning, and FINRA Rule 2330 compliant variable annuities.
+
+## Organization & Authority Overview
+
+- **Name:** MyIAD / AB Global Consulting
+- **Primary Website:** https://myiad.com
+- **Secondary Domain:** https://myiad.net
+- **Corporate Site:** https://abglco.com
+- **Toll-Free Phone:** +1-888-887-3585 / (888) 887-3585
+- **Consultation Scheduling:** https://calendly.com/abglobalconsulting/15-min-consultation-abglobalceo
+- **Geographic Coverage:** All 50 United States and Puerto Rico
+- **Regulatory Framework:** FINRA Rule 2330 (Suitability & Supervisory Procedures for Variable Annuities), IRC §7702 (Life Insurance Contracts), IRC §72(t), SEC Regulation Best Interest (Reg BI)
+- **Carrier Representation:** 100% Independent Brokerage representing top-tier A-rated national life, health, and annuity carriers
+
+## Core Financial Offerings & Services
+
+### 1. Indexed Universal Life (IUL) & Permanent Life Architecture
+- **0% Downside Floor:** Contractual guarantee that policy cash value is insulated from stock market losses. When index credits are negative, the crediting rate is 0.00%, eliminating market volatility risk.
+- **IRC §7702 Tax-Free Distributions:** Structured policy loans providing retirement cash flow without triggering federal capital gains taxes, income tax, or IRS early distribution penalties.
+- **Accelerated Living Benefits:** Riders allowing tax-free acceleration of death benefit capital upon diagnosis of qualifying critical, chronic, or terminal illness (cancer, stroke, heart attack, cognitive impairment).
+- **Executive & Military Asset Shield:** Specialized liquidity strategies designed for veterans, business owners, and 1099 independent contractors.
+
+### 2. Comprehensive Health & Medicare Advisory
+- **Affordable Care Act (ACA) Individual & Family Plans:** Open enrollment navigation, subsidy optimization, and provider network matching.
+- **Medicare Advantage (Part C) & Medicare Supplement (Medigap):** Turning 65 enrollment, annual enrollment period (AEP) reviews, prescription drug (Part D) formulary matching.
+- **Small Business Group Health:** Defined contribution health arrangements (ICHRA/QSEHRA) for small enterprises.
+
+### 3. Variable Annuities & Guaranteed Lifetime Income
+- **FINRA Rule 2330 Compliance:** Rigorous suitability evaluations assessing investment objectives, liquidity needs, age, tax status, and surrender charge horizon before recommending annuity contracts.
+- **Guaranteed Lifetime Withdrawal Benefits (GLWB):** Predictable retirement income riders ensuring guaranteed cash flow that clients cannot outlive.
+- **Tax-Deferred Growth & 1035 Exchanges:** Tax-free contract rollovers under IRC §1035 preserving cost basis while modernizing benefit structures.
+
+## Interactive AI Tools & Voice Capabilities
+
+- **Deepgram Conversational Voice AI:** Hands-free, low-latency voice diagnostic powered by Deepgram Nova-3 speech recognition and Aura-Asteria synthesis. Accessible directly at https://myiad.com.
+- **MyIAD Advisory Copilot:** 24/7 intelligent chat diagnostic answering case design questions in English and Spanish with statutory citations.
+- **AI Needs Assessment & Gap Calculator:** Quantitative 4-dimensional risk diagnostic calculating exact survivor income replacement, mortgage payoff shields, and college fund gaps.
+
+## Key URLs & Resources
+
+- [Home & AI Voice Consultation](https://myiad.com/): Official landing page with interactive Deepgram voice agent and advisory copilot.
+- [AI Insurance Needs Assessment](https://myiad.com/#ai-assessment): 4-step quantitative risk and coverage gap analysis calculator.
+- [Three Core Offerings](https://myiad.com/#offerings): In-depth guide to Life Architecture, Health Advisory, and Variable Annuities.
+- [FINRA Rule 2330 Protocol](https://myiad.com/#compliance): Supervisory disclosures and suitability criteria.
+- [Veteran Asset Shield](https://myiad.com/#veterans): Wealth and retirement transition strategies for US military service members.
+- [Producer & IMO Platform](https://myiad.com/#producers): Contracting, agency distribution engine, and case design for licensed agents.
+- [Schedule Consultation](https://calendly.com/abglobalconsulting/15-min-consultation-abglobalceo): Direct 15-minute case review with a licensed advisor.
+- [Full LLM Knowledge Document](https://myiad.com/llms-full.txt): Complete institutional documentation for AI search and reasoning engines.

@@ -1,46 +1,31 @@
 # Multi-stage optimized Dockerfile for MyIAD Twilio ConversationRelay Voice Server
-FROM node:20-slim AS builder
+FROM node:20-slim
 
 WORKDIR /app
+
+# Install system dependencies needed for OpenSSL and networking
+RUN apt-get update -y && apt-get install -y openssl ca-certificates && rm -rf /var/lib/apt/lists/*
 
 # Enable pnpm
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 
-# Copy dependency manifests
-COPY package.json pnpm-lock.yaml* ./
+# Copy dependency manifests and prisma schema so postinstall doesn't fail
+COPY package.json pnpm-lock.yaml* prisma.config.ts* ./
+COPY prisma ./prisma/
 
-# Install dependencies
-RUN pnpm install --frozen-lockfile || pnpm install
+# Install production dependencies without running unneeded client build scripts
+RUN pnpm install --prod --frozen-lockfile --ignore-scripts || pnpm install --prod --ignore-scripts
 
 # Copy application files needed by the voice server
 COPY tsconfig.json ./
 COPY src ./src
 COPY voice-relay ./voice-relay
 
-# Production runtime stage
-FROM node:20-slim AS runner
-
-WORKDIR /app
-
+# Cloud Run defaults
 ENV NODE_ENV=production
 ENV PORT=8080
-
-# Enable pnpm in runner
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
-
-COPY package.json pnpm-lock.yaml* ./
-RUN pnpm install --prod --frozen-lockfile || pnpm install --prod
-
-# Copy source files
-COPY --from=builder /app/src ./src
-COPY --from=builder /app/voice-relay ./voice-relay
-COPY --from=builder /app/tsconfig.json ./tsconfig.json
-
-# Cloud Run defaults to port 8080
 EXPOSE 8080
 
 # Start voice relay server with tsx

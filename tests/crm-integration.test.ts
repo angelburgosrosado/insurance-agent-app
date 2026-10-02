@@ -108,6 +108,15 @@ test("CRM Integration - /api/webhooks/leads verifies HMAC signature when secret 
   delete process.env.CRM_MYIAD_WEBHOOK_SECRET;
 });
 
+test("CRM Integration - proxy.ts rewrites crm.myiad.com to /crm", () => {
+  const req = new NextRequest("https://crm.myiad.com/");
+  const res = proxy(req);
+
+  assert.ok(res);
+  const rewriteHeader = res.headers.get("x-middleware-rewrite");
+  assert.ok(rewriteHeader?.includes("/crm"), "Must rewrite crm.myiad.com root to /crm");
+});
+
 test("CRM Integration - proxy.ts rewrites crm.myiad.net to /crm showcase", () => {
   // crm.myiad.net root
   const req = new NextRequest("https://crm.myiad.net/");
@@ -128,14 +137,19 @@ test("CRM Integration - proxy.ts preserves API webhook paths on crm.myiad.net", 
   assert.equal(rewriteHeader, null, "API routes on crm.myiad.net should pass through without rewrite");
 });
 
-test("CRM Integration - vercel.json contains crm.myiad.net rewrite to /crm", () => {
+test("CRM Integration - vercel.json contains crm.myiad.com and crm.myiad.net rewrites to /crm", () => {
   const vercelConfig = JSON.parse(
     fs.readFileSync(path.resolve(process.cwd(), "vercel.json"), "utf-8")
   );
 
-  const crmRewrite = vercelConfig.rewrites.find(
-    (r: any) => r.source === "/" && r.destination === "/crm"
+  const crmComRewrite = vercelConfig.rewrites.find(
+    (r: any) => r.source === "/" && r.destination === "/crm" && r.has?.[0]?.value === "crm\\.myiad\\.com"
   );
-  assert.ok(crmRewrite, "vercel.json must have rewrite for crm.myiad.net to /crm");
-  assert.equal(crmRewrite.has[0].value, "crm\\.myiad\\.net");
+  assert.ok(crmComRewrite, "vercel.json must have rewrite for crm.myiad.com to /crm");
+
+  const crmNetRewrite = vercelConfig.rewrites.find(
+    (r: any) => r.source === "/" && r.destination === "/crm" && r.has?.[0]?.value === "crm\\.myiad\\.net"
+  );
+  assert.ok(crmNetRewrite, "vercel.json must have rewrite for crm.myiad.net to /crm");
 });
+

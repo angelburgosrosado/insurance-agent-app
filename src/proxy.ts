@@ -11,11 +11,14 @@ export function proxy(request: NextRequest) {
 
   // Support test environment simulation via query parameter or header
   const isCrmDomain =
+    host.includes("crm.myiad.com") ||
     host.includes("crm.myiad.net") ||
+    searchParams.get("domain") === "crm.myiad.com" ||
     searchParams.get("domain") === "crm.myiad.net" ||
+    request.headers.get("x-mock-host") === "crm.myiad.com" ||
     request.headers.get("x-mock-host") === "crm.myiad.net";
 
-  // 1. Direct crm.myiad.net traffic to the CRM Showcase & Portal
+  // 1. Direct crm.myiad.com & crm.myiad.net traffic to the CRM Portal
   if (isCrmDomain) {
     // Preserve API routes, static assets, and favicon
     if (
@@ -36,9 +39,9 @@ export function proxy(request: NextRequest) {
     }
   }
 
-  // 2. Rewrite myiad.com root to /myiad landing page
+  // 2. Rewrite myiad.com root to /myiad landing page (excluding crm.myiad.com)
   const isMyIADDomain =
-    host.includes("myiad.com") ||
+    (host.includes("myiad.com") && !host.includes("crm.myiad.com")) ||
     searchParams.get("domain") === "myiad.com" ||
     request.headers.get("x-mock-host") === "myiad.com";
 

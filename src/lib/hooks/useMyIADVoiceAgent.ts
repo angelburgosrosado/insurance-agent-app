@@ -41,7 +41,28 @@ export function useMyIADVoiceAgent(scenarioContext?: AssessmentScenario) {
     }
 
     return () => {
-      stopSession();
+      if (currentAudioElementRef.current) {
+        currentAudioElementRef.current.pause();
+        currentAudioElementRef.current.src = "";
+        currentAudioElementRef.current = null;
+      }
+      if (mediaRecorderRef.current && mediaRecorderRef.current.state !== "inactive") {
+        try {
+          mediaRecorderRef.current.stop();
+        } catch {
+          // ignore cleanup errors
+        }
+      }
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => track.stop());
+        streamRef.current = null;
+      }
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      if (audioContextRef.current && audioContextRef.current.state !== "closed") {
+        void audioContextRef.current.close().catch(() => {});
+      }
     };
   }, []);
 
@@ -205,6 +226,7 @@ export function useMyIADVoiceAgent(scenarioContext?: AssessmentScenario) {
         // Speak the clean answer back to the user
         await speakText(answerText);
       } catch (err: unknown) {
+        console.warn("[Voice Agent] Advisory response error:", err);
         setErrorMessage("Error processing advisory intelligence response.");
         setStatus("idle");
       }

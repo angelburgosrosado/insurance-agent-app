@@ -5,11 +5,9 @@ import {
   Mic,
   MicOff,
   Volume2,
-  VolumeX,
   X,
   Sparkles,
   Radio,
-  ArrowRight,
   Calendar,
   Phone,
   Lock,
@@ -38,12 +36,10 @@ export function MyIADVoiceModal({
     errorMessage,
     conversation,
     audioVolume,
-    isSupported,
     startListening,
     stopListening,
     interrupt,
     stopSession,
-    speakText,
   } = useMyIADVoiceAgent(scenario);
 
   const scrollRef = useRef<HTMLDivElement>(null);

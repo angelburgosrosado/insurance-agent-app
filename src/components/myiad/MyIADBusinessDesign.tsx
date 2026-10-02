@@ -10,10 +10,7 @@ import {
   CheckCircle2,
   Building2,
   Users,
-  Send,
   AlertCircle,
-  Briefcase,
-  FileCheck2,
 } from "lucide-react";
 
 export function MyIADBusinessDesign() {

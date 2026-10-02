@@ -1,20 +1,14 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   Sparkles,
   X,
   Send,
-  ShieldCheck,
   ArrowRight,
   RefreshCw,
-  Calendar,
   Lock,
-  ChevronDown,
-  MessageSquare,
-  Zap,
   Mic,
-  Volume2,
 } from "lucide-react";
 import type { CopilotMessage, AssessmentScenario } from "@/lib/myiad-ai-copilot";
 
@@ -85,6 +79,72 @@ I can provide precision analysis on:
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const sendMessage = useCallback(
+    async (textToSend: string, scenarioContext?: AssessmentScenario) => {
+      const trimmed = textToSend.trim();
+      if (!trimmed || isLoading) return;
+
+      const userMsg: CopilotMessage = {
+        id: `msg_user_${Date.now()}`,
+        role: "user",
+        content: trimmed,
+        timestamp: new Date().toISOString(),
+      };
+
+      setMessages((prev) => [...prev, userMsg]);
+      setInput("");
+      setIsLoading(true);
+
+      try {
+        const res = await fetch("/api/myiad/copilot", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            query: trimmed,
+            history: messages.slice(-6),
+            scenario: scenarioContext || activeScenario,
+            lang,
+          }),
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data?.error || "Error contacting copilot engine");
+        }
+
+        const botMsg: CopilotMessage = {
+          id: `msg_bot_${Date.now()}`,
+          role: "assistant",
+          content: data.answer,
+          timestamp: new Date().toISOString(),
+          suggestedPrompts: data.suggestedPrompts || [],
+          actionCta: data.actionCta,
+        };
+
+        setMessages((prev) => [...prev, botMsg]);
+      } catch (err: unknown) {
+        console.error("[MyIAD Copilot] Message transmission error:", err);
+        const fallbackContent =
+          lang === "es"
+            ? "⚠️ No se pudo conectar con el motor de IA en este momento. Por favor llame a nuestra línea sin costo al **(888) 887-3585** para hablar directamente con un asesor con licencia."
+            : "⚠️ Unable to connect to the advisory engine. Please call our toll-free specialist desk at **(888) 887-3585** for immediate assistance.";
+
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `msg_err_${Date.now()}`,
+            role: "assistant",
+            content: fallbackContent,
+            timestamp: new Date().toISOString(),
+          },
+        ]);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [isLoading, messages, activeScenario, lang]
+  );
+
   // Listen for custom global events to trigger copilot from anywhere on page
   useEffect(() => {
     const handleOpenCopilot = (e: Event) => {
@@ -94,7 +154,7 @@ I can provide precision analysis on:
         setActiveScenario(customEvent.detail.scenario);
       }
       if (customEvent.detail?.query) {
-        sendMessage(customEvent.detail.query, customEvent.detail.scenario);
+        void sendMessage(customEvent.detail.query, customEvent.detail.scenario);
       }
     };
 
@@ -102,75 +162,13 @@ I can provide precision analysis on:
     return () => {
       window.removeEventListener("open-myiad-copilot" as any, handleOpenCopilot);
     };
-  }, [lang]);
+  }, [sendMessage]);
 
   useEffect(() => {
     if (isOpen) {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages, isOpen]);
-
-  const sendMessage = async (textToSend: string, scenarioContext?: AssessmentScenario) => {
-    const trimmed = textToSend.trim();
-    if (!trimmed || isLoading) return;
-
-    const userMsg: CopilotMessage = {
-      id: `msg_user_${Date.now()}`,
-      role: "user",
-      content: trimmed,
-      timestamp: new Date().toISOString(),
-    };
-
-    setMessages((prev) => [...prev, userMsg]);
-    setInput("");
-    setIsLoading(true);
-
-    try {
-      const res = await fetch("/api/myiad/copilot", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          query: trimmed,
-          history: messages.slice(-6),
-          scenario: scenarioContext || activeScenario,
-          lang,
-        }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data?.error || "Error contacting copilot engine");
-      }
-
-      const botMsg: CopilotMessage = {
-        id: `msg_bot_${Date.now()}`,
-        role: "assistant",
-        content: data.answer,
-        timestamp: new Date().toISOString(),
-        suggestedPrompts: data.suggestedPrompts || [],
-        actionCta: data.actionCta,
-      };
-
-      setMessages((prev) => [...prev, botMsg]);
-    } catch (err: unknown) {
-      const fallbackContent =
-        lang === "es"
-          ? "⚠️ No se pudo conectar con el motor de IA en este momento. Por favor llame a nuestra línea sin costo al **(888) 887-3585** para hablar directamente con un asesor con licencia."
-          : "⚠️ Unable to connect to the advisory engine. Please call our toll-free specialist desk at **(888) 887-3585** for immediate assistance.";
-
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: `msg_err_${Date.now()}`,
-          role: "assistant",
-          content: fallbackContent,
-          timestamp: new Date().toISOString(),
-        },
-      ]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleActionClick = (action: string) => {
     if (action === "schedule_call") {

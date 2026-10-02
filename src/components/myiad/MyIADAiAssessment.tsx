@@ -8,14 +8,12 @@ import {
   Calculator,
   ArrowRight,
   CheckCircle2,
-  Lock,
   Phone,
   Calendar,
   AlertCircle,
   Zap,
   MessageSquare,
 } from "lucide-react";
-import { useQuoteAndLeadRouting } from "@/lib/hooks/useQuoteAndLeadRouting";
 import { CalendarBookingModal } from "@/components/CalendarBookingModal";
 import { generateScenarioDiagnostic, type AssessmentScenario } from "@/lib/myiad-ai-copilot";
 

@@ -58,7 +58,7 @@ export function generateScenarioDiagnostic(
   lang: "en" | "es" = "en"
 ): ScenarioDiagnosticResult {
   const isSpanish = lang === "es";
-  const { age, annualIncome, dependents, debt, goal } = scenario;
+  const { age, annualIncome, dependents, debt } = scenario;
 
   const yearsToRetirement = Math.max(5, 65 - age);
   const incomeReplacement = annualIncome * Math.min(10, Math.max(5, yearsToRetirement));
@@ -92,8 +92,8 @@ export function generateScenarioDiagnostic(
   }).format(taxFreeIncome);
 
   if (isSpanish) {
-    let headline = `Diagnóstico de Protección y Crecimiento Patrimonial (${age} años)`;
-    let executiveSummary = `A sus ${age} años con ingresos de $${annualIncome.toLocaleString()}/año y ${dependents} dependientes, su modelo de necesidad patrimonial requiere una cobertura total de ${formattedCoverage}. Con ${yearsToRetirement} años hacia la jubilación, la acumulación estructurada puede proyectar ${formattedCashValue} en valor en efectivo y ${formattedTaxFreeIncome}/año en ingresos libres de impuestos federales bajo el Artículo IRC §7702.`;
+    const headline = `Diagnóstico de Protección y Crecimiento Patrimonial (${age} años)`;
+    const executiveSummary = `A sus ${age} años con ingresos de $${annualIncome.toLocaleString()}/año y ${dependents} dependientes, su modelo de necesidad patrimonial requiere una cobertura total de ${formattedCoverage}. Con ${yearsToRetirement} años hacia la jubilación, la acumulación estructurada puede proyectar ${formattedCashValue} en valor en efectivo y ${formattedTaxFreeIncome}/año en ingresos libres de impuestos federales bajo el Artículo IRC §7702.`;
 
     const vulnerabilityGaps: VulnerabilityGap[] = [];
     if (debt > 150000) {
@@ -151,8 +151,8 @@ export function generateScenarioDiagnostic(
   }
 
   // English
-  let headline = `Protection & Wealth Preservation Diagnostic (Age ${age})`;
-  let executiveSummary = `At age ${age} with $${annualIncome.toLocaleString()}/yr earnings and ${dependents} dependent(s), your capitalized family protection baseline indicates a target need of ${formattedCoverage}. Over your remaining ${yearsToRetirement}-year accumulation runway, an institutional IUL structure projects ${formattedCashValue} in policy cash value at age 65, generating up to ${formattedTaxFreeIncome}/yr in federal income-tax-free distributions under IRC §7702.`;
+  const headline = `Protection & Wealth Preservation Diagnostic (Age ${age})`;
+  const executiveSummary = `At age ${age} with $${annualIncome.toLocaleString()}/yr earnings and ${dependents} dependent(s), your capitalized family protection baseline indicates a target need of ${formattedCoverage}. Over your remaining ${yearsToRetirement}-year accumulation runway, an institutional IUL structure projects ${formattedCashValue} in policy cash value at age 65, generating up to ${formattedTaxFreeIncome}/yr in federal income-tax-free distributions under IRC §7702.`;
 
   const vulnerabilityGaps: VulnerabilityGap[] = [];
   if (debt > 150000) {

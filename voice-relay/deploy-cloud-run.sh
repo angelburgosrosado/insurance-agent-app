@@ -7,7 +7,18 @@ set -euo pipefail
 SERVICE_NAME="${SERVICE_NAME:-myiad-voice-relay}"
 REGION="${GCP_REGION:-us-central1}"
 ANGEL_DIRECT_PHONE="${ANGEL_DIRECT_PHONE:-+13863331482}"
-TWILIO_PHONE_NUMBER="${TWILIO_PHONE_NUMBER:-+18888873585}"
+
+# Normalize Twilio number to E.164 (+18888873585) if provided as 18888873585
+RAW_TWILIO="${TWILIO_PHONE_NUMBER:-18888873585}"
+CLEAN_TWILIO=$(echo "$RAW_TWILIO" | tr -cd '0-9')
+if [[ ${#CLEAN_TWILIO} -eq 10 ]]; then
+  TWILIO_PHONE_NUMBER="+1${CLEAN_TWILIO}"
+elif [[ ${#CLEAN_TWILIO} -eq 11 && $CLEAN_TWILIO == 1* ]]; then
+  TWILIO_PHONE_NUMBER="+${CLEAN_TWILIO}"
+else
+  TWILIO_PHONE_NUMBER="+18888873585"
+fi
+
 GEMINI_API_KEY="${GEMINI_API_KEY:-}"
 
 echo "=========================================================="
@@ -15,7 +26,8 @@ echo "🚀 Deploying MyIAD Twilio Voice Relay to Google Cloud Run"
 echo "=========================================================="
 echo "Service:  $SERVICE_NAME"
 echo "Region:   $REGION"
-echo "Target:   $ANGEL_DIRECT_PHONE"
+echo "Twilio:   $TWILIO_PHONE_NUMBER (1-888-887-3585)"
+echo "Angel:    $ANGEL_DIRECT_PHONE"
 echo ""
 
 # Verify gcloud CLI is available
@@ -31,12 +43,17 @@ if [ -z "$PROJECT_ID" ]; then
   exit 1
 fi
 
-echo "Deploying in project: $PROJECT_ID..."
+echo "Active Project: $PROJECT_ID"
+IMAGE_TAG="gcr.io/${PROJECT_ID}/${SERVICE_NAME}"
 
-# Build and deploy from source using voice-relay/Dockerfile
+echo ""
+echo "📦 Step 1: Building container image via Google Cloud Build..."
+gcloud builds submit --config voice-relay/cloudbuild.yaml .
+
+echo ""
+echo "🚢 Step 2: Deploying container image to Cloud Run..."
 gcloud run deploy "$SERVICE_NAME" \
-  --source . \
-  --dockerfile voice-relay/Dockerfile \
+  --image "$IMAGE_TAG" \
   --platform managed \
   --region "$REGION" \
   --allow-unauthenticated \
@@ -53,18 +70,25 @@ gcloud run deploy "$SERVICE_NAME" \
 SERVICE_URL=$(gcloud run services describe "$SERVICE_NAME" --platform managed --region "$REGION" --format 'value(status.url)')
 DOMAIN_CLEAN=$(echo "$SERVICE_URL" | sed -e 's|^https://||' -e 's|/$||')
 
+# Update SERVER_DOMAIN env variable in Cloud Run with the real domain
+gcloud run services update "$SERVICE_NAME" \
+  --platform managed \
+  --region "$REGION" \
+  --update-env-vars "SERVER_DOMAIN=${DOMAIN_CLEAN}" > /dev/null 2>&1 || true
+
 echo ""
 echo "=========================================================="
 echo "✅ Deployment Successful!"
 echo "=========================================================="
 echo "Service URL:       $SERVICE_URL"
 echo "Domain:            $DOMAIN_CLEAN"
+echo "Twilio Number:     $TWILIO_PHONE_NUMBER"
 echo ""
-echo "📞 Twilio Configuration:"
+echo "📞 Final Step: Configure Twilio Console:"
 echo "1. Go to Twilio Console -> Phone Numbers -> Manage -> Active Numbers."
-echo "2. Select your toll-free number ($TWILIO_PHONE_NUMBER)."
-echo "3. Under 'Voice Configuration', set 'A CALL COMES IN' to:"
-echo "   - Webhook (POST): $SERVICE_URL/voice/incoming"
-echo "4. Under 'Status Callback' or Hand-off, you can also monitor calls."
-echo "5. Save changes in Twilio Console."
+echo "2. Select your number: $TWILIO_PHONE_NUMBER (18888873585)"
+echo "3. Under 'Voice Configuration':"
+echo "   - 'A CALL COMES IN': Webhook"
+echo "   - URL (POST): $SERVICE_URL/voice/incoming"
+echo "4. Click Save."
 echo "=========================================================="

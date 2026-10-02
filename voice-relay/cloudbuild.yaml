@@ -1,0 +1,7 @@
+steps:
+  # Build the container image using the voice-relay Dockerfile
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/myiad-voice-relay', '-f', 'voice-relay/Dockerfile', '.']
+
+images:
+  - 'gcr.io/$PROJECT_ID/myiad-voice-relay'

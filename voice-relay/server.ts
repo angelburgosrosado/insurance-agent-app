@@ -7,11 +7,18 @@ import { myiadDict } from "../src/lib/i18n/myiad-dict";
 
 const { VoiceResponse } = twiml;
 
-// Configuration
-const PORT = Number(process.env.PORT) || 3000;
+function formatE164(phone: string): string {
+  const digits = phone.replace(/\D/g, "");
+  if (digits.length === 10) return `+1${digits}`;
+  if (digits.length === 11 && digits.startsWith("1")) return `+${digits}`;
+  return phone.startsWith("+") ? phone : `+${phone}`;
+}
+
+// Configuration: Default port 3001 avoids conflict with Next.js (port 3000)
+const PORT = Number(process.env.PORT) || 3001;
 const SERVER_DOMAIN = process.env.SERVER_DOMAIN || "voice.myiad.com";
-const ANGEL_DIRECT_PHONE = process.env.ANGEL_DIRECT_PHONE || "+13863331482";
-const TWILIO_PHONE_NUMBER = process.env.TWILIO_PHONE_NUMBER || "+18888873585";
+const ANGEL_DIRECT_PHONE = formatE164(process.env.ANGEL_DIRECT_PHONE || "+13863331482");
+const TWILIO_PHONE_NUMBER = formatE164(process.env.TWILIO_PHONE_NUMBER || "18888873585");
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "";
 
 const app = express();

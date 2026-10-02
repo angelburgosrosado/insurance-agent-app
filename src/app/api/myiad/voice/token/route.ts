@@ -14,7 +14,10 @@ export async function POST(request: Request) {
       return rateLimitResponse(rateLimit);
     }
 
-    const apiKey = process.env.DEEPGRAM_API_KEY;
+    const apiKey =
+      process.env.DEEPGRAM_API_KEY ||
+      process.env.DEEPGRAM_KEY ||
+      process.env.NEXT_PUBLIC_DEEPGRAM_API_KEY;
     if (!apiKey) {
       return NextResponse.json(
         {

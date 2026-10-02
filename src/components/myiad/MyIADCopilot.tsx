@@ -11,6 +11,7 @@ import {
   Mic,
 } from "lucide-react";
 import type { CopilotMessage, AssessmentScenario } from "@/lib/myiad-ai-copilot";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface MyIADCopilotProps {
   initialScenario?: AssessmentScenario;
@@ -23,13 +24,20 @@ export function MyIADCopilot({
   onScheduleClick,
   onRequestQuoteClick,
 }: MyIADCopilotProps) {
+  const { lang: globalLang } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
-  const [lang, setLang] = useState<"en" | "es">("en");
+  const [lang, setLang] = useState<"en" | "es">(globalLang || "en");
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [activeScenario, setActiveScenario] = useState<AssessmentScenario | undefined>(
     initialScenario
   );
+
+  useEffect(() => {
+    if (globalLang) {
+      setLang(globalLang);
+    }
+  }, [globalLang]);
 
   const initialWelcome =
     lang === "es"

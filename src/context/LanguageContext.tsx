@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 import { dictionary } from "@/lib/i18n/translations";
+import { myiadDict } from "@/lib/i18n/myiad-dict";
 
 export type Language = "en" | "es";
 
@@ -47,12 +48,27 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   };
 
   const t = (key: string): string => {
+    // 1. Check MyIAD dictionary for current language
+    const myiadLang = (myiadDict as Record<string, Record<string, string>>)[lang];
+    if (myiadLang && myiadLang[key]) {
+      return myiadLang[key];
+    }
+    // 2. Check general dictionary for current language
     const langDict = (dictionary as Record<string, Record<string, string>>)[lang];
     if (langDict && langDict[key]) {
       return langDict[key];
     }
+    // 3. Fallback to English MyIAD dictionary
+    const myiadEn = myiadDict.en as Record<string, string>;
+    if (myiadEn && myiadEn[key]) {
+      return myiadEn[key];
+    }
+    // 4. Fallback to English general dictionary
     const enDict = dictionary.en as Record<string, string>;
-    return enDict[key] || key;
+    if (enDict && enDict[key]) {
+      return enDict[key];
+    }
+    return key;
   };
 
   return (
@@ -71,7 +87,13 @@ export function useLanguage() {
       language: "en" as Language,
       setLang: () => {},
       setLanguage: () => {},
-      t: (k: string) => k,
+      t: (k: string) => {
+        const myiadVal = (myiadDict.en as Record<string, string>)[k];
+        if (myiadVal) return myiadVal;
+        const dictVal = (dictionary.en as Record<string, string>)[k];
+        if (dictVal) return dictVal;
+        return k;
+      },
     };
   }
   return context;

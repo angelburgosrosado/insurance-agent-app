@@ -13,9 +13,11 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import { myiadDict } from "@/lib/i18n/myiad-dict";
 
 export function MyIADBusinessDesign() {
-  const { t } = useLanguage();
+  const { lang } = useLanguage();
+  const d = myiadDict[lang] || myiadDict.en;
   const [partnerName, setPartnerName] = useState("");
   const [agencyName, setAgencyName] = useState("");
   const [email, setEmail] = useState("");
@@ -91,16 +93,16 @@ export function MyIADBusinessDesign() {
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#14B8A6]/15 border border-[#14B8A6]/30 text-[#14B8A6] text-xs font-bold uppercase tracking-wider">
             <Layers size={14} />
-            <span>{t("biz_badge")}</span>
+            <span>{d.biz_badge}</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
-            {t("biz_title")}{" "}
+            {d.biz_title}{" "}
             <span className="bg-gradient-to-r from-blue-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">
-              {t("biz_title_highlight")}
+              {d.biz_title_highlight}
             </span>
           </h2>
           <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
-            {t("biz_desc")}
+            {d.biz_desc}
           </p>
         </div>
 
@@ -111,9 +113,9 @@ export function MyIADBusinessDesign() {
             <div className="h-12 w-12 rounded-2xl bg-blue-500/15 text-blue-400 flex items-center justify-center font-bold">
               <Cpu size={24} />
             </div>
-            <h3 className="text-lg font-bold text-white">{t("biz_p1_title")}</h3>
+            <h3 className="text-lg font-bold text-white">{d.biz_p1_title}</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              {t("biz_p1_desc")}
+              {d.biz_p1_desc}
             </p>
           </div>
 
@@ -122,9 +124,9 @@ export function MyIADBusinessDesign() {
             <div className="h-12 w-12 rounded-2xl bg-[#14B8A6]/15 text-[#14B8A6] flex items-center justify-center font-bold">
               <Zap size={24} />
             </div>
-            <h3 className="text-lg font-bold text-white">{t("biz_p2_title")}</h3>
+            <h3 className="text-lg font-bold text-white">{d.biz_p2_title}</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              {t("biz_p2_desc")}
+              {d.biz_p2_desc}
             </p>
           </div>
 
@@ -133,9 +135,9 @@ export function MyIADBusinessDesign() {
             <div className="h-12 w-12 rounded-2xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center font-bold">
               <ShieldCheck size={24} />
             </div>
-            <h3 className="text-lg font-bold text-white">{t("biz_p3_title")}</h3>
+            <h3 className="text-lg font-bold text-white">{d.biz_p3_title}</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              {t("biz_p3_desc")}
+              {d.biz_p3_desc}
             </p>
           </div>
 
@@ -144,9 +146,9 @@ export function MyIADBusinessDesign() {
             <div className="h-12 w-12 rounded-2xl bg-purple-500/15 text-purple-400 flex items-center justify-center font-bold">
               <Users size={24} />
             </div>
-            <h3 className="text-lg font-bold text-white">{t("biz_p4_title")}</h3>
+            <h3 className="text-lg font-bold text-white">{d.biz_p4_title}</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              {t("biz_p4_desc")}
+              {d.biz_p4_desc}
             </p>
           </div>
         </div>
@@ -158,26 +160,26 @@ export function MyIADBusinessDesign() {
             <div className="lg:col-span-6 space-y-5">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-bold uppercase tracking-wider">
                 <Building2 size={13} />
-                <span>{t("biz_agency_badge")}</span>
+                <span>{d.biz_agency_badge}</span>
               </div>
               <h3 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
-                {t("biz_agency_title")}
+                {d.biz_agency_title}
               </h3>
               <p className="text-sm text-slate-300 leading-relaxed">
-                {t("biz_agency_desc")}
+                {d.biz_agency_desc}
               </p>
               <div className="space-y-2 pt-2 text-xs text-slate-300">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 size={16} className="text-[#14B8A6]" />
-                  <span>{t("biz_agency_b1")}</span>
+                  <span>{d.biz_agency_b1}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 size={16} className="text-[#14B8A6]" />
-                  <span>{t("biz_agency_b2")}</span>
+                  <span>{d.biz_agency_b2}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 size={16} className="text-[#14B8A6]" />
-                  <span>{t("biz_agency_b3")}</span>
+                  <span>{d.biz_agency_b3}</span>
                 </div>
               </div>
             </div>
@@ -186,7 +188,7 @@ export function MyIADBusinessDesign() {
             <div className="lg:col-span-6 bg-slate-900/90 border border-slate-700 rounded-2xl p-6 sm:p-8">
               {!isSuccess ? (
                 <form onSubmit={handlePartnerSubmit} className="space-y-3.5">
-                  <h4 className="text-base font-bold text-white mb-2">{t("biz_form_title")}</h4>
+                  <h4 className="text-base font-bold text-white mb-2">{d.biz_form_title}</h4>
 
                   {error && (
                     <div className="p-3 rounded-xl bg-red-950/60 border border-red-800 text-xs text-red-200 flex items-start gap-2">
@@ -198,7 +200,7 @@ export function MyIADBusinessDesign() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <input
                       type="text"
-                      placeholder={t("biz_form_name_ph")}
+                      placeholder={d.biz_form_name_ph}
                       value={partnerName}
                       onChange={(e) => setPartnerName(e.target.value)}
                       className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#14B8A6]"
@@ -206,7 +208,7 @@ export function MyIADBusinessDesign() {
                     />
                     <input
                       type="text"
-                      placeholder={t("biz_form_firm_ph")}
+                      placeholder={d.biz_form_firm_ph}
                       value={agencyName}
                       onChange={(e) => setAgencyName(e.target.value)}
                       className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#14B8A6]"
@@ -216,7 +218,7 @@ export function MyIADBusinessDesign() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <input
                       type="email"
-                      placeholder={t("biz_form_email_ph")}
+                      placeholder={d.biz_form_email_ph}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#14B8A6]"
@@ -224,7 +226,7 @@ export function MyIADBusinessDesign() {
                     />
                     <input
                       type="tel"
-                      placeholder={t("biz_form_phone_ph")}
+                      placeholder={d.biz_form_phone_ph}
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#14B8A6]"
@@ -235,7 +237,7 @@ export function MyIADBusinessDesign() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <input
                       type="text"
-                      placeholder={t("biz_form_npn_ph")}
+                      placeholder={d.biz_form_npn_ph}
                       value={npn}
                       onChange={(e) => setNpn(e.target.value)}
                       className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#14B8A6]"
@@ -245,11 +247,11 @@ export function MyIADBusinessDesign() {
                       onChange={(e) => setProducerCount(e.target.value)}
                       className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:outline-none focus:border-[#14B8A6]"
                     >
-                      <option value="Solo">{t("biz_opt_solo")}</option>
-                      <option value="2-5">{t("biz_opt_2_5")}</option>
-                      <option value="6-20">{t("biz_opt_6_20")}</option>
-                      <option value="21-50">{t("biz_opt_21_50")}</option>
-                      <option value="50+">{t("biz_opt_50plus")}</option>
+                      <option value="Solo">{d.biz_opt_solo}</option>
+                      <option value="2-5">{d.biz_opt_2_5}</option>
+                      <option value="6-20">{d.biz_opt_6_20}</option>
+                      <option value="21-50">{d.biz_opt_21_50}</option>
+                      <option value="50+">{d.biz_opt_50plus}</option>
                     </select>
                   </div>
 
@@ -261,7 +263,7 @@ export function MyIADBusinessDesign() {
                       className="mt-0.5 rounded border-slate-700 text-[#14B8A6] focus:ring-0 accent-[#14B8A6]"
                     />
                     <span>
-                      {t("biz_form_consent")}
+                      {d.biz_form_consent}
                     </span>
                   </label>
 
@@ -271,10 +273,10 @@ export function MyIADBusinessDesign() {
                     className="w-full py-3 rounded-xl bg-gradient-to-r from-[#2563EB] to-[#14B8A6] hover:opacity-95 text-white text-xs sm:text-sm font-bold shadow-lg shadow-teal-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                   >
                     {isSubmitting ? (
-                      <span>{t("biz_form_loading")}</span>
+                      <span>{d.biz_form_loading}</span>
                     ) : (
                       <>
-                        <span>{t("biz_form_btn")}</span>
+                        <span>{d.biz_form_btn}</span>
                         <ArrowRight size={15} />
                       </>
                     )}
@@ -285,9 +287,9 @@ export function MyIADBusinessDesign() {
                   <div className="h-12 w-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
                     <CheckCircle2 size={24} />
                   </div>
-                  <h4 className="text-base font-bold text-white">{t("biz_success_title")}</h4>
+                  <h4 className="text-base font-bold text-white">{d.biz_success_title}</h4>
                   <p className="text-xs text-slate-300 leading-relaxed">
-                    {t("biz_success_desc")}
+                    {d.biz_success_desc}
                   </p>
                 </div>
               )}

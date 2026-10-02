@@ -1,4 +1,6 @@
-export const dictionary = {
+import { myiadDict } from "./myiad-dict";
+
+const baseDictionary = {
   en: {
     // Navigation
     nav_solutions: "Solutions & Products",
@@ -638,5 +640,16 @@ export const dictionary = {
     footer_compliance_text: "AB Global Consulting y el profesional licenciado Angel Burgos (Licencia FL #G328926 / Código de Agente WFG: F6D9U) están autorizados para ofrecer seguros de vida, seguros de salud, anualidades fijas, anualidades variables y servicios de concierge funerario en jurisdicciones aprobadas. La información provista en este sitio web tiene fines educativos e ilustrativos y no constituye asesoramiento tributario, de inversión o legal individual. Todas las garantías y proyecciones de valor en efectivo están respaldadas exclusivamente por la solidez financiera de las compañías de seguros emisoras.",
     footer_rights: "Todos los derechos reservados. 9501 Satellite Blvd, Suite 105, Orlando, FL 32837.",
   }
+};
+
+export const dictionary = {
+  en: {
+    ...baseDictionary.en,
+    ...myiadDict.en,
+  },
+  es: {
+    ...baseDictionary.es,
+    ...myiadDict.es,
+  },
 };
  

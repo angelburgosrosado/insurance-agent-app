@@ -6,14 +6,16 @@ import { CalendarBookingModal } from "@/components/CalendarBookingModal";
 import { QuoteSelectorForm } from "@/components/QuoteSelectorForm";
 import { MyIADProductCategory } from "@/lib/integrations/crm-myiad";
 import { useLanguage } from "@/context/LanguageContext";
+import { myiadDict } from "@/lib/i18n/myiad-dict";
 
 interface MyIADLeadFormProps {
   initialService?: string;
 }
 
 export function MyIADLeadForm({ initialService = "life-insurance" }: MyIADLeadFormProps) {
-  const { language, t } = useLanguage();
-  const isSpanish = language === "es";
+  const { lang } = useLanguage();
+  const d = myiadDict[lang] || myiadDict.en;
+  const isSpanish = lang === "es";
   const [activeTab, setActiveTab] = useState<"quote" | "calendar">("quote");
 
   const defaultCategory: MyIADProductCategory =
@@ -55,7 +57,7 @@ export function MyIADLeadForm({ initialService = "life-insurance" }: MyIADLeadFo
               }`}
             >
               <Send className="w-4 h-4 text-[#14B8A6]" />
-              <span>{t("lead_tab_quote")}</span>
+              <span>{d.lead_tab_quote}</span>
             </button>
             <button
               type="button"
@@ -67,7 +69,7 @@ export function MyIADLeadForm({ initialService = "life-insurance" }: MyIADLeadFo
               }`}
             >
               <Calendar className="w-4 h-4 text-[#14B8A6]" />
-              <span>{t("lead_tab_calendar")}</span>
+              <span>{d.lead_tab_calendar}</span>
             </button>
           </div>
         </div>

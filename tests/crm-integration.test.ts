@@ -153,3 +153,28 @@ test("CRM Integration - vercel.json contains crm.myiad.com and crm.myiad.net rew
   assert.ok(crmNetRewrite, "vercel.json must have rewrite for crm.myiad.net to /crm");
 });
 
+test("CRM Integration - /api/crm/ai-synthesis synthesizes carrier and FINRA 2330 suitability", async () => {
+  const { POST: postAi } = await import("../src/app/api/crm/ai-synthesis/route");
+
+  const req = new Request("https://crm.myiad.com/api/crm/ai-synthesis", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      applicantName: "Gabriel Santos",
+      service: "Military SGLI Transition",
+      amount: "$500,000",
+      phone: "813-555-0192",
+    }),
+  });
+
+  const res = await postAi(req);
+  assert.equal(res.status, 200);
+
+  const data = await res.json();
+  assert.equal(data.success, true);
+  assert.ok(data.recommendedCarrier.includes("Mutual of Omaha"));
+  assert.ok(data.suitabilityScore >= 90);
+  assert.ok(data.advisorScript.includes("Gabriel"));
+});
+
+

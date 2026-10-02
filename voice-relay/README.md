@@ -48,31 +48,48 @@ Caller (888-887-3585)
 Add these to your `.env` or deployment platform:
 
 ```ini
-PORT=8080
+PORT=3001
 SERVER_DOMAIN=voice.myiad.com
 ANGEL_DIRECT_PHONE=+13863331482
-TWILIO_PHONE_NUMBER=+18888873585
+TWILIO_PHONE_NUMBER=18888873585
 GEMINI_API_KEY=your_google_gemini_api_key
 ```
 
 ---
 
-## Local Development & Testing
+## Local Development & Testing (with ngrok)
 
-1. Start the voice server:
+1. **Verify Voice Server is Running on Port 3001**:
    ```bash
    pnpm voice:dev
    ```
-2. Start an `ngrok` tunnel for port 3000 (or your configured `PORT`):
+   *(Port 3001 prevents collisions with Next.js running on 3000).*
+
+2. **Authenticate ngrok with your Account Authtoken**:
+   If you see error `ERR_NGROK_4018`, add your authtoken from your ngrok dashboard:
+   - Go to: [https://dashboard.ngrok.com/get-started/your-authtoken](https://dashboard.ngrok.com/get-started/your-authtoken)
+   - Copy your token and run:
    ```bash
-   ngrok http 3000
+   ngrok config add-authtoken <YOUR_AUTHTOKEN>
    ```
-3. Set `SERVER_DOMAIN` in your `.env` to your ngrok hostname (e.g. `abc123.ngrok-free.app`).
-4. In Twilio Console, configure your test number's incoming voice webhook to `https://abc123.ngrok-free.app/voice/incoming`.
+
+3. **Start the ngrok Tunnel on Port 3001**:
+   ```bash
+   ngrok http 3001
+   ```
+   ngrok will display a public forwarding URL such as `https://xxxx-xx-xx.ngrok-free.app`.
+
+4. **Connect Twilio Number (1-888-887-3585)**:
+   - Open [Twilio Console -> Active Numbers](https://console.twilio.com/).
+   - Click `+1 (888) 887-3585` (or `18888873585`).
+   - Under **Voice Configuration**, set **A CALL COMES IN**:
+     - Webhook: `https://<YOUR_NGROK_DOMAIN>/voice/incoming`
+     - HTTP Method: `POST`
+   - Click **Save**.
 
 ---
 
-## 1-Click Google Cloud Run Deployment
+## 1-Click Google Cloud Run Deployment (Permanent Hosting)
 
 Google Cloud Run is the recommended production host because it natively supports WebSockets, HTTPS, auto-scaling, and health monitoring.
 
@@ -81,11 +98,14 @@ Run the included automated deployment script:
 ./voice-relay/deploy-cloud-run.sh
 ```
 
-Or deploy manually via `gcloud`:
+Or deploy manually via Cloud Build:
 ```bash
+# 1. Build container image
+gcloud builds submit --config voice-relay/cloudbuild.yaml .
+
+# 2. Deploy to Cloud Run
 gcloud run deploy myiad-voice-relay \
-  --source . \
-  --dockerfile voice-relay/Dockerfile \
+  --image "gcr.io/$(gcloud config get-value project)/myiad-voice-relay" \
   --platform managed \
   --region us-central1 \
   --allow-unauthenticated \
@@ -95,7 +115,7 @@ gcloud run deploy myiad-voice-relay \
   --memory 1Gi \
   --timeout 3600 \
   --port 8080 \
-  --set-env-vars "ANGEL_DIRECT_PHONE=+13863331482,TWILIO_PHONE_NUMBER=+18888873585,GEMINI_API_KEY=your_key"
+  --set-env-vars "ANGEL_DIRECT_PHONE=+13863331482,TWILIO_PHONE_NUMBER=18888873585,GEMINI_API_KEY=your_key"
 ```
 
 ---

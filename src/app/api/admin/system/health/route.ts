@@ -134,6 +134,7 @@ export async function GET() {
     const coreRoutes = [
       { name: "Public Landing (myiad.com)", path: "/", status: "operational" },
       { name: "MyIAD National Portal", path: "/myiad", status: "operational" },
+      { name: "Customer CRM Showcase (crm.myiad.net)", path: "/crm", status: "operational" },
       { name: "Toll-Free SMS Opt-In Compliance", path: "/opt-in", status: "operational" },
       { name: "Privacy Policy", path: "/privacy", status: "operational" },
       { name: "Terms of Service", path: "/terms", status: "operational" },

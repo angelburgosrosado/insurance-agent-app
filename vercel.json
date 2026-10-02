@@ -52,6 +52,16 @@
       "has": [
         {
           "type": "host",
+          "value": "crm\\.myiad\\.net"
+        }
+      ],
+      "destination": "/crm"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
           "value": "(?<subdomain>.*)myiad\\.com"
         }
       ],

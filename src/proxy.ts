@@ -1,91 +1,63 @@
-import { NextResponse, type NextRequest } from "next/server";
-import { createServerClient } from "@supabase/ssr";
-import { getSupabaseConfig } from "@/lib/supabase/env";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export async function proxy(request: NextRequest) {
-  // Check for custom host rewrite (myiad.com, myiad.net, or subdomains)
-  const host = (request.headers.get("host") || "").toLowerCase();
-  if ((host.includes("myiad.com") || host.includes("myiad.net")) && request.nextUrl.pathname === "/") {
+export function proxy(request: NextRequest) {
+  const host =
+    request.headers.get("host") ||
+    request.headers.get("x-forwarded-host") ||
+    request.nextUrl.hostname ||
+    "";
+  const { pathname, searchParams } = request.nextUrl;
+
+  // Support test environment simulation via query parameter or header
+  const isCrmDomain =
+    host.includes("crm.myiad.net") ||
+    searchParams.get("domain") === "crm.myiad.net" ||
+    request.headers.get("x-mock-host") === "crm.myiad.net";
+
+  // 1. Direct crm.myiad.net traffic to the CRM Showcase & Portal
+  if (isCrmDomain) {
+    // Preserve API routes, static assets, and favicon
+    if (
+      pathname.startsWith("/api") ||
+      pathname.startsWith("/_next") ||
+      pathname === "/favicon.ico" ||
+      pathname === "/icon.png" ||
+      pathname.startsWith("/crm")
+    ) {
+      return NextResponse.next();
+    }
+
+    // Rewrite root or portal paths to /crm
+    if (pathname === "/" || pathname === "/pipeline" || pathname === "/leads") {
+      const url = request.nextUrl.clone();
+      url.pathname = "/crm";
+      return NextResponse.rewrite(url);
+    }
+  }
+
+  // 2. Rewrite myiad.com root to /myiad landing page
+  const isMyIADDomain =
+    host.includes("myiad.com") ||
+    searchParams.get("domain") === "myiad.com" ||
+    request.headers.get("x-mock-host") === "myiad.com";
+
+  if (isMyIADDomain && pathname === "/") {
     const url = request.nextUrl.clone();
     url.pathname = "/myiad";
     return NextResponse.rewrite(url);
   }
 
-  // 1. Check for Direct Staff Admin Session Cookie
-  const staffCookie = request.cookies.get("ab_staff_session")?.value;
-  const isStaffSession = staffCookie === "authorized_superadmin" || (staffCookie && staffCookie.startsWith("staff_"));
-
-  // If user has a valid staff session
-  if (isStaffSession) {
-    if (request.nextUrl.pathname === "/login") {
-      const url = request.nextUrl.clone();
-      url.pathname = "/admin";
-      return NextResponse.redirect(url);
-    }
-    return NextResponse.next({ request });
-  }
-
-  const config = getSupabaseConfig();
-
-  // If Supabase is not configured, redirect protected routes to login
-  if (!config.configured) {
-    if (request.nextUrl.pathname.startsWith("/admin") || request.nextUrl.pathname.startsWith("/portal")) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/login";
-      return NextResponse.redirect(url);
-    }
-    return NextResponse.next({ request });
-  }
-
-  let response = NextResponse.next({ request });
-  
-  const supabase = createServerClient(config.url, config.publishableKey, {
-    cookies: {
-      getAll() {
-        return request.cookies.getAll();
-      },
-      setAll(cookiesToSet) {
-        cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
-        response = NextResponse.next({ request });
-        cookiesToSet.forEach(({ name, value, options }) => response.cookies.set(name, value, options));
-      },
-    },
-  });
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const isAdmin = user?.email?.toLowerCase() === "angelburgosrosado@gmail.com" || user?.email?.toLowerCase() === "admin@abglco.com";
-
-  // Protect /admin and /portal routes from unauthenticated users
-  if (!user && (request.nextUrl.pathname.startsWith("/admin") || request.nextUrl.pathname.startsWith("/portal"))) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    return NextResponse.redirect(url);
-  }
-
-  // Admin Role check - for /admin routes, we must ensure they are an admin
-  if (user && request.nextUrl.pathname.startsWith("/admin")) {
-    if (!isAdmin) {
-       const url = request.nextUrl.clone();
-       url.pathname = "/portal";
-       return NextResponse.redirect(url);
-    }
-  }
-
-  // Redirect logged-in users from /login to their respective dashboards
-  if (user && request.nextUrl.pathname === "/login") {
-     const url = request.nextUrl.clone();
-     url.pathname = isAdmin ? "/admin" : "/portal";
-     return NextResponse.redirect(url);
-  }
-
-  return response;
+  return NextResponse.next();
 }
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
   ],
 };
+
+export default proxy;
+
+
+

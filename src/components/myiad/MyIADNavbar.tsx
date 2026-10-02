@@ -33,6 +33,10 @@ export function MyIADNavbar() {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-6 text-sm font-semibold text-slate-200">
+            <a href="#ai-suite" className="flex items-center gap-1.5 text-[#14B8A6] font-bold hover:text-teal-300 transition-colors">
+              <Sparkles className="w-3.5 h-3.5 animate-pulse" />
+              <span>AI Suite</span>
+            </a>
             <a href="#offerings" className="hover:text-[#14B8A6] transition-colors">
               Three Core Offerings
             </a>
@@ -109,6 +113,14 @@ export function MyIADNavbar() {
       {mobileOpen && (
         <div className="lg:hidden border-t border-slate-800 bg-[#0B1F3A] px-6 py-6 space-y-4">
           <div className="flex flex-col gap-3 text-sm font-semibold text-slate-200">
+            <a
+              href="#ai-suite"
+              onClick={() => setMobileOpen(false)}
+              className="py-2 text-[#14B8A6] font-bold flex items-center gap-2 hover:text-teal-300"
+            >
+              <Sparkles className="w-4 h-4 animate-pulse" />
+              <span>MyIAD AI Intelligence Suite</span>
+            </a>
             <a
               href="#offerings"
               onClick={() => setMobileOpen(false)}

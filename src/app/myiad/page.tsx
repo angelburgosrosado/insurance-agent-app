@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { MyIADNavbar } from "@/components/myiad/MyIADNavbar";
 import { MyIADHero } from "@/components/myiad/MyIADHero";
+import { MyIADAiHub } from "@/components/myiad/MyIADAiHub";
 import { MyIADAiAssessment } from "@/components/myiad/MyIADAiAssessment";
 import { MyIADOfferings } from "@/components/myiad/MyIADOfferings";
 import { MyIADBusinessDesign } from "@/components/myiad/MyIADBusinessDesign";
@@ -13,14 +14,17 @@ import { MyIADVoiceModal } from "@/components/myiad/MyIADVoiceModal";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://myiad.com"),
-  title: "MyIAD - Intelligent Insurance Advisory & Protection | AI Needs Assessment",
+  title: "MyIAD - Intelligent Insurance Advisory & Protection | AI Voice Agent & Needs Assessment",
   description:
-    "MyIAD delivers precision financial protection: responsive AI insurance need assessment, 0% floor Indexed Universal Life (IUL), comprehensive Health & Medicare solutions, and FINRA Rule 2330 compliant variable annuities.",
+    "MyIAD delivers precision financial protection: conversational Deepgram AI voice diagnostics, FINRA Rule 2330 advisory copilot, responsive AI insurance need assessment, 0% floor Indexed Universal Life (IUL), comprehensive Health & Medicare solutions, and FINRA Rule 2330 compliant variable annuities.",
   applicationName: "MyIAD",
   authors: [{ name: "MyIAD National Insurance Solutions", url: "https://myiad.com" }],
   creator: "MyIAD National Insurance Solutions",
   keywords: [
     "MyIAD",
+    "Deepgram voice AI",
+    "conversational insurance voice agent",
+    "AI insurance copilot",
     "AI insurance assessment",
     "intelligent insurance advisory",
     "insurance need calculator",
@@ -115,6 +119,9 @@ export default function MyIADLandingPage() {
       <main className="flex-1">
         {/* Hero Section */}
         <MyIADHero />
+
+        {/* The MyIAD AI Intelligence Suite: Deepgram Voice, Copilot & Predictive Assessment */}
+        <MyIADAiHub />
 
         {/* Interactive AI Insurance Need Assessment Wizard (Web & Mobile) */}
         <MyIADAiAssessment />

@@ -1,29 +1,66 @@
 "use client";
 
-import React from "react";
-import { ShieldCheck, CheckCircle2, ArrowRight, Calendar, Lock, Sparkles, Mic } from "lucide-react";
+import React, { useState } from "react";
+import {
+  ShieldCheck,
+  CheckCircle2,
+  ArrowRight,
+  Calendar,
+  Lock,
+  Sparkles,
+  Mic,
+  Radio,
+  MessageSquare,
+  Zap,
+} from "lucide-react";
 
 interface MyIADHeroProps {
   onScheduleClick?: () => void;
 }
 
 export function MyIADHero({ onScheduleClick }: MyIADHeroProps) {
+  const [activeConsoleTab, setActiveConsoleTab] = useState<"voice" | "copilot" | "tiers">("voice");
+
+  const openVoiceAgent = (scenarioPrompt?: string) => {
+    window.dispatchEvent(
+      new CustomEvent("open-myiad-voice", {
+        detail: scenarioPrompt ? { prompt: scenarioPrompt } : {},
+      })
+    );
+  };
+
+  const openCopilot = (queryText: string) => {
+    window.dispatchEvent(
+      new CustomEvent("open-myiad-copilot", {
+        detail: { query: queryText },
+      })
+    );
+  };
+
   return (
     <section className="relative overflow-hidden bg-[#0B1F3A] text-white pt-12 pb-20 md:pt-20 md:pb-28 border-b border-slate-800">
       {/* Background gradients */}
-      <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#2563EB]/15 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-[#14B8A6]/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#2563EB]/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-[#14B8A6]/15 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* Left Column: Positioning & CTAs */}
           <div className="lg:col-span-7 space-y-6 sm:space-y-8">
-            {/* Trust Pill */}
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-800/80 border border-slate-700 text-xs font-semibold text-slate-200">
-              <span className="w-2 h-2 rounded-full bg-[#14B8A6] animate-pulse" />
-              <span>Nationwide 50-State Coverage &bull; Top-Rated Carriers</span>
-              <span className="hidden sm:inline text-slate-400">|</span>
-              <span className="hidden sm:inline text-[#14B8A6] font-bold">Toll-Free (888) 887-3585</span>
+            {/* Top AI & Trust Pill */}
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#2563EB]/25 via-[#14B8A6]/30 to-teal-400/20 border border-[#14B8A6]/60 text-xs font-bold text-teal-300 shadow-md shadow-teal-950/40">
+                <Sparkles className="w-3.5 h-3.5 text-[#14B8A6] animate-pulse" />
+                <span className="tracking-wide uppercase font-extrabold">
+                  Deepgram Voice AI & Copilot Active
+                </span>
+              </div>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-800/80 border border-slate-700 text-xs font-semibold text-slate-300">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span>50-State Coverage</span>
+                <span className="hidden sm:inline text-slate-500">&bull;</span>
+                <span className="hidden sm:inline text-[#14B8A6] font-bold">(888) 887-3585</span>
+              </div>
             </div>
 
             {/* Core Headline */}
@@ -35,7 +72,9 @@ export function MyIADHero({ onScheduleClick }: MyIADHeroProps) {
                 </span>
               </h1>
               <p className="text-base sm:text-xl text-slate-300 font-normal leading-relaxed max-w-2xl">
-                Precision financial architecture uniting institutional <strong>Life Insurance</strong> (0% floor IUL & Living Benefits), comprehensive <strong>Health & Medicare</strong> coverage, and strictly supervised <strong>FINRA Rule 2330 Variable Annuity</strong> solutions.
+                Precision financial architecture uniting conversational <strong>AI Voice Diagnostics</strong>, 
+                institutional <strong>Life Insurance</strong> (0% floor IUL & Living Benefits), comprehensive <strong>Health & Medicare</strong>, 
+                and supervised <strong>FINRA Rule 2330 Variable Annuity</strong> solutions.
               </p>
             </div>
 
@@ -44,34 +83,54 @@ export function MyIADHero({ onScheduleClick }: MyIADHeroProps) {
               <div className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-200">
                 <CheckCircle2 className="w-5 h-5 text-[#14B8A6] shrink-0 mt-0.5" />
                 <span>
-                  <strong>0% Floor Market Protection</strong> &mdash; Tax-advantaged growth under IRC §7702.
+                  <strong>Deepgram Voice AI</strong> &mdash; Hands-free conversational policy diagnostic.
                 </span>
               </div>
               <div className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-200">
                 <CheckCircle2 className="w-5 h-5 text-[#14B8A6] shrink-0 mt-0.5" />
                 <span>
-                  <strong>Full Suitability Supervision</strong> &mdash; Structured under FINRA 2330 protocols.
+                  <strong>0% Floor Market Shield</strong> &mdash; Tax-advantaged growth under IRC §7702.
                 </span>
               </div>
               <div className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-200">
                 <CheckCircle2 className="w-5 h-5 text-[#14B8A6] shrink-0 mt-0.5" />
                 <span>
-                  <strong>100% Independent Brokerage</strong> &mdash; Access to top-tier A-rated national carriers.
+                  <strong>Suitability Supervision</strong> &mdash; Structured under FINRA 2330 protocols.
                 </span>
               </div>
               <div className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-200">
                 <CheckCircle2 className="w-5 h-5 text-[#14B8A6] shrink-0 mt-0.5" />
                 <span>
-                  <strong>Direct CRM Routing Hook</strong> &mdash; Instant case analysis with licensed advisors.
+                  <strong>Instant Case Modeling</strong> &mdash; Real-time AI advisory with licensed brokers.
                 </span>
               </div>
             </div>
 
             {/* Primary Action Buttons */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-4">
+              <button
+                type="button"
+                onClick={() => openVoiceAgent()}
+                className="inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl bg-gradient-to-r from-[#14B8A6] to-[#2563EB] hover:opacity-95 text-white font-black text-sm transition-all cursor-pointer shadow-xl shadow-teal-950/60 ring-2 ring-[#14B8A6]/40 hover:scale-[1.02] active:scale-95"
+              >
+                <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">
+                  <Mic className="w-3.5 h-3.5 text-white animate-pulse" />
+                </div>
+                <span>Talk to Voice AI (Deepgram)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => openCopilot("How can MyIAD AI Copilot assist with my insurance case today?")}
+                className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-slate-800/90 hover:bg-slate-700/90 border border-slate-700 text-slate-100 hover:text-white font-bold text-sm transition-all cursor-pointer shadow-md"
+              >
+                <Sparkles className="w-4 h-4 text-[#14B8A6]" />
+                <span>AI Advisory Copilot</span>
+              </button>
+
               <a
                 href="#lead-intake"
-                className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-gradient-to-r from-[#2563EB] to-[#14B8A6] hover:opacity-95 text-white font-extrabold text-sm shadow-xl shadow-blue-900/40 transition-all cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-sm transition-all cursor-pointer"
               >
                 <span>Request Quote</span>
                 <ArrowRight className="w-4 h-4" />
@@ -79,127 +138,295 @@ export function MyIADHero({ onScheduleClick }: MyIADHeroProps) {
 
               <button
                 type="button"
-                onClick={() => {
-                  window.dispatchEvent(new CustomEvent("open-myiad-voice", { detail: {} }));
-                }}
-                className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-gradient-to-r from-[#14B8A6]/25 to-[#2563EB]/30 hover:from-[#14B8A6]/40 hover:to-[#2563EB]/40 border-2 border-[#14B8A6] text-white font-black text-sm transition-all cursor-pointer shadow-lg shadow-teal-950/40"
-              >
-                <Mic className="w-4 h-4 text-[#14B8A6] animate-pulse" />
-                <span>Voice Agent</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  window.dispatchEvent(new CustomEvent("open-myiad-copilot", { detail: {} }));
-                }}
-                className="inline-flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 text-slate-200 hover:text-white font-bold text-sm transition-all cursor-pointer"
-              >
-                <Sparkles className="w-4 h-4 text-[#14B8A6]" />
-                <span>AI Copilot</span>
-              </button>
-
-              <button
-                type="button"
                 onClick={onScheduleClick}
-                className="inline-flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-sm transition-all cursor-pointer"
+                className="hidden sm:inline-flex items-center justify-center gap-2 px-3 py-3.5 text-xs text-slate-300 hover:text-white font-medium hover:underline transition-all cursor-pointer"
               >
-                <Calendar className="w-4 h-4 text-[#14B8A6]" />
+                <Calendar className="w-3.5 h-3.5 text-[#14B8A6]" />
                 <span>15-Min Call</span>
               </button>
             </div>
 
             {/* Micro Trust Indicators */}
-            <div className="pt-2 flex flex-wrap items-center gap-6 text-xs text-slate-400">
+            <div className="pt-2 flex flex-wrap items-center gap-4 sm:gap-6 text-xs text-slate-400">
               <span className="flex items-center gap-1.5">
                 <Lock className="w-3.5 h-3.5 text-[#14B8A6]" />
-                Bank-Grade 256-Bit SSL Protection
+                256-Bit SSL Protection
               </span>
               <span>&bull;</span>
-              <span>Bilingual Consultation (English / Español)</span>
+              <span>Bilingual (English / Español)</span>
               <span>&bull;</span>
-              <span>Zero-Pressure Clinical Analysis</span>
+              <a href="#ai-suite" className="text-[#14B8A6] font-semibold hover:underline flex items-center gap-1">
+                Explore Full AI Suite &darr;
+              </a>
             </div>
           </div>
 
-          {/* Right Column: Strategic Advisory Blueprint Card */}
+          {/* Right Column: Interactive Live AI Console */}
           <div className="lg:col-span-5">
-            <div className="relative rounded-3xl bg-slate-900/90 border border-slate-700/80 p-6 sm:p-8 shadow-2xl backdrop-blur-xl">
-              <div className="flex items-center justify-between pb-6 border-b border-slate-800">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#2563EB]/20 border border-blue-500/30 flex items-center justify-center text-blue-400">
-                    <ShieldCheck className="w-6 h-6" />
+            <div className="relative rounded-3xl bg-slate-900/95 border border-slate-700/80 p-6 sm:p-7 shadow-2xl backdrop-blur-xl">
+              {/* Console Header & Tabs */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-slate-800">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#2563EB] to-[#14B8A6] flex items-center justify-center text-white shadow-md">
+                    <Radio className="w-5 h-5 animate-pulse" />
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-white">Three-Tier Architecture</h3>
-                    <p className="text-xs text-slate-400">Integrated Consumer Coverage Matrix</p>
+                    <h3 className="text-sm font-black text-white tracking-tight">
+                      My<span className="text-[#14B8A6]">IAD</span> AI Console
+                    </h3>
+                    <p className="text-[11px] text-slate-400">Live Interactive Advisory Hub</p>
                   </div>
                 </div>
-                <span className="text-[10px] font-mono uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded">
-                  Live Engine
-                </span>
-              </div>
 
-              {/* Three Offerings Visual Stack */}
-              <div className="mt-6 space-y-4">
-                <div className="p-4 rounded-2xl bg-slate-800/60 border border-slate-700/60 hover:border-[#14B8A6]/60 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-[#14B8A6] uppercase tracking-wider">
-                      Tier 1: Life Architecture
-                    </span>
-                    <span className="text-[11px] text-slate-400 font-mono">IRC §7702</span>
-                  </div>
-                  <h4 className="text-sm font-bold text-white mt-1">
-                    Indexed Universal Life (IUL) & Term
-                  </h4>
-                  <p className="text-xs text-slate-300 mt-1">
-                    0% downside floor, tax-free death benefit liquidity, and living benefit access for critical illness.
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-slate-800/60 border border-slate-700/60 hover:border-[#2563EB]/60 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">
-                      Tier 2: Health Advisory
-                    </span>
-                    <span className="text-[11px] text-slate-400 font-mono">ACA & Medicare</span>
-                  </div>
-                  <h4 className="text-sm font-bold text-white mt-1">
-                    Comprehensive Health & Medicare Coverage
-                  </h4>
-                  <p className="text-xs text-slate-300 mt-1">
-                    Network-matched health plans, subsidy optimization, and Medicare Advantage / Medigap navigation.
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-slate-800/60 border border-slate-700/60 hover:border-amber-400/60 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">
-                      Tier 3: Variable Annuities
-                    </span>
-                    <span className="text-[11px] text-slate-400 font-mono">FINRA 2330</span>
-                  </div>
-                  <h4 className="text-sm font-bold text-white mt-1">
-                    Guaranteed Lifetime Income Solutions
-                  </h4>
-                  <p className="text-xs text-slate-300 mt-1">
-                    Tax-deferred market accumulation paired with guaranteed lifetime withdrawal benefits and strict suitability gating.
-                  </p>
+                {/* Tab Switcher */}
+                <div className="flex items-center p-1 rounded-xl bg-slate-800/90 border border-slate-700 text-xs">
+                  <button
+                    type="button"
+                    onClick={() => setActiveConsoleTab("voice")}
+                    className={`px-2.5 py-1 rounded-lg font-bold transition-all cursor-pointer ${
+                      activeConsoleTab === "voice"
+                        ? "bg-[#14B8A6] text-slate-950 shadow"
+                        : "text-slate-300 hover:text-white"
+                    }`}
+                  >
+                    Voice AI
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveConsoleTab("copilot")}
+                    className={`px-2.5 py-1 rounded-lg font-bold transition-all cursor-pointer ${
+                      activeConsoleTab === "copilot"
+                        ? "bg-[#2563EB] text-white shadow"
+                        : "text-slate-300 hover:text-white"
+                    }`}
+                  >
+                    Copilot
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveConsoleTab("tiers")}
+                    className={`px-2.5 py-1 rounded-lg font-bold transition-all cursor-pointer ${
+                      activeConsoleTab === "tiers"
+                        ? "bg-slate-700 text-white shadow"
+                        : "text-slate-400 hover:text-white"
+                    }`}
+                  >
+                    Tiers
+                  </button>
                 </div>
               </div>
 
-              {/* Direct Advisor Callout */}
-              <div className="mt-6 pt-5 border-t border-slate-800 flex items-center justify-between text-xs text-slate-300">
-                <div>
-                  <p className="font-bold text-white">MyIAD National Insurance Solutions</p>
-                  <p className="text-slate-400">Direct Carrier Access Across All 50 US States</p>
+              {/* Tab 1: Live Voice AI Console */}
+              {activeConsoleTab === "voice" && (
+                <div className="mt-5 space-y-4 animate-in fade-in duration-150">
+                  {/* Visualizer Display Box */}
+                  <div className="p-5 rounded-2xl bg-gradient-to-b from-[#071324] to-[#0B1F3A] border border-slate-800/80 flex flex-col items-center text-center space-y-4">
+                    <div className="flex items-center justify-between w-full text-[10px] uppercase tracking-wider font-mono text-slate-400">
+                      <span className="flex items-center gap-1.5 text-emerald-400 font-bold">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                        Deepgram Nova-3 & Aura Ready
+                      </span>
+                      <span>Sub-Second Latency</span>
+                    </div>
+
+                    {/* Animated Frequency Bars Simulation */}
+                    <div className="flex items-center justify-center gap-1.5 h-10 w-full px-4">
+                      {[35, 60, 25, 80, 45, 95, 70, 30, 85, 50, 100, 65, 40, 75, 55, 30].map(
+                        (height, i) => (
+                          <div
+                            key={i}
+                            className="w-1.5 rounded-full bg-gradient-to-t from-[#2563EB] to-[#14B8A6] animate-pulse"
+                            style={{
+                              height: `${Math.max(15, height * 0.35)}px`,
+                              animationDelay: `${i * 75}ms`,
+                              animationDuration: "1.2s",
+                            }}
+                          />
+                        )
+                      )}
+                    </div>
+
+                    <div className="space-y-1">
+                      <p className="text-xs font-bold text-white">
+                        Hands-Free Conversational Policy Diagnostic
+                      </p>
+                      <p className="text-[11px] text-slate-300">
+                        Ask questions naturally about 0% floor protection, living benefits, and lifetime income.
+                      </p>
+                    </div>
+
+                    {/* Main Voice Activation Button */}
+                    <button
+                      type="button"
+                      onClick={() => openVoiceAgent()}
+                      className="w-full inline-flex items-center justify-center gap-2.5 py-3.5 px-4 rounded-xl bg-gradient-to-r from-[#14B8A6] to-[#2563EB] hover:opacity-95 text-white font-black text-xs shadow-lg shadow-teal-950/60 transition-all cursor-pointer hover:scale-[1.01] active:scale-95"
+                    >
+                      <Mic className="w-4 h-4 text-white animate-bounce" />
+                      <span>Start Hands-Free Voice AI Session</span>
+                    </button>
+                  </div>
+
+                  {/* Quick Voice Topics */}
+                  <div className="space-y-1.5">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                      Sample Voice Inquiries (Click to Ask):
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => openVoiceAgent("How does the 0% floor protect against market drops?")}
+                      className="w-full text-left p-2.5 rounded-xl bg-slate-800/60 hover:bg-[#14B8A6]/15 border border-slate-700/60 hover:border-[#14B8A6]/50 text-xs text-slate-200 hover:text-white transition-all cursor-pointer flex items-center justify-between"
+                    >
+                      <span>🎙️ &ldquo;How does the 0% floor protect in an IUL?&rdquo;</span>
+                      <ArrowRight className="w-3.5 h-3.5 text-[#14B8A6] shrink-0" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => openVoiceAgent("How do tax-free policy loans work under IRC §7702?")}
+                      className="w-full text-left p-2.5 rounded-xl bg-slate-800/60 hover:bg-[#14B8A6]/15 border border-slate-700/60 hover:border-[#14B8A6]/50 text-xs text-slate-200 hover:text-white transition-all cursor-pointer flex items-center justify-between"
+                    >
+                      <span>🎙️ &ldquo;Can I borrow tax-free under IRC §7702?&rdquo;</span>
+                      <ArrowRight className="w-3.5 h-3.5 text-[#14B8A6] shrink-0" />
+                    </button>
+                  </div>
                 </div>
-                <a
-                  href="#lead-intake"
-                  className="text-xs font-bold text-[#14B8A6] hover:underline flex items-center gap-1"
+              )}
+
+              {/* Tab 2: AI Copilot Prompts */}
+              {activeConsoleTab === "copilot" && (
+                <div className="mt-5 space-y-3 animate-in fade-in duration-150">
+                  <div className="p-3.5 rounded-xl bg-blue-950/40 border border-blue-800/50 text-xs text-blue-200 flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-blue-400 shrink-0" />
+                    <span>Click any scenario below to trigger instant AI case design analysis:</span>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      openCopilot(
+                        "Explain how an Indexed Universal Life (IUL) policy provides a 0% floor to protect cash value during a stock market crash."
+                      )
+                    }
+                    className="w-full text-left p-3 rounded-2xl bg-slate-800/70 hover:bg-blue-600/20 border border-slate-700 hover:border-blue-500/60 text-xs text-slate-200 transition-all cursor-pointer"
+                  >
+                    <div className="flex items-center justify-between font-bold text-blue-400 text-xs">
+                      <span>0% Floor Market Shield</span>
+                      <span className="font-mono text-[10px]">IRC §7702</span>
+                    </div>
+                    <p className="text-[11px] text-slate-300 mt-1">
+                      Simulate downside protection and interest crediting caps during equity downturns.
+                    </p>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      openCopilot(
+                        "How do tax-free policy loans work under IRC §7702 to provide retirement income without IRS penalties?"
+                      )
+                    }
+                    className="w-full text-left p-3 rounded-2xl bg-slate-800/70 hover:bg-blue-600/20 border border-slate-700 hover:border-blue-500/60 text-xs text-slate-200 transition-all cursor-pointer"
+                  >
+                    <div className="flex items-center justify-between font-bold text-teal-400 text-xs">
+                      <span>Tax-Free Retirement Income</span>
+                      <span className="font-mono text-[10px]">No-MEC Loan</span>
+                    </div>
+                    <p className="text-[11px] text-slate-300 mt-1">
+                      Analyze structured loan distributions that bypass federal capital gains taxes.
+                    </p>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      openCopilot(
+                        "What suitability standards and liquidity tests apply to Variable Annuities under FINRA Rule 2330?"
+                      )
+                    }
+                    className="w-full text-left p-3 rounded-2xl bg-slate-800/70 hover:bg-blue-600/20 border border-slate-700 hover:border-blue-500/60 text-xs text-slate-200 transition-all cursor-pointer"
+                  >
+                    <div className="flex items-center justify-between font-bold text-amber-400 text-xs">
+                      <span>FINRA Rule 2330 Suitability</span>
+                      <span className="font-mono text-[10px]">Annuity Gating</span>
+                    </div>
+                    <p className="text-[11px] text-slate-300 mt-1">
+                      Verify consumer risk profiles, surrender charges, and guaranteed lifetime withdrawal benefits.
+                    </p>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => openCopilot("What protection scenario would you like to model today?")}
+                    className="w-full py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs flex items-center justify-center gap-2 cursor-pointer border border-slate-600"
+                  >
+                    <MessageSquare className="w-3.5 h-3.5 text-[#14B8A6]" />
+                    <span>Open Full Copilot Chat Window</span>
+                  </button>
+                </div>
+              )}
+
+              {/* Tab 3: Three Tiers Architecture */}
+              {activeConsoleTab === "tiers" && (
+                <div className="mt-5 space-y-3 animate-in fade-in duration-150">
+                  <div className="p-3.5 rounded-2xl bg-slate-800/60 border border-slate-700/60">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-[#14B8A6] uppercase tracking-wider">
+                        Tier 1: Life Architecture
+                      </span>
+                      <span className="text-[10px] text-slate-400 font-mono">IRC §7702</span>
+                    </div>
+                    <h4 className="text-xs font-bold text-white mt-1">
+                      Indexed Universal Life (IUL) & Term
+                    </h4>
+                    <p className="text-[11px] text-slate-300 mt-1">
+                      0% downside floor, tax-free death benefit liquidity, and living benefit access for critical illness.
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 rounded-2xl bg-slate-800/60 border border-slate-700/60">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">
+                        Tier 2: Health Advisory
+                      </span>
+                      <span className="text-[10px] text-slate-400 font-mono">ACA & Medicare</span>
+                    </div>
+                    <h4 className="text-xs font-bold text-white mt-1">
+                      Comprehensive Health & Medicare Coverage
+                    </h4>
+                    <p className="text-[11px] text-slate-300 mt-1">
+                      Network-matched health plans, subsidy optimization, and Medicare Advantage navigation.
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 rounded-2xl bg-slate-800/60 border border-slate-700/60">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">
+                        Tier 3: Variable Annuities
+                      </span>
+                      <span className="text-[10px] text-slate-400 font-mono">FINRA 2330</span>
+                    </div>
+                    <h4 className="text-xs font-bold text-white mt-1">
+                      Guaranteed Lifetime Income Solutions
+                    </h4>
+                    <p className="text-[11px] text-slate-300 mt-1">
+                      Market accumulation with guaranteed lifetime withdrawal benefits and strict suitability gating.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Direct Advisor Callout Footer */}
+              <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-300">
+                <div className="flex items-center gap-2">
+                  <Zap className="w-3.5 h-3.5 text-amber-400" />
+                  <span className="text-[11px] text-slate-400">Deepgram Voice &bull; FINRA 2330 Ready</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => openVoiceAgent()}
+                  className="text-xs font-bold text-[#14B8A6] hover:underline flex items-center gap-1 cursor-pointer"
                 >
-                  Consult Now &rarr;
-                </a>
+                  <span>Launch Voice &rarr;</span>
+                </button>
               </div>
             </div>
           </div>

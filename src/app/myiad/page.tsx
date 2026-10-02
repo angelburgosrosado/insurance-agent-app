@@ -9,6 +9,7 @@ import { MyIADLeadForm } from "@/components/myiad/MyIADLeadForm";
 import { MyIADTrustAndCompliance } from "@/components/myiad/MyIADTrustAndCompliance";
 import { MyIADFooter } from "@/components/myiad/MyIADFooter";
 import { MyIADCopilot } from "@/components/myiad/MyIADCopilot";
+import { MyIADVoiceModal } from "@/components/myiad/MyIADVoiceModal";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://myiad.com"),
@@ -139,6 +140,9 @@ export default function MyIADLandingPage() {
 
       {/* Floating Interactive AI Advisory Copilot */}
       <MyIADCopilot />
+
+      {/* Real-Time Deepgram Voice Agent Consultation Modal */}
+      <MyIADVoiceModal />
     </div>
   );
 }

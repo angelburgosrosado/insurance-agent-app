@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ShieldCheck, Phone, Menu, X, ArrowRight, Sparkles } from "lucide-react";
+import { ShieldCheck, Phone, Menu, X, ArrowRight, Sparkles, Mic } from "lucide-react";
 
 export function MyIADNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -32,7 +32,7 @@ export function MyIADNavbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-8 text-sm font-semibold text-slate-200">
+          <nav className="hidden lg:flex items-center gap-6 text-sm font-semibold text-slate-200">
             <a href="#offerings" className="hover:text-[#14B8A6] transition-colors">
               Three Core Offerings
             </a>
@@ -48,9 +48,19 @@ export function MyIADNavbar() {
             <button
               type="button"
               onClick={() => {
+                window.dispatchEvent(new CustomEvent("open-myiad-voice", { detail: {} }));
+              }}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-[#14B8A6]/20 to-[#2563EB]/25 hover:from-[#14B8A6]/30 hover:to-[#2563EB]/35 border border-[#14B8A6]/60 text-white hover:text-white transition-all text-xs font-bold cursor-pointer shadow-sm"
+            >
+              <Mic className="w-3.5 h-3.5 text-[#14B8A6]" />
+              <span>Voice Agent</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
                 window.dispatchEvent(new CustomEvent("open-myiad-copilot", { detail: {} }));
               }}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#14B8A6]/15 hover:bg-[#14B8A6]/25 border border-[#14B8A6]/40 text-[#14B8A6] hover:text-white transition-all text-xs font-bold cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 hover:text-white transition-all text-xs font-bold cursor-pointer"
             >
               <Sparkles className="w-3.5 h-3.5 text-[#14B8A6]" />
               <span>AI Copilot</span>
@@ -127,6 +137,17 @@ export function MyIADNavbar() {
             >
               FINRA Rule 2330 Compliance Protocol
             </a>
+            <button
+              type="button"
+              onClick={() => {
+                setMobileOpen(false);
+                window.dispatchEvent(new CustomEvent("open-myiad-voice", { detail: {} }));
+              }}
+              className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-[#14B8A6]/25 to-[#2563EB]/30 border border-[#14B8A6]/60 text-white font-bold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+            >
+              <Mic className="w-4 h-4 text-[#14B8A6]" />
+              <span>Launch Deepgram Voice Agent</span>
+            </button>
             <button
               type="button"
               onClick={() => {

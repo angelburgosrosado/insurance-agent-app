@@ -13,6 +13,8 @@ import {
   ChevronDown,
   MessageSquare,
   Zap,
+  Mic,
+  Volume2,
 } from "lucide-react";
 import type { CopilotMessage, AssessmentScenario } from "@/lib/myiad-ai-copilot";
 
@@ -376,6 +378,20 @@ I can provide precision analysis on:
                 className="flex-1 bg-slate-900/90 text-white placeholder-slate-500 text-xs sm:text-sm rounded-xl px-3.5 py-2.5 border border-slate-700 focus:outline-none focus:border-[#14B8A6] transition-colors"
                 disabled={isLoading}
               />
+              <button
+                type="button"
+                onClick={() => {
+                  window.dispatchEvent(
+                    new CustomEvent("open-myiad-voice", {
+                      detail: { scenario: activeScenario },
+                    })
+                  );
+                }}
+                className="p-2.5 rounded-xl bg-slate-800 hover:bg-[#14B8A6]/20 border border-slate-700 hover:border-[#14B8A6]/50 text-slate-300 hover:text-[#14B8A6] transition-colors shrink-0 cursor-pointer shadow"
+                title="Switch to Deepgram Voice Agent"
+              >
+                <Mic className="w-4 h-4 text-[#14B8A6]" />
+              </button>
               <button
                 type="submit"
                 disabled={isLoading || !input.trim()}

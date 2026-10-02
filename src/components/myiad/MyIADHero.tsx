@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ShieldCheck, CheckCircle2, ArrowRight, Calendar, Lock, Sparkles } from "lucide-react";
+import { ShieldCheck, CheckCircle2, ArrowRight, Calendar, Lock, Sparkles, Mic } from "lucide-react";
 
 interface MyIADHeroProps {
   onScheduleClick?: () => void;
@@ -68,30 +68,41 @@ export function MyIADHero({ onScheduleClick }: MyIADHeroProps) {
             </div>
 
             {/* Primary Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-4">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-4">
               <a
                 href="#lead-intake"
-                className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-gradient-to-r from-[#2563EB] to-[#14B8A6] hover:opacity-95 text-white font-extrabold text-sm sm:text-base shadow-xl shadow-blue-900/40 transition-all cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-gradient-to-r from-[#2563EB] to-[#14B8A6] hover:opacity-95 text-white font-extrabold text-sm shadow-xl shadow-blue-900/40 transition-all cursor-pointer"
               >
-                <span>Request Custom Quote</span>
+                <span>Request Quote</span>
                 <ArrowRight className="w-4 h-4" />
               </a>
 
               <button
                 type="button"
                 onClick={() => {
+                  window.dispatchEvent(new CustomEvent("open-myiad-voice", { detail: {} }));
+                }}
+                className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-gradient-to-r from-[#14B8A6]/25 to-[#2563EB]/30 hover:from-[#14B8A6]/40 hover:to-[#2563EB]/40 border-2 border-[#14B8A6] text-white font-black text-sm transition-all cursor-pointer shadow-lg shadow-teal-950/40"
+              >
+                <Mic className="w-4 h-4 text-[#14B8A6] animate-pulse" />
+                <span>Voice Agent</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
                   window.dispatchEvent(new CustomEvent("open-myiad-copilot", { detail: {} }));
                 }}
-                className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-gradient-to-r from-[#14B8A6]/20 to-[#2563EB]/25 hover:from-[#14B8A6]/30 hover:to-[#2563EB]/35 border border-[#14B8A6]/60 text-white font-bold text-sm sm:text-base transition-all cursor-pointer shadow-lg shadow-teal-950/30"
+                className="inline-flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 text-slate-200 hover:text-white font-bold text-sm transition-all cursor-pointer"
               >
-                <Sparkles className="w-4 h-4 text-[#14B8A6] animate-pulse" />
-                <span>Ask AI Copilot</span>
+                <Sparkles className="w-4 h-4 text-[#14B8A6]" />
+                <span>AI Copilot</span>
               </button>
 
               <button
                 type="button"
                 onClick={onScheduleClick}
-                className="inline-flex items-center justify-center gap-2 px-5 py-4 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-sm sm:text-base transition-all cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-sm transition-all cursor-pointer"
               >
                 <Calendar className="w-4 h-4 text-[#14B8A6]" />
                 <span>15-Min Call</span>

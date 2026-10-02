@@ -10,8 +10,14 @@ export function SpeedDialConcierge() {
   const { lang } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
 
-  // Do not render personal advisor concierge on dedicated MyIAD portal
-  if (pathname === "/myiad" || pathname?.startsWith("/myiad")) {
+  // Do not render personal advisor concierge on dedicated MyIAD portal or domains
+  if (
+    pathname === "/myiad" ||
+    pathname?.startsWith("/myiad") ||
+    (typeof window !== "undefined" &&
+      (window.location.hostname.includes("myiad.com") ||
+        window.location.hostname.includes("myiad.net")))
+  ) {
     return null;
   }
 

@@ -81,7 +81,7 @@ export default async function RootLayout({
         <LanguageProvider>
           <AnalyticsProvider>
             {children}
-            <SpeedDialConcierge />
+            {!isMyIAD && <SpeedDialConcierge />}
           </AnalyticsProvider>
         </LanguageProvider>
       </body>

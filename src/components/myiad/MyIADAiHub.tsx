@@ -14,8 +14,13 @@ import {
   CheckCircle2,
   MessageSquare,
 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
+import { myiadDict } from "@/lib/i18n/myiad-dict";
 
 export function MyIADAiHub() {
+  const { lang } = useLanguage();
+  const d = myiadDict[lang];
+
   const triggerVoiceModal = (scenarioQuery?: string) => {
     window.dispatchEvent(
       new CustomEvent("open-myiad-voice", {
@@ -51,20 +56,18 @@ export function MyIADAiHub() {
         <div className="text-center max-w-3xl mx-auto space-y-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#2563EB]/20 via-[#14B8A6]/25 to-teal-400/20 border border-[#14B8A6]/40 text-xs font-bold text-teal-300 shadow-lg shadow-teal-950/40">
             <Sparkles className="w-3.5 h-3.5 text-[#14B8A6] animate-pulse" />
-            <span className="tracking-wide uppercase">Enterprise Financial Intelligence</span>
+            <span className="tracking-wide uppercase">{d.hub_badge}</span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
-            The MyIAD{" "}
+            {d.hub_title_1}{" "}
             <span className="bg-gradient-to-r from-blue-400 via-[#14B8A6] to-teal-300 bg-clip-text text-transparent">
-              AI Intelligence Suite
+              {d.hub_title_highlight}
             </span>
           </h2>
 
           <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-normal">
-            Three specialized artificial intelligence engines engineered for financial protection: 
-            conversational voice synthesis via Deepgram, FINRA Rule 2330 compliant advisory reasoning, 
-            and real-time risk gap quantification across all 50 US states.
+            {d.hub_desc}
           </p>
         </div>
 
@@ -76,10 +79,10 @@ export function MyIADAiHub() {
             <div className="flex items-center justify-between gap-2">
               <span className="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                Live Operational
+                {d.hub_card1_badge}
               </span>
               <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">
-                Deepgram Nova-3 + Aura
+                {d.hub_card1_sub}
               </span>
             </div>
 
@@ -90,13 +93,11 @@ export function MyIADAiHub() {
               </div>
 
               <h3 className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
-                Conversational Voice Agent
+                {d.hub_card1_title}
               </h3>
 
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                Hands-free voice consultation powered by Deepgram Nova-3 speech recognition and 
-                Aura Asteria synthesis. Speak naturally to explore 0% floor mechanics, living benefits, 
-                and retirement income strategies with instant audio responses.
+                {d.hub_card1_desc}
               </p>
             </div>
 
@@ -104,21 +105,21 @@ export function MyIADAiHub() {
             <div className="mt-6 py-4 border-y border-slate-800 space-y-2.5 text-xs text-slate-300">
               <div className="flex items-center justify-between">
                 <span className="text-slate-400 flex items-center gap-1.5">
-                  <Zap className="w-3.5 h-3.5 text-amber-400" /> Latency Pipeline
+                  <Zap className="w-3.5 h-3.5 text-amber-400" /> {d.hub_card1_spec1_label}
                 </span>
-                <span className="font-mono font-bold text-teal-400">&lt;650ms End-to-End</span>
+                <span className="font-mono font-bold text-teal-400">{d.hub_card1_spec1_val}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-slate-400 flex items-center gap-1.5">
-                  <Volume2 className="w-3.5 h-3.5 text-[#14B8A6]" /> Speech Synthesis
+                  <Volume2 className="w-3.5 h-3.5 text-[#14B8A6]" /> {d.hub_card1_spec2_label}
                 </span>
-                <span className="font-mono font-semibold text-slate-200">Aura-Asteria MP3</span>
+                <span className="font-mono font-semibold text-slate-200">{d.hub_card1_spec2_val}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-slate-400 flex items-center gap-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-blue-400" /> Interruption Control
+                  <ShieldCheck className="w-3.5 h-3.5 text-blue-400" /> {d.hub_card1_spec3_label}
                 </span>
-                <span className="font-mono font-semibold text-slate-200">Active Barge-In</span>
+                <span className="font-mono font-semibold text-slate-200">{d.hub_card1_spec3_val}</span>
               </div>
             </div>
 
@@ -130,10 +131,10 @@ export function MyIADAiHub() {
                 className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-[#2563EB] to-[#14B8A6] hover:opacity-95 text-white font-extrabold text-xs shadow-lg shadow-teal-950/50 cursor-pointer transition-all active:scale-[0.98]"
               >
                 <Mic className="w-4 h-4 text-white animate-pulse" />
-                <span>Start Hands-Free Voice AI</span>
+                <span>{d.hub_card1_btn}</span>
               </button>
               <p className="text-[10px] text-center text-slate-400">
-                Requires microphone permission &bull; Works on desktop & mobile
+                {d.hub_card1_perm}
               </p>
             </div>
           </div>
@@ -144,10 +145,10 @@ export function MyIADAiHub() {
             <div className="flex items-center justify-between gap-2">
               <span className="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-blue-500/15 text-blue-400 border border-blue-500/30 flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-                Active 24/7
+                {d.hub_card2_badge}
               </span>
               <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">
-                FINRA 2330 Guardrails
+                {d.hub_card2_sub}
               </span>
             </div>
 
@@ -158,44 +159,42 @@ export function MyIADAiHub() {
               </div>
 
               <h3 className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
-                Advisory Intelligence Copilot
+                {d.hub_card2_title}
               </h3>
 
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                Trained on institutional insurance case law, IRC §7702 tax-free policy loan mechanics, 
-                and FINRA Rule 2330 annuity suitability requirements. Provides real-time answers with 
-                immediate citations in English and Spanish.
+                {d.hub_card2_desc}
               </p>
             </div>
 
             {/* Quick Prompt Chips */}
             <div className="mt-6 py-4 border-y border-slate-800 space-y-2">
               <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-                Instant Diagnostic Prompts:
+                {d.hub_card2_prompts_title}
               </span>
               <div className="flex flex-col gap-1.5">
                 <button
                   type="button"
-                  onClick={() => triggerCopilot("How does the 0% floor protect against market drops in an IUL?")}
+                  onClick={() => triggerCopilot(lang === "es" ? "¿Cómo funciona el piso del 0% en caídas del mercado en un IUL?" : "How does the 0% floor protect against market drops in an IUL?")}
                   className="text-left text-[11px] px-2.5 py-1.5 rounded-xl bg-slate-800/80 hover:bg-blue-600/20 hover:border-blue-400/50 border border-slate-700 text-slate-300 hover:text-white transition-all cursor-pointer flex items-center justify-between"
                 >
-                  <span className="truncate">&rarr; How does the 0% floor work?</span>
+                  <span className="truncate">&rarr; {lang === "es" ? "¿Cómo funciona el piso 0%?" : "How does the 0% floor work?"}</span>
                   <ArrowRight className="w-3 h-3 text-blue-400 shrink-0 ml-1" />
                 </button>
                 <button
                   type="button"
-                  onClick={() => triggerCopilot("How do tax-free policy loans work under IRC §7702?")}
+                  onClick={() => triggerCopilot(lang === "es" ? "¿Cómo retiro dinero libre de impuestos bajo IRC §7702?" : "How do tax-free policy loans work under IRC §7702?")}
                   className="text-left text-[11px] px-2.5 py-1.5 rounded-xl bg-slate-800/80 hover:bg-blue-600/20 hover:border-blue-400/50 border border-slate-700 text-slate-300 hover:text-white transition-all cursor-pointer flex items-center justify-between"
                 >
-                  <span className="truncate">&rarr; IRC §7702 tax-free loans</span>
+                  <span className="truncate">&rarr; {lang === "es" ? "Préstamos libres de impuestos IRC §7702" : "IRC §7702 tax-free loans"}</span>
                   <ArrowRight className="w-3 h-3 text-blue-400 shrink-0 ml-1" />
                 </button>
                 <button
                   type="button"
-                  onClick={() => triggerCopilot("What are the suitability criteria for FINRA Rule 2330 variable annuities?")}
+                  onClick={() => triggerCopilot(lang === "es" ? "¿Cuáles son los criterios de idoneidad para anualidades de la Regla FINRA 2330?" : "What are the suitability criteria for FINRA Rule 2330 variable annuities?")}
                   className="text-left text-[11px] px-2.5 py-1.5 rounded-xl bg-slate-800/80 hover:bg-blue-600/20 hover:border-blue-400/50 border border-slate-700 text-slate-300 hover:text-white transition-all cursor-pointer flex items-center justify-between"
                 >
-                  <span className="truncate">&rarr; FINRA 2330 Annuity Suitability</span>
+                  <span className="truncate">&rarr; {lang === "es" ? "Idoneidad de Anualidades FINRA 2330" : "FINRA 2330 Annuity Suitability"}</span>
                   <ArrowRight className="w-3 h-3 text-blue-400 shrink-0 ml-1" />
                 </button>
               </div>
@@ -205,14 +204,14 @@ export function MyIADAiHub() {
             <div className="mt-6 space-y-2">
               <button
                 type="button"
-                onClick={() => triggerCopilot("Welcome to MyIAD! How can you help me structure my policy?")}
+                onClick={() => triggerCopilot(lang === "es" ? "¡Hola! ¿Cómo puede ayudarme a estructurar mi póliza?" : "Welcome to MyIAD! How can you help me structure my policy?")}
                 className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-600 hover:border-blue-400 text-white font-extrabold text-xs shadow-md cursor-pointer transition-all active:scale-[0.98]"
               >
                 <MessageSquare className="w-4 h-4 text-[#14B8A6]" />
-                <span>Launch Interactive Copilot</span>
+                <span>{d.hub_card2_btn}</span>
               </button>
               <p className="text-[10px] text-center text-slate-400">
-                Bilingual English / Español &bull; Instant policy citations
+                {d.hub_card2_footer}
               </p>
             </div>
           </div>
@@ -223,10 +222,10 @@ export function MyIADAiHub() {
             <div className="flex items-center justify-between gap-2">
               <span className="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-purple-500/15 text-purple-300 border border-purple-500/30 flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
-                Quantitative
+                {d.hub_card3_badge}
               </span>
               <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">
-                4-Vector Formula
+                {d.hub_card3_sub}
               </span>
             </div>
 
@@ -237,13 +236,11 @@ export function MyIADAiHub() {
               </div>
 
               <h3 className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
-                Multi-Vector Gap Assessment
+                {d.hub_card3_title}
               </h3>
 
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                Dynamic quantitative engine calculating the exact gap across survivor income replacement, 
-                mortgage payoff protection, debt elimination, and education funding deficits. Delivers an 
-                actionable blueprint in under 2 minutes.
+                {d.hub_card3_desc}
               </p>
             </div>
 
@@ -251,21 +248,21 @@ export function MyIADAiHub() {
             <div className="mt-6 py-4 border-y border-slate-800 space-y-2.5 text-xs text-slate-300">
               <div className="flex items-center justify-between">
                 <span className="text-slate-400 flex items-center gap-1.5">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-purple-400" /> Income Replacement
+                  <CheckCircle2 className="w-3.5 h-3.5 text-purple-400" /> {d.hub_card3_spec1_label}
                 </span>
-                <span className="font-mono font-bold text-slate-200">10x Annual Multiplier</span>
+                <span className="font-mono font-bold text-slate-200">{d.hub_card3_spec1_val}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-slate-400 flex items-center gap-1.5">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-purple-400" /> Mortgage & Debt
+                  <CheckCircle2 className="w-3.5 h-3.5 text-purple-400" /> {d.hub_card3_spec2_label}
                 </span>
-                <span className="font-mono font-bold text-slate-200">100% Principal Shield</span>
+                <span className="font-mono font-bold text-slate-200">{d.hub_card3_spec2_val}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-slate-400 flex items-center gap-1.5">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-purple-400" /> Dependent College
+                  <CheckCircle2 className="w-3.5 h-3.5 text-purple-400" /> {d.hub_card3_spec3_label}
                 </span>
-                <span className="font-mono font-bold text-slate-200">$100k/Child Benchmark</span>
+                <span className="font-mono font-bold text-slate-200">{d.hub_card3_spec3_val}</span>
               </div>
             </div>
 
@@ -276,11 +273,11 @@ export function MyIADAiHub() {
                 onClick={scrollToAssessment}
                 className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:opacity-95 text-white font-extrabold text-xs shadow-md cursor-pointer transition-all active:scale-[0.98]"
               >
-                <span>Calculate Your Protection Need</span>
+                <span>{d.hub_card3_btn}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
               <p className="text-[10px] text-center text-slate-400">
-                Zero commitment &bull; Instant scenario visualization
+                {d.hub_card3_footer}
               </p>
             </div>
           </div>

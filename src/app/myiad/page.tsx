@@ -38,7 +38,22 @@ export const metadata: Metadata = {
     "guaranteed lifetime withdrawal benefit",
     "veteran asset shield",
     "agency distribution engine",
+    "seguros de vida en español",
+    "IUL en español piso 0%",
+    "asesor de seguros de vida e IUL",
+    "anualidades variables puerto rico florida",
+    "agente de seguros bilingue",
   ],
+  alternates: {
+    canonical: "https://myiad.com",
+    languages: {
+      "en-US": "https://myiad.com",
+      "es-US": "https://myiad.com?lang=es",
+      "es-PR": "https://myiad.com?lang=es",
+      "es": "https://myiad.com?lang=es",
+      "x-default": "https://myiad.com",
+    },
+  },
   openGraph: {
     type: "website",
     siteName: "MyIAD",
@@ -47,6 +62,7 @@ export const metadata: Metadata = {
       "Interactive AI insurance need assessment, institutional wealth preservation, and modern agency distribution design.",
     url: "https://myiad.com",
     locale: "en_US",
+    alternateLocale: ["es_US", "es_PR", "es_ES"],
   },
   robots: {
     index: true,
@@ -62,11 +78,15 @@ export default function MyIADLandingPage() {
         "@type": "FinancialService",
         "@id": "https://myiad.com/#organization",
         name: "MyIAD - Intelligent Insurance Advisory & Protection",
-        alternateName: "MyIAD",
+        alternateName: ["MyIAD", "MyIAD Seguros", "MyIAD Insurance AI"],
         description:
-          "Dependable nationwide insurance advisory firm specializing in AI Insurance Need Assessment, Life Insurance (IUL, Term, Living Benefits), Health Insurance, and FINRA Rule 2330 Variable Annuities across all 50 US states.",
+          "Dependable nationwide insurance advisory firm specializing in AI Insurance Need Assessment, Life Insurance (IUL, Term, Living Benefits), Health Insurance, and FINRA Rule 2330 Variable Annuities across all 50 US states and Puerto Rico.",
         url: "https://myiad.com",
         telephone: "+1-888-887-3585",
+        availableLanguage: [
+          { "@type": "Language", name: "English", alternateName: "en" },
+          { "@type": "Language", name: "Spanish", alternateName: "es" },
+        ],
         address: {
           "@type": "PostalAddress",
           addressCountry: "US",

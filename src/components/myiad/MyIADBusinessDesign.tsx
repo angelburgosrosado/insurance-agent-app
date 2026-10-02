@@ -12,8 +12,10 @@ import {
   Users,
   AlertCircle,
 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export function MyIADBusinessDesign() {
+  const { t } = useLanguage();
   const [partnerName, setPartnerName] = useState("");
   const [agencyName, setAgencyName] = useState("");
   const [email, setEmail] = useState("");
@@ -89,16 +91,16 @@ export function MyIADBusinessDesign() {
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#14B8A6]/15 border border-[#14B8A6]/30 text-[#14B8A6] text-xs font-bold uppercase tracking-wider">
             <Layers size={14} />
-            <span>Platform & Distribution Architecture</span>
+            <span>{t("biz_badge")}</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
-            The MyIAD Business Design:{" "}
+            {t("biz_title")}{" "}
             <span className="bg-gradient-to-r from-blue-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">
-              Built for Modern Distribution
+              {t("biz_title_highlight")}
             </span>
           </h2>
           <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
-            MyIAD is not just a consumer portal—it is an autonomous operating system designed for modern insurance agencies, brokerages, and IMOs seeking institutional growth.
+            {t("biz_desc")}
           </p>
         </div>
 
@@ -109,9 +111,9 @@ export function MyIADBusinessDesign() {
             <div className="h-12 w-12 rounded-2xl bg-blue-500/15 text-blue-400 flex items-center justify-center font-bold">
               <Cpu size={24} />
             </div>
-            <h3 className="text-lg font-bold text-white">Omnichannel AI Intake</h3>
+            <h3 className="text-lg font-bold text-white">{t("biz_p1_title")}</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Responsive self-service calculators match prospect needs on mobile and desktop, pre-qualifying leads with D.I.M.E. math before producer interaction.
+              {t("biz_p1_desc")}
             </p>
           </div>
 
@@ -120,9 +122,9 @@ export function MyIADBusinessDesign() {
             <div className="h-12 w-12 rounded-2xl bg-[#14B8A6]/15 text-[#14B8A6] flex items-center justify-center font-bold">
               <Zap size={24} />
             </div>
-            <h3 className="text-lg font-bold text-white">Sub-Second CRM Routing</h3>
+            <h3 className="text-lg font-bold text-white">{t("biz_p2_title")}</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Encrypted lead payloads dispatch instantly into <code>crm.myiad.net</code> with real-time advisor SMS alerts and automated case tracking.
+              {t("biz_p2_desc")}
             </p>
           </div>
 
@@ -131,9 +133,9 @@ export function MyIADBusinessDesign() {
             <div className="h-12 w-12 rounded-2xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center font-bold">
               <ShieldCheck size={24} />
             </div>
-            <h3 className="text-lg font-bold text-white">Automated Compliance</h3>
+            <h3 className="text-lg font-bold text-white">{t("biz_p3_title")}</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Programmatic FINRA Rule 2330 suitability review, statutory TCPA consent logging, and SEC Reg BI disclaimers embedded at every customer touchpoint.
+              {t("biz_p3_desc")}
             </p>
           </div>
 
@@ -142,9 +144,9 @@ export function MyIADBusinessDesign() {
             <div className="h-12 w-12 rounded-2xl bg-purple-500/15 text-purple-400 flex items-center justify-center font-bold">
               <Users size={24} />
             </div>
-            <h3 className="text-lg font-bold text-white">Agency White-Labeling</h3>
+            <h3 className="text-lg font-bold text-white">{t("biz_p4_title")}</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Turnkey deployment for downline agencies, complete with bilingual (EN/ES) quoting engines and multi-carrier comparative tables.
+              {t("biz_p4_desc")}
             </p>
           </div>
         </div>
@@ -156,26 +158,26 @@ export function MyIADBusinessDesign() {
             <div className="lg:col-span-6 space-y-5">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-bold uppercase tracking-wider">
                 <Building2 size={13} />
-                <span>Enterprise & Agency Inquiries</span>
+                <span>{t("biz_agency_badge")}</span>
               </div>
               <h3 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
-                Deploy MyIAD Across Your Agency or Practice
+                {t("biz_agency_title")}
               </h3>
               <p className="text-sm text-slate-300 leading-relaxed">
-                Connect your brokerage with our bilingual AI quoting architecture, compliant disclosures, and instant CRM pipeline. Request a private technology walkthrough with our enterprise platform team.
+                {t("biz_agency_desc")}
               </p>
               <div className="space-y-2 pt-2 text-xs text-slate-300">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 size={16} className="text-[#14B8A6]" />
-                  <span>Custom domain & subdomain white-labeling</span>
+                  <span>{t("biz_agency_b1")}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 size={16} className="text-[#14B8A6]" />
-                  <span>Direct webhook ingestion into existing AMS/CRM systems</span>
+                  <span>{t("biz_agency_b2")}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 size={16} className="text-[#14B8A6]" />
-                  <span>Strict supervisory FINRA 2330 suitability controls</span>
+                  <span>{t("biz_agency_b3")}</span>
                 </div>
               </div>
             </div>
@@ -184,7 +186,7 @@ export function MyIADBusinessDesign() {
             <div className="lg:col-span-6 bg-slate-900/90 border border-slate-700 rounded-2xl p-6 sm:p-8">
               {!isSuccess ? (
                 <form onSubmit={handlePartnerSubmit} className="space-y-3.5">
-                  <h4 className="text-base font-bold text-white mb-2">Request Agency Technology Walkthrough</h4>
+                  <h4 className="text-base font-bold text-white mb-2">{t("biz_form_title")}</h4>
 
                   {error && (
                     <div className="p-3 rounded-xl bg-red-950/60 border border-red-800 text-xs text-red-200 flex items-start gap-2">
@@ -196,7 +198,7 @@ export function MyIADBusinessDesign() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <input
                       type="text"
-                      placeholder="Principal / Broker Name *"
+                      placeholder={t("biz_form_name_ph")}
                       value={partnerName}
                       onChange={(e) => setPartnerName(e.target.value)}
                       className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#14B8A6]"
@@ -204,7 +206,7 @@ export function MyIADBusinessDesign() {
                     />
                     <input
                       type="text"
-                      placeholder="Agency / Firm Name"
+                      placeholder={t("biz_form_firm_ph")}
                       value={agencyName}
                       onChange={(e) => setAgencyName(e.target.value)}
                       className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#14B8A6]"
@@ -214,7 +216,7 @@ export function MyIADBusinessDesign() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <input
                       type="email"
-                      placeholder="Work Email Address *"
+                      placeholder={t("biz_form_email_ph")}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#14B8A6]"
@@ -222,7 +224,7 @@ export function MyIADBusinessDesign() {
                     />
                     <input
                       type="tel"
-                      placeholder="Mobile Phone Number *"
+                      placeholder={t("biz_form_phone_ph")}
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#14B8A6]"
@@ -233,7 +235,7 @@ export function MyIADBusinessDesign() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <input
                       type="text"
-                      placeholder="National Producer # (NPN)"
+                      placeholder={t("biz_form_npn_ph")}
                       value={npn}
                       onChange={(e) => setNpn(e.target.value)}
                       className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#14B8A6]"
@@ -243,11 +245,11 @@ export function MyIADBusinessDesign() {
                       onChange={(e) => setProducerCount(e.target.value)}
                       className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white focus:outline-none focus:border-[#14B8A6]"
                     >
-                      <option value="Solo">Solo Producer</option>
-                      <option value="2-5">2 - 5 Producers</option>
-                      <option value="6-20">6 - 20 Producers</option>
-                      <option value="21-50">21 - 50 Producers</option>
-                      <option value="50+">50+ Enterprise / IMO</option>
+                      <option value="Solo">{t("biz_opt_solo")}</option>
+                      <option value="2-5">{t("biz_opt_2_5")}</option>
+                      <option value="6-20">{t("biz_opt_6_20")}</option>
+                      <option value="21-50">{t("biz_opt_21_50")}</option>
+                      <option value="50+">{t("biz_opt_50plus")}</option>
                     </select>
                   </div>
 
@@ -259,7 +261,7 @@ export function MyIADBusinessDesign() {
                       className="mt-0.5 rounded border-slate-700 text-[#14B8A6] focus:ring-0 accent-[#14B8A6]"
                     />
                     <span>
-                      I authorize MyIAD to contact me regarding enterprise platform deployment and distribution design walkthroughs.
+                      {t("biz_form_consent")}
                     </span>
                   </label>
 
@@ -269,10 +271,10 @@ export function MyIADBusinessDesign() {
                     className="w-full py-3 rounded-xl bg-gradient-to-r from-[#2563EB] to-[#14B8A6] hover:opacity-95 text-white text-xs sm:text-sm font-bold shadow-lg shadow-teal-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                   >
                     {isSubmitting ? (
-                      <span>Submitting Agency Inquiry...</span>
+                      <span>{t("biz_form_loading")}</span>
                     ) : (
                       <>
-                        <span>Request Technology Walkthrough</span>
+                        <span>{t("biz_form_btn")}</span>
                         <ArrowRight size={15} />
                       </>
                     )}
@@ -283,9 +285,9 @@ export function MyIADBusinessDesign() {
                   <div className="h-12 w-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
                     <CheckCircle2 size={24} />
                   </div>
-                  <h4 className="text-base font-bold text-white">Agency Inquiry Transmitted</h4>
+                  <h4 className="text-base font-bold text-white">{t("biz_success_title")}</h4>
                   <p className="text-xs text-slate-300 leading-relaxed">
-                    Your request has been routed to our enterprise team. A MyIAD enterprise onboarding specialist will contact you directly with platform integration specifications.
+                    {t("biz_success_desc")}
                   </p>
                 </div>
               )}

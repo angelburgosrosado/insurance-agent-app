@@ -1,14 +1,18 @@
 "use client";
 
 import React from "react";
-import { AUDIENCE_MODULES } from "./tokens";
+import { getAudienceModules } from "./tokens";
 import { Briefcase, Building, Shield, CheckCircle2, ArrowRight } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface MyIADProducerModulesProps {
   onSelectSegment?: (segmentId: string) => void;
 }
 
 export function MyIADProducerModules({ onSelectSegment }: MyIADProducerModulesProps) {
+  const { lang } = useLanguage();
+  const modules = getAudienceModules(lang);
+
   const segmentIcons = {
     producers: <Briefcase className="w-7 h-7 text-[#2563EB]" />,
     principals: <Building className="w-7 h-7 text-[#14B8A6]" />,
@@ -21,19 +25,23 @@ export function MyIADProducerModules({ onSelectSegment }: MyIADProducerModulesPr
         {/* Section Header */}
         <div className="max-w-3xl mx-auto text-center space-y-4 mb-16 md:mb-20">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#2563EB]/20 border border-blue-500/40 text-blue-300 text-xs font-bold uppercase tracking-wider">
-            Enterprise & Producer Enablement
+            {lang === "es" ? "Habilitación Empresarial y para Productores" : "Enterprise & Producer Enablement"}
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white">
-            Engineered for Producers, Leaders & Specialized Advisors
+            {lang === "es"
+              ? "Diseñado para Productores, Líderes y Asesores Especializados"
+              : "Engineered for Producers, Leaders & Specialized Advisors"}
           </h2>
           <p className="text-base sm:text-lg text-slate-300 leading-relaxed">
-            Whether closing high-net-worth IUL cases, managing a multi-tier brokerage agency, or safeguarding veteran retirement pensions, MyIAD provides institutional infrastructure.
+            {lang === "es"
+              ? "Ya sea cerrando casos de IUL de alto patrimonio, administrando una agencia de seguros multiescritorio o blindando pensiones de veteranos, MyIAD proporciona infraestructura institucional."
+              : "Whether closing high-net-worth IUL cases, managing a multi-tier brokerage agency, or safeguarding veteran retirement pensions, MyIAD provides institutional infrastructure."}
           </p>
         </div>
 
         {/* Audience Modules Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {AUDIENCE_MODULES.map((module) => {
+          {modules.map((module) => {
             const icon = segmentIcons[module.id as keyof typeof segmentIcons];
 
             return (
@@ -58,36 +66,38 @@ export function MyIADProducerModules({ onSelectSegment }: MyIADProducerModulesPr
                     {module.audience}
                   </span>
 
-                  {/* Core Hook Headline */}
-                  <h3 className="text-xl sm:text-2xl font-black text-white leading-tight tracking-tight">
-                    &ldquo;{module.headline}&rdquo;
+                  {/* Headline */}
+                  <h3 className="text-xl font-bold text-white tracking-tight leading-snug">
+                    {module.headline}
                   </h3>
 
                   {/* Description */}
-                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                  <p className="text-sm text-slate-300 leading-relaxed">
                     {module.description}
                   </p>
 
-                  {/* Bullet Highlights */}
-                  <ul className="space-y-3 pt-2">
-                    {module.bulletPoints.map((point, index) => (
-                      <li key={index} className="flex items-start gap-2.5 text-xs text-slate-200">
-                        <CheckCircle2 className="w-4 h-4 text-[#14B8A6] shrink-0 mt-0.5" />
-                        <span>{point}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  {/* Bullet Points */}
+                  <div className="space-y-2.5 pt-4 border-t border-slate-800">
+                    <ul className="space-y-2">
+                      {module.bulletPoints.map((point, idx) => (
+                        <li key={idx} className="flex items-start gap-2.5 text-xs text-slate-300 leading-relaxed">
+                          <CheckCircle2 className="w-4 h-4 text-[#14B8A6] shrink-0 mt-0.5" />
+                          <span>{point}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
 
-                {/* Card Action */}
-                <div className="pt-8 mt-8 border-t border-slate-800">
+                {/* Bottom Action */}
+                <div className="pt-8 mt-6 border-t border-slate-800">
                   <a
                     href="#lead-intake"
-                    onClick={() => onSelectSegment?.(module.id)}
-                    className="inline-flex items-center justify-center w-full gap-2 px-5 py-3.5 rounded-xl bg-slate-800 hover:bg-[#2563EB] text-white text-xs sm:text-sm font-bold border border-slate-700 hover:border-blue-500 transition-all cursor-pointer"
+                    onClick={() => onSelectSegment && onSelectSegment(module.id)}
+                    className="inline-flex items-center justify-center gap-2 w-full py-3.5 px-4 rounded-xl bg-slate-800 hover:bg-[#2563EB] text-white font-bold text-sm border border-slate-700 transition-all cursor-pointer shadow-sm group-hover:border-blue-500"
                   >
                     <span>{module.actionLabel}</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </a>
                 </div>
               </div>

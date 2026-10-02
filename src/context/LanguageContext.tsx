@@ -2,11 +2,15 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 
+import { dictionary } from "@/lib/i18n/translations";
+
 export type Language = "en" | "es";
 
 interface LanguageContextType {
   lang: Language;
+  language: Language;
   setLang: (lang: Language) => void;
+  setLanguage: (lang: Language) => void;
   t: (key: string) => string;
 }
 
@@ -32,19 +36,27 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const setLang = (newLang: Language) => {
     setLangState(newLang);
     localStorage.setItem("ab_lang", newLang);
-    // Optional: update URL search param smoothly without full page reload
-    const url = new URL(window.location.href);
-    url.searchParams.set("lang", newLang);
-    window.history.replaceState({}, "", url.toString());
+    // update URL search param smoothly without full page reload
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      url.searchParams.set("lang", newLang);
+      window.history.replaceState({}, "", url.toString());
+      // Also notify any listening components or custom events
+      window.dispatchEvent(new CustomEvent("ab_lang_changed", { detail: { lang: newLang } }));
+    }
   };
 
   const t = (key: string): string => {
-    // Will be backed by dictionary
-    return key;
+    const langDict = (dictionary as Record<string, Record<string, string>>)[lang];
+    if (langDict && langDict[key]) {
+      return langDict[key];
+    }
+    const enDict = dictionary.en as Record<string, string>;
+    return enDict[key] || key;
   };
 
   return (
-    <LanguageContext.Provider value={{ lang, setLang, t }}>
+    <LanguageContext.Provider value={{ lang, language: lang, setLang, setLanguage: setLang, t }}>
       {children}
     </LanguageContext.Provider>
   );
@@ -56,7 +68,9 @@ export function useLanguage() {
     // Return safe fallback for server or unmounted components
     return {
       lang: "en" as Language,
+      language: "en" as Language,
       setLang: () => {},
+      setLanguage: () => {},
       t: (k: string) => k,
     };
   }

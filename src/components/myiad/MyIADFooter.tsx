@@ -3,8 +3,11 @@
 import React from "react";
 import Link from "next/link";
 import { ShieldCheck, Phone, Mail, MapPin, ExternalLink } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export function MyIADFooter() {
+  const { lang } = useLanguage();
+
   return (
     <footer className="bg-[#071324] text-slate-400 text-xs border-t border-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">
@@ -20,43 +23,47 @@ export function MyIADFooter() {
               </span>
             </div>
             <p className="text-slate-400 leading-relaxed">
-              Intelligent Insurance Advisory & Protection platform engineered for consumers, producers, and brokerage leadership across all 50 US states.
+              {lang === "es"
+                ? "Plataforma de Asesoría y Protección de Seguros Inteligente diseñada para consumidores, productores y líderes de agencias en los 50 estados y Puerto Rico."
+                : "Intelligent Insurance Advisory & Protection platform engineered for consumers, producers, and brokerage leadership across all 50 US states."}
             </p>
             <div className="pt-2 text-slate-300 font-semibold space-y-1">
               <p>MyIAD National Insurance Solutions</p>
-              <p className="text-[#14B8A6] font-mono text-[11px]">Licensed Nationwide 50-State Network</p>
+              <p className="text-[#14B8A6] font-mono text-[11px]">
+                {lang === "es" ? "Red Nacional con Licencia en los 50 Estados y PR" : "Licensed Nationwide 50-State Network"}
+              </p>
             </div>
           </div>
 
           {/* Col 2: Core Offerings */}
           <div className="space-y-3">
             <h4 className="text-sm font-bold text-white uppercase tracking-wider">
-              Core Offerings
+              {lang === "es" ? "Ofertas Principales" : "Core Offerings"}
             </h4>
             <ul className="space-y-2">
               <li>
                 <a href="#offerings" className="hover:text-white transition-colors">
-                  Indexed Universal Life (IUL)
+                  {lang === "es" ? "Vida Universal Indexada (IUL)" : "Indexed Universal Life (IUL)"}
                 </a>
               </li>
               <li>
                 <a href="#offerings" className="hover:text-white transition-colors">
-                  Living Benefits Term Architecture
+                  {lang === "es" ? "Seguro a Término con Beneficios en Vida" : "Living Benefits Term Architecture"}
                 </a>
               </li>
               <li>
                 <a href="#offerings" className="hover:text-white transition-colors">
-                  Health & Medicare Advantage / Medigap
+                  {lang === "es" ? "Salud y Medicare Advantage / Medigap" : "Health & Medicare Advantage / Medigap"}
                 </a>
               </li>
               <li>
                 <a href="#offerings" className="hover:text-white transition-colors">
-                  Variable Annuity Guaranteed Income
+                  {lang === "es" ? "Anualidades Variables de Ingreso Vitalicio" : "Variable Annuity Guaranteed Income"}
                 </a>
               </li>
               <li>
                 <Link href="/tools/iul-calculator" className="hover:text-white transition-colors flex items-center gap-1">
-                  <span>Interactive IUL Calculator</span>
+                  <span>{lang === "es" ? "Simulador Interactivo de IUL" : "Interactive IUL Calculator"}</span>
                   <ExternalLink className="w-3 h-3 text-slate-500" />
                 </Link>
               </li>
@@ -66,32 +73,32 @@ export function MyIADFooter() {
           {/* Col 3: Specialized Platforms */}
           <div className="space-y-3">
             <h4 className="text-sm font-bold text-white uppercase tracking-wider">
-              Advisory Segments
+              {lang === "es" ? "Plataformas y Segmentos" : "Advisory Segments"}
             </h4>
             <ul className="space-y-2">
               <li>
-                <a href="#ai-assessment" className="hover:text-white transition-colors">
-                  Interactive AI Needs Calculator
+                <a href="#ai-suite" className="hover:text-white transition-colors">
+                  {lang === "es" ? "Suite de Inteligencia Artificial MyIAD" : "MyIAD AI Intelligence Suite"}
                 </a>
               </li>
               <li>
-                <a href="#business-design" className="hover:text-white transition-colors">
-                  The MyIAD Business Design
+                <a href="#ai-assessment" className="hover:text-white transition-colors">
+                  {lang === "es" ? "Calculadora de Brechas de Protección" : "Interactive AI Needs Calculator"}
                 </a>
               </li>
               <li>
                 <a href="#producers" className="hover:text-white transition-colors">
-                  Agency Principals & IMO Distribution
+                  {lang === "es" ? "Directores de Agencia y Distribución IMO" : "Agency Principals & IMO Distribution"}
                 </a>
               </li>
               <li>
                 <a href="#veterans" className="hover:text-white transition-colors">
-                  Veteran Asset Shield
+                  {lang === "es" ? "Escudo Patrimonial para Veteranos" : "Veteran Asset Shield"}
                 </a>
               </li>
               <li>
                 <a href="#compliance" className="hover:text-white transition-colors">
-                  FINRA Rule 2330 Supervisory Protocols
+                  {lang === "es" ? "Protocolos de Supervisión FINRA 2330" : "FINRA Rule 2330 Supervisory Protocols"}
                 </a>
               </li>
             </ul>
@@ -100,7 +107,7 @@ export function MyIADFooter() {
           {/* Col 4: Contact & Territory */}
           <div className="space-y-3">
             <h4 className="text-sm font-bold text-white uppercase tracking-wider">
-              Direct Contact & Toll-Free
+              {lang === "es" ? "Contacto Directo y Línea Gratuita" : "Direct Contact & Toll-Free"}
             </h4>
             <div className="space-y-2.5 text-slate-300">
               <a href="tel:18888873585" className="flex items-center gap-2 hover:text-[#14B8A6] transition-colors">
@@ -113,7 +120,11 @@ export function MyIADFooter() {
               </div>
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-[#14B8A6] shrink-0 mt-0.5" />
-                <span>Nationwide Coverage Across All 50 US States & Territories</span>
+                <span>
+                  {lang === "es"
+                    ? "Cobertura Nacional en los 50 Estados de EE. UU. y Puerto Rico"
+                    : "Nationwide Coverage Across All 50 US States & Territories"}
+                </span>
               </div>
             </div>
             <div className="pt-2">
@@ -121,7 +132,7 @@ export function MyIADFooter() {
                 href="#ai-assessment"
                 className="inline-block px-4 py-2 rounded-lg bg-slate-800 hover:bg-[#2563EB] text-white font-bold text-xs transition-colors"
               >
-                Launch AI Need Assessment
+                {lang === "es" ? "Iniciar Evaluación con IA" : "Launch AI Need Assessment"}
               </a>
             </div>
           </div>
@@ -130,24 +141,30 @@ export function MyIADFooter() {
         {/* Regulatory & FINRA 2330 Legal Text */}
         <div className="pt-8 border-t border-slate-800 space-y-4 text-[11px] leading-relaxed text-slate-400">
           <p>
-            <strong>Regulatory & Compliance Disclosure:</strong> MyIAD (myiad.com) is an insurance advisory, technology, and case modeling platform. Insurance quotes, policy design, and consultative reviews are performed by licensed life, health, and annuity insurance professionals operating across all 50 US states. Not affiliated with or endorsed by the federal government, the Department of Veterans Affairs, CMS, or Medicare.
+            <strong>{lang === "es" ? "Divulgación Regulatoria y Cumplimiento:" : "Regulatory & Compliance Disclosure:"}</strong>{" "}
+            {lang === "es"
+              ? "MyIAD (myiad.com) es una plataforma de tecnología, asesoría y modelado de seguros. Las cotizaciones, el diseño de pólizas y las revisiones consultivas son realizadas por profesionales de seguros licenciados que operan en los 50 estados de EE. UU. y Puerto Rico. No estamos afiliados ni respaldados por el gobierno federal, el Departamento de Asuntos de Veteranos, CMS ni Medicare."
+              : "MyIAD (myiad.com) is an insurance advisory, technology, and case modeling platform. Insurance quotes, policy design, and consultative reviews are performed by licensed life, health, and annuity insurance professionals operating across all 50 US states. Not affiliated with or endorsed by the federal government, the Department of Veterans Affairs, CMS, or Medicare."}
           </p>
           <p>
-            <strong>Variable Annuity Risk Warning:</strong> Deferred variable annuities are long-term investment vehicles designed for retirement planning and are subject to market fluctuations and investment risk, including potential loss of principal. Guarantees are backed solely by the financial strength and claims-paying ability of the issuing life insurance company. Withdrawals prior to age 59½ may trigger a 10% IRS penalty tax and surrender charges. Contract fees, subaccount management fees, and mortality & expense (M&E) charges apply. Review full prospectus materials carefully prior to purchasing.
+            <strong>{lang === "es" ? "Aviso de Riesgo de Anualidades Variables:" : "Variable Annuity Risk Warning:"}</strong>{" "}
+            {lang === "es"
+              ? "Las anualidades variables diferidas son instrumentos de inversión a largo plazo diseñados para la jubilación y están sujetas a fluctuaciones de mercado y riesgos de pérdida de capital. Las garantías se basan exclusivamente en la solvencia de la aseguradora emisora. Los retiros antes de los 59½ años pueden generar penalidades del 10% del IRS y cargos de rescate. Revise el prospecto antes de contratar."
+              : "Deferred variable annuities are long-term investment vehicles designed for retirement planning and are subject to market fluctuations and investment risk, including potential loss of principal. Guarantees are backed solely by the financial strength and claims-paying ability of the issuing life insurance company. Withdrawals prior to age 59½ may trigger a 10% IRS penalty tax and surrender charges. Contract fees, subaccount management fees, and mortality & expense (M&E) charges apply. Review full prospectus materials carefully prior to purchasing."}
           </p>
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-400 border-t border-slate-800/80">
             <p>
-              &copy; {new Date().getFullYear()} MyIAD National Insurance Solutions. All rights reserved.
+              &copy; {new Date().getFullYear()} MyIAD National Insurance Solutions. {lang === "es" ? "Todos los derechos reservados." : "All rights reserved."}
             </p>
             <div className="flex flex-wrap items-center gap-6">
               <Link href="/privacy" className="hover:text-white transition-colors underline">
-                Privacy Policy
+                {lang === "es" ? "Política de Privacidad" : "Privacy Policy"}
               </Link>
               <Link href="/terms" className="hover:text-white transition-colors underline">
-                Terms of Service
+                {lang === "es" ? "Términos del Servicio" : "Terms of Service"}
               </Link>
               <Link href="/disclosures" className="hover:text-white transition-colors underline">
-                Statutory Disclosures
+                {lang === "es" ? "Divulgaciones Estatutarias" : "Statutory Disclosures"}
               </Link>
             </div>
           </div>

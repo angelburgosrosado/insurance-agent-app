@@ -8,26 +8,34 @@
     "postinstall": "prisma generate",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --import tsx --test tests/db.test.mjs tests/domain/lead-model.test.ts tests/domain/repository.test.ts tests/auth.test.ts tests/rls-migration.test.mjs tests/leads-hardening.test.ts tests/sms-integration.test.ts tests/report-generator.test.ts tests/lead-routing.test.ts tests/ai-content-generator.test.ts tests/social-publisher.test.ts tests/content-management.test.ts tests/myiad-landing.test.ts tests/quote-lead-routing.test.ts tests/myiad-intake-flow.test.ts tests/myiad-ai-copilot.test.ts tests/myiad-voice-agent.test.ts",
+    "test": "node --import tsx --test tests/db.test.mjs tests/domain/lead-model.test.ts tests/domain/repository.test.ts tests/auth.test.ts tests/rls-migration.test.mjs tests/leads-hardening.test.ts tests/sms-integration.test.ts tests/report-generator.test.ts tests/lead-routing.test.ts tests/ai-content-generator.test.ts tests/social-publisher.test.ts tests/content-management.test.ts tests/myiad-landing.test.ts tests/quote-lead-routing.test.ts tests/myiad-intake-flow.test.ts tests/myiad-ai-copilot.test.ts tests/myiad-voice-agent.test.ts tests/voice-relay.test.ts",
     "typecheck": "tsc --noEmit",
-    "analyze": "ANALYZE=true next build"
+    "analyze": "ANALYZE=true next build",
+    "voice:start": "tsx voice-relay/server.ts",
+    "voice:dev": "tsx watch voice-relay/server.ts"
   },
   "dependencies": {
+    "@google/genai": "^2.26.0",
     "@prisma/client": "6.19.0",
     "@supabase/ssr": "0.12.4",
     "@supabase/supabase-js": "2.112.0",
+    "express": "^5.2.1",
     "lucide-react": "^1.31.0",
     "next": "16.3.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "recharts": "^3.10.1",
-    "tsx": "^4.20.3"
+    "tsx": "^4.20.3",
+    "twilio": "^6.1.2",
+    "ws": "^8.22.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/express": "^5.0.6",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/ws": "^8.18.2",
     "eslint": "^9",
     "eslint-config-next": "16.3.0",
     "prisma": "6.19.0",

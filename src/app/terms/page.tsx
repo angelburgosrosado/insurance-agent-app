@@ -5,7 +5,20 @@ import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { ComplianceDisclosure } from "@/components/ui/ComplianceDisclosure";
 import { useLanguage } from "@/context/LanguageContext";
-import { Scale, AlertCircle } from "lucide-react";
+import { 
+  Scale, 
+  AlertCircle, 
+  ShieldCheck, 
+  MessageSquare, 
+  Phone, 
+  Mail, 
+  FileText, 
+  CheckCircle2, 
+  ExternalLink,
+  Cpu,
+  Calculator,
+  Lock
+} from "lucide-react";
 
 export default function TermsPage() {
   const { lang, setLang } = useLanguage();
@@ -20,22 +33,22 @@ export default function TermsPage() {
           <div className="max-w-4xl mx-auto space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-secondary/20 border border-secondary/40 rounded-full text-secondary text-xs font-bold uppercase tracking-wider">
               <Scale size={14} className="text-secondary" />
-              {lang === "es" ? "Términos Legales de Uso" : "Terms of Service"}
+              {lang === "es" ? "Términos Legales de Uso y Condiciones" : "Terms & Conditions of Service"}
             </div>
             <h1 className="text-3xl md:text-5xl font-black tracking-tight leading-tight">
-              {lang === "es" ? "Términos y Condiciones de Uso" : "Terms & Conditions"}
+              {lang === "es" ? "Términos de Servicio de MyIAD" : "MyIAD Terms of Service"}
             </h1>
             <p className="text-slate-300 text-sm md:text-base leading-relaxed max-w-2xl">
               {lang === "es"
-                ? "Términos que rigen el uso del portal web, calculadoras interactivas y solicitudes de consulta de AB Global Consulting."
-                : "Terms governing the use of the website, interactive insurance tools, and consultation requests provided by AB Global Consulting."}
+                ? "Condiciones y normas que rigen el uso del portal myiad.com, calculadoras interactivas, agente de voz con IA y canales de comunicación SMS operados por AB Global Consulting y MyIAD National Insurance Solutions."
+                : "Terms and conditions governing the use of the myiad.com portal, interactive simulators, conversational AI voice agents, and SMS messaging channels operated by AB Global Consulting and MyIAD National Insurance Solutions."}
             </p>
             <div className="pt-2 flex items-center gap-4 text-xs text-slate-400">
-              <span>{lang === "es" ? "Vigencia: 2026" : "Effective: 2026"}</span>
+              <span>{lang === "es" ? "Vigencia: 2026 • Versión Oficial myiad.com" : "Effective: 2026 • myiad.com Official Edition"}</span>
               <span>•</span>
               <button
                 onClick={() => setLang(lang === "es" ? "en" : "es")}
-                className="text-secondary font-bold hover:underline"
+                className="text-secondary font-bold hover:underline cursor-pointer"
               >
                 {lang === "es" ? "Read in English (EN)" : "Leer en Español (ES)"}
               </button>
@@ -45,59 +58,324 @@ export default function TermsPage() {
 
         {/* Body */}
         <section className="max-w-4xl mx-auto px-6 lg:px-10 py-16">
-          <div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-slate-200 space-y-10 leading-relaxed text-sm text-slate-700">
+          <div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-slate-200 space-y-12 leading-relaxed text-sm text-slate-700">
             
-            <div className="p-5 bg-amber-50 rounded-2xl border border-amber-200 text-amber-900 text-xs flex items-start gap-3">
-              <AlertCircle size={18} className="text-amber-600 shrink-0 mt-0.5" />
+            {/* Advisory Alert Banner */}
+            <div className="p-5 bg-amber-50 rounded-2xl border border-amber-200 text-amber-900 text-xs md:text-sm flex items-start gap-3">
+              <AlertCircle size={20} className="text-amber-600 shrink-0 mt-0.5" />
               <p>
-                <strong>{lang === "es" ? "Aviso Importante:" : "Important Advisory Notice:"}</strong>{" "}
+                <strong>{lang === "es" ? "Aviso Regulatorio e Idoneidad:" : "Regulatory Notice & Suitability Advisory:"}</strong>{" "}
                 {lang === "es"
-                  ? "Este portal web ofrece contenido educativo, simulaciones financieras y acceso a consultas diagnósticas. Ninguna información en este sitio constituye una oferta vinculante o póliza de seguro emitida."
-                  : "This portal provides educational illustrations and access to consultations. Nothing on this website constitutes a binder, policy issuance, or guarantee of underwriting approval."}
+                  ? "Este portal web ofrece contenido educativo, simulaciones matemáticas no vinculantes y acceso a consultas profesionales. Ningún contenido en este sitio web o generado por asistentes de IA constituye una póliza emitida, garantía de aprobación de suscripción ni asesoramiento fiscal o legal formal."
+                  : "This portal provides educational illustrations, non-binding mathematical models, and access to professional consultations. Nothing on this website or generated by AI assistants constitutes a policy binder, underwritten approval, or formal tax or legal advice."}
               </p>
             </div>
 
-            <div className="space-y-3">
-              <h2 className="text-xl font-bold text-slate-900">
-                1. {lang === "es" ? "Naturaleza de los Servicios" : "Nature of Services"}
+            {/* Quick Links Nav */}
+            <div className="flex flex-wrap gap-2 text-xs">
+              <a href="#acceptance" className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors font-semibold">
+                1. {lang === "es" ? "Aceptación" : "Acceptance"}
+              </a>
+              <a href="#nature" className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors font-semibold">
+                2. {lang === "es" ? "Naturaleza de Servicios" : "Services"}
+              </a>
+              <a href="#simulators" className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors font-semibold">
+                3. {lang === "es" ? "Calculadoras y Simulación" : "Simulators"}
+              </a>
+              <a href="#ai-voice" className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors font-semibold">
+                4. {lang === "es" ? "Agente de Voz IA" : "Voice AI"}
+              </a>
+              <a href="#carrier-underwriting" className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors font-semibold">
+                5. {lang === "es" ? "Suscripción de Aseguradoras" : "Underwriting"}
+              </a>
+              <a href="#sms-terms" className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors font-semibold">
+                6. {lang === "es" ? "Términos SMS (888-887-3585)" : "SMS Terms"}
+              </a>
+              <a href="#conduct" className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors font-semibold">
+                7. {lang === "es" ? "Conducta y Límites" : "Conduct"}
+              </a>
+            </div>
+
+            {/* 1. Acceptance */}
+            <div id="acceptance" className="space-y-4">
+              <h2 className="text-xl font-bold text-slate-900 border-b border-slate-100 pb-2 flex items-center gap-2">
+                <span className="text-secondary font-black">1.</span>
+                {lang === "es" ? "Aceptación de los Términos y Ámbito de myiad.com" : "Acceptance of Terms & Scope of myiad.com"}
               </h2>
               <p>
                 {lang === "es"
-                  ? "AB Global Consulting ofrece servicios de asesoría y orientación en seguros de vida (IUL), anualidades, planificación patrimonial militar y gastos finales. La emisión formal de pólizas está sujeta a las normas de suscripción de las compañías aseguradoras representadas."
-                  : "AB Global Consulting provides independent advisory and illustration services across Indexed Universal Life (IUL), annuities, military asset protection, and final expense solutions. Formal policy issuance is subject to carrier underwriting requirements."}
+                  ? "Al acceder o navegar en los dominios myiad.com, abglco.com, voice.myiad.com o crm.myiad.net, o al utilizar nuestras calculadoras interactivas, interactuar con nuestro agente de voz o solicitar una consulta, usted acepta someterse a estos Términos y Condiciones y a nuestra Política de Privacidad."
+                  : "By accessing or utilizing myiad.com, abglco.com, voice.myiad.com, or crm.myiad.net, or by using our interactive simulators, conversing with our AI voice assistant, or requesting a diagnostic consultation, you agree to be bound by these Terms of Service and our Privacy Policy."}
+              </p>
+              <p>
+                {lang === "es"
+                  ? "Estos términos aplican a todos los visitantes, usuarios registrados, solicitantes de cotizaciones y partes que interactúen con nuestras plataformas digitales o líneas telefónicas."
+                  : "These terms apply to all site visitors, quote applicants, callers, and parties interacting with our digital interfaces or telephone communication pipelines."}
               </p>
             </div>
 
-            <div className="space-y-3">
-              <h2 className="text-xl font-bold text-slate-900">
-                2. {lang === "es" ? "Calculadoras y Simuladores Interactivos" : "Calculators & Interactive Simulators"}
+            {/* 2. Nature of Services */}
+            <div id="nature" className="space-y-4">
+              <h2 className="text-xl font-bold text-slate-900 border-b border-slate-100 pb-2 flex items-center gap-2">
+                <span className="text-secondary font-black">2.</span>
+                {lang === "es" ? "Naturaleza de los Servicios y Estatus Independiente" : "Nature of Services & Independent Agency Status"}
               </h2>
               <p>
                 {lang === "es"
-                  ? "Las proyecciones mostradas en nuestras calculadoras (incluyendo el Simulador IUL y el Escudo Militar) son modelos matemáticos hipotéticos basados en tasas de rendimiento asumidas y no garantizan resultados futuros exactos."
-                  : "Projections generated by interactive calculators (including the IUL Simulator and Military Asset Shield) are hypothetical illustrations based on user-entered parameters and do not guarantee future cash values or dividends."}
+                  ? "MyIAD National Insurance Solutions y AB Global Consulting operan como una agencia independiente de corretaje y consultoría en seguros de vida (IUL), anualidades fijas indexadas, planificación patrimonial militar y gastos finales. Representamos a las principales compañías aseguradoras calificadas A/A+ (ej. Transamerica, Nationwide, Allianz, Mutual of Omaha, Corebridge Financial, Everest)."
+                  : "MyIAD National Insurance Solutions and AB Global Consulting operate as an independent insurance brokerage and advisory agency specializing in Indexed Universal Life (IUL), fixed indexed annuities, military asset transition planning, and final expense solutions. We represent top-tier, A/A+ rated life insurance and annuity carriers (e.g. Transamerica, Nationwide, Allianz, Mutual of Omaha, Corebridge Financial, Everest)."}
               </p>
+              <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1">
+                <p>
+                  <strong>{lang === "es" ? "No Afiliación Gubernamental:" : "Non-Governmental Affiliation:"}</strong>{" "}
+                  {lang === "es"
+                    ? "AB Global Consulting y MyIAD no son agencias del Gobierno Federal de los EE.UU., del Departamento de Asuntos de Veteranos (VA), del Departamento de Defensa (DoD) ni de la Administración de Seguro Social. Los análisis sobre el reemplazo o transición de SGLI/VGLI son servicios de consultoría privada."
+                    : "AB Global Consulting and MyIAD are private advisory entities and are not affiliated with, endorsed by, or operated by the U.S. Federal Government, the Department of Veterans Affairs (VA), the Department of Defense (DoD), or the Social Security Administration. All military transition guidance represents private advisory consulting."}
+                </p>
+              </div>
             </div>
 
-            <div className="space-y-3">
-              <h2 className="text-xl font-bold text-slate-900">
-                3. {lang === "es" ? "Licenciatura y Jurisdicción" : "Licensing & Jurisdiction"}
+            {/* 3. Simulators & Calculators */}
+            <div id="simulators" className="space-y-4">
+              <h2 className="text-xl font-bold text-slate-900 border-b border-slate-100 pb-2 flex items-center gap-2">
+                <Calculator size={18} className="text-secondary" />
+                <span className="text-secondary font-black">3.</span>
+                {lang === "es" ? "Calculadoras, Simuladores y Modelos de Inteligencia Artificial" : "Calculators, Simulators & AI Mathematical Modeling"}
               </h2>
               <p>
                 {lang === "es"
-                  ? "Angel Burgos es un profesional con licencia 0215 del Estado de Florida (Lic. #G328926 / Código de Agente WFG: F6D9U). Los servicios se ofrecen principalmente para residentes de Florida y Puerto Rico."
-                  : "Angel Burgos is a State Licensed 0215 Insurance Practitioner (FL License: #G328926 / WFG Agent Code: F6D9U), providing advisory services in authorized jurisdictions."}
+                  ? "Todas las herramientas interactivas disponibles en myiad.com — incluyendo el Simulador de IUL con Piso del 0%, el Escudo Militar de Activos, la Calculadora D.I.M.E. y el informe MyIAD AI Protection Blueprint — proporcionan proyecciones matemáticas hipotéticas basadas exclusivamente en los datos ingresados por el usuario y suposiciones de mercado estándar."
+                  : "All interactive tools on myiad.com — including the 0% Floor IUL Simulator, Military Asset Shield, D.I.M.E. Calculator, and the MyIAD AI Protection Blueprint report — generate hypothetical mathematical illustrations based solely on user inputs and standard historical index parameters."}
+              </p>
+              <ul className="list-disc pl-5 space-y-2 text-xs md:text-sm">
+                <li>
+                  <strong>{lang === "es" ? "Carácter No Garantizado:" : "Non-Guaranteed Projections:"}</strong>{" "}
+                  {lang === "es"
+                    ? "Los rendimientos basados en índices bursátiles externos (como el S&P 500) reflejan límites de participación (caps y participation rates) hipotéticos. Salvo por la garantía del piso contractual del 0% contra caídas de mercado, los rendimientos pasados no garantizan resultados futuros."
+                    : "Credited interest linked to equity index performance (such as the S&P 500) reflects assumed caps and participation rates. Except for the contractual 0% annual floor against negative index returns, past index movements do not guarantee future cash values."}
+                </li>
+                <li>
+                  <strong>{lang === "es" ? "Costos y Deducciones de Póliza:" : "Policy Charges & Deductions:"}</strong>{" "}
+                  {lang === "es"
+                    ? "El valor en efectivo acumulado en una póliza real está sujeto a deducciones por costo de seguro (COI), cargos administrativos y costos de jinetes (riders), los cuales pueden variar según la edad, género y clase de suscripción del asegurado."
+                    : "Actual policy cash value is subject to recurring cost of insurance (COI) deductions, administrative charges, and rider costs determined by the carrier based on the insured's age, gender, and underwriting class."}
+                </li>
+              </ul>
+            </div>
+
+            {/* 4. Conversational Voice AI */}
+            <div id="ai-voice" className="space-y-4">
+              <h2 className="text-xl font-bold text-slate-900 border-b border-slate-100 pb-2 flex items-center gap-2">
+                <Cpu size={18} className="text-secondary" />
+                <span className="text-secondary font-black">4.</span>
+                {lang === "es" ? "Uso del Agente de Voz con IA y Copiloto de Seguros" : "Conversational Voice AI & Insurance Copilot Terms"}
+              </h2>
+              <p>
+                {lang === "es"
+                  ? "MyIAD implementa tecnología conversacional de vanguardia (utilizando Deepgram, Twilio ConversationRelay y modelos avanzados de lenguaje) para responder preguntas preliminares a través de llamadas a nuestra línea gratuita (888) 887-3585 y en el navegador."
+                  : "MyIAD deploys low-latency voice conversational intelligence (utilizing Deepgram speech-to-text, Twilio ConversationRelay, and advanced language models) to provide immediate educational triage via web audio and telephone calls to our toll-free line (888) 887-3585."}
+              </p>
+              <ul className="list-disc pl-5 space-y-1.5 text-xs md:text-sm">
+                <li>
+                  {lang === "es"
+                    ? "El agente de voz es un sistema automatizado de asistencia y pre-calificación. No está facultado para emitir pólizas legalmente vinculantes sin la revisión y firma de un agente humano con licencia."
+                    : "The voice agent is an automated triage and educational assistant. It cannot issue legally binding insurance contracts or guarantees without human licensed practitioner review and signature."}
+                </li>
+                <li>
+                  {lang === "es"
+                    ? "Las interacciones de voz pueden ser grabadas o transcritas para propósitos de control de calidad, cumplimiento regulatorio y verificación de solicitudes de transferencia hacia Angel Burgos o asesores autorizados."
+                    : "Voice sessions and telephone calls may be recorded or transcribed for supervisory compliance, quality assurance, and seamless warm transfer to Angel Burgos or designated licensed advisors."}
+                </li>
+              </ul>
+            </div>
+
+            {/* 5. Carrier Underwriting & FINRA / IRC Compliance */}
+            <div id="carrier-underwriting" className="space-y-4">
+              <h2 className="text-xl font-bold text-slate-900 border-b border-slate-100 pb-2 flex items-center gap-2">
+                <ShieldCheck size={18} className="text-secondary" />
+                <span className="text-secondary font-black">5.</span>
+                {lang === "es" ? "Suscripción de Compañías y Normas FINRA / IRC" : "Carrier Underwriting & FINRA / IRC Suitability"}
+              </h2>
+              <p>
+                {lang === "es"
+                  ? "Toda emisión de contrato de seguro o anualidad está sujeta a la aprobación formal del departamento de suscripción de la aseguradora correspondiente:"
+                  : "All insurance contracts and annuity issuances are contingent upon formal underwriting approval from the respective insurance carrier:"}
+              </p>
+              <ul className="list-disc pl-5 space-y-2 text-xs md:text-sm">
+                <li>
+                  <strong>{lang === "es" ? "Regla FINRA 2330 (Anualidades Variables):" : "FINRA Rule 2330 Suitability Standards:"}</strong>{" "}
+                  {lang === "es"
+                    ? "Cualquier recomendación o intercambio de anualidades diferidas se evalúa rigurosamente para garantizar idoneidad basada en edad, horizonte de inversión, necesidades de liquidez y perfil de riesgo del cliente antes de someterse a supervisión principal."
+                    : "Any recommendation or 1035 exchange involving deferred variable annuities is strictly evaluated for customer suitability, liquidity needs, surrender charges, and tax consequences under FINRA Rule 2330 prior to principal supervisory sign-off."}
+                </li>
+                <li>
+                  <strong>{lang === "es" ? "Cumplimiento con IRC §7702 y Límites TAMRA:" : "IRC §7702 Guidelines & MEC Prevention:"}</strong>{" "}
+                  {lang === "es"
+                    ? "Las pólizas de IUL se diseñan observando las definiciones estatutarias del Código de Rentas Internas §7702 y la prueba de 7 pagos (TAMRA) para preservar el estatus de retiro libre de impuestos mediante préstamos de póliza y evitar la clasificación no deseada de Contrato de Dotación Modificada (MEC)."
+                    : "IUL policy designs are structured in adherence to Internal Revenue Code §7702 definition of life insurance contracts and TAMRA 7-Pay guidelines to preserve tax-free distributions via policy loans and prevent unintended Modified Endowment Contract (MEC) status."}
+                </li>
+              </ul>
+            </div>
+
+            {/* 6. Toll-Free SMS Terms (888-887-3585) */}
+            <div id="sms-terms" className="space-y-4 p-6 bg-slate-50 rounded-2xl border-2 border-teal-500/30">
+              <div className="flex items-center gap-2 text-teal-900 font-bold text-base">
+                <MessageSquare size={18} className="text-teal-600" />
+                <span>
+                  {lang === "es" 
+                    ? "Términos del Servicio de Mensajería de Texto SMS (Línea Gratuita 1-888-887-3585)" 
+                    : "SMS Text Messaging Terms of Service (Toll-Free 1-888-887-3585)"}
+                </span>
+              </div>
+              <p className="text-xs md:text-sm text-slate-700">
+                {lang === "es"
+                  ? "Al marcar la casilla de consentimiento en nuestros formularios web o al enviar un mensaje con la palabra START al (888) 887-3585, usted autoriza a MyIAD National Insurance Solutions y AB Global Consulting a enviarle mensajes de texto informativos y conversacionales relacionados con su cotización, diseño de pólizas y recordatorios de consulta."
+                  : "By checking the SMS consent checkbox on our web intake forms or texting START to (888) 887-3585, you authorize MyIAD National Insurance Solutions and AB Global Consulting to send informational and conversational text messages regarding your insurance quotes, policy designs, and consultation reminders."}
+              </p>
+
+              <div className="bg-white p-4 rounded-xl border border-slate-200 space-y-2 text-xs text-slate-600">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div>
+                    <span className="font-bold text-slate-800">{lang === "es" ? "Frecuencia de Mensajes:" : "Message Frequency:"}</span>{" "}
+                    {lang === "es" ? "La frecuencia de mensajes varía según el avance de su consulta." : "Message frequency varies based on consultation progress."}
+                  </div>
+                  <div>
+                    <span className="font-bold text-slate-800">{lang === "es" ? "Tarifas de Mensajería:" : "Message & Data Rates:"}</span>{" "}
+                    {lang === "es" ? "Pueden aplicar tarifas de mensajes y datos según su operador." : "Standard message and data rates may apply."}
+                  </div>
+                  <div>
+                    <span className="font-bold text-slate-800">{lang === "es" ? "Cómo Cancelar (STOP):" : "How to Cancel (STOP):"}</span>{" "}
+                    {lang === "es" ? "Responda STOP a cualquier mensaje para darse de baja inmediatamente." : "Reply STOP to any message to unsubscribe instantly."}
+                  </div>
+                  <div>
+                    <span className="font-bold text-slate-800">{lang === "es" ? "Ayuda y Asistencia (HELP):" : "Customer Support (HELP):"}</span>{" "}
+                    {lang === "es" ? "Responda HELP o llame al 1-888-887-3585 para asistencia." : "Reply HELP or call toll-free 1-888-887-3585 for assistance."}
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-slate-100">
+                  <p className="text-slate-700 font-medium">
+                    <strong>{lang === "es" ? "Cláusula Estricta de No Cesión de Datos Móviles:" : "Strict Mobile Data Non-Sharing Clause:"}</strong>{" "}
+                    {lang === "es"
+                      ? "Ninguna información móvil será compartida con terceros ni afiliados para fines de mercadeo o publicidad. Todas las categorías anteriores excluyen los datos de origen del remitente y el consentimiento de suscripción a mensajes de texto; esta información no será compartida con terceros."
+                      : "No mobile information will be shared with third parties/affiliates for marketing/promotional purposes. All other categories exclude text messaging originator opt-in data and consent; this information will not be shared with any third parties."}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 pt-2">
+                <Link
+                  href="/opt-in"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-xs font-bold transition-colors"
+                >
+                  <FileText size={14} />
+                  <span>{lang === "es" ? "Ver Página Oficial de Cumplimiento Toll-Free /opt-in" : "View Official Toll-Free Compliance Page /opt-in"}</span>
+                  <ExternalLink size={12} />
+                </Link>
+              </div>
+            </div>
+
+            {/* 7. User Conduct & Prohibited Uses */}
+            <div id="conduct" className="space-y-4">
+              <h2 className="text-xl font-bold text-slate-900 border-b border-slate-100 pb-2 flex items-center gap-2">
+                <span className="text-secondary font-black">7.</span>
+                {lang === "es" ? "Uso Permitido y Conductas Prohibidas" : "Permitted Use & Prohibited Conduct"}
+              </h2>
+              <p>
+                {lang === "es"
+                  ? "Usted se compromete a no someter información fraudulenta, números de teléfono falsos o datos de terceros sin su consentimiento explícito por escrito. Queda estrictamente prohibido el uso de robots, scrapers automatizados, ataques de denegación de servicio o ingeniería inversa a nuestros modelos y prompts de IA."
+                  : "You agree not to submit fraudulent contact details, telephone numbers you do not legally own, or third-party information without prior affirmative authorization. Automated scraping, robot indexing, denial of service attacks, and reverse engineering of proprietary algorithms or AI prompts are strictly prohibited."}
               </p>
             </div>
 
-            <div className="text-center pt-6">
+            {/* 8. Intellectual Property */}
+            <div className="space-y-4">
+              <h2 className="text-xl font-bold text-slate-900 border-b border-slate-100 pb-2 flex items-center gap-2">
+                <span className="text-secondary font-black">8.</span>
+                {lang === "es" ? "Propiedad Intelectual" : "Intellectual Property"}
+              </h2>
+              <p>
+                {lang === "es"
+                  ? "Todos los textos, logotipos, diseños, software de cálculo, marcas (incluyendo MyIAD™, MyIAD AI Protection Blueprint™ y Escudo Militar de Activos™) y materiales de diagnóstico son propiedad exclusiva de AB Global Consulting y están protegidos por las leyes de propiedad intelectual de EE.UU."
+                  : "All trademarks, service marks, logos, calculation scripts, diagnostic templates (including MyIAD™, MyIAD AI Protection Blueprint™, and Military Asset Shield™), and web architecture are the proprietary property of AB Global Consulting and are protected by United States copyright and trademark laws."}
+              </p>
+            </div>
+
+            {/* 9. Disclaimers & Limitation of Liability */}
+            <div className="space-y-4">
+              <h2 className="text-xl font-bold text-slate-900 border-b border-slate-100 pb-2 flex items-center gap-2">
+                <span className="text-secondary font-black">9.</span>
+                {lang === "es" ? "Descargo de Responsabilidad y Límite de Responsabilidad" : "Disclaimer of Warranties & Limitation of Liability"}
+              </h2>
+              <p>
+                {lang === "es"
+                  ? "El sitio web se provee 'tal cual' y 'según disponibilidad'. En la máxima medida permitida por la ley, AB Global Consulting no será responsable de daños indirectos, incidentales, consecuentes o pérdidas comerciales derivadas del uso o imposibilidad de uso del portal o de fluctuaciones en los mercados financieros."
+                  : "The site and its services are provided on an 'as-is' and 'as-available' basis without warranties of any kind. To the fullest extent permissible under applicable law, AB Global Consulting disclaims all liability for indirect, incidental, punitive, or consequential damages resulting from the use or inability to use this platform or financial index fluctuations."}
+              </p>
+            </div>
+
+            {/* 10. Governing Law & Jurisdiction */}
+            <div className="space-y-4">
+              <h2 className="text-xl font-bold text-slate-900 border-b border-slate-100 pb-2 flex items-center gap-2">
+                <span className="text-secondary font-black">10.</span>
+                {lang === "es" ? "Ley Aplicable y Jurisdicción" : "Governing Law & Dispute Resolution"}
+              </h2>
+              <p>
+                {lang === "es"
+                  ? "Estos términos se regirán e interpretarán de acuerdo con las leyes del Estado de Florida, EE.UU., sin dar efecto a ningún principio de conflictos de leyes. Cualquier litigio o controversia se resolverá en los tribunales competentes de Florida."
+                  : "These Terms of Service and any dispute arising out of or related to your use of the website shall be governed by and construed in accordance with the laws of the State of Florida, United States, without regard to its conflict of law principles. Any legal proceeding shall be brought exclusively in competent state or federal courts located in Florida."}
+              </p>
+            </div>
+
+            {/* 11. Contact & Supervisory Inquiries */}
+            <div className="space-y-4 p-6 bg-slate-50 rounded-2xl border border-slate-200">
+              <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <Phone size={18} className="text-secondary" />
+                {lang === "es" ? "Información de Contacto y Supervisión" : "Contact & Supervisory Inquiries"}
+              </h2>
+              <p className="text-xs text-slate-600">
+                {lang === "es"
+                  ? "Para preguntas sobre estos términos, inquietudes de idoneidad o solicitudes formales de asesoría:"
+                  : "For inquiries regarding these terms, suitability review, or formal advisory requests:"}
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-700">
+                <div>
+                  <p><strong>Angel Burgos</strong></p>
+                  <p>{lang === "es" ? "Licencia Florida 0215:" : "Florida 0215 License:"} #G328926</p>
+                  <p>WFG Agent Code: F6D9U</p>
+                </div>
+                <div>
+                  <p><strong>AB Global Consulting / MyIAD</strong></p>
+                  <p>{lang === "es" ? "Línea Gratuita:" : "Toll-Free:"} <a href="tel:18888873585" className="text-primary font-bold hover:underline">1-888-887-3585</a></p>
+                  <p>{lang === "es" ? "Directo:" : "Direct Line:"} <a href="tel:13863331482" className="text-primary font-bold hover:underline">(386) 333-1482</a></p>
+                  <p>Email: <a href="mailto:info@abglco.com" className="text-primary font-bold hover:underline">info@abglco.com</a></p>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Actions */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-slate-200">
               <Link
                 href="/"
-                className="inline-block px-6 py-3 bg-slate-900 hover:bg-secondary text-white font-bold text-xs rounded-xl shadow transition-all"
+                className="w-full sm:w-auto text-center px-6 py-3 bg-slate-900 hover:bg-secondary text-white font-bold text-xs rounded-xl shadow transition-all"
               >
                 ← {lang === "es" ? "Volver al Inicio" : "Back to Home"}
               </Link>
+              <div className="flex items-center gap-3 text-xs font-semibold">
+                <Link href="/privacy" className="text-slate-600 hover:text-primary hover:underline">
+                  {lang === "es" ? "Política de Privacidad" : "Privacy Policy"}
+                </Link>
+                <span>•</span>
+                <Link href="/disclosures" className="text-slate-600 hover:text-primary hover:underline">
+                  {lang === "es" ? "Divulgaciones Estatutarias" : "Statutory Disclosures"}
+                </Link>
+                <span>•</span>
+                <Link href="/opt-in" className="text-teal-700 hover:text-teal-900 hover:underline">
+                  {lang === "es" ? "Cumplimiento SMS /opt-in" : "SMS Opt-In Compliance"}
+                </Link>
+              </div>
             </div>
+
           </div>
         </section>
       </div>

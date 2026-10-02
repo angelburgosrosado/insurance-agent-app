@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import {
   Shield,
   HeartPulse,
@@ -893,7 +894,10 @@ export function QuoteSelectorForm({
                     className="mt-1 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
                   />
                   <span className="text-[11px] text-slate-600 leading-relaxed">
-                    By checking this box and clicking &apos;Submit &amp; Route Inbound Quote&apos;, I provide express affirmative written consent for Angel Burgos and AB Global Consulting / MyIAD representatives to contact me at the phone number and email provided regarding insurance and financial advisory solutions. I understand consent is not required as a condition of purchase and message/data rates may apply. You may opt out at any time.
+                    By checking this box and clicking &apos;Submit &amp; Route Inbound Quote&apos;, I provide express affirmative written consent for Angel Burgos and AB Global Consulting / MyIAD representatives to contact me at the phone number and email provided regarding insurance and financial advisory solutions. I understand consent is not required as a condition of purchase and message/data rates may apply. You may opt out at any time by replying STOP, or HELP for help (1-888-887-3585). View our{" "}
+                    <Link href="/privacy" className="text-blue-600 underline hover:text-blue-800">Privacy Policy</Link>,{" "}
+                    <Link href="/terms" className="text-blue-600 underline hover:text-blue-800">Terms</Link>, and{" "}
+                    <Link href="/opt-in" className="text-teal-600 underline hover:text-teal-800 font-semibold">Toll-Free SMS Opt-In</Link>.
                   </span>
                 </label>
                 {fieldErrors.consent && (

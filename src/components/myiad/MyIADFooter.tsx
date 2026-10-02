@@ -138,8 +138,62 @@ export function MyIADFooter() {
           </div>
         </div>
 
+        {/* Domain Ecosystem & Portals Ribbon */}
+        <div className="pt-8 border-t border-slate-800/80">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-4 rounded-2xl bg-slate-900/60 border border-slate-800 text-xs">
+            <div className="space-y-1">
+              <span className="font-bold text-white uppercase tracking-wider text-[11px] text-[#14B8A6]">
+                {lang === "es" ? "Ecosistema de Dominios y Plataformas" : "Network & Domain Ecosystem"}
+              </span>
+              <p className="text-slate-400 text-[11px]">
+                {lang === "es"
+                  ? "Sistemas autorizados de MyIAD National Insurance Solutions y AB Global Consulting:"
+                  : "Authorized digital properties of MyIAD National Insurance Solutions & AB Global Consulting:"}
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-3 font-mono text-[11px]">
+              <a
+                href="https://myiad.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-teal-300 border border-teal-500/30 transition-colors flex items-center gap-1"
+              >
+                <span>myiad.com</span>
+                <ExternalLink size={10} />
+              </a>
+              <a
+                href="https://abglco.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-blue-300 border border-blue-500/30 transition-colors flex items-center gap-1"
+              >
+                <span>abglco.com</span>
+                <ExternalLink size={10} />
+              </a>
+              <a
+                href="https://crm.myiad.net"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-purple-300 border border-purple-500/30 transition-colors flex items-center gap-1"
+              >
+                <span>crm.myiad.net</span>
+                <ExternalLink size={10} />
+              </a>
+              <a
+                href="https://voice.myiad.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/30 transition-colors flex items-center gap-1"
+              >
+                <span>voice.myiad.com</span>
+                <ExternalLink size={10} />
+              </a>
+            </div>
+          </div>
+        </div>
+
         {/* Regulatory & FINRA 2330 Legal Text */}
-        <div className="pt-8 border-t border-slate-800 space-y-4 text-[11px] leading-relaxed text-slate-400">
+        <div className="space-y-4 text-[11px] leading-relaxed text-slate-400">
           <p>
             <strong>{lang === "es" ? "Divulgación Regulatoria y Cumplimiento:" : "Regulatory & Compliance Disclosure:"}</strong>{" "}
             {lang === "es"
@@ -154,7 +208,7 @@ export function MyIADFooter() {
           </p>
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-400 border-t border-slate-800/80">
             <p>
-              &copy; {new Date().getFullYear()} MyIAD National Insurance Solutions. {lang === "es" ? "Todos los derechos reservados." : "All rights reserved."}
+              &copy; {new Date().getFullYear()} MyIAD National Insurance Solutions • AB Global Consulting LLC. {lang === "es" ? "Todos los derechos reservados." : "All rights reserved."}
             </p>
             <div className="flex flex-wrap items-center gap-6">
               <Link href="/privacy" className="hover:text-white transition-colors underline">
@@ -165,6 +219,10 @@ export function MyIADFooter() {
               </Link>
               <Link href="/disclosures" className="hover:text-white transition-colors underline">
                 {lang === "es" ? "Divulgaciones Estatutarias" : "Statutory Disclosures"}
+              </Link>
+              <Link href="/opt-in" className="hover:text-teal-300 text-teal-400 font-bold transition-colors underline flex items-center gap-1">
+                <span>📱</span>
+                <span>{lang === "es" ? "Consentimiento y Verificación SMS (Toll-Free)" : "SMS Opt-In & Toll-Free Compliance"}</span>
               </Link>
             </div>
           </div>

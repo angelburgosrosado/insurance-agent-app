@@ -106,13 +106,54 @@ export const ComplianceDisclosure: React.FC = () => {
           </div>
         </div>
 
+        {/* Domain Ecosystem Links */}
+        <div className="flex flex-wrap items-center justify-between gap-3 p-3 bg-white rounded-xl border border-slate-200 text-xs">
+          <div className="flex items-center gap-2 text-slate-600 font-medium">
+            <span className="font-bold text-slate-900">{lang === "es" ? "Ecosistema Digital:" : "Digital Ecosystem:"}</span>
+          </div>
+          <div className="flex flex-wrap items-center gap-2 font-mono text-[11px]">
+            <a
+              href="https://myiad.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-2 py-0.5 rounded bg-slate-50 hover:bg-slate-100 text-teal-700 border border-teal-200 transition-colors"
+            >
+              myiad.com
+            </a>
+            <a
+              href="https://abglco.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-2 py-0.5 rounded bg-slate-50 hover:bg-slate-100 text-blue-700 border border-blue-200 transition-colors"
+            >
+              abglco.com
+            </a>
+            <a
+              href="https://crm.myiad.net"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-2 py-0.5 rounded bg-slate-50 hover:bg-slate-100 text-purple-700 border border-purple-200 transition-colors"
+            >
+              crm.myiad.net
+            </a>
+            <a
+              href="https://voice.myiad.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-2 py-0.5 rounded bg-slate-50 hover:bg-slate-100 text-amber-700 border border-amber-200 transition-colors"
+            >
+              voice.myiad.com
+            </a>
+          </div>
+        </div>
+
         <div className="text-[11px] leading-relaxed text-slate-500 space-y-3">
           <p>
             <strong>{t.footer_compliance_title}</strong> {t.footer_compliance_text}
           </p>
           <div className="flex flex-col sm:flex-row justify-between items-center gap-3 pt-4 border-t border-slate-200/80 text-[11px] text-slate-500">
-            <p>© {new Date().getFullYear()} AB Global Consulting LLC. {t.footer_rights}</p>
-            <div className="flex items-center gap-4 text-xs font-semibold">
+            <p>© {new Date().getFullYear()} MyIAD National Insurance Solutions • AB Global Consulting LLC. {t.footer_rights}</p>
+            <div className="flex flex-wrap items-center gap-4 text-xs font-semibold">
               <Link href="/privacy" className="text-slate-600 hover:text-secondary underline transition-colors">
                 {lang === "es" ? "Política de Privacidad" : "Privacy Policy"}
               </Link>
@@ -125,11 +166,15 @@ export const ComplianceDisclosure: React.FC = () => {
                 {lang === "es" ? "Divulgaciones Legales" : "Disclosures"}
               </Link>
               <span>•</span>
+              <Link href="/opt-in" className="text-teal-700 hover:text-teal-900 underline font-bold transition-colors">
+                {lang === "es" ? "📱 Consentimiento SMS (Toll-Free)" : "📱 SMS Opt-In & Compliance"}
+              </Link>
+              <span>•</span>
               <Link href="/login" className="text-amber-800 font-bold hover:text-amber-900 underline transition-colors flex items-center gap-1">
                 <span>🔐</span> {lang === "es" ? "Portal de Asesor / Staff" : "Staff Portal Login"}
               </Link>
             </div>
-            <p className="text-[10px] text-slate-400">Direct / WhatsApp: (386) 333-1482 • Office: (407) 930-6226</p>
+            <p className="text-[10px] text-slate-400">Toll-Free: (888) 887-3585 • Direct: (386) 333-1482 • Office: (407) 930-6226 • myiad.com</p>
           </div>
         </div>
       </div>

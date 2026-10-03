@@ -1,19 +1,13 @@
 export function validateEnv() {
   const required = [
-    "DATABASE_URL",
-    "NEXT_PUBLIC_SUPABASE_URL",
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY",
-    "SENDGRID_API_KEY",
-    "CRM_WEBHOOK_URL"
+    "DATABASE_URL"
   ];
 
   const missing = required.filter((key) => !process.env[key]);
 
   if (missing.length > 0) {
     if (process.env.NODE_ENV === "production" && !process.env.SKIP_ENV_VALIDATION && process.env.NEXT_PHASE !== "phase-production-build") {
-      console.warn(`⚠️ Warning: Missing required environment variables: ${missing.join(", ")}`);
-    } else {
-      console.warn(`⚠️ Warning: Missing required environment variables: ${missing.join(", ")}`);
+      console.warn(`⚠️ Warning: Missing core environment variables: ${missing.join(", ")}`);
     }
   }
 
@@ -21,3 +15,4 @@ export function validateEnv() {
 }
 
 export const { env, missing: missingEnvVars } = validateEnv();
+

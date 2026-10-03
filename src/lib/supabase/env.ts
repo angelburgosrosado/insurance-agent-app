@@ -27,8 +27,8 @@ function isPublishableKey(value: string): boolean {
   return value.length > 0 && !value.includes("service_role") && !value.includes("secret");
 }
 
-const DEFAULT_SUPABASE_URL = "https://pgnnrmeisikhueadgitn.supabase.co";
-const DEFAULT_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBnbm5ybWVpc2lraHVlYWRnaXRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU3OTgxMDMsImV4cCI6MjEwMTM3NDEwM30.Lwcnshdw6nJrioVGR17csKKYXs6n5WtZ5ojkXhYdtcQ";
+const DEFAULT_SUPABASE_URL = "https://nrqrtfghywuiefukvjmm.supabase.co";
+const DEFAULT_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ycXJ0ZmdoeXd1aWVmdWt2am1tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3MTAzOTksImV4cCI6MjEwMzI4NjM5OX0.aQDBYRpTSBnns2NTnXhEtxZdsNV8TfFaSredOdQrazE";
 
 export function getSupabaseConfig(
   env: SupabaseEnvironment = process.env,

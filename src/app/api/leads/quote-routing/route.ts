@@ -172,7 +172,7 @@ Client Notes: ${payload.quoteParameters.notes || "None"}`,
         ok: true,
         success: true,
         leadId: storedLead.id,
-        blueprintUrl: `/api/reports/download?type=myiad_blueprint&name=${encodeURIComponent(payload.applicantName)}&coverage=${payload.quoteParameters.coverageOrInvestmentAmount || 0}`,
+        blueprintUrl: `/api/reports/download?type=myiad_blueprint&name=${encodeURIComponent(payload.applicantName)}&email=${encodeURIComponent(payload.applicantEmail)}&phone=${encodeURIComponent(payload.applicantPhone)}&coverage=${payload.quoteParameters.coverageOrInvestmentAmount || 0}`,
         crmPipeline: {
           dispatched: crmResult.success,
           crmLeadId: crmResult.leadId,

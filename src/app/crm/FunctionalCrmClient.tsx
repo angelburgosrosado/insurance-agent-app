@@ -331,9 +331,26 @@ export function FunctionalCrmClient({ initialLeads }: { initialLeads: CrmLead[] 
     }
   }, [selectedLead?.id]);
 
-  // Initial sync on mount
+  // Initial sync on mount + dynamic live polling & focus sync
   useEffect(() => {
     handleRefreshLeads();
+
+    const interval = setInterval(() => {
+      handleRefreshLeads();
+    }, 6000);
+
+    const onFocus = () => {
+      handleRefreshLeads();
+    };
+
+    window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onFocus);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onFocus);
+    };
   }, []);
 
   // Send live Twilio SMS

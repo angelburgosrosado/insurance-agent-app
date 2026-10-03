@@ -155,7 +155,7 @@ export function MyIADAiAssessment() {
         setBlueprintUrl(data.blueprintUrl);
       } else {
         setBlueprintUrl(
-          `/api/reports/download?type=myiad_blueprint&name=${encodeURIComponent(trimmedName)}&coverage=${calculatedCoverageNeed}&income=${annualIncome}&debt=${debt}&age=${age}&dependents=${dependents}&taxFreeIncome=${estimatedAnnualTaxFreeIncome}`
+          `/api/reports/download?type=myiad_blueprint&name=${encodeURIComponent(trimmedName)}&email=${encodeURIComponent(trimmedEmail)}&phone=${encodeURIComponent(trimmedPhone)}&coverage=${calculatedCoverageNeed}&income=${annualIncome}&debt=${debt}&age=${age}&dependents=${dependents}&taxFreeIncome=${estimatedAnnualTaxFreeIncome}`
         );
       }
 

@@ -1,6 +1,7 @@
 import { createDatabase, type FollowUpTask, type FollowUpTaskStatus, type Lead, type LeadCreateInput, type LeadNote, type LeadStatus } from "@/lib/db";
 import { getPrismaClient, type ServerDatabase } from "@/lib/server/db";
 import { env } from "@/lib/server/env";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 
 export type LeadId = string | number;
 
@@ -58,9 +59,11 @@ export type LeadRepository = {
   close(): Promise<void>;
 };
 
-export function getPersistenceMode(envMap: Record<string, string | undefined> = env): "prisma" | "sqlite" {
+export function getPersistenceMode(envMap: Record<string, string | undefined> = env): "prisma" | "supabase" | "sqlite" {
   if (envMap.LEAD_PERSISTENCE === "sqlite") return "sqlite";
   if (envMap.LEAD_PERSISTENCE === "prisma" || envMap.DATABASE_URL) return "prisma";
+  if (envMap.LEAD_PERSISTENCE === "supabase") return "supabase";
+  if (envMap.VERCEL) return "supabase";
   return "sqlite";
 }
 
@@ -292,9 +295,261 @@ function createSqliteRepository(filename?: string): LeadRepository {
   };
 }
 
-export function createLeadRepository(options: { mode?: "prisma" | "sqlite"; prisma?: PrismaLeadClient; sqlitePath?: string } = {}): LeadRepository {
+const SUPABASE_FALLBACK_URL = "https://nrqrtfghywuiefukvjmm.supabase.co";
+const SUPABASE_FALLBACK_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ycXJ0ZmdoeXd1aWVmdWt2am1tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3MTAzOTksImV4cCI6MjEwMzI4NjM5OX0.aQDBYRpTSBnns2NTnXhEtxZdsNV8TfFaSredOdQrazE";
+
+function createSupabaseRepository(): LeadRepository {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || SUPABASE_FALLBACK_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || SUPABASE_FALLBACK_KEY;
+  const supabase = createSupabaseClient(url, key);
+
+  function mapRow(row: any): Lead {
+    return {
+      id: row.id,
+      firstName: row.first_name,
+      lastName: row.last_name,
+      email: row.email,
+      phone: row.phone,
+      service: row.service,
+      contactTime: row.contact_time || "",
+      message: row.message || "",
+      consent: Boolean(row.consent),
+      consentText: row.consent_text || "",
+      consentVersion: row.consent_version || "",
+      consentAt: row.consent_at || new Date().toISOString(),
+      source: row.source || "",
+      medium: row.medium || "",
+      campaign: row.campaign || "",
+      content: row.content || "",
+      term: row.term || "",
+      status: row.status as LeadStatus,
+      followUpDate: row.follow_up_date || "",
+      createdAt: row.created_at || new Date().toISOString(),
+    };
+  }
+
+  return {
+    async createLead(input) {
+      try {
+        const id = `lead_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+        const { data, error } = await supabase
+          .from("leads")
+          .insert({
+            id,
+            first_name: input.firstName,
+            last_name: input.lastName,
+            email: input.email,
+            phone: input.phone,
+            service: input.service,
+            contact_time: input.contactTime || "",
+            message: input.message || "",
+            consent: input.consent,
+            consent_text: input.consentText || "",
+            consent_version: input.consentVersion || "",
+            consent_at: input.consentAt || new Date().toISOString(),
+            status: "new",
+            source: input.source || "",
+            medium: input.medium || "",
+            campaign: input.campaign || "",
+            content: input.content || "",
+            term: input.term || "",
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          })
+          .select("*")
+          .single();
+
+        if (error || !data) {
+          throw error || new Error("Failed to insert lead into Supabase");
+        }
+        return mapRow(data);
+      } catch (err) {
+        console.warn("[Supabase createLead notice, falling back to SQLite]:", err);
+        return createSqliteRepository().createLead(input);
+      }
+    },
+    async listLeads() {
+      try {
+        const { data, error } = await supabase
+          .from("leads")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+        return (data || []).map(mapRow);
+      } catch (err) {
+        console.warn("[Supabase listLeads notice, falling back to SQLite]:", err);
+        return createSqliteRepository().listLeads();
+      }
+    },
+    async getLead(id) {
+      try {
+        const { data, error } = await supabase
+          .from("leads")
+          .select("*")
+          .eq("id", String(id))
+          .maybeSingle();
+
+        if (error) throw error;
+        return data ? mapRow(data) : createSqliteRepository().getLead(id);
+      } catch {
+        return createSqliteRepository().getLead(id);
+      }
+    },
+    async updateLead(id, changes) {
+      try {
+        const updateData: any = { updated_at: new Date().toISOString() };
+        if (changes.status) updateData.status = changes.status;
+        if (changes.followUpDate !== undefined) updateData.follow_up_date = changes.followUpDate;
+
+        const { data, error } = await supabase
+          .from("leads")
+          .update(updateData)
+          .eq("id", String(id))
+          .select("*")
+          .maybeSingle();
+
+        if (error || !data) throw error || new Error("Lead update failed");
+        return mapRow(data);
+      } catch {
+        return createSqliteRepository().updateLead(id, changes);
+      }
+    },
+    async addNote(leadId, body, author) {
+      try {
+        const id = `note_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+        const { data, error } = await supabase
+          .from("lead_notes")
+          .insert({
+            id,
+            lead_id: String(leadId),
+            body,
+            author,
+            created_at: new Date().toISOString(),
+          })
+          .select("*")
+          .single();
+
+        if (error || !data) throw error || new Error("Add note failed");
+        return {
+          id: data.id,
+          leadId: data.lead_id,
+          body: data.body,
+          author: data.author,
+          createdAt: data.created_at,
+        };
+      } catch {
+        return createSqliteRepository().addNote(leadId, body, author);
+      }
+    },
+    async listNotes(leadId) {
+      try {
+        const { data, error } = await supabase
+          .from("lead_notes")
+          .select("*")
+          .eq("lead_id", String(leadId))
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+        return (data || []).map((n: any) => ({
+          id: n.id,
+          leadId: n.lead_id,
+          body: n.body,
+          author: n.author,
+          createdAt: n.created_at,
+        }));
+      } catch {
+        return createSqliteRepository().listNotes(leadId);
+      }
+    },
+    async listTasks() {
+      try {
+        const { data, error } = await supabase
+          .from("follow_up_tasks")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+        return (data || []).map((t: any) => ({
+          id: t.id,
+          leadId: t.lead_id,
+          title: t.title,
+          dueAt: t.due_at || "",
+          status: t.status,
+          createdAt: t.created_at,
+          updatedAt: t.updated_at,
+        }));
+      } catch {
+        return createSqliteRepository().listTasks();
+      }
+    },
+    async createTask(input) {
+      try {
+        const id = `task_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+        const { data, error } = await supabase
+          .from("follow_up_tasks")
+          .insert({
+            id,
+            lead_id: String(input.leadId),
+            title: input.title,
+            due_at: input.dueAt ? new Date(`${input.dueAt}T09:00:00.000Z`).toISOString() : null,
+            status: "pending",
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          })
+          .select("*")
+          .single();
+
+        if (error || !data) throw error || new Error("Create task failed");
+        return {
+          id: data.id,
+          leadId: data.lead_id,
+          title: data.title,
+          dueAt: data.due_at || "",
+          status: data.status,
+          createdAt: data.created_at,
+          updatedAt: data.updated_at,
+        };
+      } catch {
+        return createSqliteRepository().createTask(input as any);
+      }
+    },
+    async updateTask(id, changes) {
+      try {
+        const updateData: any = { updated_at: new Date().toISOString() };
+        if (changes.status) updateData.status = changes.status;
+        if (changes.title) updateData.title = changes.title;
+        if (changes.dueAt !== undefined) updateData.due_at = changes.dueAt ? new Date(`${changes.dueAt}T09:00:00.000Z`).toISOString() : null;
+
+        const { data, error } = await supabase
+          .from("follow_up_tasks")
+          .update(updateData)
+          .eq("id", String(id))
+          .select("*")
+          .maybeSingle();
+
+        if (error || !data) throw error || new Error("Update task failed");
+        return {
+          id: data.id,
+          leadId: data.lead_id,
+          title: data.title,
+          dueAt: data.due_at || "",
+          status: data.status,
+          createdAt: data.created_at,
+          updatedAt: data.updated_at,
+        };
+      } catch {
+        return createSqliteRepository().updateTask(id, changes);
+      }
+    },
+    async close() {},
+  };
+}
+
+export function createLeadRepository(options: { mode?: "prisma" | "supabase" | "sqlite"; prisma?: PrismaLeadClient; sqlitePath?: string } = {}): LeadRepository {
   const mode = options.mode ?? getPersistenceMode();
   if (mode === "sqlite") return createSqliteRepository(options.sqlitePath);
+  if (mode === "supabase") return createSupabaseRepository();
   return createPrismaRepository(options.prisma ?? (getPrismaClient() as unknown as PrismaLeadClient));
 }
 

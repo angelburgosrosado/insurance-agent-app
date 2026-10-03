@@ -48,6 +48,7 @@ test("selects SQLite only when explicitly requested and Prisma when DATABASE_URL
   assert.equal(getPersistenceMode({ LEAD_PERSISTENCE: "sqlite", DATABASE_URL: "postgresql://example" }), "sqlite");
   assert.equal(getPersistenceMode({ DATABASE_URL: "postgresql://example" }), "prisma");
   assert.equal(getPersistenceMode({ LEAD_PERSISTENCE: "prisma" }), "prisma");
+  assert.equal(getPersistenceMode({ VERCEL: "1" }), "prisma");
 });
 
 test("does not require DATABASE_URL to construct the explicit SQLite repository", () => {

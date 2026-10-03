@@ -86,23 +86,40 @@ export function MyIADAiAssessment() {
     e.preventDefault();
     setErrorMessage("");
 
-    if (!name.trim() || !email.trim() || !phone.trim() || !zipCode.trim()) {
-      setErrorMessage("Please complete all required fields.");
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim();
+    const trimmedPhone = phone.trim();
+    const trimmedZip = zipCode.trim();
+
+    if (!trimmedName || !trimmedEmail || !trimmedPhone || !trimmedZip) {
+      setErrorMessage(isSpanish ? "Por favor complete todos los campos obligatorios." : "Please complete all required fields.");
       return;
     }
 
     if (!consent) {
-      setErrorMessage("Please confirm TCPA communication consent.");
+      setErrorMessage(isSpanish ? "Por favor confirme el consentimiento de comunicación TCPA." : "Please confirm TCPA communication consent.");
       return;
     }
+
+    const nameParts = trimmedName.split(/\s+/);
+    const firstName = nameParts[0] || "";
+    const lastName = nameParts.slice(1).join(" ") || "Client";
 
     setIsSubmitting(true);
     try {
       const payload = {
-        fullName: name,
-        email,
-        phone,
-        zipCode,
+        fullName: trimmedName,
+        applicantName: trimmedName,
+        name: trimmedName,
+        applicantFirstName: firstName,
+        applicantLastName: lastName,
+        firstName,
+        lastName,
+        applicantEmail: trimmedEmail,
+        email: trimmedEmail,
+        applicantPhone: trimmedPhone,
+        phone: trimmedPhone,
+        zipCode: trimmedZip,
         category: goal === "lifetime_annuity" ? "variable_annuity" : goal === "health_living" ? "health" : "life",
         coverageAmount: calculatedCoverageNeed,
         source: "myiad.com/ai-assessment",
@@ -110,6 +127,9 @@ export function MyIADAiAssessment() {
         consentTimestamp: new Date().toISOString(),
         consentVersion: "myiad_tcpa_v2.0",
         quoteParameters: {
+          category: goal === "lifetime_annuity" ? "variable_annuity" : goal === "health_living" ? "health" : "life",
+          productSubtype: goal === "lifetime_annuity" ? "fixed_index_annuity" : goal === "health_living" ? "medicare_living" : "iul_wealth",
+          coverageOrInvestmentAmount: `$${Math.round(calculatedCoverageNeed).toLocaleString("en-US")}`,
           age,
           annualIncome,
           dependents,
@@ -128,20 +148,20 @@ export function MyIADAiAssessment() {
 
       const data = await res.json().catch(() => null);
       if (!res.ok) {
-        throw new Error(data?.error || "Unable to submit assessment. Please try again.");
+        throw new Error(data?.error || (isSpanish ? "No se pudo enviar la evaluación. Intente nuevamente." : "Unable to submit assessment. Please try again."));
       }
 
       if (data?.blueprintUrl) {
         setBlueprintUrl(data.blueprintUrl);
       } else {
         setBlueprintUrl(
-          `/api/reports/download?type=myiad_blueprint&name=${encodeURIComponent(name)}&coverage=${calculatedCoverageNeed}&income=${annualIncome}&debt=${debt}&age=${age}&dependents=${dependents}&taxFreeIncome=${estimatedAnnualTaxFreeIncome}`
+          `/api/reports/download?type=myiad_blueprint&name=${encodeURIComponent(trimmedName)}&coverage=${calculatedCoverageNeed}&income=${annualIncome}&debt=${debt}&age=${age}&dependents=${dependents}&taxFreeIncome=${estimatedAnnualTaxFreeIncome}`
         );
       }
 
       setSubmitted(true);
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Error connecting to advisor dispatch.";
+      const message = err instanceof Error ? err.message : (isSpanish ? "Error al conectar con la central de asesores." : "Error connecting to advisor dispatch.");
       setErrorMessage(message);
     } finally {
       setIsSubmitting(false);
@@ -325,7 +345,7 @@ export function MyIADAiAssessment() {
                 <div className="space-y-1.5">
                   <div className="flex justify-between items-center text-xs font-semibold">
                     <label htmlFor={debtId} className="text-slate-300 uppercase tracking-wider">{d.assessment_debt_label}</label>
-                    <span className="font-mono text-sm font-bold text-white">${(debt / 1000).toFixed(0)}k</span>
+                    <span className="font-mono text-sm font-bold text-white">${debt.toLocaleString("en-US")}</span>
                   </div>
                   <input
                     id={debtId}
@@ -437,13 +457,13 @@ export function MyIADAiAssessment() {
                 <div className="flex justify-between items-baseline">
                   <span className="text-xs text-slate-400 font-medium">{d.assessment_floor_label}</span>
                   <span className="font-mono text-xl sm:text-2xl font-black text-white">
-                    ${(calculatedCoverageNeed / 1000).toFixed(0)},000
+                    ${Math.round(calculatedCoverageNeed).toLocaleString("en-US")}
                   </span>
                 </div>
                 <div className="flex justify-between items-baseline">
                   <span className="text-xs text-slate-400 font-medium">{d.assessment_taxfree_label}</span>
                   <span className="font-mono text-lg font-black text-[#14B8A6]">
-                    ${estimatedAnnualTaxFreeIncome.toLocaleString()}{d.assessment_yr_suffix}
+                    ${estimatedAnnualTaxFreeIncome.toLocaleString("en-US")}{d.assessment_yr_suffix}
                   </span>
                 </div>
                 <div className="pt-2 border-t border-slate-700/80 flex items-center justify-between text-[11px] text-slate-400">
@@ -456,8 +476,8 @@ export function MyIADAiAssessment() {
                   onClick={() =>
                     handleAskCopilot(
                       isSpanish
-                        ? `¿Cómo se calcula el piso de protección recomendado de $${(calculatedCoverageNeed / 1000).toFixed(0)},000 para mi edad y deuda?`
-                        : `How is the recommended $${(calculatedCoverageNeed / 1000).toFixed(0)},000 protection floor calculated for my age and debt?`
+                        ? `¿Cómo se calcula el piso de protección recomendado de $${Math.round(calculatedCoverageNeed).toLocaleString("en-US")} para mi edad y deuda?`
+                        : `How is the recommended $${Math.round(calculatedCoverageNeed).toLocaleString("en-US")} protection floor calculated for my age and debt?`
                     )
                   }
                   className="w-full py-2 px-3 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 text-slate-300 hover:text-white text-[11px] font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
@@ -483,6 +503,9 @@ export function MyIADAiAssessment() {
 
                   <div>
                     <input
+                      id="assessment-full-name"
+                      name="fullName"
+                      autoComplete="name"
                       type="text"
                       placeholder={d.assessment_name_ph}
                       value={name}

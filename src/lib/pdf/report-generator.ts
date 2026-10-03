@@ -281,7 +281,7 @@ export function generateMyIADBlueprintHtml(data: MyIADBlueprintData): string {
     <div class="hero-stat-grid">
       <div class="stat-card">
         <div class="label">Recommended Protection Floor (D.I.M.E.)</div>
-        <div class="value">$${(coverageFloor / 1000).toFixed(0)},000</div>
+        <div class="value">$${Math.round(coverageFloor).toLocaleString("en-US")}</div>
         <div class="sub">Debt + ${incomeYears} Yrs Income + Dependents Education</div>
       </div>
       <div class="stat-card teal">

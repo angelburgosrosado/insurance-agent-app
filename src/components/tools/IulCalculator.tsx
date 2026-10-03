@@ -346,7 +346,7 @@ export function IulCalculator({
                   <YAxis
                     tickLine={false}
                     tick={{ fontSize: 11, fill: "#64748b" }}
-                    tickFormatter={(val) => `$${(val / 1000).toFixed(0)}k`}
+                    tickFormatter={(val) => val >= 1000000 ? `$${(val / 1000000).toFixed(1)}M` : `$${(val / 1000).toFixed(0)}k`}
                   />
                   <Tooltip
                     formatter={(val: any, name: any) => [

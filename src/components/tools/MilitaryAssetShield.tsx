@@ -345,7 +345,7 @@ export function MilitaryAssetShield({
               <div className="flex justify-between items-center text-sm font-semibold text-slate-800 mb-1.5">
                 <label>{t.mil_coverage_amount}</label>
                 <span className="text-secondary font-bold text-base px-2 py-0.5 bg-white border border-slate-200 rounded-md">
-                  ${(coverageAmount / 1000).toFixed(0)}k
+                  ${coverageAmount.toLocaleString("en-US")}
                 </span>
               </div>
               <input
@@ -429,7 +429,7 @@ export function MilitaryAssetShield({
                       </defs>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
                       <XAxis dataKey="age" tickLine={false} tick={{ fontSize: 11, fill: "#64748b" }} unit={` ${ageUnit}`} />
-                      <YAxis tickLine={false} tick={{ fontSize: 11, fill: "#64748b" }} tickFormatter={(val) => `$${(val / 1000).toFixed(0)}k`} />
+                      <YAxis tickLine={false} tick={{ fontSize: 11, fill: "#64748b" }} tickFormatter={(val) => val >= 1000000 ? `$${(val / 1000000).toFixed(1)}M` : `$${(val / 1000).toFixed(0)}k`} />
                       <Tooltip
                         formatter={(val: any, name: any) => [
                           `$${Number(val).toLocaleString()}`,

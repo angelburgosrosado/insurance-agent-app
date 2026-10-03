@@ -221,7 +221,7 @@ export function AnnuityEstimator({
                 <BarChart data={calculations.chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
                   <XAxis dataKey="category" tickLine={false} tick={{ fontSize: 11, fill: "#64748b" }} />
-                  <YAxis tickLine={false} tick={{ fontSize: 11, fill: "#64748b" }} tickFormatter={(val) => `$${(val / 1000).toFixed(0)}k`} />
+                  <YAxis tickLine={false} tick={{ fontSize: 11, fill: "#64748b" }} tickFormatter={(val) => val >= 1000000 ? `$${(val / 1000000).toFixed(1)}M` : `$${(val / 1000).toFixed(0)}k`} />
                   <Tooltip
                     formatter={(val: any) => [`$${Number(val).toLocaleString()}`, t.annuity_tooltip_amount]}
                     contentStyle={{ backgroundColor: "#001c38", color: "#fff", borderRadius: "12px", border: "none", fontSize: "12px" }}

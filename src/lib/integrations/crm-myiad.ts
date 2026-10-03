@@ -122,16 +122,16 @@ export function validateMyIADLeadPayload(input: unknown): MyIADValidationResult 
   // 1. Applicant Name Validation & Graceful Extraction
   let firstName = String(data.applicantFirstName || data.firstName || "").trim();
   let lastName = String(data.applicantLastName || data.lastName || "").trim();
-  const rawFullName = String(data.applicantName || "").trim();
+  const rawFullName = String(data.applicantName || data.fullName || data.name || "").trim();
 
   if (!firstName && rawFullName) {
     const parts = rawFullName.split(/\s+/);
-    firstName = parts[0];
-    lastName = parts.slice(1).join(" ") || "Client";
+    firstName = parts[0] || "";
+    lastName = parts.slice(1).join(" ") || lastName || "Client";
   }
 
   if (!firstName) {
-    errors.applicantFirstName = "First name is required.";
+    errors.applicantFirstName = "Full name is required.";
   }
   if (!lastName) {
     lastName = "Client";
@@ -254,7 +254,7 @@ export function validateMyIADLeadPayload(input: unknown): MyIADValidationResult 
   }
 
   const normalizedPayload: MyIADLeadSubmissionPayload = {
-    applicantName: `${firstName} ${lastName}`,
+    applicantName: rawFullName || `${firstName} ${lastName}`.trim(),
     applicantFirstName: firstName,
     applicantLastName: lastName,
     applicantEmail: email,

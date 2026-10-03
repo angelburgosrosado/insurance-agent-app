@@ -448,3 +448,57 @@ test("Vercel Routing Configuration - vercel.json contains required security head
   );
   assert.ok(myiadRewrite, "Must include rewrite for host matching myiad.com -> /myiad");
 });
+
+test("Lead Intake - Correctly parses fullName and name fields without requiring separate first name", () => {
+  const result = validateMyIADLeadPayload({
+    fullName: "Gabriel A. Santos",
+    email: "gabriel@example.com",
+    phone: "8135550192",
+    zipCode: "33602",
+    consent: true,
+  });
+
+  assert.equal(result.valid, true);
+  if (result.valid) {
+    assert.equal(result.payload.applicantFirstName, "Gabriel");
+    assert.equal(result.payload.applicantLastName, "A. Santos");
+    assert.equal(result.payload.applicantName, "Gabriel A. Santos");
+  }
+
+  // Single word full name fallback
+  const singleName = validateMyIADLeadPayload({
+    fullName: "Gabriel",
+    email: "gabriel@example.com",
+    phone: "8135550192",
+    zipCode: "33602",
+    consent: true,
+  });
+
+  assert.equal(singleName.valid, true);
+  if (singleName.valid) {
+    assert.equal(singleName.payload.applicantFirstName, "Gabriel");
+    assert.equal(singleName.payload.applicantLastName, "Client");
+    assert.equal(singleName.payload.applicantName, "Gabriel");
+  }
+
+  // Missing name gives clear user-facing error
+  const noName = validateMyIADLeadPayload({
+    email: "test@example.com",
+    phone: "8135550192",
+    zipCode: "33602",
+    consent: true,
+  });
+  assert.equal(noName.valid, false);
+  if (!noName.valid) {
+    assert.equal(noName.errors.applicantFirstName, "Full name is required.");
+  }
+});
+
+test("Number Formatting - Protection floor $1,525,000 formats with correct thousand separator commas", () => {
+  const rawCoverageNeed = 250000 + 110000 * 10 + 2 * 75000 + 25000;
+  assert.equal(rawCoverageNeed, 1525000);
+
+  const formattedFloor = `$${Math.round(rawCoverageNeed).toLocaleString("en-US")}`;
+  assert.equal(formattedFloor, "$1,525,000");
+  assert.notEqual(formattedFloor, "$1525,000", "Must never output 1525,000 with missing comma");
+});

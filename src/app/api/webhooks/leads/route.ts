@@ -149,7 +149,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       leadId,
-      pipelineTarget: "crm.myiad.net",
+      pipelineTarget: "crm.myiad.com",
       timestamp: new Date().toISOString(),
       message: "Lead successfully ingested into MyIAD CRM pipeline.",
     });

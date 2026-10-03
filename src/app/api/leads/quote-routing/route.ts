@@ -207,7 +207,7 @@ export async function GET() {
       service: "MyIAD Quote Selector & Lead Routing API",
       version: "2026.1",
       supportedCategories: ["life", "health", "variable_annuity", "strategic_advisory", "strategic-portfolio"],
-      pipelineTarget: "crm.myiad.net",
+      pipelineTarget: "crm.myiad.com",
     },
     { status: 200 }
   );

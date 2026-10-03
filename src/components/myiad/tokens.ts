@@ -169,7 +169,7 @@ export const AUDIENCE_MODULES: AudienceSegmentModule[] = [
     headline: "Equip your entire brokerage with bilingual AI quoting, compliant disclosures, and instant CRM routing.",
     description: "Standardize supervisory compliance across multi-state agent pools. Deliver turnkey bilingual lead capture, automated FINRA 2330 documentation, and zero-leakage routing straight to your CRM pipeline.",
     bulletPoints: [
-      "Direct lead ingestion hook into crm.myiad.net pipeline",
+      "Direct lead ingestion hook into crm.myiad.com pipeline",
       "Automated territory matching (Central FL, South FL, Puerto Rico, National)",
       "Strict supervision audit trails satisfying FINRA Rule 2330 recordkeeping requirements",
     ],
@@ -211,7 +211,7 @@ export const AUDIENCE_MODULES_ES: AudienceSegmentModule[] = [
     headline: "Equipe a su correduría con cotizaciones con IA bilingüe, divulgaciones regulatorias y enrutamiento directo al CRM.",
     description: "Estandarice el cumplimiento supervisado en equipos de agentes multiescritorio. Entregue captación bilingüe lista para usar, documentación automatizada FINRA 2330 y enrutamiento directo a su pipeline de CRM.",
     bulletPoints: [
-      "Conexión directa de prospectos al pipeline de crm.myiad.net",
+      "Conexión directa de prospectos al pipeline de crm.myiad.com",
       "Asignación territorial automática (Florida Central, Sur de Florida, Puerto Rico, Nacional)",
       "Pistas de auditoría de supervisión estricta que cumplen con los requisitos de registro de FINRA 2330",
     ],

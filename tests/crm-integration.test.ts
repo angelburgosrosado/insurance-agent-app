@@ -44,7 +44,7 @@ test("CRM Integration - /api/webhooks/leads accepts and validates valid lead pay
 
   const json = await res.json();
   assert.equal(json.success, true);
-  assert.equal(json.pipelineTarget, "crm.myiad.net");
+  assert.equal(json.pipelineTarget, "crm.myiad.com");
   assert.ok(json.leadId, "Must return an assigned lead ID");
 });
 

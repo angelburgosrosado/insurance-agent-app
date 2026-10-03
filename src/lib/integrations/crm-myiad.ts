@@ -389,7 +389,7 @@ export async function dispatchToMyIADCrm(
     overrideEndpoint ||
     process.env.CRM_MYIAD_WEBHOOK_URL ||
     process.env.CRM_WEBHOOK_URL ||
-    "https://crm.myiad.net/api/webhooks/leads";
+    "https://crm.myiad.com/api/webhooks/leads";
 
   // Enforce secure HTTPS protocol in production/remote destinations
   const isLocalHost = endpoint.includes("localhost") || endpoint.includes("127.0.0.1");
@@ -477,11 +477,11 @@ export async function dispatchToMyIADCrm(
       const errorText = await response.text().catch(() => "Unknown CRM response");
       // Zero Plain PII in Logs: redact and sanitize error message
       const sanitizedError = redactPiiFromText(errorText.slice(0, 120));
-      console.error("[crm.myiad.net Webhook Error] Status:", response.status, sanitizedError);
+      console.error("[crm.myiad.com Webhook Error] Status:", response.status, sanitizedError);
       return {
         success: false,
         status: response.status,
-        error: `crm.myiad.net returned HTTP ${response.status}: ${sanitizedError}`,
+        error: `crm.myiad.com returned HTTP ${response.status}: ${sanitizedError}`,
       };
     }
 
@@ -490,16 +490,16 @@ export async function dispatchToMyIADCrm(
       success: true,
       status: response.status,
       leadId: responseData.id || responseData.leadId || `myiad_${Date.now()}`,
-      message: "Lead successfully ingested into crm.myiad.net pipeline.",
+      message: "Lead successfully ingested into crm.myiad.com pipeline.",
     };
   } catch (err: any) {
     clearTimeout(timeoutId);
     // Zero Plain PII in Logs: redact error message
     const sanitizedMsg = redactPiiFromText(err.message || "");
-    console.warn("[crm.myiad.net Webhook Warning] Network error or timeout:", sanitizedMsg);
+    console.warn("[crm.myiad.com Webhook Warning] Network error or timeout:", sanitizedMsg);
     return {
       success: false,
-      error: err.name === "AbortError" ? "crm.myiad.net request timed out (10s)" : sanitizedMsg,
+      error: err.name === "AbortError" ? "crm.myiad.com request timed out (10s)" : sanitizedMsg,
     };
   }
 }

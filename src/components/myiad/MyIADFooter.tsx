@@ -171,12 +171,12 @@ export function MyIADFooter() {
                 <ExternalLink size={10} />
               </a>
               <a
-                href="https://crm.myiad.net"
+                href="https://crm.myiad.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-purple-300 border border-purple-500/30 transition-colors flex items-center gap-1"
               >
-                <span>crm.myiad.net</span>
+                <span>crm.myiad.com</span>
                 <ExternalLink size={10} />
               </a>
               <a

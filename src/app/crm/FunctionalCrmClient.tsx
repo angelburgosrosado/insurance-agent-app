@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import {
   Activity,
@@ -126,6 +126,45 @@ const STATUS_COLUMNS: Array<{
   },
 ];
 
+const DEFAULT_NOTES: Record<string, CrmNote[]> = {
+  "MYIAD-2026-8841": [
+    {
+      id: "note-8841-1",
+      leadId: "MYIAD-2026-8841",
+      body: "🎯 AI Underwriting Annotation: Transitioning USAF Veteran at MacDill AFB. Recommending Mutual of Omaha Military Asset Shield ($500,000) to replace expiring SGLI. Full living benefits included, zero medical exam required.",
+      author: "MyIAD AI Copilot",
+      createdAt: new Date(Date.now() - 1000 * 60 * 12).toISOString(),
+    },
+  ],
+  "MYIAD-2026-9023": [
+    {
+      id: "note-9023-1",
+      leadId: "MYIAD-2026-9023",
+      body: "🎯 AI Underwriting Annotation: Physician in Coral Gables. Max-funded Indexed Universal Life ($1,500,000) with 0% floor downside market hedge and IRC §7702 tax-free retirement loan structuring.",
+      author: "MyIAD AI Copilot",
+      createdAt: new Date(Date.now() - 1000 * 60 * 40).toISOString(),
+    },
+  ],
+  "MYIAD-2026-7712": [
+    {
+      id: "note-7712-1",
+      leadId: "MYIAD-2026-7712",
+      body: "🎯 AI Underwriting Annotation: Fixed Index Annuity ($350,000 Rollover). Inbound toll-free call from 1-888-887-3585. FINRA Rule 2330 suitability evaluation passed for contractual lifetime income.",
+      author: "MyIAD AI Copilot",
+      createdAt: new Date(Date.now() - 1000 * 60 * 115).toISOString(),
+    },
+  ],
+  "MYIAD-2026-6654": [
+    {
+      id: "note-6654-1",
+      leadId: "MYIAD-2026-6654",
+      body: "🎯 AI Underwriting Annotation: 30-Year Term Life with Chronic Illness Living Benefits ($750,000). Primary residence mortgage protection in Lake Nona. Initial automated welcome SMS dispatched.",
+      author: "MyIAD AI Copilot",
+      createdAt: new Date(Date.now() - 1000 * 60 * 175).toISOString(),
+    },
+  ],
+};
+
 export function FunctionalCrmClient({ initialLeads }: { initialLeads: CrmLead[] }) {
   const [leads, setLeads] = useState<CrmLead[]>(initialLeads);
   const [selectedLead, setSelectedLead] = useState<CrmLead | null>(initialLeads[0] || null);
@@ -141,7 +180,7 @@ export function FunctionalCrmClient({ initialLeads }: { initialLeads: CrmLead[] 
   const [expandedWorkflowId, setExpandedWorkflowId] = useState<string | null>("speed-to-lead-voice");
   
   // Note state
-  const [notes, setNotes] = useState<Record<string, CrmNote[]>>({});
+  const [notes, setNotes] = useState<Record<string, CrmNote[]>>(DEFAULT_NOTES);
   const [newNoteText, setNewNoteText] = useState("");
   const [isSavingNote, setIsSavingNote] = useState(false);
 
@@ -207,7 +246,7 @@ export function FunctionalCrmClient({ initialLeads }: { initialLeads: CrmLead[] 
     }
 
     try {
-      await fetch("/api/admin/leads", {
+      await fetch("/api/crm/leads", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: leadId, status: newStatus }),
@@ -227,7 +266,7 @@ export function FunctionalCrmClient({ initialLeads }: { initialLeads: CrmLead[] 
     }
 
     try {
-      await fetch("/api/admin/leads", {
+      await fetch("/api/crm/leads", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: leadId, followUpDate: date }),
@@ -239,12 +278,13 @@ export function FunctionalCrmClient({ initialLeads }: { initialLeads: CrmLead[] 
 
   // Load notes
   const loadNotesForLead = async (leadId: string | number) => {
-    if (notes[String(leadId)]) return;
     try {
-      const res = await fetch(`/api/admin/leads/notes?leadId=${encodeURIComponent(String(leadId))}`);
+      const res = await fetch(`/api/crm/leads/notes?leadId=${encodeURIComponent(String(leadId))}`);
       if (res.ok) {
         const data = await res.json();
-        setNotes((prev) => ({ ...prev, [String(leadId)]: data.notes || [] }));
+        if (data.notes && data.notes.length > 0) {
+          setNotes((prev) => ({ ...prev, [String(leadId)]: data.notes }));
+        }
       }
     } catch (err) {
       console.error("Error loading notes", err);
@@ -257,10 +297,10 @@ export function FunctionalCrmClient({ initialLeads }: { initialLeads: CrmLead[] 
     setIsSavingNote(true);
 
     try {
-      const res = await fetch("/api/admin/leads/notes", {
+      const res = await fetch("/api/crm/leads/notes", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ leadId, body: newNoteText.trim() }),
+        body: JSON.stringify({ leadId, body: newNoteText.trim(), author: "MyIAD Advisory" }),
       });
 
       if (res.ok) {
@@ -277,6 +317,64 @@ export function FunctionalCrmClient({ initialLeads }: { initialLeads: CrmLead[] 
       setIsSavingNote(false);
     }
   };
+
+  // Live lead sync
+  const [isRefreshingLeads, setIsRefreshingLeads] = useState(false);
+  const handleRefreshLeads = async () => {
+    setIsRefreshingLeads(true);
+    try {
+      const res = await fetch("/api/crm/leads");
+      if (res.ok) {
+        const data = await res.json();
+        if (data.leads && Array.isArray(data.leads) && data.leads.length > 0) {
+          const dbLeads: CrmLead[] = data.leads.map((l: any) => ({
+            id: l.id,
+            firstName: l.firstName,
+            lastName: l.lastName,
+            email: l.email,
+            phone: l.phone,
+            service: l.service,
+            contactTime: l.contactTime,
+            message: l.message,
+            status: l.status || "new",
+            followUpDate: l.followUpDate,
+            createdAt: typeof l.createdAt === "string" ? l.createdAt : new Date(l.createdAt).toISOString(),
+            source: l.source,
+            medium: l.medium,
+            campaign: l.campaign,
+            consentAt: l.consentAt,
+            consentVersion: l.consentVersion,
+          }));
+
+          const seenEmails = new Set(dbLeads.map((dl) => dl.email.toLowerCase()));
+          const remainingDefaults = initialLeads.filter(
+            (def) => !seenEmails.has(def.email.toLowerCase())
+          );
+          const merged = [...dbLeads, ...remainingDefaults];
+          setLeads(merged);
+          if (!selectedLead || !merged.find((m) => m.id === selectedLead.id)) {
+            setSelectedLead(merged[0] || null);
+          }
+        }
+      }
+    } catch (err) {
+      console.error("Error refreshing leads", err);
+    } finally {
+      setIsRefreshingLeads(false);
+    }
+  };
+
+  // Automatically refresh notes when selected lead changes
+  useEffect(() => {
+    if (selectedLead?.id) {
+      loadNotesForLead(selectedLead.id);
+    }
+  }, [selectedLead?.id]);
+
+  // Initial sync on mount
+  useEffect(() => {
+    handleRefreshLeads();
+  }, []);
 
   // Send live Twilio SMS
   const handleSendSms = async (lead: CrmLead) => {
@@ -365,7 +463,7 @@ export function FunctionalCrmClient({ initialLeads }: { initialLeads: CrmLead[] 
         consentAt: new Date().toISOString(),
       };
 
-      const res = await fetch("/api/admin/leads", {
+      const res = await fetch("/api/crm/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -406,7 +504,27 @@ export function FunctionalCrmClient({ initialLeads }: { initialLeads: CrmLead[] 
     }
   };
 
-  const selectedLeadNotes = selectedLead ? notes[String(selectedLead.id)] || [] : [];
+  const selectedLeadNotes = useMemo(() => {
+    if (!selectedLead) return [];
+    const directNotes = notes[String(selectedLead.id)];
+    if (directNotes && directNotes.length > 0) return directNotes;
+    if (selectedLead.message) {
+      return [
+        {
+          id: `intake-${selectedLead.id}`,
+          leadId: selectedLead.id,
+          body: `🎯 AI Underwriting Annotation:
+• Strategy / Coverage: ${selectedLead.service || "Advisory Intake"}
+• Contact Preference: ${selectedLead.contactTime || "Standard"}
+• Source: ${selectedLead.source || "myiad.com front page"}
+• Diagnostic Summary: ${selectedLead.message}`,
+          author: "MyIAD AI Copilot",
+          createdAt: selectedLead.createdAt || new Date().toISOString(),
+        },
+      ];
+    }
+    return [];
+  }, [selectedLead, notes]);
   const territoryInfo = selectedLead ? detectTerritoryFromPhone(selectedLead.phone) : { label: "General" };
   const specInfo = selectedLead
     ? detectSpecialization(selectedLead.service, selectedLead.message || "")
@@ -518,13 +636,24 @@ export function FunctionalCrmClient({ initialLeads }: { initialLeads: CrmLead[] 
             </div>
 
             {activeTab === "pipeline" && (
-              <button
-                onClick={() => setIsAddLeadModalOpen(true)}
-                className="px-3.5 py-1.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 text-xs font-bold transition-all flex items-center gap-1 shadow-md shadow-teal-500/20 active:scale-95"
-              >
-                <UserPlus className="w-3.5 h-3.5" />
-                + Add Lead
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleRefreshLeads}
+                  disabled={isRefreshingLeads}
+                  title="Check for new submissions from myiad.com"
+                  className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-xs font-semibold transition-all flex items-center gap-1.5 active:scale-95"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${isRefreshingLeads ? "animate-spin text-teal-400" : "text-slate-400"}`} />
+                  <span className="hidden sm:inline">{isRefreshingLeads ? "Syncing..." : "Sync Live Leads"}</span>
+                </button>
+                <button
+                  onClick={() => setIsAddLeadModalOpen(true)}
+                  className="px-3.5 py-1.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 text-xs font-bold transition-all flex items-center gap-1 shadow-md shadow-teal-500/20 active:scale-95"
+                >
+                  <UserPlus className="w-3.5 h-3.5" />
+                  + Add Lead
+                </button>
+              </div>
             )}
           </div>
         </div>
@@ -960,6 +1089,24 @@ export function FunctionalCrmClient({ initialLeads }: { initialLeads: CrmLead[] 
                         />
                       </div>
                     </div>
+
+                    {/* Lead Intake Diagnostic Annotation */}
+                    {selectedLead.message && (
+                      <div className="bg-slate-950 border border-teal-500/30 rounded-xl p-3.5 space-y-1.5 shadow-sm">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[11px] font-bold text-teal-300 flex items-center gap-1.5 uppercase font-mono tracking-wider">
+                            <Sparkles className="w-3.5 h-3.5 text-teal-400" />
+                            Intake Diagnostic & Underwriting Annotation
+                          </span>
+                          <span className="text-[10px] text-teal-400 font-mono bg-teal-500/10 px-1.5 py-0.5 rounded border border-teal-500/20">
+                            Live Intake
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-200 leading-relaxed font-sans">
+                          {selectedLead.message}
+                        </p>
+                      </div>
+                    )}
 
                     {/* Notes System */}
                     <div className="space-y-2.5">

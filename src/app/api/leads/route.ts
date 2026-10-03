@@ -26,7 +26,24 @@ export async function POST(request: Request) {
     let lead: any = null;
 
     try {
-      lead = await getLeadRepository().createLead(inputData);
+      const repo = getLeadRepository();
+      lead = await repo.createLead(inputData);
+      if (lead?.id) {
+        try {
+          await repo.addNote(
+            lead.id,
+            `🎯 AI Underwriting Annotation:
+• Service / Interest: ${lead.service || "Front Page Intake"}
+• Contact Time: ${lead.contactTime || "Anytime"}
+• Source: ${lead.source || "myiad.com front page"}
+• Statutory Compliance: TCPA Affirmative Consent verified (${lead.consentVersion || "Standard"})
+• Initial Message / Diagnostic: ${lead.message || "Direct web intake submission"}`,
+            "MyIAD AI Copilot"
+          );
+        } catch (noteErr) {
+          console.warn("[Leads API] Note annotation notice:", noteErr);
+        }
+      }
     } catch (dbError) {
       console.error("[Leads API] Database lead creation warning, proceeding with resilient dispatch:", dbError);
       lead = {

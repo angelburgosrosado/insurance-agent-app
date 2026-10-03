@@ -103,19 +103,33 @@ function rowToTask(row: Record<string, unknown>): FollowUpTask {
   };
 }
 
+type GlobalWithMemoryDb = typeof globalThis & {
+  __globalMemoryLeads?: Lead[];
+  __globalMemoryNotes?: LeadNote[];
+  __globalMemoryTasks?: FollowUpTask[];
+  __globalMemoryNextLeadId?: number;
+  __globalMemoryNextNoteId?: number;
+  __globalMemoryNextTaskId?: number;
+};
+
 // Memory fallback store for serverless environments where SQLite native / filesystem is unavailable
 function createMemoryDatabase(): LeadDatabase {
-  let nextLeadId = 1;
-  let nextNoteId = 1;
-  let nextTaskId = 1;
-  const leads: Lead[] = [];
-  const notes: LeadNote[] = [];
-  const tasks: FollowUpTask[] = [];
+  const g = globalThis as GlobalWithMemoryDb;
+  g.__globalMemoryLeads ??= [];
+  g.__globalMemoryNotes ??= [];
+  g.__globalMemoryTasks ??= [];
+  g.__globalMemoryNextLeadId ??= 1000;
+  g.__globalMemoryNextNoteId ??= 1000;
+  g.__globalMemoryNextTaskId ??= 1000;
+
+  const leads = g.__globalMemoryLeads;
+  const notes = g.__globalMemoryNotes;
+  const tasks = g.__globalMemoryTasks;
 
   return {
     createLead(input) {
       const lead: Lead = {
-        id: nextLeadId++,
+        id: g.__globalMemoryNextLeadId!++,
         ...input,
         status: "new",
         followUpDate: "",
@@ -128,10 +142,10 @@ function createMemoryDatabase(): LeadDatabase {
       return [...leads];
     },
     getLead(id) {
-      return leads.find((l) => l.id === id) || null;
+      return leads.find((l) => String(l.id) === String(id)) || null;
     },
     updateLead(id, changes) {
-      const lead = leads.find((l) => l.id === id);
+      const lead = leads.find((l) => String(l.id) === String(id));
       if (!lead) throw new Error("Lead not found");
       if (changes.status) lead.status = changes.status;
       if (changes.followUpDate !== undefined) lead.followUpDate = changes.followUpDate;
@@ -139,7 +153,7 @@ function createMemoryDatabase(): LeadDatabase {
     },
     addNote(leadId, body, author) {
       const note: LeadNote = {
-        id: nextNoteId++,
+        id: g.__globalMemoryNextNoteId!++,
         leadId,
         body,
         author,
@@ -149,14 +163,14 @@ function createMemoryDatabase(): LeadDatabase {
       return note;
     },
     listNotes(leadId) {
-      return notes.filter((n) => n.leadId === leadId);
+      return notes.filter((n) => String(n.leadId) === String(leadId));
     },
     listTasks() {
       return [...tasks];
     },
     createTask(input) {
       const task: FollowUpTask = {
-        id: nextTaskId++,
+        id: g.__globalMemoryNextTaskId!++,
         leadId: input.leadId,
         title: input.title,
         dueAt: input.dueAt || "",
@@ -168,7 +182,7 @@ function createMemoryDatabase(): LeadDatabase {
       return task;
     },
     updateTask(id, changes) {
-      const task = tasks.find((t) => t.id === id);
+      const task = tasks.find((t) => String(t.id) === String(id));
       if (!task) throw new Error("Task not found");
       if (changes.status) task.status = changes.status;
       if (changes.title) task.title = changes.title;
@@ -180,7 +194,10 @@ function createMemoryDatabase(): LeadDatabase {
   };
 }
 
-export function createDatabase(filename = process.env.DATABASE_PATH ?? ".data/leads.sqlite"): LeadDatabase {
+export function createDatabase(
+  filename = process.env.DATABASE_PATH ??
+    (process.env.VERCEL ? "/tmp/leads.sqlite" : ".data/leads.sqlite")
+): LeadDatabase {
   try {
     // Dynamic import to avoid fatal module-load failures on Node / serverless environments without node:sqlite
     // eslint-disable-next-line @typescript-eslint/no-require-imports

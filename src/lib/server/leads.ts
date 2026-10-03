@@ -198,7 +198,18 @@ function createPrismaRepository(prisma: PrismaLeadClient): LeadRepository {
           })
         );
       } catch {
-        return createSqliteRepository().addNote(leadId, body, author);
+        try {
+          return mapPrismaNote(
+            await prisma.leadNote.create({
+              data: {
+                leadId: String(leadId),
+                body,
+              },
+            })
+          );
+        } catch {
+          return createSqliteRepository().addNote(leadId, body, author);
+        }
       }
     },
     async listNotes(leadId) {

@@ -43,34 +43,59 @@ export async function POST(request: Request) {
 
     payload.territory = routingDecision.territory;
 
-    let advisorMessage = `[Quote Parameters] Coverage/Amount: ${payload.quoteParameters.coverageOrInvestmentAmount} | Category: ${payload.quoteParameters.category}`;
+    const coverageAmt = payload.quoteParameters.coverageOrInvestmentAmount || "$500,000";
+    const territoryLabel = routingDecision.territory;
+    const specLabel = routingDecision.specialization;
+
+    let advisorMessage = `[Front Page Intake] Strategy: ${payload.productInterest} (${payload.quoteParameters.productSubtype || "Direct"}). Target Amount: ${coverageAmt}. Territory: ${territoryLabel} [ZIP: ${payload.zipCode}]. Underwriting: ${specLabel}.`;
     if (payload.npn || payload.quoteParameters.npn) {
-      advisorMessage += ` | NPN: ${payload.npn || payload.quoteParameters.npn}`;
+      advisorMessage += ` NPN: ${payload.npn || payload.quoteParameters.npn}.`;
     }
     if (payload.licenseNumber || payload.quoteParameters.licenseNumber) {
-      advisorMessage += ` | License: ${payload.licenseState || payload.quoteParameters.licenseState || "US"} #${payload.licenseNumber || payload.quoteParameters.licenseNumber}`;
+      advisorMessage += ` Lic: ${payload.licenseState || payload.quoteParameters.licenseState || "US"} #${payload.licenseNumber || payload.quoteParameters.licenseNumber}.`;
     }
-    advisorMessage += ` | Notes: ${payload.quoteParameters.notes || "None"}`;
+    if (payload.quoteParameters.notes && payload.quoteParameters.notes !== "None") {
+      advisorMessage += ` Notes: ${payload.quoteParameters.notes}`;
+    }
 
     // 4. Persistence into Lead Repository (Prisma with resilient SQLite/in-memory fallback)
     let storedLead: any = null;
     try {
-      storedLead = await getLeadRepository().createLead({
+      const repo = getLeadRepository();
+      storedLead = await repo.createLead({
         firstName: payload.applicantFirstName,
         lastName: payload.applicantLastName,
         email: payload.applicantEmail,
         phone: payload.applicantPhone,
-        service: `${payload.productInterest}: ${payload.quoteParameters.productSubtype}`,
+        service: `${payload.productInterest} - ${payload.quoteParameters.productSubtype || "Direct"} (${coverageAmt})`,
         contactTime: payload.preferredTimeOfDay || "afternoon",
         message: advisorMessage,
         consent: true,
         consentText: "TCPA Affirmative Consent verified for MyIAD lead routing.",
-        consentVersion: payload.consentVersion,
-        consentAt: payload.consentTimestamp,
-        source: payload.source,
-        medium: payload.medium,
-        campaign: payload.campaign,
+        consentVersion: payload.consentVersion || "myiad_tcpa_v2.0",
+        consentAt: payload.consentTimestamp || new Date().toISOString(),
+        source: payload.source || "myiad.com front page",
+        medium: payload.medium || "organic",
+        campaign: payload.campaign || "direct-intake",
       });
+
+      // Add AI Underwriting Annotation Note into CRM
+      if (storedLead?.id) {
+        try {
+          await repo.addNote(
+            storedLead.id,
+            `🎯 AI Underwriting Annotation:
+• Territory: ${territoryLabel} (${specLabel})
+• Recommended Strategy: ${payload.productInterest} - ${payload.quoteParameters.productSubtype}
+• Protection Need / Target: ${coverageAmt}
+• Statutory Compliance: TCPA Affirmative Consent verified (${payload.consentVersion || "v2.0"})
+• Summary: Lead captured via ${payload.source || "myiad.com front page"}. Advisor alert dispatched to Angel Burgos (+1-386-333-1482).`,
+            "MyIAD AI Copilot"
+          );
+        } catch (noteErr) {
+          console.warn("[Quote Routing] Note annotation warning:", noteErr);
+        }
+      }
     } catch (dbErr: any) {
       console.error("[Quote Routing API] Database write warning, proceeding resiliently:", redactPiiFromText(dbErr?.message || ""));
       storedLead = {

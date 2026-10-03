@@ -91,7 +91,7 @@ export default async function CrmPage() {
     await repository.close();
 
     if (rawLeads && rawLeads.length > 0) {
-      leads = rawLeads.map((l) => ({
+      const dbLeads: CrmLead[] = rawLeads.map((l) => ({
         id: l.id,
         firstName: l.firstName,
         lastName: l.lastName,
@@ -109,6 +109,13 @@ export default async function CrmPage() {
         consentAt: l.consentAt,
         consentVersion: l.consentVersion,
       }));
+
+      // Place newly submitted live leads at the very top, followed by production reference leads
+      const seenEmails = new Set(dbLeads.map((dl) => dl.email.toLowerCase()));
+      const remainingDefaults = DEFAULT_PRODUCTION_LEADS.filter(
+        (def) => !seenEmails.has(def.email.toLowerCase())
+      );
+      leads = [...dbLeads, ...remainingDefaults];
     }
   } catch (error) {
     console.warn("[CRM Page] Database query notice, using operational defaults:", (error as any)?.message);

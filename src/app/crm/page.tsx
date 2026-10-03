@@ -15,72 +15,6 @@ export const metadata: Metadata = {
   },
 };
 
-const DEFAULT_PRODUCTION_LEADS: CrmLead[] = [
-  {
-    id: "MYIAD-2026-8841",
-    firstName: "Gabriel",
-    lastName: "Santos (Ret.)",
-    phone: "813-555-0192",
-    email: "g.santos.fl@veteranmail.org",
-    service: "Military SGLI Asset Shield ($500,000)",
-    status: "assigned",
-    createdAt: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
-    message: "Transitioning USAF Veteran at MacDill AFB. DD-214 available. Seeking civilian permanent asset shield with living benefits.",
-    source: "myiad.com/tools/military-asset-shield",
-    medium: "calculator",
-    campaign: "military-transition",
-    consentAt: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
-    consentVersion: "myiad-v1.0-statutory",
-  },
-  {
-    id: "MYIAD-2026-9023",
-    firstName: "Sofia",
-    lastName: "Mendez",
-    phone: "305-555-7714",
-    email: "dr.mendez@coralgableshealth.com",
-    service: "Indexed Universal Life ($1,500,000)",
-    status: "reviewing",
-    createdAt: new Date(Date.now() - 1000 * 60 * 45).toISOString(),
-    message: "Physician in Coral Gables. Maxed out 401(k). Seeking 0% floor downside protection and IRC §7702 tax-free retirement loans.",
-    source: "myiad.com/tools/iul-calculator",
-    medium: "organic",
-    campaign: "tax-advantaged-retirement",
-    consentAt: new Date(Date.now() - 1000 * 60 * 45).toISOString(),
-    consentVersion: "myiad-v1.0-statutory",
-  },
-  {
-    id: "MYIAD-2026-7712",
-    firstName: "Hector",
-    lastName: "Rivera",
-    phone: "787-555-3841",
-    email: "hrivera.pr@caribbeandist.net",
-    service: "Fixed Index Annuity ($350,000 Rollover)",
-    status: "closed",
-    createdAt: new Date(Date.now() - 1000 * 60 * 120).toISOString(),
-    message: "San Juan business owner. Rolling over $350k into guaranteed lifetime income stream starting age 65.",
-    source: "1-888-887-3585",
-    medium: "voice-ai-relay",
-    campaign: "inbound-telephony",
-    consentAt: new Date(Date.now() - 1000 * 60 * 120).toISOString(),
-    consentVersion: "myiad-v1.0-statutory",
-  },
-  {
-    id: "MYIAD-2026-6654",
-    firstName: "Carlos",
-    lastName: "Morales",
-    phone: "407-555-8912",
-    email: "carlos.morales@orlandologist.com",
-    service: "Term Life with Chronic Illness Rider ($750,000)",
-    status: "contacted",
-    createdAt: new Date(Date.now() - 1000 * 60 * 180).toISOString(),
-    message: "Lake Nona homeowner. Looking for 30-year term with accelerated death benefit and chronic illness rider.",
-    source: "myiad.com/quote-selector",
-    medium: "quote-form",
-    campaign: "florida-homeowners",
-    consentAt: new Date(Date.now() - 1000 * 60 * 180).toISOString(),
-    consentVersion: "myiad-v1.0-statutory",
-  },
-];
 
 export default async function CrmPage() {
   let leads: CrmLead[] = [];
@@ -91,7 +25,7 @@ export default async function CrmPage() {
     await repository.close();
 
     if (rawLeads && rawLeads.length > 0) {
-      const dbLeads: CrmLead[] = rawLeads.map((l) => ({
+      leads = rawLeads.map((l) => ({
         id: l.id,
         firstName: l.firstName,
         lastName: l.lastName,
@@ -109,22 +43,11 @@ export default async function CrmPage() {
         consentAt: l.consentAt,
         consentVersion: l.consentVersion,
       }));
-
-      // Place newly submitted live leads at the very top, followed by production reference leads
-      const seenEmails = new Set(dbLeads.map((dl) => dl.email.toLowerCase()));
-      const remainingDefaults = DEFAULT_PRODUCTION_LEADS.filter(
-        (def) => !seenEmails.has(def.email.toLowerCase())
-      );
-      leads = [...dbLeads, ...remainingDefaults];
     }
   } catch (error) {
-    console.warn("[CRM Page] Database query notice, using operational defaults:", (error as any)?.message);
-  }
-
-  // If no leads yet exist in database, use operational starter leads
-  if (leads.length === 0) {
-    leads = DEFAULT_PRODUCTION_LEADS;
+    console.warn("[CRM Page] Database query notice:", (error as any)?.message);
   }
 
   return <FunctionalCrmClient initialLeads={leads} />;
 }
+

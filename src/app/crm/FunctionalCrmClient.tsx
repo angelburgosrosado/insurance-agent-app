@@ -126,45 +126,6 @@ const STATUS_COLUMNS: Array<{
   },
 ];
 
-const DEFAULT_NOTES: Record<string, CrmNote[]> = {
-  "MYIAD-2026-8841": [
-    {
-      id: "note-8841-1",
-      leadId: "MYIAD-2026-8841",
-      body: "🎯 AI Underwriting Annotation: Transitioning USAF Veteran at MacDill AFB. Recommending Mutual of Omaha Military Asset Shield ($500,000) to replace expiring SGLI. Full living benefits included, zero medical exam required.",
-      author: "MyIAD AI Copilot",
-      createdAt: new Date(Date.now() - 1000 * 60 * 12).toISOString(),
-    },
-  ],
-  "MYIAD-2026-9023": [
-    {
-      id: "note-9023-1",
-      leadId: "MYIAD-2026-9023",
-      body: "🎯 AI Underwriting Annotation: Physician in Coral Gables. Max-funded Indexed Universal Life ($1,500,000) with 0% floor downside market hedge and IRC §7702 tax-free retirement loan structuring.",
-      author: "MyIAD AI Copilot",
-      createdAt: new Date(Date.now() - 1000 * 60 * 40).toISOString(),
-    },
-  ],
-  "MYIAD-2026-7712": [
-    {
-      id: "note-7712-1",
-      leadId: "MYIAD-2026-7712",
-      body: "🎯 AI Underwriting Annotation: Fixed Index Annuity ($350,000 Rollover). Inbound toll-free call from 1-888-887-3585. FINRA Rule 2330 suitability evaluation passed for contractual lifetime income.",
-      author: "MyIAD AI Copilot",
-      createdAt: new Date(Date.now() - 1000 * 60 * 115).toISOString(),
-    },
-  ],
-  "MYIAD-2026-6654": [
-    {
-      id: "note-6654-1",
-      leadId: "MYIAD-2026-6654",
-      body: "🎯 AI Underwriting Annotation: 30-Year Term Life with Chronic Illness Living Benefits ($750,000). Primary residence mortgage protection in Lake Nona. Initial automated welcome SMS dispatched.",
-      author: "MyIAD AI Copilot",
-      createdAt: new Date(Date.now() - 1000 * 60 * 175).toISOString(),
-    },
-  ],
-};
-
 export function FunctionalCrmClient({ initialLeads }: { initialLeads: CrmLead[] }) {
   const [leads, setLeads] = useState<CrmLead[]>(initialLeads);
   const [selectedLead, setSelectedLead] = useState<CrmLead | null>(initialLeads[0] || null);
@@ -180,7 +141,7 @@ export function FunctionalCrmClient({ initialLeads }: { initialLeads: CrmLead[] 
   const [expandedWorkflowId, setExpandedWorkflowId] = useState<string | null>("speed-to-lead-voice");
   
   // Note state
-  const [notes, setNotes] = useState<Record<string, CrmNote[]>>(DEFAULT_NOTES);
+  const [notes, setNotes] = useState<Record<string, CrmNote[]>>({});
   const [newNoteText, setNewNoteText] = useState("");
   const [isSavingNote, setIsSavingNote] = useState(false);
 
@@ -326,7 +287,7 @@ export function FunctionalCrmClient({ initialLeads }: { initialLeads: CrmLead[] 
       const res = await fetch("/api/crm/leads");
       if (res.ok) {
         const data = await res.json();
-        if (data.leads && Array.isArray(data.leads) && data.leads.length > 0) {
+        if (data.leads && Array.isArray(data.leads)) {
           const dbLeads: CrmLead[] = data.leads.map((l: any) => ({
             id: l.id,
             firstName: l.firstName,
@@ -346,14 +307,13 @@ export function FunctionalCrmClient({ initialLeads }: { initialLeads: CrmLead[] 
             consentVersion: l.consentVersion,
           }));
 
-          const seenEmails = new Set(dbLeads.map((dl) => dl.email.toLowerCase()));
-          const remainingDefaults = initialLeads.filter(
-            (def) => !seenEmails.has(def.email.toLowerCase())
-          );
-          const merged = [...dbLeads, ...remainingDefaults];
-          setLeads(merged);
-          if (!selectedLead || !merged.find((m) => m.id === selectedLead.id)) {
-            setSelectedLead(merged[0] || null);
+          setLeads(dbLeads);
+          if (dbLeads.length > 0) {
+            if (!selectedLead || !dbLeads.find((m) => m.id === selectedLead.id)) {
+              setSelectedLead(dbLeads[0]);
+            }
+          } else {
+            setSelectedLead(null);
           }
         }
       }
@@ -847,7 +807,14 @@ export function FunctionalCrmClient({ initialLeads }: { initialLeads: CrmLead[] 
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-800/80">
-                          {filteredLeads.map((lead) => {
+                          {filteredLeads.length === 0 ? (
+                            <tr>
+                              <td colSpan={6} className="px-4 py-8 text-center text-slate-500 font-mono text-xs">
+                                No leads in database yet. Submissions from the myiad.com front page will appear here in real time.
+                              </td>
+                            </tr>
+                          ) : (
+                            filteredLeads.map((lead) => {
                             const isSelected = selectedLead?.id === lead.id;
                             const tInfo = detectTerritoryFromPhone(lead.phone);
                             return (
@@ -909,7 +876,7 @@ export function FunctionalCrmClient({ initialLeads }: { initialLeads: CrmLead[] 
                                 </td>
                               </tr>
                             );
-                          })}
+                          }))}
                         </tbody>
                       </table>
                     </div>
@@ -1157,9 +1124,13 @@ export function FunctionalCrmClient({ initialLeads }: { initialLeads: CrmLead[] 
                 ) : (
                   <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center text-slate-400">
                     <User className="w-10 h-10 text-slate-600 mx-auto mb-3" />
-                    <p className="text-sm font-medium text-white">Select a Lead</p>
-                    <p className="text-xs text-slate-500 mt-1">
-                      Click any lead in the pipeline to open the communications drawer, run AI synthesis, or send SMS.
+                    <p className="text-sm font-medium text-white">
+                      {leads.length === 0 ? "Awaiting First Lead Submission" : "Select a Lead"}
+                    </p>
+                    <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+                      {leads.length === 0
+                        ? "No leads in database yet. The user you create on the main front page (myiad.com) will appear here immediately as the first file with full AI underwriting diagnostics."
+                        : "Click any lead in the pipeline to open the communications drawer, run AI synthesis, or send SMS."}
                     </p>
                   </div>
                 )}

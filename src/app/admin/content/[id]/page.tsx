@@ -11,11 +11,18 @@ export const revalidate = 0;
 
 export default async function EditContentPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const prisma = getPrismaClient();
-  
-  const content = await prisma.contentEntry.findUnique({
-    where: { id }
-  });
+  let content = null;
+
+  if (process.env.DATABASE_URL) {
+    try {
+      const prisma = getPrismaClient();
+      content = await prisma.contentEntry.findUnique({
+        where: { id },
+      });
+    } catch (err) {
+      console.warn("[EditContentPage] Failed to fetch content entry:", err);
+    }
+  }
 
   if (!content) {
     notFound();

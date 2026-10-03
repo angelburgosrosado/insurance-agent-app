@@ -1,4 +1,5 @@
 import { getPrismaClient } from "@/lib/server/db";
+import { getLeadRepository } from "@/lib/server/leads";
 
 export type DailyLeadCount = {
   date: string;
@@ -10,17 +11,38 @@ export type ServiceBreakdown = {
   count: number;
 };
 
-export async function getAnalyticsData() {
-  const prisma = getPrismaClient();
+export async function getAnalyticsData(): Promise<{ timeSeries: DailyLeadCount[]; breakdown: ServiceBreakdown[] }> {
+  let rawLeads: Array<{ createdAt: Date; service: string }> = [];
 
-  // Get all leads to aggregate in JS (since Prisma SQLite doesn't support advanced grouping easily, 
-  // and we want this to work regardless of DB engine for now, pulling all lightweight leads is fine for prototype scale).
-  const leads = await prisma.lead.findMany({
-    select: {
-      createdAt: true,
-      service: true,
+  // 1. Try Prisma if DATABASE_URL is configured
+  if (process.env.DATABASE_URL) {
+    try {
+      const prisma = getPrismaClient();
+      const leads = await prisma.lead.findMany({
+        select: {
+          createdAt: true,
+          service: true,
+        },
+      });
+      rawLeads = leads;
+    } catch (err) {
+      console.warn("[AnalyticsMetrics] Prisma query failed, falling back to LeadRepository:", err);
     }
-  });
+  }
+
+  // 2. Resilient fallback to SQLite / in-memory repository
+  if (rawLeads.length === 0) {
+    try {
+      const repository = getLeadRepository();
+      const leads = await repository.listLeads();
+      rawLeads = leads.map((l) => ({
+        createdAt: new Date(l.createdAt),
+        service: l.service,
+      }));
+    } catch (err) {
+      console.error("[AnalyticsMetrics] Repository fallback failed:", err);
+    }
+  }
 
   const last30Days = new Date();
   last30Days.setDate(last30Days.getDate() - 30);
@@ -28,13 +50,11 @@ export async function getAnalyticsData() {
   const dailyCounts: Record<string, number> = {};
   const serviceCounts: Record<string, number> = {};
 
-  leads.forEach((lead) => {
-    // Breakdown by service
+  rawLeads.forEach((lead) => {
     const service = lead.service || "unknown";
     serviceCounts[service] = (serviceCounts[service] || 0) + 1;
 
-    // Time-series (last 30 days only)
-    if (lead.createdAt >= last30Days) {
+    if (!Number.isNaN(lead.createdAt.getTime()) && lead.createdAt >= last30Days) {
       const dateStr = lead.createdAt.toISOString().split("T")[0];
       dailyCounts[dateStr] = (dailyCounts[dateStr] || 0) + 1;
     }
@@ -58,6 +78,6 @@ export async function getAnalyticsData() {
 
   return {
     timeSeries,
-    breakdown
+    breakdown,
   };
 }

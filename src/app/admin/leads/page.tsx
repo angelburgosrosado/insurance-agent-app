@@ -1,7 +1,9 @@
 import { LeadsTable } from "@/components/leads-table";
 import { LeadFilters } from "@/components/lead-filters";
 import { getPrismaClient } from "@/lib/server/db";
+import { getLeadRepository } from "@/lib/server/leads";
 import { Prisma } from "@prisma/client";
+import type { Lead } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -16,48 +18,97 @@ export default async function LeadsPage({
   const pageSize = 10;
   const skip = (page - 1) * pageSize;
 
-  const prisma = getPrismaClient();
+  let serializedLeads: Lead[] = [];
+  let totalLeads = 0;
 
-  const where: Prisma.LeadWhereInput = {};
-  
-  if (params.search) {
-    where.OR = [
-      { firstName: { contains: params.search, mode: "insensitive" } },
-      { lastName: { contains: params.search, mode: "insensitive" } },
-      { email: { contains: params.search, mode: "insensitive" } },
-    ];
-  }
-  
-  if (params.status) {
-    where.status = params.status as Prisma.EnumLeadStatusFilter<"Lead">;
+  // 1. Try Prisma if DATABASE_URL is configured
+  if (process.env.DATABASE_URL) {
+    try {
+      const prisma = getPrismaClient();
+
+      const where: Prisma.LeadWhereInput = {};
+      
+      if (params.search) {
+        where.OR = [
+          { firstName: { contains: params.search, mode: "insensitive" } },
+          { lastName: { contains: params.search, mode: "insensitive" } },
+          { email: { contains: params.search, mode: "insensitive" } },
+        ];
+      }
+      
+      if (params.status) {
+        where.status = params.status as Prisma.EnumLeadStatusFilter<"Lead">;
+      }
+
+      const [leads, count] = await Promise.all([
+        prisma.lead.findMany({
+          where,
+          orderBy: { createdAt: "desc" },
+          skip,
+          take: pageSize,
+          include: {
+            attribution: true,
+          },
+        }),
+        prisma.lead.count({ where }),
+      ]);
+
+      totalLeads = count;
+      serializedLeads = leads.map((l) => ({
+        id: l.id,
+        firstName: l.firstName,
+        lastName: l.lastName,
+        email: l.email,
+        phone: l.phone,
+        service: l.service,
+        contactTime: l.contactTime ?? "",
+        message: l.message ?? "",
+        consent: l.consent,
+        consentText: l.consentText ?? "",
+        consentVersion: l.consentVersion ?? "",
+        consentAt: l.consentAt.toISOString(),
+        source: l.attribution?.source ?? "",
+        medium: l.attribution?.medium ?? "",
+        campaign: l.attribution?.campaign ?? "",
+        content: l.attribution?.content ?? "",
+        term: l.attribution?.term ?? "",
+        status: l.status as any,
+        followUpDate: "",
+        createdAt: l.createdAt.toISOString(),
+      }));
+    } catch (err) {
+      console.warn("[AdminLeadsPage] Prisma query failed, falling back to LeadRepository:", err);
+    }
   }
 
-  const [leads, totalLeads] = await Promise.all([
-    prisma.lead.findMany({
-      where,
-      orderBy: { createdAt: "desc" },
-      skip,
-      take: pageSize,
-      include: {
-        attribution: true,
-      },
-    }),
-    prisma.lead.count({ where }),
-  ]);
+  // 2. Resilient fallback to SQLite / in-memory repository
+  if (serializedLeads.length === 0 && totalLeads === 0) {
+    try {
+      const repository = getLeadRepository();
+      let allLeads = await repository.listLeads();
+
+      if (params.search) {
+        const q = params.search.toLowerCase();
+        allLeads = allLeads.filter(
+          (l) =>
+            l.firstName.toLowerCase().includes(q) ||
+            l.lastName.toLowerCase().includes(q) ||
+            l.email.toLowerCase().includes(q)
+        );
+      }
+
+      if (params.status) {
+        allLeads = allLeads.filter((l) => l.status === params.status);
+      }
+
+      totalLeads = allLeads.length;
+      serializedLeads = allLeads.slice(skip, skip + pageSize);
+    } catch (err) {
+      console.error("[AdminLeadsPage] Repository fallback failed:", err);
+    }
+  }
 
   const totalPages = Math.ceil(totalLeads / pageSize);
-
-  // Map to the format expected by the frontend
-  const serializedLeads = leads.map(l => ({
-    ...l,
-    consentAt: l.consentAt.toISOString(),
-    createdAt: l.createdAt.toISOString(),
-    updatedAt: l.updatedAt?.toISOString(),
-    // Include attribution fields if they exist
-    source: l.attribution?.source || "",
-    medium: l.attribution?.medium || "",
-    campaign: l.attribution?.campaign || "",
-  }));
 
   return (
     <main className="min-h-[100dvh] bg-[#eef1ef] text-[var(--ink)]">

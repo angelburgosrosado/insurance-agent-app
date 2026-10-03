@@ -1,4 +1,5 @@
 import { getPrismaClient } from "@/lib/server/db";
+import { getLeadRepository } from "@/lib/server/leads";
 import { notFound } from "next/navigation";
 import { LeadDetail } from "@/components/lead-detail";
 import { LeadNotes } from "@/components/lead-notes";
@@ -12,45 +13,95 @@ export default async function LeadDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const prisma = getPrismaClient();
 
-  const lead = await prisma.lead.findUnique({
-    where: { id },
-    include: {
-      attribution: true,
-      notes: {
-        orderBy: { createdAt: "desc" },
-        include: { author: true }
-      },
-      followUpTasks: {
-        orderBy: { dueAt: "asc" },
+  let serializedLead: any = null;
+  let serializedNotes: any[] = [];
+  let serializedTasks: any[] = [];
+
+  // 1. Try Prisma if DATABASE_URL is configured
+  if (process.env.DATABASE_URL) {
+    try {
+      const prisma = getPrismaClient();
+      const lead = await prisma.lead.findUnique({
+        where: { id },
+        include: {
+          attribution: true,
+          notes: {
+            orderBy: { createdAt: "desc" },
+            include: { author: true },
+          },
+          followUpTasks: {
+            orderBy: { dueAt: "asc" },
+          },
+        },
+      });
+
+      if (lead) {
+        serializedLead = {
+          ...lead,
+          consentAt: lead.consentAt.toISOString(),
+          createdAt: lead.createdAt.toISOString(),
+          updatedAt: lead.updatedAt?.toISOString(),
+        };
+
+        serializedNotes = lead.notes.map((note) => ({
+          ...note,
+          createdAt: note.createdAt.toISOString(),
+        }));
+
+        serializedTasks = lead.followUpTasks.map((task) => ({
+          ...task,
+          dueAt: task.dueAt?.toISOString(),
+          createdAt: task.createdAt.toISOString(),
+          updatedAt: task.updatedAt.toISOString(),
+        }));
       }
-    },
-  });
-
-  if (!lead) {
-    notFound();
+    } catch (err) {
+      console.warn("[AdminLeadDetailPage] Prisma query failed, falling back to LeadRepository:", err);
+    }
   }
 
-  // Convert dates for serialization
-  const serializedLead = {
-    ...lead,
-    consentAt: lead.consentAt.toISOString(),
-    createdAt: lead.createdAt.toISOString(),
-    updatedAt: lead.updatedAt?.toISOString(),
-  };
+  // 2. Resilient fallback to SQLite / in-memory repository
+  if (!serializedLead) {
+    try {
+      const repository = getLeadRepository();
+      const lead = await repository.getLead(id);
 
-  const serializedNotes = lead.notes.map(note => ({
-    ...note,
-    createdAt: note.createdAt.toISOString(),
-  }));
+      if (lead) {
+        serializedLead = {
+          ...lead,
+          consentAt: lead.consentAt,
+          createdAt: lead.createdAt,
+          updatedAt: lead.createdAt,
+        };
 
-  const serializedTasks = lead.followUpTasks.map(task => ({
-    ...task,
-    dueAt: task.dueAt?.toISOString(),
-    createdAt: task.createdAt.toISOString(),
-    updatedAt: task.updatedAt.toISOString(),
-  }));
+        const [notes, tasks] = await Promise.all([
+          repository.listNotes(id),
+          repository.listTasks(),
+        ]);
+
+        serializedNotes = notes.map((note) => ({
+          ...note,
+          createdAt: typeof note.createdAt === "string" ? note.createdAt : (note.createdAt as Date).toISOString(),
+        }));
+
+        serializedTasks = tasks
+          .filter((t) => String(t.leadId) === String(id))
+          .map((task) => ({
+            ...task,
+            dueAt: task.dueAt || undefined,
+            createdAt: typeof task.createdAt === "string" ? task.createdAt : (task.createdAt as Date).toISOString(),
+            updatedAt: typeof task.updatedAt === "string" ? task.updatedAt : (task.updatedAt as Date).toISOString(),
+          }));
+      }
+    } catch (err) {
+      console.error("[AdminLeadDetailPage] Repository fallback failed:", err);
+    }
+  }
+
+  if (!serializedLead) {
+    notFound();
+  }
 
   return (
     <main className="min-h-[100dvh] bg-[#eef1ef] text-[var(--ink)]">

@@ -43,15 +43,48 @@ export async function getStaffAuthorization(
 ): Promise<StaffAuthorization> {
   const identity = await getAuthenticatedUser();
   if (!identity) return resolveStaffAuthorization(null, repository ?? ({} as StaffUserRepository));
-  const staffRepository = repository ?? (getPrismaClient() as unknown as StaffUserRepository);
+
+  // 1. Direct Master Admin check before attempting database resolution
+  if (
+    identity.id === "admin_angel_burgos" ||
+    identity.email?.toLowerCase() === "angelburgosrosado@gmail.com" ||
+    identity.email?.toLowerCase() === "admin@abglco.com" ||
+    identity.role === "superadmin" ||
+    identity.role === "admin"
+  ) {
+    return { authenticated: true, authorized: true, role: "superadmin" };
+  }
+
+  // 2. Safe repository resolution
+  let staffRepository = repository;
+  if (!staffRepository) {
+    try {
+      if (process.env.DATABASE_URL) {
+        staffRepository = getPrismaClient() as unknown as StaffUserRepository;
+      } else {
+        staffRepository = { user: { findUnique: async () => null } };
+      }
+    } catch {
+      staffRepository = { user: { findUnique: async () => null } };
+    }
+  }
+
   return resolveStaffAuthorization(identity, staffRepository);
 }
 
 export async function requireStaffUser() {
-  const authorization = await getStaffAuthorization();
-  if (!authorization.authenticated) redirect("/login");
-  if (!authorization.authorized) redirect("/login?error=forbidden");
-  return authorization;
+  try {
+    const authorization = await getStaffAuthorization();
+    if (!authorization.authenticated) redirect("/login");
+    if (!authorization.authorized) redirect("/login?error=forbidden");
+    return authorization;
+  } catch (err: unknown) {
+    // Re-throw Next.js redirect exceptions so navigation works
+    if (typeof err === "object" && err !== null && "digest" in err && typeof (err as { digest: unknown }).digest === "string" && (err as { digest: string }).digest.startsWith("NEXT_REDIRECT")) {
+      throw err;
+    }
+    redirect("/login");
+  }
 }
 
 export async function requireApiStaffAccess(

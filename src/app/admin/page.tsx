@@ -53,6 +53,14 @@ export default async function AdminPage() {
 
           <div className="flex items-center gap-4 text-xs">
             <Link
+              href="/crm"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-teal-50 text-teal-800 border border-teal-200 font-bold hover:bg-teal-100 transition-colors"
+            >
+              <Users size={13} className="text-teal-600" />
+              <span>CRM Pipeline</span>
+            </Link>
+
+            <Link
               href="/admin/system"
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold hover:bg-emerald-100 transition-colors"
             >
@@ -105,6 +113,13 @@ export default async function AdminPage() {
             <p className="font-mono text-[10px] uppercase tracking-wider text-slate-400 font-bold px-3 mb-2">
               Advisory Pipeline
             </p>
+            <Link
+              href="/crm"
+              className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl font-bold bg-teal-50 text-teal-900 border border-teal-200 hover:bg-teal-100 transition-colors"
+            >
+              <Users size={16} className="text-teal-600" />
+              <span>CRM Pipeline Portal</span>
+            </Link>
             <Link
               href="/admin"
               className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl font-semibold text-slate-700 hover:bg-slate-100 transition-colors"
@@ -192,6 +207,14 @@ export default async function AdminPage() {
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
+              <Link
+                href="/crm"
+                className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition-all shadow flex items-center gap-2"
+              >
+                <Users size={15} />
+                <span>Open CRM Pipeline</span>
+              </Link>
+
               <Link
                 href="/admin/system"
                 className="px-4 py-2.5 bg-teal-600 hover:bg-teal-500 text-white text-xs font-bold rounded-xl transition-all shadow flex items-center gap-2"

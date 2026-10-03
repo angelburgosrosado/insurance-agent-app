@@ -177,4 +177,66 @@ test("CRM Integration - /api/crm/ai-synthesis synthesizes carrier and FINRA 2330
   assert.ok(data.advisorScript.includes("Gabriel"));
 });
 
+test("CRM Integration - Front page intake creates lead, generates AI Underwriting Annotation, and is accessible via /api/crm/leads", async () => {
+  const { POST: postQuoteRouting } = await import("../src/app/api/leads/quote-routing/route");
+  const { GET: getCrmLeads } = await import("../src/app/api/crm/leads/route");
+  const { GET: getCrmNotes } = await import("../src/app/api/crm/leads/notes/route");
+
+  const testEmail = `antigravity.test.${Date.now()}@example.com`;
+  const intakePayload = {
+    applicantFirstName: "Carlos",
+    applicantLastName: "Mendoza",
+    applicantEmail: testEmail,
+    applicantPhone: "407-333-1482",
+    zipCode: "32837",
+    category: "life",
+    productInterest: "Life",
+    quoteParameters: {
+      category: "life",
+      productSubtype: "Indexed Universal Life (0% Floor)",
+      coverageOrInvestmentAmount: "$750,000",
+      notes: "Front page intake test",
+    },
+    consent: true,
+    consentTimestamp: new Date().toISOString(),
+    consentVersion: "myiad_tcpa_v2.0",
+    source: "myiad.com front page",
+  };
+
+  const req = new Request("https://myiad.com/api/leads/quote-routing", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(intakePayload),
+  });
+
+  const res = await postQuoteRouting(req);
+  assert.equal(res.status, 201);
+
+  const resData = await res.json();
+  assert.equal(resData.success, true);
+  assert.ok(resData.leadId, "Must return created lead ID");
+
+  // Query /api/crm/leads
+  const leadsReq = new Request("https://crm.myiad.com/api/crm/leads");
+  const leadsRes = await getCrmLeads();
+  assert.equal(leadsRes.status, 200);
+  const leadsData = await leadsRes.json();
+  assert.equal(leadsData.success, true);
+  const foundLead = leadsData.leads.find((l: any) => l.email.toLowerCase() === testEmail.toLowerCase());
+  assert.ok(foundLead, "Created lead must be returned by /api/crm/leads");
+  assert.ok(foundLead.message.includes("Front Page Intake"), "Lead message must contain Front Page Intake diagnosis");
+
+  // Query /api/crm/leads/notes
+  const notesReq = new Request(`https://crm.myiad.com/api/crm/leads/notes?leadId=${encodeURIComponent(String(foundLead.id))}`);
+  const notesRes = await getCrmNotes(notesReq);
+  assert.equal(notesRes.status, 200);
+  const notesData = await notesRes.json();
+  assert.equal(notesData.success, true);
+  assert.ok(notesData.notes.length > 0, "Lead must have at least one annotation note");
+  const annotationNote = notesData.notes.find((n: any) => n.body.includes("AI Underwriting Annotation"));
+  assert.ok(annotationNote, "Lead must have an AI Underwriting Annotation note");
+  assert.ok(annotationNote.body.includes("Protection Need / Target"), "Annotation must contain protection target");
+});
+
+
 

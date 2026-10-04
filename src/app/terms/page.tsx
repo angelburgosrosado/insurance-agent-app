@@ -104,8 +104,8 @@ export default function TermsPage() {
               </h2>
               <p>
                 {lang === "es"
-                  ? "Al acceder o navegar en los dominios myiad.com, abglco.com, voice.myiad.com o crm.myiad.net, o al utilizar nuestras calculadoras interactivas, interactuar con nuestro agente de voz o solicitar una consulta, usted acepta someterse a estos Términos y Condiciones y a nuestra Política de Privacidad."
-                  : "By accessing or utilizing myiad.com, abglco.com, voice.myiad.com, or crm.myiad.net, or by using our interactive simulators, conversing with our AI voice assistant, or requesting a diagnostic consultation, you agree to be bound by these Terms of Service and our Privacy Policy."}
+                  ? "Al acceder o navegar en los dominios myiad.com, abglco.com, voice.myiad.com o crm.myiad.com, o al utilizar nuestras calculadoras interactivas, interactuar con nuestro agente de voz o solicitar una consulta, usted acepta someterse a estos Términos y Condiciones y a nuestra Política de Privacidad."
+                  : "By accessing or utilizing myiad.com, abglco.com, voice.myiad.com, or crm.myiad.com, or by using our interactive simulators, conversing with our AI voice assistant, or requesting a diagnostic consultation, you agree to be bound by these Terms of Service and our Privacy Policy."}
               </p>
               <p>
                 {lang === "es"

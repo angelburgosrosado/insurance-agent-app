@@ -264,7 +264,7 @@ test("Quote Selector - Rejects invalid inputs with descriptive error states", ()
   }
 });
 
-test("Lead Routing Normalization - Conforms exactly to crm.myiad.net webhook schema", () => {
+test("Lead Routing Normalization - Conforms exactly to crm.myiad.com webhook schema", () => {
   const validatedPayload: MyIADLeadSubmissionPayload = {
     applicantName: "Roberto Gomez",
     applicantFirstName: "Roberto",

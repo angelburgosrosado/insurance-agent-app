@@ -4,7 +4,7 @@
 **Date:** September 30, 2026  
 **Auditor / Reviewer:** QA & Risk Reviewer (Agent `05ee81ed-a5ce-4cb0-ac24-0c075ffbedec`)  
 **Target Domain:** `https://myiad.com`  
-**Pipeline Target:** `https://crm.myiad.net/api/webhooks/leads`  
+**Pipeline Target:** `https://crm.myiad.com/api/webhooks/leads`  
 **Licensee of Record:** Angel Burgos, Florida State 0215 Life, Health & Variable Annuity Broker (License `#G328926`)  
 **Governing Issue:** ABGA-13 (Parent: ABGA-10)  
 **Related Issues:** ABGA-4, ABGA-11, ABGA-12, ABGA-14, ABGA-15  
@@ -31,7 +31,7 @@
 | **AC-1** | Full suitability audit of variable annuity promotional claims under SEC and FINRA Rule 2330. | Promotional claims in `tokens.ts` and `MyIADHero.tsx` contain unqualified guarantees. Backend validation auto-acknowledges FINRA suitability without affirmative prospect action. Missing 36-month replacement check. | **FAIL (REMEDIATE)** |
 | **AC-2** | Required supervisory and non-guaranteed return disclaimers explicitly drafted and placed. | Excellent drafting in `MyIADTrustAndCompliance.tsx` and `tokens.ts`, but completely absent from `MyIADLeadForm.tsx` (lead form tab) and lacking prospectus delivery warnings. | **FAIL (REMEDIATE)** |
 | **AC-3** | Clear state licensing disclosures and agent/broker-dealer relationship disclaimers defined. | Angel Burgos FL Lic #G328926 is properly cited. However, national territory claims lack reciprocity disclosures, and the broker-dealer entity overseeing securities transactions is undefined. | **FAIL (REMEDIATE)** |
-| **AC-4** | Consumer privacy, TCPA consent, and PII protection compliance review. | Critical TCPA defect: consent checkbox is pre-checked (`useState(true)`). Error logging dumps unmasked PII. Privacy page lists "HubSpot" instead of `crm.myiad.net`. | **FAIL (REMEDIATE)** |
+| **AC-4** | Consumer privacy, TCPA consent, and PII protection compliance review. | Critical TCPA defect: consent checkbox is pre-checked (`useState(true)`). Error logging dumps unmasked PII. Privacy page lists "HubSpot" instead of `crm.myiad.com`. | **FAIL (REMEDIATE)** |
 | **AC-5** | Formal PASS / FAIL / REMEDIATION findings recorded on copy decks and intake forms before production release. | Comprehensive audit findings recorded with exact line citations and remediation code patches across all affected files. | **PASS** |
 
 ---
@@ -130,13 +130,13 @@
 
 #### Finding 3.3: Inaccurate CRM Infrastructure Citation in Privacy Policy
 - **Location:** `src/app/privacy/page.tsx`, line 141.
-- **Defect:** The privacy policy states: "HubSpot CRM: Confidential client management...". The production architecture routes all leads directly to `crm.myiad.net` (self-hosted / internal PostgreSQL pipeline). Citing an uncontracted third-party CRM misrepresents data handling under GLBA and state privacy statutes.
-- **Required Remediation:** Update `src/app/privacy/page.tsx` section 4 to cite `crm.myiad.net` secure pipeline with PostgreSQL and Row-Level Security.
+- **Defect:** The privacy policy states: "HubSpot CRM: Confidential client management...". The production architecture routes all leads directly to `crm.myiad.com` (self-hosted / internal PostgreSQL pipeline). Citing an uncontracted third-party CRM misrepresents data handling under GLBA and state privacy statutes.
+- **Required Remediation:** Update `src/app/privacy/page.tsx` section 4 to cite `crm.myiad.com` secure pipeline with PostgreSQL and Row-Level Security.
 
 #### Finding 3.4: PII Redaction in Telemetry and Error Handlers
 - **Location:** `src/lib/integrations/crm-myiad.ts`, line 333:
   ```ts
-  console.error("[crm.myiad.net Webhook Error]", response.status, errorText);
+  console.error("[crm.myiad.com Webhook Error]", response.status, errorText);
   ```
 - **Defect:** Error logs print unredacted error strings that may mirror prospect payload data back to application console output.
 - **Required Remediation:** Implement PII masking for error logs (e.g. masking phone numbers `(***) ***-1234` and email addresses `a***@example.com`).
@@ -167,7 +167,7 @@
 - **Owner:** Engineering Lead (ABGA-14)
 - **Files:**
   - `src/app/disclosures/page.tsx` & `src/lib/policy-content.ts`: Add full FINRA Rule 2330 text, FL Lic #G328926, Medicare CMS disclaimer, and broker-dealer supervisory statement.
-  - `src/app/privacy/page.tsx`: Replace "HubSpot CRM" with `crm.myiad.net` and append FINRA 6-year books & records retention policy.
+  - `src/app/privacy/page.tsx`: Replace "HubSpot CRM" with `crm.myiad.com` and append FINRA 6-year books & records retention policy.
 
 ---
 

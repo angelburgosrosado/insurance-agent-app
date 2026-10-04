@@ -365,7 +365,7 @@ export function CrmShowcaseClient() {
       setLeads((prev) => [newLead, ...prev]);
       setSelectedLead(newLead);
       setIsSimulating(false);
-      setSimulationToast(`🎉 Real-time lead ingested: "${newLead.name}" dispatched to crm.myiad.net pipeline!`);
+      setSimulationToast(`🎉 Real-time lead ingested: "${newLead.name}" dispatched to crm.myiad.com pipeline!`);
       setTimeout(() => setSimulationToast(null), 5000);
     }, 600);
   };
@@ -386,7 +386,7 @@ export function CrmShowcaseClient() {
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono text-[11px]">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              crm.myiad.net Gateway Online
+              crm.myiad.com Gateway Online
             </span>
             <span className="text-slate-400 hidden sm:inline">•</span>
             <span className="text-slate-300 font-mono text-[11px] hidden sm:inline">

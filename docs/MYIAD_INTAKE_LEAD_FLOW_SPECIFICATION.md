@@ -3,7 +3,7 @@
 **Document Version:** 1.0.0 (Production Specification)  
 **Author:** Product & Strategy Lead (AB Global Consulting)  
 **Target Domain:** `https://myiad.com`  
-**Integration Target:** `https://crm.myiad.net` Lead Pipeline  
+**Integration Target:** `https://crm.myiad.com` Lead Pipeline  
 **Principal Advisor & License:** Angel Burgos, Florida State 0215 Life, Health & Variable Annuities (`#G328926`)  
 **Design Tokens:** Trust Navy (`#0B1F3A`), Tech Blue (`#2563EB`), Accent Teal (`#14B8A6`), Surface Clean (`#F8FAFC`), Text Charcoal (`#111827`)
 
@@ -37,7 +37,7 @@ Inbound insurance acquisition on digital properties frequently suffers from two 
 
 ### 2.1 Current Verified Technical Evidence
 - **Brand Tokens & UI System:** Implemented in `src/components/myiad/tokens.ts` and `src/app/globals.css`. Uses Trust Navy (`#0B1F3A`), Tech Blue (`#2563EB`), Accent Teal (`#14B8A6`), Clean White (`#F8FAFC`), and Charcoal (`#111827`).
-- **Lead Pipeline Webhook Contract:** Implemented in `src/lib/integrations/crm-myiad.ts` with strict TypeScript validation (`validateMyIADLeadPayload`). Defines data fields for applicant contact, geographic territory, category, quote parameters, TCPA consent logging, and CRM webhook dispatch (`crm.myiad.net/api/webhooks/leads`).
+- **Lead Pipeline Webhook Contract:** Implemented in `src/lib/integrations/crm-myiad.ts` with strict TypeScript validation (`validateMyIADLeadPayload`). Defines data fields for applicant contact, geographic territory, category, quote parameters, TCPA consent logging, and CRM webhook dispatch (`crm.myiad.com/api/webhooks/leads`).
 - **Existing Acquisition Components:** 
   - `src/components/QuoteSelectorForm.tsx`: 4-step interactive quote selector with client-side state machine (`useQuoteAndLeadRouting.ts`).
   - `src/components/myiad/MyIADLeadForm.tsx`: Tabbed conversion module allowing direct quote inquiry or immediate calendar scheduling.
@@ -45,7 +45,7 @@ Inbound insurance acquisition on digital properties frequently suffers from two 
 - **API Routing:** `src/app/api/leads/quote-routing/route.ts` provides server-side payload normalization, validation, attribution capture, dual-storage in database, and CRM webhook routing.
 
 ### 2.2 Assumptions
-- **Assumption 1:** Leads captured on `myiad.com` route to the CRM pipeline at `https://crm.myiad.net/api/webhooks/leads` with graceful offline fallback when the remote endpoint is in staging or network-partitioned.
+- **Assumption 1:** Leads captured on `myiad.com` route to the CRM pipeline at `https://crm.myiad.com/api/webhooks/leads` with graceful offline fallback when the remote endpoint is in staging or network-partitioned.
 - **Assumption 2:** Inbound prospects should not be asked for Social Security Numbers (SSN), detailed medical history, or banking data during intake; these are strictly deferred to post-consultation formal carrier application stages.
 - **Assumption 3:** Florida area codes (e.g., 386, 407, 305, 813) and Puerto Rico area codes (787, 939) trigger automatic regional territory assignment in the CRM.
 
@@ -152,7 +152,7 @@ Branching dynamically adapts the form fields based on Step 1 selection:
    - Mobile-responsive layout strictly matching MyIAD brand tokens.
 2. **Standardized API Ingestion Route (`/api/leads/quote-routing`):**
    - Server-side payload validation via `validateMyIADLeadPayload`.
-   - Dual-persistence to local database and dispatch to `crm.myiad.net/api/webhooks/leads`.
+   - Dual-persistence to local database and dispatch to `crm.myiad.com/api/webhooks/leads`.
    - Full attribution extraction (UTM source, medium, campaign, referrer).
 3. **TCPA & FINRA 2330 Compliance Gateways:**
    - Enforced affirmative consent logging and variable annuity disclosure acknowledgement.
@@ -162,7 +162,7 @@ Branching dynamically adapts the form fields based on Step 1 selection:
 ### 4.2 Out-of-Scope (Phase 2 Enhancements)
 1. **Live Carrier Quoting API Integration:** Integration with external real-time rating engines (e.g. CSG Actuarial, Compulife API) for instant dollar premiums prior to advisor review.
 2. **HIPAA / Detailed Health Intake:** Detailed medical history, prescription drug databases, or electronic health records (EHR) integrations.
-3. **Client Self-Service Policy Dashboard:** Client login for tracking existing policies (delegated to `crm.myiad.net` portal).
+3. **Client Self-Service Policy Dashboard:** Client login for tracking existing policies (delegated to `crm.myiad.com` portal).
 4. **Automated Document Generation:** Instant generation of ACORD or FINRA 2330 suitability binder PDFs on the public landing page.
 
 ---
@@ -175,7 +175,7 @@ Branching dynamically adapts the form fields based on Step 1 selection:
 | **AC-2** | **Branching** | Step 2 fields must conditionally render based on Step 1 selection (Life vs Health vs Variable Annuity). | Unit test on `useQuoteAndLeadRouting` verifying `quoteParams` updating per category. |
 | **AC-3** | **Validation** | Form must block submission and visually flag invalid emails, phone numbers < 10 digits, invalid ZIPs, and missing consent. | Client-side test asserting error badges appear and submit button is halted. |
 | **AC-4** | **Payload Contract** | The POST request to `/api/leads/quote-routing` must match `MyIADLeadSubmissionPayload` exactly, including UTM tracking and territory detection. | API integration test verifying JSON response `{ success: true, leadId: string }`. |
-| **AC-5** | **CRM Webhook** | Submissions must dispatch to `crm.myiad.net/api/webhooks/leads` with a 10s timeout and graceful simulated fallback. | Mock server test verifying webhook receipt and fallback response on network timeout. |
+| **AC-5** | **CRM Webhook** | Submissions must dispatch to `crm.myiad.com/api/webhooks/leads` with a 10s timeout and graceful simulated fallback. | Mock server test verifying webhook receipt and fallback response on network timeout. |
 | **AC-6** | **FINRA 2330** | When `variable_annuity` is selected, the FINRA Rule 2330 disclosure banner must render and the acknowledgment must be recorded. | Component visual regression test and payload schema validation. |
 | **AC-7** | **TCPA Consent** | Consent checkbox must be unchecked by default. Checking it logs `consentTimestamp` and `consentVersion: "myiad_tcpa_v2.0"`. | Integration test verifying database entry contains consent metadata. |
 | **AC-8** | **Scheduling Bridge** | Step 4 must display a valid confirmation ID and offer a 1-click trigger to `CalendarBookingModal` with pre-filled lead details. | UI test checking modal opens with populated prospect name and email. |
@@ -185,7 +185,7 @@ Branching dynamically adapts the form fields based on Step 1 selection:
 ## 6. Dependencies and Operational Risks
 
 ### 6.1 Dependencies
-- **CRM Ingestion Endpoint:** `crm.myiad.net/api/webhooks/leads` webhook listener must be reachable or operate with offline queueing.
+- **CRM Ingestion Endpoint:** `crm.myiad.com/api/webhooks/leads` webhook listener must be reachable or operate with offline queueing.
 - **Calendar Availability:** Active scheduling link on Cal.com / Calendly (`https://cal.com/angelburgos/15min`).
 - **Transactional Communications:** Twilio SMS / SendGrid Email API credentials in environment configuration (`.env.local`).
 
@@ -201,7 +201,7 @@ Branching dynamically adapts the form fields based on Step 1 selection:
 
 ## 7. Strategic Decisions Needed from Angel (CEO & Principal Advisor)
 
-1. **Scheduling Engine Priority:** Confirm whether consumer calendar appointments should route primarily to `https://cal.com/angelburgos/15min` or an internal `crm.myiad.net/book/angel` booking endpoint once live.
-2. **Dual-Persistence Configuration:** Confirm that leads captured on `myiad.com` should persist in the local PostgreSQL database (`leads` table) as well as immediately dispatching to the `crm.myiad.net` webhook.
+1. **Scheduling Engine Priority:** Confirm whether consumer calendar appointments should route primarily to `https://cal.com/angelburgos/15min` or an internal `crm.myiad.com/book/angel` booking endpoint once live.
+2. **Dual-Persistence Configuration:** Confirm that leads captured on `myiad.com` should persist in the local PostgreSQL database (`leads` table) as well as immediately dispatching to the `crm.myiad.com` webhook.
 3. **Entity & Disclaimer Verification:** Approve the formal footer disclosure text:
    *"MyIAD is operated by AB Global Consulting LLC. Insurance advisory services provided by Angel Burgos, Florida Licensed 0215 Life, Health & Variable Annuities (#G328926). Variable products are subject to investment risk and supervisory review under FINRA Rule 2330."*

@@ -360,7 +360,7 @@ export default function OptInCompliancePage() {
                   <p className="font-bold text-slate-900">AB Global Consulting / MyIAD</p>
                   <p>{lang === "es" ? "Supervisado por:" : "Supervised by:"} Angel Burgos (FL Lic #G328926 / WFG Code F6D9U)</p>
                   <p>{lang === "es" ? "Sitio Web Principal:" : "Primary Website:"} <a href="https://myiad.com" className="text-teal-700 hover:underline">myiad.com</a></p>
-                  <p>{lang === "es" ? "Portal de Clientes / CRM:" : "CRM & Dispatch:"} <a href="https://crm.myiad.net" className="text-teal-700 hover:underline">crm.myiad.net</a></p>
+                  <p>{lang === "es" ? "Portal de Clientes / CRM:" : "CRM & Dispatch:"} <a href="https://crm.myiad.com" className="text-teal-700 hover:underline">crm.myiad.com</a></p>
                 </div>
                 <div>
                   <p className="font-bold text-slate-900">{lang === "es" ? "Líneas de Atención:" : "Communication Lines:"}</p>

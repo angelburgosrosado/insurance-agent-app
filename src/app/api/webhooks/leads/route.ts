@@ -104,14 +104,14 @@ export async function POST(request: Request) {
           phone: phone || "000-000-0000",
           service: `${productInterest}: ${productSubtype}`,
           contactTime: data.preferredTimeOfDay || "afternoon",
-          message: `[crm.myiad.net Ingestion] Coverage/Investment: ${coverageAmount}. Territory: ${territory}. ZIP: ${zipCode}. Notes: ${clientNotes}`,
+          message: `[crm.myiad.com Ingestion] Coverage/Investment: ${coverageAmount}. Territory: ${territory}. ZIP: ${zipCode}. Notes: ${clientNotes}`,
           consent: true,
-          consentText: "TCPA Affirmative Consent verified for crm.myiad.net lead pipeline.",
+          consentText: "TCPA Affirmative Consent verified for crm.myiad.com lead pipeline.",
           consentVersion: consentVersion,
           consentAt: new Date(consentTimestamp),
           attribution: {
             create: {
-              source: data.source || "crm.myiad.net",
+              source: data.source || "crm.myiad.com",
               medium: data.medium || "inbound-api",
               campaign: data.campaign || "external-integration",
             },

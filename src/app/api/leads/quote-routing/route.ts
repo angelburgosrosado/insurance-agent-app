@@ -105,7 +105,7 @@ export async function POST(request: Request) {
       };
     }
 
-    // 5. Direct Lead Routing Hook into crm.myiad.net Pipeline
+    // 5. Direct Lead Routing Hook into crm.myiad.com Pipeline
     const crmResult = await dispatchToMyIADCrm(payload);
 
     // 6. Asynchronous Notification & Auto-Reply Dispatch

@@ -1,5 +1,5 @@
 /**
- * Lead Routing Hook and Schema Integration for crm.myiad.net
+ * Lead Routing Hook and Schema Integration for crm.myiad.com
  * Standardized across MyIAD Acquisition Engine, CRM Webhook Pipeline, and Consumer Portals.
  */
 
@@ -104,7 +104,7 @@ const US_STATES_AND_TERRITORIES = new Set([
 ]);
 
 /**
- * Validates lead submission payload adhering to crm.myiad.net pipeline contract.
+ * Validates lead submission payload adhering to crm.myiad.com pipeline contract.
  * Includes optional NPN format validation and state license verification.
  */
 export function validateMyIADLeadPayload(input: unknown): MyIADValidationResult {
@@ -235,7 +235,7 @@ export function validateMyIADLeadPayload(input: unknown): MyIADValidationResult 
     };
   }
 
-  // Determine Product Interest for crm.myiad.net pipeline
+  // Determine Product Interest for crm.myiad.com pipeline
   let productInterest: MyIADProductInterest = "Life";
   if (category === "health") {
     if (productSubtype.toLowerCase().includes("medicare")) {
@@ -303,7 +303,7 @@ export function validateMyIADLeadPayload(input: unknown): MyIADValidationResult 
 }
 
 /**
- * Normalizes payload for direct ingestion into crm.myiad.net webhook and database schema.
+ * Normalizes payload for direct ingestion into crm.myiad.com webhook and database schema.
  */
 export function normalizeLeadForCrmMyIAD(payload: MyIADLeadSubmissionPayload): Record<string, any> {
   const quoteSummaryParts = [
@@ -377,7 +377,7 @@ export interface DispatchResult {
 }
 
 /**
- * Dispatches lead directly to crm.myiad.net webhook pipeline with timeout,
+ * Dispatches lead directly to crm.myiad.com webhook pipeline with timeout,
  * HMAC authentication, PII encryption, HTTPS protocol enforcement, and error fallback.
  * Ensures ZERO plain PII is leaked in server logs.
  */
@@ -421,7 +421,7 @@ export async function dispatchToMyIADCrm(
       const encrypted = encryptPayloadPii(piiBundle, encryptionKey);
       crmPayload.encryptedPii = encrypted;
     } catch (encErr) {
-      console.warn("[crm.myiad.net] Encryption helper notice:", (encErr as any)?.message);
+      console.warn("[crm.myiad.com] Encryption helper notice:", (encErr as any)?.message);
     }
   }
 
@@ -436,7 +436,7 @@ export async function dispatchToMyIADCrm(
       success: true,
       mock: true,
       leadId: `MYIAD-${year}-${randCode}`,
-      message: "Lead validated and processed in simulated crm.myiad.net environment.",
+      message: "Lead validated and processed in simulated crm.myiad.com environment.",
     };
   }
 

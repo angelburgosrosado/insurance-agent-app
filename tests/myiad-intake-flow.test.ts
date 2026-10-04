@@ -215,7 +215,7 @@ test("AC-4 (Payload Contract): Normalizes lead submission payload with UTM attri
   assert.match(normalized.notes, /indexed_universal_life/i);
 });
 
-test("AC-5 (CRM Webhook): Dispatches to crm.myiad.net webhook pipeline with simulated fallback", async () => {
+test("AC-5 (CRM Webhook): Dispatches to crm.myiad.com webhook pipeline with simulated fallback", async () => {
   const payload: MyIADLeadSubmissionPayload = {
     applicantName: "Webhook Test",
     applicantFirstName: "Webhook",

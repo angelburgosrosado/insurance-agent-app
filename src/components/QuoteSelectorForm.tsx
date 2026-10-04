@@ -73,7 +73,7 @@ export function QuoteSelectorForm({
           <div className="space-y-1.5">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/20 border border-blue-400/30 rounded-full text-blue-300 text-xs font-bold uppercase tracking-wider">
               <Sparkles size={12} className="text-teal-400" />
-              <span>Intelligent Lead Routing &bull; crm.myiad.net</span>
+              <span>Intelligent Lead Routing &bull; crm.myiad.com</span>
             </div>
             <h3 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
               Instant Advisory Quote Selector
@@ -925,7 +925,7 @@ export function QuoteSelectorForm({
                 className="px-8 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm rounded-xl shadow-lg transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
               >
                 {submissionState === "submitting" ? (
-                  <span>Routing to crm.myiad.net...</span>
+                  <span>Routing to crm.myiad.com...</span>
                 ) : (
                   <>
                     <Lock size={15} />

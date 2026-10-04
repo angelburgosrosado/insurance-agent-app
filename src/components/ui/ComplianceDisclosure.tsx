@@ -129,12 +129,12 @@ export const ComplianceDisclosure: React.FC = () => {
               abglco.com
             </a>
             <a
-              href="https://crm.myiad.net"
+              href="https://crm.myiad.com"
               target="_blank"
               rel="noopener noreferrer"
               className="px-2 py-0.5 rounded bg-slate-50 hover:bg-slate-100 text-purple-700 border border-purple-200 transition-colors"
             >
-              crm.myiad.net
+              crm.myiad.com
             </a>
             <a
               href="https://voice.myiad.com"

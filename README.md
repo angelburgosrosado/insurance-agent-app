@@ -6,8 +6,9 @@ A comprehensive Next.js web application for managing private insurance lead gene
 
 - **Framework:** [Next.js 16 (App Router)](https://nextjs.org/)
 - **Database ORM:** [Prisma](https://www.prisma.io/)
-- **Database Hosting:** [Supabase](https://supabase.com/) (PostgreSQL)
-- **Frontend Hosting:** [Firebase App Hosting](https://firebase.google.com/docs/app-hosting)
+- **Database Engine:** [Neon Serverless PostgreSQL](https://neon.tech/)
+- **Deployment Platform:** [Vercel](https://vercel.com/)
+- **Enterprise CRM:** [InsuranceAI-CRM](https://github.com/angelburgosrosado/InsuranceAI-CRM) (`crm.myiad.com`)
 - **Styling:** Tailwind CSS v4
 - **Charts:** Recharts
 
@@ -24,7 +25,7 @@ Copy the `.env.example` file to `.env` (or `.env.local`) and fill in the require
 cp .env.example .env
 ```
 
-For local development without Supabase, a SQLite database is supported by Prisma natively in this project, but for true parity, you should use a local Postgres or remote dev Supabase instance.
+The production database is Neon Serverless PostgreSQL (`DATABASE_URL`). For local integration tests, an isolated SQLite fallback is supported when running without network access.
 
 ### 3. Install Dependencies
 ```bash

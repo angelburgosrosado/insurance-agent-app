@@ -295,7 +295,7 @@ export default async function AdminPage() {
                 </span>
               </div>
               <p className="text-[11px] text-slate-500 font-mono truncate">
-                https://crm.myiad.net
+                https://crm.myiad.com
               </p>
               <div className="text-[11px] text-slate-600 flex justify-between pt-1">
                 <span>Encryption</span>

@@ -113,7 +113,7 @@ export async function GET() {
         status: process.env.GEMINI_API_KEY ? "active" : "heuristic_fallback",
       },
       crmPipeline: {
-        target: "https://crm.myiad.net/api/webhooks/leads",
+        target: "https://crm.myiad.com/api/webhooks/leads",
         configured: Boolean(process.env.CRM_WEBHOOK_URL),
         encryption: "AES-256-GCM + HMAC-SHA256",
         status: "operational",
@@ -134,7 +134,7 @@ export async function GET() {
     const coreRoutes = [
       { name: "Public Landing (myiad.com)", path: "/", status: "operational" },
       { name: "MyIAD National Portal", path: "/myiad", status: "operational" },
-      { name: "Customer CRM Showcase (crm.myiad.net)", path: "/crm", status: "operational" },
+      { name: "Customer CRM Showcase (crm.myiad.com)", path: "/crm", status: "operational" },
       { name: "Toll-Free SMS Opt-In Compliance", path: "/opt-in", status: "operational" },
       { name: "Privacy Policy", path: "/privacy", status: "operational" },
       { name: "Terms of Service", path: "/terms", status: "operational" },

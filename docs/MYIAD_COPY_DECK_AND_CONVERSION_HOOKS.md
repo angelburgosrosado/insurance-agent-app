@@ -3,7 +3,7 @@
 **Document Version:** 1.0.0 (Production Copy Deck)  
 **Author:** Growth & Content Lead (AB Global Consulting)  
 **Target Domain:** `https://myiad.com`  
-**Routing Endpoint:** `https://crm.myiad.net/api/webhooks/leads`  
+**Routing Endpoint:** `https://crm.myiad.com/api/webhooks/leads`  
 **Principal Advisor & License:** Angel Burgos, Florida Licensed 0215 Life, Health & Variable Annuities (License #G328926)  
 **Visual Identity Tokens:**  
 - Trust Navy: `#0B1F3A` (Primary foundation and structural contrast)  
@@ -68,7 +68,7 @@ Navigate wealth preservation, healthcare continuity, and guaranteed retirement i
 1. **0% Downside Floor Protection:** Contractual protection against negative market returns paired with tax-exempt growth under IRC Section 7702.  
 2. **Supervised Suitability Protocol:** Full fiduciary alignment and principal oversight adhering to FINRA Rule 2330 standards.  
 3. **100% Independent Brokerage:** Unbiased carrier selection across top-tier, A-rated national life and health institutions.  
-4. **Direct Pipeline Routing:** Submissions route in real time to crm.myiad.net for instant clinical case analysis.
+4. **Direct Pipeline Routing:** Submissions route in real time to crm.myiad.com for instant clinical case analysis.
 
 **Hero Call-to-Action Pair:**  
 - **Primary CTA Button:**  
@@ -124,7 +124,7 @@ Navigate wealth preservation, healthcare continuity, and guaranteed retirement i
   Standardize supervisory compliance and eliminate pipeline leakage across multi-state agent networks. Deploy turnkey bilingual lead capture, automated FINRA Rule 2330 suitability documentation, and instant webhook ingestion directly into your CRM.
   ```
 - **Operational Capabilities:**  
-  * Direct API and webhook ingestion connecting public web traffic to `crm.myiad.net` in sub-second response times.  
+  * Direct API and webhook ingestion connecting public web traffic to `crm.myiad.com` in sub-second response times.  
   * Automated territory distribution engine routing prospects across Central Florida, South Florida, Puerto Rico, and national hubs.  
   * Comprehensive supervisory audit trails documenting suitability verifications, consumer consent, and principal sign-offs to satisfy regulatory recordkeeping requirements.  
 - **CTA Label:** `Deploy Brokerage Gateway`  
@@ -423,7 +423,7 @@ Navigate wealth preservation, healthcare continuity, and guaranteed retirement i
 - **Step Badge:** `Step 4 of 4: Intake Verified`  
 - **Confirmation Headline:** `Advisory Request Successfully Registered`  
 - **Reference Identifier Pill:** `Tracking Reference: MYIAD-2026-CONFIRM`  
-- **Sub-Headline:** `Your parameters have been logged in our secure underwriting pipeline (crm.myiad.net). A licensed 0215 advisory specialist has been assigned to your case file.`
+- **Sub-Headline:** `Your parameters have been logged in our secure underwriting pipeline (crm.myiad.com). A licensed 0215 advisory specialist has been assigned to your case file.`
 
 **Assigned Desk Details Card:**  
 - **Principal Lead:** `Angel Burgos, Principal Advisor (FL Lic #G328926)`  
@@ -450,7 +450,7 @@ Navigate wealth preservation, healthcare continuity, and guaranteed retirement i
 | **Independent Brokerage** | `Award` | `100% Independent Brokerage` | Unaligned carrier access ensuring client-first fiduciary recommendations. |
 | **Data Encryption** | `Lock` | `256-Bit SSL Data Security` | Bank-grade transport layer security; zero third-party lead selling. |
 | **Bilingual Capability** | `Globe` | `Bilingual Advisory Team` | Complete English and Spanish advisory documentation and live consultations. |
-| **Instant Pipeline Hook** | `Zap` | `Direct crm.myiad.net Routing` | Real-time intake processing with zero pipeline latency. |
+| **Instant Pipeline Hook** | `Zap` | `Direct crm.myiad.com Routing` | Real-time intake processing with zero pipeline latency. |
 
 ---
 

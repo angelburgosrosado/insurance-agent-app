@@ -146,7 +146,7 @@ export default function PrivacyPage() {
               <ul className="list-disc pl-5 space-y-1.5 text-xs md:text-sm">
                 <li>{lang === "es" ? "Generar el informe personalizado MyIAD AI Protection Blueprint y cálculos matemáticos D.I.M.E." : "Generating personalized MyIAD AI Protection Blueprints and D.I.M.E. insurance needs mathematical models."}</li>
                 <li>{lang === "es" ? "Contactarle directamente por llamada telefónica, mensaje de texto (SMS) o correo para coordinar su sesión diagnóstica." : "Contacting you directly via phone, SMS text messages, or email to coordinate your consultation session."}</li>
-                <li>{lang === "es" ? "Enrutar su solicitud de forma segura a través de nuestro pipeline cifrado hacia crm.myiad.net para seguimiento por un asesor licenciado." : "Securely routing your request through our encrypted pipeline into crm.myiad.net for follow-up by a licensed professional."}</li>
+                <li>{lang === "es" ? "Enrutar su solicitud de forma segura a través de nuestro pipeline cifrado hacia crm.myiad.com para seguimiento por un asesor licenciado." : "Securely routing your request through our encrypted pipeline into crm.myiad.com for follow-up by a licensed professional."}</li>
                 <li>{lang === "es" ? "Verificar la idoneidad estatutaria conforme a la Regla FINRA 2330 en recomendaciones de anualidades." : "Conducting supervisory suitability review in compliance with FINRA Rule 2330 for variable annuity inquiries."}</li>
               </ul>
             </div>
@@ -214,7 +214,7 @@ export default function PrivacyPage() {
                   : "To operate myiad.com securely, we employ SOC 2 compliant enterprise infrastructure partners with institutional-grade encryption:"}
               </p>
               <ul className="list-disc pl-5 space-y-1.5 text-xs md:text-sm">
-                <li><strong>crm.myiad.net & Supabase:</strong> {lang === "es" ? "Almacenamiento en bases de datos PostgreSQL cifradas en reposo (AES-256) y en tránsito (TLS 1.3)." : "PostgreSQL database storage encrypted at rest (AES-256) and in transit (TLS 1.3)."}</li>
+                <li><strong>crm.myiad.com & Neon:</strong> {lang === "es" ? "Almacenamiento en bases de datos PostgreSQL cifradas en reposo (AES-256) y en tránsito (TLS 1.3)." : "PostgreSQL database storage encrypted at rest (AES-256) and in transit (TLS 1.3)."}</li>
                 <li><strong>Twilio & Deepgram:</strong> {lang === "es" ? "Red de telecomunicaciones y transcripción en tiempo real protegida con autenticación criptográfica HMAC SHA-256." : "Real-time speech-to-text and telephony networks secured with HMAC SHA-256 cryptographic signatures."}</li>
                 <li><strong>Google Cloud (Cloud Run & Vertex/Gemini):</strong> {lang === "es" ? "Entorno de ejecución aislado y seguro para el enrutamiento de llamadas y razonamiento del copilot." : "Isolated, secure container runtime and reasoning pipeline for advisor call routing."}</li>
               </ul>

@@ -422,7 +422,7 @@ export default function AdminSystemOperationsPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-sm text-white">CRM Enterprise Pipeline</h3>
-                    <p className="text-[10px] text-slate-400 font-mono">crm.myiad.net Gateway</p>
+                    <p className="text-[10px] text-slate-400 font-mono">crm.myiad.com Gateway</p>
                   </div>
                 </div>
                 <span className="px-2 py-0.5 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded text-[10px] font-bold">
@@ -433,7 +433,7 @@ export default function AdminSystemOperationsPage() {
               <div className="space-y-2 text-xs font-mono bg-slate-900/90 p-3.5 rounded-xl border border-slate-800">
                 <div className="flex justify-between">
                   <span className="text-slate-400">Target Pipeline:</span>
-                  <span className="text-amber-300 truncate max-w-[180px]">crm.myiad.net</span>
+                  <span className="text-amber-300 truncate max-w-[180px]">crm.myiad.com</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-400">Payload Security:</span>
@@ -455,12 +455,12 @@ export default function AdminSystemOperationsPage() {
 
               <div className="pt-1 flex items-center justify-between">
                 <a
-                  href="https://crm.myiad.net"
+                  href="https://crm.myiad.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-xs text-amber-400 hover:text-amber-300 inline-flex items-center gap-1 font-semibold"
                 >
-                  <span>Open crm.myiad.net ↗</span>
+                  <span>Open crm.myiad.com ↗</span>
                 </a>
                 <span className="text-[10px] text-slate-500">
                   Sub-Second Sync
